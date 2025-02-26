@@ -1,0 +1,306 @@
+{
+    "germanrpaddon": {
+        "settings": {
+            "name": "GermanRP Utils",
+            "enabled": {
+                "name": "Aktiviert"
+            },
+            "timers": {
+                "name": "Timer"
+            },
+            "antichatooc": {
+                "name": "Anti-Chat-OOC"
+            },
+            "hotkeys": {
+                "name": "Hotkey Einstellungen",
+                "engineOnOffKey": {
+                    "name": "Motor An/Aus"
+                },
+                "sosiMuteKey": {
+                    "name": "Sondersignal Laut/Leise"
+                },
+                "sosiOnOffKey": {
+                    "name": "Sondersignal An/Aus"
+                },
+                "cruiseControlKey": {
+                    "name": "Tempomat An/Aus"
+                },
+                "jobKey": {
+                    "name": "Job Befehl"
+                },
+                "signalLeftKey": {
+                    "name": "Blinker Links"
+                },
+                "signalRightKey": {
+                    "name": "Blinker Rechts"
+                },
+                "warnSignalKey": {
+                    "name": "Warnblinker"
+                },
+                "cruiseControlUp": {
+                    "name": "Tempomat erhöhen"
+                },
+                "cruiseControlDown": {
+                    "name": "Tempomat verringern"
+                }
+            },
+            "hydration": {
+                "name": "Hydrierungs-Einstellungen",
+                "notificationtype": {
+                    "name": "Hydrierungsnachrichten",
+                    "entries": {
+                        "all": "Alle",
+                        "underthirty": "Unter 30 Prozent",
+                        "underten": "Unter 10 Prozent",
+                        "none": "Keine"
+                    }
+                },
+                "actionbar": {
+                    "name": "In ActionBar anzeigen"
+                }
+            },
+            "widgets": {
+                "name": "Widget Einstellungen",
+                "engineOnOffKey": {
+                    "name": "Motor An/Aus"
+                },
+                "salarySetting": {
+                    "name": "Gehalt-Widget Anzeige",
+                    "entries": {
+                        "both": "Beide Gehälter",
+                        "job": "Nur Jobgehalt",
+                        "faction": "Nur Fraktionsgehalt"
+                    }
+                },
+                "levelSetting": {
+                    "name": "Level-Widget Anzeige",
+                    "entries": {
+                        "currentandmax": "Derzeitige & maximale XP",
+                        "needed": "Benötigte XP"
+                    }
+                },
+                "skillSetting": {
+                    "name": "Skill-Widget Anzeige",
+                    "entries": {
+                        "currentandmax": "Derzeitige & maximale XP",
+                        "needed": "Benötigte XP"
+                    }
+                },
+                "gangwarSetting": {
+                    "name": "Gangwar-Widget Anzeige",
+                    "entries": {
+                        "all": "Alle Anzeigen",
+                        "factions": "Nur Fraktionen",
+                        "points": "Nur Punktestand",
+                        "zone": "Nur Gangzone",
+                        "factionsandpoints": "Fraktionen & Punktestand",
+                        "factionsandzone": "Fraktionen & Gangzone",
+                        "pointsandzone": "Punktestand & Gangzone"
+                    }
+                },
+                "plantSetting": {
+                    "name": "Plantagen-Widget Anzeige",
+                    "entries": {
+                        "both": "Timer und Ertrag",
+                        "timer": "Nur Timer",
+                        "result": "Nur Ertrag"
+                    }
+                }
+            },
+            "nametags": {
+                "name": "Custom NameTag Einstellungen",
+                "factiontag": {
+                    "name": "Fraktion",
+                    "entries": {
+                        "none": "§fAus",
+                        "white": "§fWeiss",
+                        "gray": "§7Grau",
+                        "darkgray": "§8Dunkelgrau",
+                        "black": "§0Schwarz",
+                        "green": "§aGrün",
+                        "darkgreen": "§2Dunkelgrün",
+                        "lightblue": "§bHellblau",
+                        "blue": "§9Blau",
+                        "darkblue": "§1Dunkelblau",
+                        "cyan": "§3Türkis",
+                        "yellow": "§eGelb",
+                        "orange": "§6Orange",
+                        "pink": "§dPink",
+                        "purple": "§5Lila"
+                    }
+                },
+                "darklisttag": {
+                    "name": "Darklist",
+                    "entries": {
+                        "none": "§fAus",
+                        "white": "§fWeiss",
+                        "gray": "§7Grau",
+                        "darkgray": "§8Dunkelgrau",
+                        "black": "§0Schwarz",
+                        "green": "§aGrün",
+                        "darkgreen": "§2Dunkelgrün",
+                        "lightblue": "§bHellblau",
+                        "blue": "§9Blau",
+                        "darkblue": "§1Dunkelblau",
+                        "cyan": "§3Türkis",
+                        "yellow": "§eGelb",
+                        "orange": "§6Orange",
+                        "pink": "§dPink",
+                        "purple": "§5Lila"
+                    }
+                },
+                "bountytag": {
+                    "name": "Kopfgeld",
+                    "entries": {
+                        "none": "§fAus",
+                        "white": "§fWeiss",
+                        "gray": "§7Grau",
+                        "darkgray": "§8Dunkelgrau",
+                        "black": "§0Schwarz",
+                        "green": "§aGrün",
+                        "darkgreen": "§2Dunkelgrün",
+                        "lightblue": "§bHellblau",
+                        "blue": "§9Blau",
+                        "darkblue": "§1Dunkelblau",
+                        "cyan": "§3Türkis",
+                        "yellow": "§eGelb",
+                        "orange": "§6Orange",
+                        "pink": "§dPink",
+                        "purple": "§5Lila"
+                    }
+                },
+                "policetag": {
+                    "name": "Polizei",
+                    "entries": {
+                        "none": "§fAus",
+                        "white": "§fWeiss",
+                        "gray": "§7Grau",
+                        "darkgray": "§8Dunkelgrau",
+                        "black": "§0Schwarz",
+                        "green": "§aGrün",
+                        "darkgreen": "§2Dunkelgrün",
+                        "lightblue": "§bHellblau",
+                        "blue": "§9Blau",
+                        "darkblue": "§1Dunkelblau",
+                        "yellow": "§eGelb",
+                        "orange": "§6Orange",
+                        "pink": "§dPink",
+                        "purple": "§5Lila"
+                    }
+                }
+            },
+            "timer": {
+                "name": "Timer Einstellungen (Widget muss aktiv sein!)",
+                "businessrobtimer": {
+                    "name": "Gewerberaub"
+                },
+                "pharmacyrobtimer": {
+                    "name": "Apothekenraub"
+                },
+                "jewelryrobtimer": {
+                    "name": "Juwelenraub"
+                },
+                "museumrobtimer": {
+                    "name": "Museumsraub"
+                },
+                "hacktimer": {
+                    "name": "Hackangriff"
+                },
+                "bombtimer": {
+                    "name": "Bombe"
+                }
+            },
+            "languages": {
+                "name": "Sprachunterstützung",
+                "ocallaghan": {
+                    "name": "O'Callaghan"
+                },
+                "medellin": {
+                    "name": "Medellín Kartell"
+                },
+                "camorra": {
+                    "name": "Camorra"
+                },
+                "establishment": {
+                    "name": "The Establishment"
+                },
+                "sinaloa": {
+                    "name": "Sinaloa Kartell"
+                },
+                "yakuza": {
+                    "name": "Yakuza"
+                }
+            },
+            "header": {
+                "onlygr": {
+                    "name": "§bIngame Funktionen"
+                }
+            }
+        },
+        "hudWidget": {
+            "cash": {
+                "name": "Bargeld"
+            },
+            "bank": {
+                "name": "Kontostand"
+            },
+            "salary": {
+                "name": "Gehalt"
+            },
+            "hydration": {
+                "name": "Hydration"
+            },
+            "payday": {
+                "name": "PayDay Timer"
+            },
+            "plant": {
+                "name": "Plantagen Stats"
+            },
+            "timer": {
+                "name": "Timer"
+            },
+            "gangwar": {
+                "name": "Gangwar"
+            },
+            "blackmarket": {
+                "name": "Schwarzmarkt Timer"
+            },
+            "level": {
+                "name": "Levelfortschritt"
+            },
+            "skill": {
+                "name": "Letzter Skill"
+            },
+            "health": {
+                "name": "Herzen Anzeige"
+            }
+        },
+        "widget": {
+            "bomb": "Bombe",
+            "pharmacy": "Apothekenraub",
+            "business": "Gewerberaub",
+            "jewelry": "Juwelenraub",
+            "hack": "Hackangriff",
+            "museum": "Museumsraub",
+            "bank": "Kontostand",
+            "cash": "Bargeld",
+            "payday": "PayDay",
+            "salary": "Gehalt",
+            "hydration": "Hydration",
+            "plant": "Plantage",
+            "blackmarket": "Schwarzmarkt",
+            "gangwar": "Gangwar",
+            "level": "Level",
+            "skill": "Skill",
+            "health": "Herzen"
+        }
+    },
+    "labymod": {
+        "hudWidgetCategory": {
+            "germanrp": {
+                "name": "GermanRP Widgets",
+                "description": "Alle Widgets, die zu GermanRP Utils gehören."
+            }
+        }
+    }
+}
