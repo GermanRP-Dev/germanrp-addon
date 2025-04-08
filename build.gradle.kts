@@ -8,10 +8,6 @@ val versions = providers.gradleProperty("net.labymod.minecraft-versions").get().
 group = "eu.germanrp"
 version = providers.environmentVariable("VERSION").getOrElse("1.0.0")
 
-tasks.withType<JavaCompile> {
-    options.encoding = "UTF-8"
-}
-
 labyMod {
     defaultPackageName = "eu.germanrp.addon"
 
@@ -19,7 +15,8 @@ labyMod {
         registerVersion(versions.toTypedArray()) {
             runs {
                 getByName("client") {
-
+                    // When the property is set to true, you can log in with a Minecraft account
+                    // devLogin = true
                 }
             }
         }
@@ -30,7 +27,7 @@ labyMod {
         displayName = "GermanRP Addon"
         author = "GermanRP Developers"
         description = "Verbessert und erleichtert das Spielerlebnis auf GermanRP.eu"
-        minecraftVersion = "1.21.3<*"
+        minecraftVersion = "1.21.4"
         version = rootProject.version.toString()
     }
 }

@@ -1,9 +1,5 @@
 import net.labymod.labygradle.common.extension.LabyModAnnotationProcessorExtension.ReferenceType
 
-tasks.withType<JavaCompile> {
-    options.encoding = "UTF-8"
-}
-
 dependencies {
     labyProcessor()
     api(project(":api"))
@@ -14,10 +10,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
     compileOnly("org.projectlombok:lombok:1.18.38")
     annotationProcessor("org.projectlombok:lombok:1.18.38")
-
-    testCompileOnly("org.projectlombok:lombok:1.18.38")
-    testAnnotationProcessor("org.projectlombok:lombok:1.18.38")
 }
+
 labyModAnnotationProcessor {
     referenceType = ReferenceType.DEFAULT
 }
