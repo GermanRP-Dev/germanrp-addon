@@ -1,5 +1,6 @@
-package eu.germanrp.addon.config;
+package eu.germanrp.addon.common.config;
 
+import eu.germanrp.addon.common.enums.Faction;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import net.labymod.api.addon.AddonConfig;
@@ -10,11 +11,13 @@ import net.labymod.api.configuration.loader.annotation.SpriteTexture;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
 import net.labymod.api.configuration.settings.annotation.SettingSection;
 
+import static eu.germanrp.addon.common.enums.Faction.NONE;
+
 @Getter
 @Accessors(fluent = true)
 @ConfigName("settings")
 @SpriteTexture("settings")
-public class GermanRPConfig extends AddonConfig {
+public class DefaultAddonConfig extends AddonConfig {
 
     @SwitchSetting
     private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);
@@ -26,19 +29,19 @@ public class GermanRPConfig extends AddonConfig {
     private final WidgetSubConfig widgets = new WidgetSubConfig();
 
     @SpriteSlot(size = 32, x = 3, y = 1)
-    private final HotkeySubConfig hotkeys = new HotkeySubConfig();
+    private final HotkeyConfig hotkeys = new HotkeyConfig();
 
     @SpriteSlot(size = 32, x = 1, y = 2)
-    private final HydrationSubConfig hydration = new HydrationSubConfig();
+    private final HydrationConfig hydration = new HydrationConfig();
 
     @SpriteSlot(size = 32, x = 2, y = 1)
-    private final TimerSubConfig timer = new TimerSubConfig();
+    private final TimerConfig timer = new TimerConfig();
 
     @SpriteSlot(size = 32, x = 1, y = 1)
-    private final NameTagSubConfig nametags = new NameTagSubConfig();
+    private final NameTagConfig nametags = new NameTagConfig();
 
     @SpriteSlot(size = 32, x = 1)
-    private final LanguageSubConfig languages = new LanguageSubConfig();
+    private final ConfigProperty<Faction> language = new ConfigProperty<>(NONE);
 }
 
 

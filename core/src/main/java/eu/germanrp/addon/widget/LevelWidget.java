@@ -1,7 +1,7 @@
 package eu.germanrp.addon.widget;
 
 import eu.germanrp.addon.GermanRPAddon;
-import eu.germanrp.addon.enums.LevelEnum;
+import eu.germanrp.addon.common.enums.Level;
 import eu.germanrp.addon.widget.category.GermanRPCategory;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
@@ -19,7 +19,7 @@ public class LevelWidget extends TextHudWidget<TextHudWidgetConfig> {
     private TextLine line;
     private int xpAmount = -1;
     private int neededXPAmount = 0;
-    private LevelEnum levelEnum = LevelEnum.CURRENTANDMAX;
+    private Level level = Level.CURRENTANDMAX;
     private boolean levelUpdate;
     private boolean justJoined;
     private boolean wasAFK;
@@ -48,19 +48,19 @@ public class LevelWidget extends TextHudWidget<TextHudWidgetConfig> {
     public void onTick(boolean isEditorContext) {
         ticks++;
         if (ticks == 10) {
-            LevelEnum newLevelEnum = addon.configuration().widgets().levelSetting().get();
-            if (levelEnum != newLevelEnum) {
+            Level newLevel = addon.configuration().widgets().levelSetting().get();
+            if (level != newLevel) {
                 levelUpdate = true;
-                levelEnum = newLevelEnum;
+                level = newLevel;
             }
             ticks = 0;
         }
         if (levelUpdate) {
             levelUpdate = false;
-            if (levelEnum == LevelEnum.CURRENTANDMAX) {
+            if (level == Level.CURRENTANDMAX) {
                 line.updateAndFlush(xpAmount + "/" + neededXPAmount + " XP");
             }
-            if (levelEnum == LevelEnum.NEEDED) {
+            if (level == Level.NEEDED) {
                 line.updateAndFlush(neededXPAmount - xpAmount + " XP");
             }
 

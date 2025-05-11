@@ -3,7 +3,7 @@ package eu.germanrp.addon.widget;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import eu.germanrp.addon.GermanRPAddon;
-import eu.germanrp.addon.enums.GangwarEnum;
+import eu.germanrp.addon.common.enums.Gangwar;
 import eu.germanrp.addon.widget.category.GermanRPCategory;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidget;
@@ -30,7 +30,7 @@ public class GangwarWidget extends TextHudWidget<TextHudWidgetConfig> {
     private TextLine teamLine;
     private TextLine zoneLine;
     private TextLine valueLine;
-    private GangwarEnum gangwarEnum = GangwarEnum.ALL;
+    private Gangwar gangwar = Gangwar.ALL;
     private boolean activeGangwar = false;
 
     public GangwarWidget(GermanRPAddon addon, GermanRPCategory category) {
@@ -60,12 +60,12 @@ public class GangwarWidget extends TextHudWidget<TextHudWidgetConfig> {
         if (!activeGangwar) {
             return;
         }
-        if (gangwarEnum != addon.configuration().widgets().gangwarSetting().get()) {
-            gangwarEnum = addon.configuration().widgets().gangwarSetting().get();
+        if (gangwar != addon.configuration().widgets().gangwarSetting().get()) {
+            gangwar = addon.configuration().widgets().gangwarSetting().get();
             updateGangWar = true;
         }
         if (updateGangWar) {
-            if (gangwarEnum == GangwarEnum.ALL) {
+            if (gangwar == Gangwar.ALL) {
                 teamLine.setState(State.VISIBLE);
                 zoneLine.setState(State.VISIBLE);
                 valueLine.setState(State.VISIBLE);
@@ -74,26 +74,26 @@ public class GangwarWidget extends TextHudWidget<TextHudWidgetConfig> {
                 valueLine.updateAndFlush(
                         pointsTeamOne.replace("-", "") + " - " + pointsTeamTwo.replace("-", ""));
             }
-            if (gangwarEnum == GangwarEnum.FACTIONS) {
+            if (gangwar == Gangwar.FACTIONS) {
                 teamLine.setState(State.VISIBLE);
                 zoneLine.setState(State.HIDDEN);
                 valueLine.setState(State.HIDDEN);
                 teamLine.updateAndFlush(teamOne + " vs " + teamTwo);
             }
-            if (gangwarEnum == GangwarEnum.POINTS) {
+            if (gangwar == Gangwar.POINTS) {
                 teamLine.setState(State.HIDDEN);
                 zoneLine.setState(State.HIDDEN);
                 valueLine.setState(State.VISIBLE);
                 valueLine.updateAndFlush(
                         pointsTeamOne.replace("-", "") + " - " + pointsTeamTwo.replace("-", ""));
             }
-            if (gangwarEnum == GangwarEnum.ZONE) {
+            if (gangwar == Gangwar.ZONE) {
                 teamLine.setState(State.HIDDEN);
                 zoneLine.setState(State.VISIBLE);
                 valueLine.setState(State.HIDDEN);
                 zoneLine.updateAndFlush(gangZone);
             }
-            if (gangwarEnum == GangwarEnum.FACTIONSANDPOINTS) {
+            if (gangwar == Gangwar.FACTIONSANDPOINTS) {
                 teamLine.setState(State.VISIBLE);
                 zoneLine.setState(State.HIDDEN);
                 valueLine.setState(State.VISIBLE);
@@ -101,14 +101,14 @@ public class GangwarWidget extends TextHudWidget<TextHudWidgetConfig> {
                 valueLine.updateAndFlush(
                         pointsTeamOne.replace("-", "") + " - " + pointsTeamTwo.replace("-", ""));
             }
-            if (gangwarEnum == GangwarEnum.FACTIONSANDZONE) {
+            if (gangwar == Gangwar.FACTIONSANDZONE) {
                 teamLine.setState(State.VISIBLE);
                 zoneLine.setState(State.VISIBLE);
                 valueLine.setState(State.HIDDEN);
                 teamLine.updateAndFlush(teamOne + " vs " + teamTwo);
                 zoneLine.updateAndFlush(gangZone);
             }
-            if (gangwarEnum == GangwarEnum.POINTSANDZONE) {
+            if (gangwar == Gangwar.POINTSANDZONE) {
                 teamLine.setState(State.HIDDEN);
                 zoneLine.setState(State.VISIBLE);
                 valueLine.setState(State.VISIBLE);

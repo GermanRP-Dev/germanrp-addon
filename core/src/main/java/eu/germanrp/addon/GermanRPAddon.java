@@ -1,8 +1,10 @@
 package eu.germanrp.addon;
 
-import eu.germanrp.addon.config.GermanRPConfig;
+import eu.germanrp.addon.common.config.DefaultAddonConfig;
+import eu.germanrp.addon.listener.FactionLanguageListener;
 import eu.germanrp.addon.listener.InputListener;
 import eu.germanrp.addon.listener.NameTagListener;
+import eu.germanrp.addon.listener.OutOfCharakterChatListener;
 import eu.germanrp.addon.widget.BankWidget;
 import eu.germanrp.addon.widget.BlackmarketTimerWidget;
 import eu.germanrp.addon.widget.CashWidget;
@@ -20,7 +22,7 @@ import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.models.addon.annotation.AddonMain;
 
 @AddonMain
-public class GermanRPAddon extends LabyAddon<GermanRPConfig> {
+public class GermanRPAddon extends LabyAddon<DefaultAddonConfig> {
 
     @Override
     protected void enable() {
@@ -28,6 +30,10 @@ public class GermanRPAddon extends LabyAddon<GermanRPConfig> {
         registerSettingCategory();
         GermanRPCategory category = new GermanRPCategory();
         labyAPI().hudWidgetRegistry().categoryRegistry().register(category);
+
+        this.registerListener(new FactionLanguageListener(this));
+        this.registerListener(new OutOfCharakterChatListener(this));
+
         this.registerListener(new InputListener(this));
         this.registerListener(new NameTagListener(this));
 
@@ -48,7 +54,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPConfig> {
     }
 
     @Override
-    protected Class<? extends GermanRPConfig> configurationClass() {
-        return GermanRPConfig.class;
+    protected Class<? extends DefaultAddonConfig> configurationClass() {
+        return DefaultAddonConfig.class;
     }
 }

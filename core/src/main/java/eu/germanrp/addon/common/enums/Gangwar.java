@@ -1,6 +1,6 @@
-package eu.germanrp.addon.enums;
+package eu.germanrp.addon.common.enums;
 
-public enum GangwarEnum {
+public enum Gangwar {
 
     ALL,
     FACTIONS,

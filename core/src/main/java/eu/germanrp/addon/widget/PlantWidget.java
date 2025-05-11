@@ -3,7 +3,7 @@ package eu.germanrp.addon.widget;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import eu.germanrp.addon.GermanRPAddon;
-import eu.germanrp.addon.enums.PlantEnum;
+import eu.germanrp.addon.common.enums.PlantEnum;
 import eu.germanrp.addon.widget.category.GermanRPCategory;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidget;

@@ -1,9 +1,9 @@
-package eu.germanrp.addon.config;
+package eu.germanrp.addon.common.config;
 
-import eu.germanrp.addon.enums.GangwarEnum;
-import eu.germanrp.addon.enums.LevelEnum;
-import eu.germanrp.addon.enums.PlantEnum;
-import eu.germanrp.addon.enums.SalaryEnum;
+import eu.germanrp.addon.common.enums.Gangwar;
+import eu.germanrp.addon.common.enums.Level;
+import eu.germanrp.addon.common.enums.PlantEnum;
+import eu.germanrp.addon.common.enums.SalaryEnum;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import net.labymod.api.client.gui.screen.widget.widgets.input.dropdown.DropdownWidget.DropdownSetting;
@@ -18,13 +18,13 @@ public class WidgetSubConfig extends Config {
     private final ConfigProperty<SalaryEnum> salarySetting = new ConfigProperty<>(SalaryEnum.BOTH);
 
     @DropdownSetting
-    private final ConfigProperty<LevelEnum> levelSetting = new ConfigProperty<>(LevelEnum.CURRENTANDMAX);
+    private final ConfigProperty<Level> levelSetting = new ConfigProperty<>(Level.CURRENTANDMAX);
 
     @DropdownSetting
-    private final ConfigProperty<LevelEnum> skillSetting = new ConfigProperty<>(LevelEnum.CURRENTANDMAX);
+    private final ConfigProperty<Level> skillSetting = new ConfigProperty<>(Level.CURRENTANDMAX);
 
     @DropdownSetting
-    private final ConfigProperty<GangwarEnum> gangwarSetting = new ConfigProperty<>(GangwarEnum.ALL);
+    private final ConfigProperty<Gangwar> gangwarSetting = new ConfigProperty<>(Gangwar.ALL);
 
     @DropdownSetting
     private final ConfigProperty<PlantEnum> plantSetting = new ConfigProperty<>(PlantEnum.BOTH);

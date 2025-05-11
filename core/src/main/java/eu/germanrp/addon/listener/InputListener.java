@@ -3,12 +3,11 @@ package eu.germanrp.addon.listener;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import eu.germanrp.addon.GermanRPAddon;
-import eu.germanrp.addon.enums.HydrationEnum;
+import eu.germanrp.addon.common.enums.HydrationNotification;
 import net.labymod.api.Laby;
 import net.labymod.api.client.gui.screen.key.Key;
 import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.event.Subscribe;
-import net.labymod.api.event.client.chat.ChatMessageSendEvent;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import net.labymod.api.event.client.input.KeyEvent;
 import net.labymod.api.event.client.input.KeyEvent.State;
@@ -18,80 +17,9 @@ import net.labymod.serverapi.api.payload.exception.PayloadReaderException;
 import net.labymod.serverapi.api.payload.io.PayloadReader;
 import net.labymod.serverapi.api.payload.io.PayloadWriter;
 
-import java.util.Map;
-
 public class InputListener {
 
     private final GermanRPAddon addon;
-
-    private final Map<String, String> yakuzaWords = Map.of(
-            "tschüss", "Sayonara",
-            "hallo", "Kon'nichiwa",
-            "danke", "Arigato",
-            "nein", "Ie",
-            "natürlich", "Tozen",
-            "vielleicht", "Tabun");
-
-    private final Map<String, String> establishmentWords = Map.of(
-            "polizist", "Bobbie",
-            "entschuldigung", "I beg you pardon",
-            "danke", "My sincere appreciation",
-            "hallo", "Hello",
-            "ja", "Yes",
-            "nein", "No",
-            "tschüss", "Goodbye",
-            "selbstverständlich", "Of course");
-
-    private final Map<String, String> camorraWords = Map.of(
-            "hallo", "Ciao",
-            "tschüss", "Ciao",
-            "hey", "Ciao");
-
-    private final Map<String, String> medellinWords = Map.of(
-            "hallo", "Holá",
-            "danke", "Gracias",
-            "freund", "amigo",
-            "frau", "señora",
-            "herr", "señor",
-            "bruder", "hermano",
-            "schwester", "hermana",
-            "mutter", "madre",
-            "vater", "padre");
-
-    private final Map<String, String> medellinWordsTwo = Map.of(
-            "onkel", "tío",
-            "tante", "tía",
-            "opa", "abuelo",
-            "oma", "abuelita",
-            "sohn", "hijo",
-            "tochter", "hija",
-            "ich", "I",
-            "bitte", "por favor",
-            "entschuldigung", "Lo siento",
-            "moment", "Momento");
-
-    private final Map<String, String> ocallaghanWords = Map.of(
-            "hallo", "Dia dhuit",
-            "ja", "Tá",
-            "nein", "Níl",
-            "gerne", "Go sásta",
-            "idiot", "leathcheann",
-            "arschloch", "asshole",
-            "ich", "mé",
-            "chefin", "Bórd",
-            "chef", "Bórd",
-            "kollege", "Comhghleacaí");
-
-    private final Map<String, String> ocallaghanWordsTwo = Map.of(
-            "kollegin", "comhoibrí",
-            "freund", "Cara",
-            "frau", "Bean",
-            "herr", "Mistir",
-            "mutter", "Máthair",
-            "vater", "Athair",
-            "onkel", "Uncail",
-            "tante", "Aintín",
-            "hurensohn", "Mac soith");
 
     private String cruiseControlAmount = "50";
     private String jobHotkeyString = null;
@@ -114,14 +42,13 @@ public class InputListener {
 
     @Subscribe
     public void onNetworkPlayload(NetworkPayloadEvent event) {
-        if (event.identifier().getNamespace().equals("labymod3") & event.identifier().getPath()
-                .equals("main")) {
+        ResourceLocation resourceLocation = event.identifier();
+        if (resourceLocation.getNamespace().equals("labymod3") & resourceLocation.getPath().equals("main")) {
             try {
                 PayloadReader reader = new PayloadReader(event.getPayload());
                 String messageKey = reader.readString();
                 String messageContent = reader.readString();
-                JsonElement serverMessage = GsonUtil.DEFAULT_GSON.fromJson(messageContent,
-                        JsonElement.class);
+                JsonElement serverMessage = GsonUtil.DEFAULT_GSON.fromJson(messageContent, JsonElement.class);
                 if (serverMessage.isJsonObject()) {
                     JsonObject obj = serverMessage.getAsJsonObject();
                     if (messageKey.equals("CURRENTTEMPOMAT")) {
@@ -144,27 +71,6 @@ public class InputListener {
     }
 
     @Subscribe
-    public void onMessageSend(ChatMessageSendEvent event) {
-
-        String message = event.getMessage();
-        boolean antiChatOOC = addon.configuration().antichatooc().get();
-
-        if (antiChatOOC) {
-            event.changeMessage(changeOOCMessage(message));
-        }
-
-        boolean camorra = addon.configuration().languages().camorra().get();
-        boolean establishment = addon.configuration().languages().establishment().get();
-        boolean medellin = addon.configuration().languages().medellin().get();
-        boolean ocallaghan = addon.configuration().languages().ocallaghan().get();
-        boolean yakuza = addon.configuration().languages().yakuza().get();
-
-        if (camorra || establishment || medellin || ocallaghan || yakuza) {
-            event.changeMessage(changeLanguage(message.toLowerCase()));
-        }
-    }
-
-    @Subscribe
     public void onMessageReceive(ChatReceiveEvent event) {
         String message = event.chatMessage().getOriginalPlainText();
         if (message.equals("► Du sitzt in keinem Fahrzeug.")) {
@@ -182,8 +88,8 @@ public class InputListener {
 
         //>10%
         if (message.equals("► Du bist sehr durstig. (Trinke etwas, um nicht zu dehydrieren!)")) {
-            HydrationEnum hydrationType = addon.configuration().hydration().notificationtype().get();
-            if (hydrationType == HydrationEnum.NONE) {
+            HydrationNotification hydrationType = addon.configuration().hydration().notificationtype().get();
+            if (hydrationType == HydrationNotification.NONE) {
                 event.setCancelled(true);
                 return;
             }
@@ -195,8 +101,8 @@ public class InputListener {
         }
         //>30%
         if (message.equals("► Du bist sehr durstig.")) {
-            HydrationEnum hydrationType = addon.configuration().hydration().notificationtype().get();
-            if (hydrationType == HydrationEnum.NONE || hydrationType == HydrationEnum.UNDERTEN) {
+            HydrationNotification hydrationType = addon.configuration().hydration().notificationtype().get();
+            if (hydrationType == HydrationNotification.NONE || hydrationType == HydrationNotification.UNDERTEN) {
                 event.setCancelled(true);
                 return;
             }
@@ -209,8 +115,8 @@ public class InputListener {
         }
         //>60%
         if (message.equals("► Du bist durstig.")) {
-            HydrationEnum hydrationType = addon.configuration().hydration().notificationtype().get();
-            if (hydrationType != HydrationEnum.ALL) {
+            HydrationNotification hydrationType = addon.configuration().hydration().notificationtype().get();
+            if (hydrationType != HydrationNotification.ALL) {
                 event.setCancelled(true);
                 return;
             }
@@ -222,101 +128,18 @@ public class InputListener {
         }
     }
 
-    private String changeLanguage(String message) {
-        if (message.startsWith("/tc") || message.startsWith("/ac")
-                || message.startsWith("/gr") || message.startsWith("/l")
-                || message.startsWith("/lg") || message.startsWith("/ooc")
-                || message.startsWith("/nc") || message.startsWith("/f")
-                || message.startsWith("/gc")) {
-            return message;
-        }
-        if (!message.startsWith("/say") && ticket) {
-            return message;
-        }
-        boolean camorra = addon.configuration().languages().camorra().get();
-        boolean establishment = addon.configuration().languages().establishment().get();
-        boolean medellin = addon.configuration().languages().medellin().get();
-        boolean ocallaghan = addon.configuration().languages().ocallaghan().get();
-        boolean yakuza = addon.configuration().languages().yakuza().get();
-
-        if (yakuza) {
-            for (String s : message.split(" ")) {
-                if (yakuzaWords.containsKey(s)) {
-                    message = message.replace(s, yakuzaWords.get(s));
-                }
-            }
-            return message;
-        }
-
-        if (establishment) {
-            for (String s : message.split(" ")) {
-                if (establishmentWords.containsKey(s)) {
-                    message = message.replace(s, establishmentWords.get(s)).replace("Bobbieen", "Bobbies");
-                }
-            }
-            return message;
-        }
-
-        if (camorra) {
-            for (String s : message.split(" ")) {
-                if (camorraWords.containsKey(s)) {
-                    message = message.replace(s, camorraWords.get(s));
-                }
-            }
-            return message;
-        }
-
-        if (medellin) {
-
-            for (String s : message.split(" ")) {
-                if (medellinWords.containsKey(s)) {
-                    message = message.replace(s, medellinWords.get(s)).replace("amigoin", "amiga");
-                } else if (medellinWordsTwo.containsKey(s)) {
-                    message = message.replace(s, medellinWordsTwo.get(s));
-                }
-            }
-            return message;
-        }
-
-        if (ocallaghan) {
-            for (String s : message.split(" ")) {
-                if (ocallaghanWords.containsKey(s)) {
-                    message = message.replace(s, ocallaghanWords.get(s));
-                } else if (ocallaghanWordsTwo.containsKey(s)) {
-                    message = message.replace(s, ocallaghanWordsTwo.get(s)).replace("Carain", "Chailín");
-                }
-            }
-            return message;
-        }
-        return message;
-    }
-
-    private String changeOOCMessage(String message) {
-        if (message.toLowerCase().contains(" ooc ") || message.toLowerCase().contains(" oos ")) {
-            return "/ooc " + message.replace(" ooc ", " ").replace(" oos ", " ");
-        }
-        if (message.toLowerCase().startsWith("ooc ") || message.toLowerCase()
-                .startsWith("oos ")) {
-            return "/ooc " + message.replace("ooc ", "").replace("oos ", "");
-        }
-        if (message.toLowerCase().endsWith(" ooc") || message.toLowerCase().endsWith(" oos")) {
-            return "/ooc " + message.replace(" ooc", "").replace(" oos", "");
-        }
-        return message;
-    }
-
     private void Hotkey(Key key) {
 
-        Key cruiseControl = addon.configuration().hotkeys().cruiseControlKey().get();
+        Key cruiseControl = addon.configuration().hotkeys().cruiseControlToggle().get();
         Key cruiseControlUp = addon.configuration().hotkeys().cruiseControlUp().get();
         Key cruiseControlDown = addon.configuration().hotkeys().cruiseControlDown().get();
-        Key job = addon.configuration().hotkeys().jobKey().get();
-        Key engine = addon.configuration().hotkeys().engineOnOffKey().get();
-        Key sosiOnOff = addon.configuration().hotkeys().sosiOnOffKey().get();
-        Key sosiMute = addon.configuration().hotkeys().sosiMuteKey().get();
-        Key signalLeft = addon.configuration().hotkeys().signalLeftKey().get();
-        Key signalRight = addon.configuration().hotkeys().signalRightKey().get();
-        Key warnSignal = addon.configuration().hotkeys().warnSignalKey().get();
+        Key job = addon.configuration().hotkeys().job().get();
+        Key engine = addon.configuration().hotkeys().engineToggle().get();
+        Key sosiOnOff = addon.configuration().hotkeys().emergencySignalToggle().get();
+        Key sosiMute = addon.configuration().hotkeys().emergencySignalMute().get();
+        Key signalLeft = addon.configuration().hotkeys().turnSignalToggleLeft().get();
+        Key signalRight = addon.configuration().hotkeys().turnSignalToggleRight().get();
+        Key warnSignal = addon.configuration().hotkeys().hazardLightsToggle().get();
 
         // Tempomat \\
         if (key == cruiseControl) {
@@ -374,7 +197,7 @@ public class InputListener {
         payloadWriter.writeString(key);
         payloadWriter.writeString(key);
         payloadWriter.writeString(optionsObject.toString());
-        addon.labyAPI().serverController()
+        this.addon.labyAPI().serverController()
                 .sendPayload(ResourceLocation.create("labymod3", "main"), payloadWriter.toByteArray());
     }
 }

@@ -1,4 +1,4 @@
-package eu.germanrp.addon.enums;
+package eu.germanrp.addon.common.enums;
 
 public enum SalaryEnum {
 

@@ -1,7 +1,7 @@
 package eu.germanrp.addon.widget;
 
 import eu.germanrp.addon.GermanRPAddon;
-import eu.germanrp.addon.enums.LevelEnum;
+import eu.germanrp.addon.common.enums.Level;
 import eu.germanrp.addon.widget.category.GermanRPCategory;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidget;
@@ -21,7 +21,7 @@ public class SkillWidget extends TextHudWidget<TextHudWidgetConfig> {
     private TextLine line;
     private boolean skillUpdate = false;
     private String skillName;
-    private LevelEnum levelEnum = LevelEnum.CURRENTANDMAX;
+    private Level level = Level.CURRENTANDMAX;
     private double xpAmount;
     private double neededXPAmount;
     private int ticks;
@@ -50,8 +50,8 @@ public class SkillWidget extends TextHudWidget<TextHudWidgetConfig> {
     public void onTick(boolean isEditorContext) {
         ticks++;
         if (ticks == 10) {
-            if (levelEnum != addon.configuration().widgets().skillSetting().get()) {
-                levelEnum = addon.configuration().widgets().skillSetting().get();
+            if (level != addon.configuration().widgets().skillSetting().get()) {
+                level = addon.configuration().widgets().skillSetting().get();
                 skillUpdate = true;
             }
         }
@@ -62,10 +62,10 @@ public class SkillWidget extends TextHudWidget<TextHudWidgetConfig> {
             skillUpdate = false;
             DecimalFormat df = new DecimalFormat("#0.00");
             DecimalFormat dfneeded = new DecimalFormat("#0");
-            if (levelEnum == LevelEnum.CURRENTANDMAX) {
+            if (level == Level.CURRENTANDMAX) {
                 line.updateAndFlush(skillName + "-Skill (" + df.format(xpAmount) + "/" + dfneeded.format(neededXPAmount) + ")");
             }
-            if (levelEnum == LevelEnum.NEEDED) {
+            if (level == Level.NEEDED) {
                 line.updateAndFlush(skillName + "-Skill (" + df.format(neededXPAmount - xpAmount) + ")");
             }
             if (skillName == null) {

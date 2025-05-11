@@ -81,7 +81,7 @@ public class TimerWidget extends TextHudWidget<TextHudWidgetConfig> {
         ticks = 0;
         //Gewerberaub
         if (isBusinessTimer) {
-            boolean businessTimer = addon.configuration().timer().businessrobtimer().get();
+            boolean businessTimer = addon.configuration().timer().robBusiness().get();
             if (businessTimer) {
                 String timeString = formatTime(System.currentTimeMillis() - businessTime);
                 setState(businessLine, State.VISIBLE);
@@ -98,7 +98,7 @@ public class TimerWidget extends TextHudWidget<TextHudWidgetConfig> {
         }
         //Apothekenraub
         if (isPharmacyTimer) {
-            boolean pharmacyTimer = addon.configuration().timer().pharmacyrobtimer().get();
+            boolean pharmacyTimer = addon.configuration().timer().robPharmacy().get();
             if (pharmacyTimer) {
                 String timeString = formatTime(System.currentTimeMillis() - pharmacyTime);
                 setState(pharmacyLine, State.VISIBLE);
@@ -115,7 +115,7 @@ public class TimerWidget extends TextHudWidget<TextHudWidgetConfig> {
         }
         //Juwelenraub
         if (isJewelryTimer) {
-            boolean jewelryTimer = addon.configuration().timer().jewelryrobtimer().get();
+            boolean jewelryTimer = addon.configuration().timer().robJewelry().get();
             if (jewelryTimer) {
                 String timeString = formatTime(System.currentTimeMillis() - jewelryTime);
                 setState(jewelryLine, State.VISIBLE);
@@ -132,7 +132,7 @@ public class TimerWidget extends TextHudWidget<TextHudWidgetConfig> {
         }
         //Museumsraub
         if (isMuseumTimer) {
-            boolean museumTimer = addon.configuration().timer().museumrobtimer().get();
+            boolean museumTimer = addon.configuration().timer().robMuseum().get();
             if (museumTimer) {
                 String timeString = formatTime(System.currentTimeMillis() - museumTime);
                 setState(museumLine, State.VISIBLE);
@@ -149,7 +149,7 @@ public class TimerWidget extends TextHudWidget<TextHudWidgetConfig> {
         }
         //Hackangriff
         if (isHackTimer) {
-            boolean hackTimer = addon.configuration().timer().hacktimer().get();
+            boolean hackTimer = addon.configuration().timer().hack().get();
             if (hackTimer) {
                 String timeString = formatTime(System.currentTimeMillis() - hackTime);
                 setState(hackLine, State.VISIBLE);
@@ -166,7 +166,7 @@ public class TimerWidget extends TextHudWidget<TextHudWidgetConfig> {
         }
         //Bombe
         if (isBombTimer) {
-            boolean bombTimer = addon.configuration().timer().bombtimer().get();
+            boolean bombTimer = addon.configuration().timer().bomb().get();
             if (bombTimer) {
                 String timeString = formatTime(System.currentTimeMillis() - bombTime);
                 setState(bombLine, State.VISIBLE);
