@@ -8,8 +8,8 @@ import org.jetbrains.annotations.NotNull;
 @Setter
 public non-sealed class PlantHeilkraut extends Plant {
 
-  private static final int FERTILIZE_TIME = 4;
-  private static final int WATER_TIME = 10;
+  public static final int FERTILIZE_TIME = 4;
+  public static final int WATER_TIME = 10;
 
   private boolean fertilized = false;
   private boolean watered = false;
