@@ -1,6 +1,6 @@
 package eu.germanrp.addon.core;
 
-import eu.germanrp.addon.core.executor.ExampleChatExecutor;
+import eu.germanrp.addon.core.executor.HitResultExecutor;
 import eu.germanrp.addon.core.generated.DefaultReferenceStorage;
 import eu.germanrp.addon.core.listener.NameTagListener;
 import eu.germanrp.addon.core.listener.PlantListener;
@@ -23,7 +23,7 @@ public class GRUtilsAddon extends LabyAddon<GRUtilsConfiguration> {
 
   public static final String NAMESPACE = "germanrputils";
 
-  private ExampleChatExecutor chatExecutor;
+  private HitResultExecutor hitResultExecutor;
 
   private ServerJoinListener serverJoinListener;
 
@@ -48,7 +48,7 @@ public class GRUtilsAddon extends LabyAddon<GRUtilsConfiguration> {
   }
 
   private void registerVersionDependantExecutors() {
-    chatExecutor = ((DefaultReferenceStorage) this.referenceStorageAccessor()).exampleChatExecutor();
+    hitResultExecutor = ((DefaultReferenceStorage) this.referenceStorageAccessor()).hitResultExecutor();
   }
 
   private void registerWidgets() {
