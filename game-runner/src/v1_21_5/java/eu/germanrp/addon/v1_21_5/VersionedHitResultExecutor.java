@@ -9,26 +9,27 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 
 import javax.inject.Singleton;
+import java.util.Optional;
 
 @Singleton
 @Implements(HitResultExecutor.class)
 public class VersionedHitResultExecutor implements HitResultExecutor {
 
     @Override
-    public IntVector3 getBlockLookingAt() {
-        IntVector3 blockPosition = null;
+    public Optional<IntVector3> getBlockLookingAt() {
         final HitResult hitResult = Minecraft.getInstance().hitResult;
 
-        if (hitResult != null && hitResult.getType() == HitResult.Type.BLOCK) {
-            final BlockHitResult blockHitResult = (BlockHitResult) hitResult;
-            final BlockPos blockPos = blockHitResult.getBlockPos();
-            final int x = blockPos.getX();
-            final int y = blockPos.getY();
-            final int z = blockPos.getZ();
-            blockPosition = new IntVector3(x, y, z);
+        if (hitResult == null || hitResult.getType() != HitResult.Type.BLOCK) {
+            return Optional.empty();
         }
 
-        return blockPosition;
+        final BlockHitResult blockHitResult = (BlockHitResult) hitResult;
+        final BlockPos blockPos = blockHitResult.getBlockPos();
+        final int x = blockPos.getX();
+        final int y = blockPos.getY();
+        final int z = blockPos.getZ();
+
+        return Optional.of(new IntVector3(x, y, z));
     }
 
 }

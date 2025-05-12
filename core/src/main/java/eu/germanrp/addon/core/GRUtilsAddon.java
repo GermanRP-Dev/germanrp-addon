@@ -38,13 +38,15 @@ public class GRUtilsAddon extends LabyAddon<GRUtilsConfiguration> {
 
     private GraffitiService graffitiService;
 
+    private GraffitiService graffitiService;
+
     @Override
     protected void enable() {
         this.registerSettingCategory();
 
         registerVersionDependantExecutors();
+        registerServices();registerWidgets();
         registerServices();
-        registerWidgets();
         registerListener();
         registerCommands();
 
@@ -94,7 +96,7 @@ public class GRUtilsAddon extends LabyAddon<GRUtilsConfiguration> {
         widgetRegistry.register(heilkrautpflanzeHudWidget);
         widgetRegistry.register(roseHudWidget);
         widgetRegistry.register(stoffHudWidget);
-        widgetRegistry.register(graffitiHudWidget);
+    widgetRegistry.register(graffitiHudWidget);
     }
 
     private void registerListener() {
