@@ -8,6 +8,7 @@ import eu.germanrp.addon.core.listener.NameTagListener;
 import eu.germanrp.addon.core.listener.PlantListener;
 import eu.germanrp.addon.core.listener.ServerJoinListener;
 import eu.germanrp.addon.core.services.GraffitiService;
+import eu.germanrp.addon.core.widget.GraffitiHudWidget;
 import eu.germanrp.addon.core.widget.HeilkrautpflanzeHudWidget;
 import eu.germanrp.addon.core.widget.RoseHudWidget;
 import eu.germanrp.addon.core.widget.StoffHudWidget;
@@ -33,6 +34,7 @@ public class GRUtilsAddon extends LabyAddon<GRUtilsConfiguration> {
     private HeilkrautpflanzeHudWidget heilkrautpflanzeHudWidget;
     private RoseHudWidget roseHudWidget;
     private StoffHudWidget stoffHudWidget;
+    private GraffitiHudWidget graffitiHudWidget;
 
     private GraffitiService graffitiService;
 
@@ -41,8 +43,8 @@ public class GRUtilsAddon extends LabyAddon<GRUtilsConfiguration> {
         this.registerSettingCategory();
 
         registerVersionDependantExecutors();
-        registerWidgets();
         registerServices();
+        registerWidgets();
         registerListener();
         registerCommands();
 
@@ -82,11 +84,17 @@ public class GRUtilsAddon extends LabyAddon<GRUtilsConfiguration> {
                 widgetCategory,
                 Icon.texture(ResourceLocation.create(NAMESPACE, "images/stoffpflanze.png"))
         );
+        this.graffitiHudWidget = new GraffitiHudWidget(
+                widgetCategory,
+                Icon.texture(ResourceLocation.create(NAMESPACE, "images/graffiti.png")),
+                this.graffitiService
+        );
 
         widgetRegistry.categoryRegistry().register(widgetCategory);
         widgetRegistry.register(heilkrautpflanzeHudWidget);
         widgetRegistry.register(roseHudWidget);
         widgetRegistry.register(stoffHudWidget);
+        widgetRegistry.register(graffitiHudWidget);
     }
 
     private void registerListener() {

@@ -43,7 +43,8 @@ public class GraffitiListener {
         final String graffitiName =
                 matcher.group("graffiti1") != null ? matcher.group("graffiti1") : matcher.group("graffiti2");
 
-        Graffiti.getByName(graffitiName).ifPresent(graffiti -> graffitiService.updateGraffiti(graffiti, Instant.now()));
+        Graffiti.getByName(graffitiName)
+                .ifPresent(graffiti -> graffitiService.updateGraffiti(graffiti, Instant.now().plusSeconds(60L * 15)));
     }
 
     @Subscribe
