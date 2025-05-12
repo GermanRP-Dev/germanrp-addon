@@ -1,24 +1,26 @@
-name: Build
+name: Release
 
 on:
-  pull_request:
-    branches: [ "main", "develop" ]
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
 
-run-name: Build+${{ github.run_number }} build/${{ github.sha }}
+run-name: Build+${{ github.run_number }} release/${{ github.sha }}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
-  build:
+  release:
 
-    name: 🔨 Build GermanRP Addon
+    name: 🎉 Release GermanRP Addon
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
       with:
+        ref: main
         fetch-depth: 0
 
     - name: Set up JDK
@@ -33,3 +35,9 @@ jobs:
 
     - name: Build with Gradle
       run: ./gradlew build --full-stacktrace
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: Artifacts
+        path: build/libs/*-release.jar
