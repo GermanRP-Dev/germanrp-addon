@@ -103,33 +103,13 @@
         }
       }
     },
-    "hudWidget": {
-      "heilkrautpflanze": {
-        "name": "Heilkraut-\npflanze",
-        "showTimer.name": "Timer",
-        "showYield.name": "Erlös"
-      },
-      "rose": {
-        "name": "Rose",
-        "showTimer.name": "Timer",
-        "showYield.name": "Erlös"
-      },
-      "stoff": {
-        "name": "Stoffpflanze",
-        "showTimer.name": "Timer",
-        "showYield.name": "Erlös"
-      }
-    },
-    "widget": {
-      "category": {
-        "title": "GermanRP",
-        "description": "Shows you information about stuff on GermanRP"
-      },
+    "message": {
       "plant": {
-        "progressKey": "Fortschritt",
-        "progressValue": "%s/%smin",
-        "yieldKey": "Erlös",
-        "yieldValue": "%s%s %s"
+        "heilkrautpflanze": {
+          "fertilize": "Du musst deine Heilkrautpflanze jetzt düngen.",
+          "water": "Du musst deine Heilkrautpflanze jetzt wässern."
+        },
+        "harvest": "%s kann geerntet werden."
       }
     },
     "hudWidget": {

@@ -10,6 +10,8 @@ import eu.germanrp.addon.core.Utils;
 import eu.germanrp.addon.core.widget.HeilkrautpflanzeHudWidget;
 import eu.germanrp.addon.core.widget.RoseHudWidget;
 import eu.germanrp.addon.core.widget.StoffHudWidget;
+import net.labymod.api.client.component.Component;
+import net.labymod.api.client.component.format.TextColor;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import net.labymod.api.event.client.network.server.NetworkPayloadEvent;
@@ -19,11 +21,18 @@ import net.labymod.api.util.GsonUtil;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static eu.germanrp.addon.api.models.PlantHeilkraut.FERTILIZE_TIME;
+import static eu.germanrp.addon.api.models.PlantHeilkraut.WATER_TIME;
+
 public class PlantListener {
 
     private static final Pattern HARVEST_PATTERN = Pattern.compile(
             "^► Du hast \\S* (\\S+) mit \\d+(?: Stück|x|g)? Erlös geerntet\\.$", Pattern.CANON_EQ);
     private static final String PLANT_DIED_MESSAGE = "► Du hast deine Pflanze nicht rechtzeitig geerntet.";
+    public static final String HEILKRAUT_FERTILIZE_MESSAGE = "germanrputils.message.plant.heilkrautpflanze.fertilize";
+    public static final String HEILKRAUT_WATER_MESSAGE = "germanrputils.message.plant.heilkrautpflanze.water";
+    public static final String PLANT_HARVEST_MESSAGE = "germanrputils.message.plant.harvest";
+    public static final TextColor NOTIFICATION_COLOR = TextColor.color(0x75, 0x15, 0x1E);
 
     private final GRUtilsAddon addon;
     private final HeilkrautpflanzeHudWidget heilkrautpflanzeHudWidget;
@@ -87,6 +96,28 @@ public class PlantListener {
                 case HEILKRAUTPFLANZE -> this.heilkrautpflanzeHudWidget.onPaketReceive(plantPaket);
                 case ROSE -> this.roseHudWidget.onPaketReceive(plantPaket);
                 case STOFF -> this.stoffHudWidget.onPaketReceive(plantPaket);
+            }
+
+            if (plantPaket.getCurrentTime() == plantPaket.getMaxTime()) {
+                addon.displayMessage(Component.translatable(
+                                PLANT_HARVEST_MESSAGE,
+                                Component.text(plantPaket.getType().getDisplayName())
+                        )
+                        .color(NOTIFICATION_COLOR));
+            }
+
+            if (plantPaket.getType() != PlantType.HEILKRAUTPFLANZE) {
+                return;
+            }
+
+            if (plantPaket.getCurrentTime() == FERTILIZE_TIME && plantPaket.isActive()) {
+                addon.displayMessage(Component.translatable(HEILKRAUT_FERTILIZE_MESSAGE)
+                        .color(NOTIFICATION_COLOR));
+            }
+
+            if (plantPaket.getCurrentTime() == WATER_TIME && plantPaket.isActive()) {
+                addon.displayMessage(Component.translatable(HEILKRAUT_WATER_MESSAGE)
+                        .color(NOTIFICATION_COLOR));
             }
 
         });
