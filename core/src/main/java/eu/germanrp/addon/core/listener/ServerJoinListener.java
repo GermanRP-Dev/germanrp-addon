@@ -12,8 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 
-import static eu.germanrp.addon.core.pattern.NameTagPattern.BOUNTY_MEMBER_WANTEDS_PATTERN;
-import static eu.germanrp.addon.core.pattern.NameTagPattern.DARKLIST_PATTERN;
+import static eu.germanrp.addon.core.pattern.NameTagPattern.*;
 
 
 public class ServerJoinListener {
@@ -39,15 +38,16 @@ public class ServerJoinListener {
     @Getter
     private final List<String> wantedPlayers = new ArrayList<>();
 
-    private final FactionName factionName;
-
+    private  FactionName factionName;
+    private final GRUtilsAddon addon;
 
     public ServerJoinListener(GRUtilsAddon addon) {
-        factionName = addon.configuration().NameTagSubConfig().factionName().get();
+        this.addon = addon;
     }
 
     @Subscribe
     public void onServerJoin(ServerJoinEvent event) {
+        factionName = this.addon.configuration().NameTagSubConfig().factionName().get();
         String ip = String.valueOf(event.serverData().address());
         emptyMessages = 0;
 
@@ -95,7 +95,7 @@ public class ServerJoinListener {
             this.justJoined = false;
             return;
         }
-        if (message.startsWith("          ► Fraktionsmitglieder ")) {
+        if (FRAKTIONSMITGLIEDER_TITLE.matcher(message).find()) {
             event.setCancelled(true);
             this.faction = true;
             return;
@@ -144,7 +144,7 @@ public class ServerJoinListener {
             }
 
             case STAAT -> {
-                if (message.contentEquals("            FAHNDUNGSLISTE")) {
+                if (FAHNDUNGSLISTE_TITLE.matcher(message).find()) {
                     event.setCancelled(true);
                     this.wanted = true;
                     return;
@@ -156,6 +156,8 @@ public class ServerJoinListener {
                         this.wanted = false;
                         this.justJoined = false;
                     }
+                    this.wantedPlayers.add(matcher.group(1).replace("[GR]", ""));
+
                 }
 
             }

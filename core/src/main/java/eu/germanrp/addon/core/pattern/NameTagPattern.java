@@ -24,17 +24,17 @@ public final class NameTagPattern {
   );
 
   public static final Pattern REMOVE_DARKLIST_PATTERN = Pattern.compile(
-      "^► \\[Darklist] (\\w{3,16}|\\[GR]\\w{3,16}) hat (\\w{3,16}|\\[GR]\\w{3,16}) von der Darklist gelöscht!",
+      "^► \\[Darklist] (\\w{3,16}|\\[GR]\\w{3,16}) hat (\\w{3,16}|\\[GR]\\w{3,16}) von der Darklist gelöscht!$",
       Pattern.CANON_EQ
   );
 
   public static final Pattern ADD_DARKLIST_PATTERN = Pattern.compile(
-      "^► \\[Darklist] (\\w{3,16}|\\[GR]\\w{3,16}) hat (\\w{3,16}|\\[GR]\\w{3,16}) auf die Darklist gesetzt!",
+      "^► \\[Darklist] (\\w{3,16}|\\[GR]\\w{3,16}) hat (\\w{3,16}|\\[GR]\\w{3,16}) auf die Darklist gesetzt!$",
       Pattern.CANON_EQ
   );
 
   public static final Pattern ADD_WANTEDS_PATTERN = Pattern.compile(
-      "► \\[✦] Neue Fahndung (\\w{3,16}|\\[GR]\\w{3,16})",
+      "► \\[✦] Neue Fahndung: (\\w{3,16}|\\[GR]\\w{3,16})",
       Pattern.CANON_EQ
   );
 
@@ -42,5 +42,14 @@ public final class NameTagPattern {
       "► \\[✦] (\\w{3,16}|\\[GR]\\w{3,16}) hat die Fahndung von (\\w{3,16}|\\[GR]\\w{3,16}) gelöscht",
       Pattern.CANON_EQ
   );
+  public static final Pattern FRAKTIONSMITGLIEDER_TITLE = Pattern.compile(
+          "^ {1,18}► Fraktionsmitglieder ",
+          Pattern.CANON_EQ
+  );
+  public static final Pattern FAHNDUNGSLISTE_TITLE = Pattern.compile(
+          "^ {1,18}FAHNDUNGSLISTE",
+          Pattern.CANON_EQ
+  );
+
 
 }
