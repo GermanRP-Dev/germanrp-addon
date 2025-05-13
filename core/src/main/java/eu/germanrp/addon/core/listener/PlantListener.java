@@ -7,6 +7,7 @@ import eu.germanrp.addon.api.network.PaketFactory;
 import eu.germanrp.addon.api.network.PlantPaket;
 import eu.germanrp.addon.core.GRUtilsAddon;
 import eu.germanrp.addon.core.Utils;
+import eu.germanrp.addon.core.executor.PlaySoundExecutor;
 import eu.germanrp.addon.core.widget.HeilkrautpflanzeHudWidget;
 import eu.germanrp.addon.core.widget.RoseHudWidget;
 import eu.germanrp.addon.core.widget.StoffHudWidget;
@@ -38,6 +39,7 @@ public class PlantListener {
     private final HeilkrautpflanzeHudWidget heilkrautpflanzeHudWidget;
     private final RoseHudWidget roseHudWidget;
     private final StoffHudWidget stoffHudWidget;
+    private final PlaySoundExecutor playSoundExecutor;
 
     public PlantListener(
             final GRUtilsAddon addon
@@ -46,6 +48,7 @@ public class PlantListener {
         this.heilkrautpflanzeHudWidget = addon.getHeilkrautpflanzeHudWidget();
         this.roseHudWidget = addon.getRoseHudWidget();
         this.stoffHudWidget = addon.getStoffHudWidget();
+        this.playSoundExecutor = addon.getPlaySoundExecutor();
     }
 
     @Subscribe
@@ -104,6 +107,8 @@ public class PlantListener {
                                 Component.text(plantPaket.getType().getDisplayName())
                         )
                         .color(NOTIFICATION_COLOR));
+                playSoundExecutor.playNotePlingSound();
+                return;
             }
 
             if (plantPaket.getType() != PlantType.HEILKRAUTPFLANZE) {
