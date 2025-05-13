@@ -66,7 +66,7 @@ public class PlantListener {
 
         final Matcher matcher = HARVEST_PATTERN.matcher(message);
 
-        if (!matcher.find()) {
+        if (!matcher.matches()) {
             return;
         }
 
@@ -150,9 +150,18 @@ public class PlantListener {
             // because the server does not send a packet of the plant until it first ticks
             final Plant plant = PlantFactory.createPlant(type);
             switch (type) {
-                case HEILKRAUTPFLANZE -> this.heilkrautpflanzeHudWidget.updatePlant(plant);
-                case ROSE -> this.roseHudWidget.updatePlant(plant);
-                case STOFF -> this.stoffHudWidget.updatePlant(plant);
+                case HEILKRAUTPFLANZE -> {
+                    this.heilkrautpflanzeHudWidget.reset();
+                    this.heilkrautpflanzeHudWidget.updatePlant(plant);
+                }
+                case ROSE -> {
+                    this.roseHudWidget.reset();
+                    this.roseHudWidget.updatePlant(plant);
+                }
+                case STOFF -> {
+                    this.stoffHudWidget.reset();
+                    this.stoffHudWidget.updatePlant(plant);
+                }
             }
 
             return true;
