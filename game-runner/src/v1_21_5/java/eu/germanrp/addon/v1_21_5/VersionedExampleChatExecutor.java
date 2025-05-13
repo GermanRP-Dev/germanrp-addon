@@ -1,4 +1,4 @@
-package eu.germanrp.addon.v1_21_4;
+package eu.germanrp.addon.v1_21_5;
 
 import eu.germanrp.addon.core.executor.ExampleChatExecutor;
 import net.labymod.api.models.Implements;
