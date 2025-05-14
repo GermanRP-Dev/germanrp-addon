@@ -149,7 +149,7 @@ public class NameTagListener {
 
         final Matcher BAddmatcher = ADD_BOUNTY_PATTERN.matcher(message);
         if (BAddmatcher.find()) {
-          serverJoinListener.getBounties().add(BAddmatcher.group(1));
+          serverJoinListener.getBounties().add(BAddmatcher.group(1).replace("[GR]", ""));
           return;
         }
       }
@@ -160,11 +160,11 @@ public class NameTagListener {
 
         if (WRemoveMatcher.find()) {
           serverJoinListener.getWantedPlayers().
-                  remove(WRemoveMatcher.group(2));
+                  remove(WRemoveMatcher.group(2).replace("[GR]", ""));
           return;
         }
         if (WAddMatcher.find()) {
-          serverJoinListener.getWantedPlayers().remove(WAddMatcher.group(1));
+          serverJoinListener.getWantedPlayers().remove(WAddMatcher.group(1).replace("[GR]", ""));
           return;
         }
       }
