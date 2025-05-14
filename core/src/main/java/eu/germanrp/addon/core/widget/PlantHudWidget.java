@@ -27,6 +27,8 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
 
     private Plant plant;
 
+    private boolean waitForHarvestMessage;
+
     protected PlantHudWidget(final String id, final HudWidgetCategory category, final Icon icon) {
         super(id);
         this.bindCategory(category);
@@ -67,6 +69,7 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
 
     public void reset() {
         this.plant = null;
+        this.waitForHarvestMessage = false;
         this.progressLine.setState(State.HIDDEN);
         this.yieldLine.setState(State.HIDDEN);
     }
@@ -94,7 +97,12 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
     @Override
     public void onPaketReceive(final @NotNull PlantPaket paket) {
         if (!paket.isActive()) {
-            reset();
+            return;
+        }
+
+        if (waitForHarvestMessage) {
+            // Stop handling pakets until
+            // the harvest message is received
             return;
         }
 
@@ -105,6 +113,11 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
                 paket.getCurrentTime()
         );
         updatePlant(updatedPlant);
+
+        if (paket.getCurrentTime() == paket.getMaxTime()) {
+            waitForHarvestMessage = true;
+        }
+
     }
 
 }

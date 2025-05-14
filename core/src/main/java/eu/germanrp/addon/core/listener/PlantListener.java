@@ -40,7 +40,6 @@ public class PlantListener {
     private final RoseHudWidget roseHudWidget;
     private final StoffHudWidget stoffHudWidget;
     private final PlaySoundExecutor playSoundExecutor;
-    private boolean waitForHarvestMessage;
 
     public PlantListener(
             final GRUtilsAddon addon
@@ -79,7 +78,6 @@ public class PlantListener {
                 case ROSE -> this.roseHudWidget.reset();
                 case STOFF -> this.stoffHudWidget.reset();
             }
-            this.waitForHarvestMessage = false;
         });
     }
 
@@ -99,26 +97,19 @@ public class PlantListener {
                 return;
             }
 
-            if (waitForHarvestMessage) {
-                // We stop sending packets to the widget
-                // until the harvest message is received
-                return;
-            }
-
             switch (plantPaket.getType()) {
                 case HEILKRAUTPFLANZE -> this.heilkrautpflanzeHudWidget.onPaketReceive(plantPaket);
                 case ROSE -> this.roseHudWidget.onPaketReceive(plantPaket);
                 case STOFF -> this.stoffHudWidget.onPaketReceive(plantPaket);
             }
 
-            if (plantPaket.getCurrentTime() == plantPaket.getMaxTime()) {
-                this.waitForHarvestMessage = true;
-                sendHarvestNotification(plantPaket);
+            handleHeilkrautNotifications(plantPaket);
+
+            if (plantPaket.getCurrentTime() != plantPaket.getMaxTime()) {
                 return;
             }
 
-            handleHeilkrautNotifications(plantPaket);
-
+            sendHarvestNotification(plantPaket);
         });
     }
 
@@ -172,18 +163,9 @@ public class PlantListener {
             // because the server does not send a packet of the plant until it first ticks
             final Plant plant = PlantFactory.createPlant(type);
             switch (type) {
-                case HEILKRAUTPFLANZE -> {
-                    this.heilkrautpflanzeHudWidget.reset();
-                    this.heilkrautpflanzeHudWidget.updatePlant(plant);
-                }
-                case ROSE -> {
-                    this.roseHudWidget.reset();
-                    this.roseHudWidget.updatePlant(plant);
-                }
-                case STOFF -> {
-                    this.stoffHudWidget.reset();
-                    this.stoffHudWidget.updatePlant(plant);
-                }
+                case HEILKRAUTPFLANZE -> this.heilkrautpflanzeHudWidget.updatePlant(plant);
+                case ROSE -> this.roseHudWidget.updatePlant(plant);
+                case STOFF -> this.stoffHudWidget.updatePlant(plant);
             }
 
             return true;
