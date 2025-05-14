@@ -40,6 +40,7 @@ public class PlantListener {
     private final RoseHudWidget roseHudWidget;
     private final StoffHudWidget stoffHudWidget;
     private final PlaySoundExecutor playSoundExecutor;
+    private boolean waitForHarvestMessage;
 
     public PlantListener(
             final GRUtilsAddon addon
@@ -52,6 +53,7 @@ public class PlantListener {
     }
 
     @Subscribe
+    @SuppressWarnings("unused")
     public void onChatReceiveEvent(final ChatReceiveEvent event) {
         final String message = event.chatMessage().getPlainText();
 
@@ -77,10 +79,12 @@ public class PlantListener {
                 case ROSE -> this.roseHudWidget.reset();
                 case STOFF -> this.stoffHudWidget.reset();
             }
+            this.waitForHarvestMessage = false;
         });
     }
 
     @Subscribe
+    @SuppressWarnings("unused")
     public void onNetworkPayloadEvent(final NetworkPayloadEvent event) {
         if (!Utils.isLegacyAddonPacket(event.identifier())) {
             return;
@@ -95,6 +99,12 @@ public class PlantListener {
                 return;
             }
 
+            if (waitForHarvestMessage) {
+                // We stop sending packets to the widget
+                // until the harvest message is received
+                return;
+            }
+
             switch (plantPaket.getType()) {
                 case HEILKRAUTPFLANZE -> this.heilkrautpflanzeHudWidget.onPaketReceive(plantPaket);
                 case ROSE -> this.roseHudWidget.onPaketReceive(plantPaket);
@@ -102,36 +112,46 @@ public class PlantListener {
             }
 
             if (plantPaket.getCurrentTime() == plantPaket.getMaxTime()) {
-                addon.displayMessage(Component.translatable(
-                                PLANT_HARVEST_MESSAGE,
-                                Component.text(plantPaket.getType().getDisplayName())
-                        )
-                        .color(NOTIFICATION_COLOR));
-                playSoundExecutor.playNotePlingSound();
+                this.waitForHarvestMessage = true;
+                sendHarvestNotification(plantPaket);
                 return;
             }
 
-            if (plantPaket.getType() != PlantType.HEILKRAUTPFLANZE) {
-                return;
-            }
-
-            if (plantPaket.getCurrentTime() == FERTILIZE_TIME && plantPaket.isActive()) {
-                addon.displayMessage(Component.translatable(HEILKRAUT_FERTILIZE_MESSAGE)
-                        .color(NOTIFICATION_COLOR));
-                playSoundExecutor.playNotePlingSound();
-            }
-
-            if (plantPaket.getCurrentTime() == WATER_TIME && plantPaket.isActive()) {
-                addon.displayMessage(Component.translatable(HEILKRAUT_WATER_MESSAGE)
-                        .color(NOTIFICATION_COLOR));
-                playSoundExecutor.playNotePlingSound();
-            }
+            handleHeilkrautNotifications(plantPaket);
 
         });
     }
 
+    private void sendHarvestNotification(PlantPaket plantPaket) {
+        addon.displayMessage(Component.translatable(
+                        PLANT_HARVEST_MESSAGE,
+                        Component.text(plantPaket.getType().getDisplayName())
+                )
+                .color(NOTIFICATION_COLOR));
+        playSoundExecutor.playNotePlingSound();
+    }
+
+    private void handleHeilkrautNotifications(final PlantPaket plantPaket) {
+        if (plantPaket.getType() != PlantType.HEILKRAUTPFLANZE) {
+            return;
+        }
+
+        if (plantPaket.getCurrentTime() == FERTILIZE_TIME && plantPaket.isActive()) {
+            addon.displayMessage(Component.translatable(HEILKRAUT_FERTILIZE_MESSAGE)
+                    .color(NOTIFICATION_COLOR));
+            playSoundExecutor.playNotePlingSound();
+        }
+
+        if (plantPaket.getCurrentTime() == WATER_TIME && plantPaket.isActive()) {
+            addon.displayMessage(Component.translatable(HEILKRAUT_WATER_MESSAGE)
+                    .color(NOTIFICATION_COLOR));
+            playSoundExecutor.playNotePlingSound();
+        }
+    }
+
     @Subscribe
-    public void onServerDisconnectEvent(final ServerDisconnectEvent event) {
+    @SuppressWarnings("unused")
+    public void onServerDisconnectEvent(final ServerDisconnectEvent ignored) {
         this.heilkrautpflanzeHudWidget.reset();
         this.roseHudWidget.reset();
         this.stoffHudWidget.reset();
