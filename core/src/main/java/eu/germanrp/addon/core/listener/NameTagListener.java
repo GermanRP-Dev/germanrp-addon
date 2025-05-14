@@ -1,23 +1,21 @@
 package eu.germanrp.addon.core.listener;
 
-import static eu.germanrp.addon.core.pattern.NameTagPattern.ADD_BOUNTY_PATTERN;
-import static eu.germanrp.addon.core.pattern.NameTagPattern.ADD_DARKLIST_PATTERN;
-import static eu.germanrp.addon.core.pattern.NameTagPattern.ADD_WANTEDS_PATTERN;
-import static eu.germanrp.addon.core.pattern.NameTagPattern.REMOVE_DARKLIST_PATTERN;
-import static eu.germanrp.addon.core.pattern.NameTagPattern.REMOVE_WANTEDS_PATTERN;
-
 import eu.germanrp.addon.core.Enum.FactionName;
 import eu.germanrp.addon.core.Enum.FactionName.FactionType;
 import eu.germanrp.addon.core.Enum.NameTag;
 import eu.germanrp.addon.core.GRUtilsAddon;
 import eu.germanrp.addon.core.NameTagSubConfig;
 import java.util.List;
+import java.util.regex.Matcher;
+
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.network.NetworkPlayerInfo;
 import net.labymod.api.client.scoreboard.ScoreboardTeam;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import net.labymod.api.event.client.render.PlayerNameTagRenderEvent;
+
+import static eu.germanrp.addon.core.pattern.NameTagPattern.*;
 
 
 public class NameTagListener {
@@ -67,12 +65,12 @@ public class NameTagListener {
         replace("literal{ }, literal{◈}[style={color=dark_gray}]]]", " ◈").
         replace("literal{ }, literal{◈}[style={color=gray}]]]", "§7 ◈").
         replace("literal{ }, literal{◈}[style={color=light_purple}]]]", "§d ◈").
-        replace("literal{ }, literal{Ⓣ}[style={color=dark_purple}]]]", "§5 Ⓣ").
+        replace("literal{ }, literal{Ⓣ}[style={color=dark_purple}], ", "§5 Ⓣ").
         replace("literal{ }, literal{◈}[style={color=red}]]]", "§c ◈");
     boolean gr = prefix.contains("GR");
 
     if (prefix.contains("red") || prefix.contains("dark_red") || prefix.contains("dark_aqua")
-        || prefix.contains("aqua")) {
+        || prefix.contains("✝")) {
       return;
     }
     if (serverJoinListener.getMembers() != null) {
@@ -118,16 +116,14 @@ public class NameTagListener {
           return;
         }
 
-        List<String> darklist = serverJoinListener.getDarklist();
-        NameTag darklistTag = nameTagSubConfig.darklistTag().get();
+        List<String> wantedList = serverJoinListener.getWantedPlayers();
+        NameTag wantedColor = nameTagSubConfig.wantedColor().get();
 
-        if (!darklist.contains(playerName) || darklistTag == NameTag.NONE) {
-          return;
-        }
-
-        String color = darklistTag.getColor();
-        prefix = color + (gr ? "[GR]" : "");
-        event.setNameTag(Component.text(prefix + playerName + suffix));
+          if (wantedList.contains(playerName) && wantedColor != NameTag.NONE) {
+              String color = wantedColor.getColor();
+              prefix = color + (gr ? "[GR]" : "");
+              event.setNameTag(Component.text(prefix + playerName + suffix));
+          }
       }
     }
   }
@@ -138,27 +134,38 @@ public class NameTagListener {
     String message = event.chatMessage().getPlainText();
     switch (factionName.getType()) {
       case BADFRAK -> {
-        if (REMOVE_DARKLIST_PATTERN.matcher(message).find()) {
-          serverJoinListener.getDarklist().remove(
-              REMOVE_DARKLIST_PATTERN.matcher(message).group(2));
+        final Matcher DAddmatcher = ADD_DARKLIST_PATTERN.matcher(message);
+
+        if (DAddmatcher.find()) {
+          serverJoinListener.getDarklist().add(DAddmatcher.group(2).replace("[GR]", ""));
+          return;
         }
-        if (ADD_DARKLIST_PATTERN.matcher(message).find()) {
-          serverJoinListener.getDarklist()
-              .remove(ADD_DARKLIST_PATTERN.matcher(message).group(2));
+
+        final Matcher DRemovematcher = REMOVE_DARKLIST_PATTERN.matcher(message);
+        if (DRemovematcher.find()) {
+          serverJoinListener.getDarklist().remove(DRemovematcher.group(2).replace("[GR]", ""));
+          return;
         }
-        if (ADD_BOUNTY_PATTERN.matcher(message).find()) {
-          serverJoinListener.getBounties()
-              .remove(ADD_BOUNTY_PATTERN.matcher(message).group(1));
+
+        final Matcher BAddmatcher = ADD_BOUNTY_PATTERN.matcher(message);
+        if (BAddmatcher.find()) {
+          serverJoinListener.getBounties().add(BAddmatcher.group(1).replace("[GR]", ""));
+          return;
         }
       }
       case STAAT -> {
-        if (REMOVE_WANTEDS_PATTERN.matcher(message).find()) {
-          serverJoinListener.getWantedPlayers().remove(
-              REMOVE_WANTEDS_PATTERN.matcher(message).group(2));
+        final Matcher WRemoveMatcher = REMOVE_WANTEDS_PATTERN.matcher(message);
+        final Matcher WAddMatcher = ADD_WANTEDS_PATTERN.matcher(message);
+
+
+        if (WRemoveMatcher.find()) {
+          serverJoinListener.getWantedPlayers().
+                  remove(WRemoveMatcher.group(2).replace("[GR]", ""));
+          return;
         }
-        if (ADD_WANTEDS_PATTERN.matcher(message).find()) {
-          serverJoinListener.getWantedPlayers()
-              .remove(ADD_WANTEDS_PATTERN.matcher(message).group(1));
+        if (WAddMatcher.find()) {
+          serverJoinListener.getWantedPlayers().remove(WAddMatcher.group(1).replace("[GR]", ""));
+          return;
         }
       }
     }
