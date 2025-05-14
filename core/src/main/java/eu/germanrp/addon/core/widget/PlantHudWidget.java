@@ -98,14 +98,13 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
             return;
         }
 
-        if (this.plant == null) {
-            final Plant updatedPlant =
-                    PlantFactory.createPlant(paket.getType(), true, paket.getValue(), paket.getCurrentTime());
-            updatePlant(updatedPlant);
-            return;
-        }
-
-        this.plant.tick(paket.getValue());
+        final Plant updatedPlant = PlantFactory.createPlant(
+                paket.getType(),
+                true,
+                paket.getValue(),
+                paket.getCurrentTime()
+        );
+        updatePlant(updatedPlant);
     }
 
 }

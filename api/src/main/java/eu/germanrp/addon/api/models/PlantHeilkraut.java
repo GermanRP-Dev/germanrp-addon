@@ -24,18 +24,4 @@ public non-sealed class PlantHeilkraut extends Plant {
     return PlantType.HEILKRAUTPFLANZE;
   }
 
-  @Override
-  public void tick(final int newYield) {
-
-    if (currentTime > FERTILIZE_TIME && !fertilized) {
-      missedTimes++;
-    }
-
-    if (currentTime > WATER_TIME && !watered) {
-      missedTimes++;
-    }
-
-    super.tick(newYield);
-  }
-
 }
