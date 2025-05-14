@@ -118,11 +118,13 @@ public class PlantListener {
             if (plantPaket.getCurrentTime() == FERTILIZE_TIME && plantPaket.isActive()) {
                 addon.displayMessage(Component.translatable(HEILKRAUT_FERTILIZE_MESSAGE)
                         .color(NOTIFICATION_COLOR));
+                playSoundExecutor.playNotePlingSound();
             }
 
             if (plantPaket.getCurrentTime() == WATER_TIME && plantPaket.isActive()) {
                 addon.displayMessage(Component.translatable(HEILKRAUT_WATER_MESSAGE)
                         .color(NOTIFICATION_COLOR));
+                playSoundExecutor.playNotePlingSound();
             }
 
         });
