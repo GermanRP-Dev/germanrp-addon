@@ -1,5 +1,6 @@
 package eu.germanrp.addon.core;
 
+import eu.germanrp.addon.core.commands.TestCommand;
 import eu.germanrp.addon.core.executor.PlaySoundExecutor;
 import eu.germanrp.addon.core.generated.DefaultReferenceStorage;
 import eu.germanrp.addon.core.listener.NameTagListener;
@@ -38,6 +39,7 @@ public class GRUtilsAddon extends LabyAddon<GRUtilsConfiguration> {
     registerVersionDependantExecutors();
     registerWidgets();
     registerListener();
+    registerCommands();
 
     this.logger().info("Enabled GermanRP Utils!");
   }
@@ -80,6 +82,10 @@ public class GRUtilsAddon extends LabyAddon<GRUtilsConfiguration> {
     registerListener(serverJoinListener);
     registerListener(new NameTagListener(this));
     registerListener(new PlantListener(this));
+  }
+
+  private void registerCommands() {
+    registerCommand(new TestCommand(this));
   }
 
 }
