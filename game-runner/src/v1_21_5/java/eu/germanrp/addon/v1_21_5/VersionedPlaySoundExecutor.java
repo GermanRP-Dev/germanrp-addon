@@ -21,7 +21,7 @@ public class VersionedPlaySoundExecutor implements PlaySoundExecutor {
             return;
         }
 
-        player.playNotifySound(SoundEvents.NOTE_BLOCK_PLING.value(), SoundSource.BLOCKS, 1, 1);
+        player.level().playLocalSound(player, SoundEvents.NOTE_BLOCK_PLING.value(), SoundSource.BLOCKS, 1, 1);
     }
 
 }
