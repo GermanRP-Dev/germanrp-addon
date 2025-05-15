@@ -1,12 +1,13 @@
 package eu.germanrp.addon.core.listener;
 
 import eu.germanrp.addon.api.models.Graffiti;
-import eu.germanrp.addon.core.GRUtilsAddon;
+import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.executor.HitResultExecutor;
 import eu.germanrp.addon.core.services.GraffitiService;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.Instant;
 import java.util.regex.Matcher;
@@ -21,18 +22,18 @@ public class GraffitiListener {
             Pattern.CANON_EQ
     );
 
-    private final GRUtilsAddon addon;
+    private final GermanRPAddon addon;
     private final HitResultExecutor hitResultExecutor;
     private final GraffitiService graffitiService;
 
-    public GraffitiListener(final GRUtilsAddon addon) {
+    public GraffitiListener(final @NotNull GermanRPAddon addon) {
         this.addon = addon;
         this.hitResultExecutor = addon.getHitResultExecutor();
         this.graffitiService = addon.getGraffitiService();
     }
 
     @Subscribe
-    public void onGraffitiUpdate(final ChatReceiveEvent event) {
+    public void onGraffitiUpdate(final @NotNull ChatReceiveEvent event) {
         final String plainText = event.chatMessage().getPlainText();
         final Matcher matcher = GRAFFITI_ADDED_PATTERN.matcher(plainText);
 
@@ -48,7 +49,7 @@ public class GraffitiListener {
     }
 
     @Subscribe
-    public void onGraffitiTimeUpdate(final ChatReceiveEvent event) {
+    public void onGraffitiTimeUpdate(final @NotNull ChatReceiveEvent event) {
         final String plainText = event.chatMessage().getPlainText();
         final Matcher matcher = GRAFFITI_TIME_PATTERN.matcher(plainText);
 

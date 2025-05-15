@@ -12,7 +12,7 @@ import eu.germanrp.addon.core.widget.GraffitiHudWidget;
 import eu.germanrp.addon.core.widget.HeilkrautpflanzeHudWidget;
 import eu.germanrp.addon.core.widget.RoseHudWidget;
 import eu.germanrp.addon.core.widget.StoffHudWidget;
-import eu.germanrp.addon.core.widget.category.GRUtilsWidgetCategory;
+import eu.germanrp.addon.core.widget.category.GermanRPAddonWidgetCategory;
 import lombok.Getter;
 import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.client.gui.hud.HudWidgetRegistry;
@@ -23,9 +23,9 @@ import net.labymod.api.models.addon.annotation.AddonMain;
 
 @Getter
 @AddonMain
-public class GRUtilsAddon extends LabyAddon<GRUtilsConfiguration> {
+public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
-    public static final String NAMESPACE = "germanrputils";
+    public static final String NAMESPACE = "germanrpaddon";
 
     private HitResultExecutor hitResultExecutor;
 
@@ -49,12 +49,12 @@ public class GRUtilsAddon extends LabyAddon<GRUtilsConfiguration> {
         registerListener();
         registerCommands();
 
-        this.logger().info("Enabled GermanRP Utils!");
+        this.logger().info("Enabled germanrpaddon");
     }
 
     @Override
-    protected Class<GRUtilsConfiguration> configurationClass() {
-        return GRUtilsConfiguration.class;
+    protected Class<GermanRPAddonConfiguration> configurationClass() {
+        return GermanRPAddonConfiguration.class;
     }
 
     private void registerCommands() {
@@ -71,7 +71,7 @@ public class GRUtilsAddon extends LabyAddon<GRUtilsConfiguration> {
 
     private void registerWidgets() {
         final HudWidgetRegistry widgetRegistry = this.labyAPI().hudWidgetRegistry();
-        final HudWidgetCategory widgetCategory = new GRUtilsWidgetCategory();
+        final HudWidgetCategory widgetCategory = new GermanRPAddonWidgetCategory();
 
         this.heilkrautpflanzeHudWidget = new HeilkrautpflanzeHudWidget(
                 widgetCategory,

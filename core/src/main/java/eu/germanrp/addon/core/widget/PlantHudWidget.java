@@ -19,11 +19,11 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
                                                                                 PlantPaketReceiver {
 
     private static final Component PROGRESS_KEY = Component.translatable(
-            "germanrputils.widget.plant.progressKey");
+            "germanrpaddon.widget.plant.progressKey");
     private static final Component YIELD_KEY = Component.translatable(
-            "germanrputils.widget.plant.yieldKey");
-    private static final String PROGRESS_TRANSLATABLE_VALUE = "germanrputils.widget.plant.progressValue";
-    private static final String YIELD_TRANSLATABLE_VALUE = "germanrputils.widget.plant.yieldValue";
+            "germanrpaddon.widget.plant.yieldKey");
+    private static final String PROGRESS_TRANSLATABLE_VALUE = "germanrpaddon.widget.plant.progressValue";
+    private static final String YIELD_TRANSLATABLE_VALUE = "germanrpaddon.widget.plant.yieldValue";
 
     private TextLine progressLine;
     private TextLine yieldLine;

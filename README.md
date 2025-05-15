@@ -1,5 +1,5 @@
 # GermanRP Utils
-GermanRP Utils ist ein LabyMod Addon, welches das Spielerlebnis auf dem Server GermanRP.eu verbessern und erleichtern soll.\
+GermanRP Addon ist ein LabyMod Addon, welches das Spielerlebnis auf dem Server GermanRP.eu verbessern und erleichtern soll.\
 Das Addon und dessen Funktionen sind vom Server (GermanRP.eu) ausdrücklich erlaubt und es besteht keine Gefahr, für die Verwendung, eine Bestrafung zu bekommen.
 
 ## Derzeitige Features:

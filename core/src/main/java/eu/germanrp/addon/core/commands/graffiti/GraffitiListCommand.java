@@ -1,6 +1,6 @@
 package eu.germanrp.addon.core.commands.graffiti;
 
-import eu.germanrp.addon.core.GRUtilsAddon;
+import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.services.GraffitiService;
 import net.labymod.api.client.chat.command.SubCommand;
 import net.labymod.api.client.component.Component;
@@ -11,10 +11,10 @@ import java.time.format.DateTimeFormatter;
 
 public class GraffitiListCommand extends SubCommand {
 
-    private final GRUtilsAddon addon;
+    private final GermanRPAddon addon;
     private final GraffitiService graffitiService;
 
-    public GraffitiListCommand(GRUtilsAddon addon) {
+    public GraffitiListCommand(GermanRPAddon addon) {
         super("list");
         this.addon = addon;
         this.graffitiService = addon.getGraffitiService();
