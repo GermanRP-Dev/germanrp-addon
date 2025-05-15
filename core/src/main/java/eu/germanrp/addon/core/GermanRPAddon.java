@@ -3,11 +3,13 @@ package eu.germanrp.addon.core;
 import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
 import eu.germanrp.addon.core.executor.HitResultExecutor;
 import eu.germanrp.addon.core.generated.DefaultReferenceStorage;
+import eu.germanrp.addon.core.listener.EventRegistrationListener;
 import eu.germanrp.addon.core.listener.GraffitiListener;
 import eu.germanrp.addon.core.listener.NameTagListener;
 import eu.germanrp.addon.core.listener.PlantListener;
 import eu.germanrp.addon.core.listener.ServerJoinListener;
 import eu.germanrp.addon.core.services.GraffitiService;
+import eu.germanrp.addon.core.services.UtilService;
 import eu.germanrp.addon.core.widget.GraffitiHudWidget;
 import eu.germanrp.addon.core.widget.HeilkrautpflanzeHudWidget;
 import eu.germanrp.addon.core.widget.RoseHudWidget;
@@ -26,6 +28,8 @@ import net.labymod.api.models.addon.annotation.AddonMain;
 public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
     public static final String NAMESPACE = "germanrpaddon";
+
+    public static UtilService utilService;
 
     private HitResultExecutor hitResultExecutor;
 
@@ -63,6 +67,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
     private void registerServices() {
         this.graffitiService = new GraffitiService();
+        utilService = new UtilService(this);
     }
 
     private void registerVersionDependantExecutors() {
@@ -102,6 +107,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         this.serverJoinListener = new ServerJoinListener(this);
 
         registerListener(serverJoinListener);
+        registerListener(new EventRegistrationListener(this));
         registerListener(new NameTagListener(this));
         registerListener(new PlantListener(this));
         registerListener(new GraffitiListener(this));
