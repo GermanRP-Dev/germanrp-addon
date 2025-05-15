@@ -15,10 +15,10 @@ public enum Graffiti {
     GARAGE_PLATTENBAU("Tiefgarage (Plattenbau)", new IntVector3(699, 57, -1088)),
     SCHOOL_DOWNTOWN("Schule (Downtown)", new IntVector3(768, 68, -1061)),
     POST("Postzentrale (Downtown)", new IntVector3(499, 68, -1118)),
-    TRAM_ALTSTADT("Tram-Unterführung (Altstadt)", new IntVector3(-634, 70, -944)),
-    U_BAHN("U-Bahn (Altstadt)", new IntVector3(-474, 52, -887)),
-    U_BAHN_STRANDPASSAGE("U-Bahn (Strandpassage)", new IntVector3(553, 52, 795)),
-    U_BAHN_ASIA("U-Bahn (Asia-Viertel)", new IntVector3(-464, 70, 936));
+    TRAM_ALTSTADT("Tram-Unterführung (Altstadt)", new IntVector3(-635, 70, -944)),
+    U_BAHN("U-Bahn (Altstadt)", new IntVector3(-474, 52, -888)),
+    U_BAHN_STRANDPASSAGE("U-Bahn (Strandpassage)", new IntVector3(552, 52, 795)),
+    U_BAHN_ASIA("U-Bahn (Asia-Viertel)", new IntVector3(-464, 70, 935));
 
     private final String name;
     private final IntVector3 position;
