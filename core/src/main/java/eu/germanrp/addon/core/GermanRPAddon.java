@@ -8,6 +8,7 @@ import eu.germanrp.addon.core.listener.NameTagListener;
 import eu.germanrp.addon.core.listener.PlantListener;
 import eu.germanrp.addon.core.listener.ServerJoinListener;
 import eu.germanrp.addon.core.services.GraffitiService;
+import eu.germanrp.addon.core.services.UtilService;
 import eu.germanrp.addon.core.widget.GraffitiHudWidget;
 import eu.germanrp.addon.core.widget.HeilkrautpflanzeHudWidget;
 import eu.germanrp.addon.core.widget.RoseHudWidget;
@@ -26,6 +27,8 @@ import net.labymod.api.models.addon.annotation.AddonMain;
 public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
     public static final String NAMESPACE = "germanrpaddon";
+
+    public static UtilService utilService;
 
     private HitResultExecutor hitResultExecutor;
 
@@ -63,6 +66,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
     private void registerServices() {
         this.graffitiService = new GraffitiService();
+        utilService = new UtilService(this);
     }
 
     private void registerVersionDependantExecutors() {
