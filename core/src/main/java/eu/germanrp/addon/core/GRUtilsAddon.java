@@ -38,8 +38,6 @@ public class GRUtilsAddon extends LabyAddon<GRUtilsConfiguration> {
 
     private GraffitiService graffitiService;
 
-    private GraffitiService graffitiService;
-
     @Override
     protected void enable() {
         this.registerSettingCategory();
