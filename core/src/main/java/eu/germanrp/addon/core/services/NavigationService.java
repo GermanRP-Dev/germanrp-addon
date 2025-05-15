@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparingDouble;
 
 public class NavigationService {
 
@@ -15,6 +15,6 @@ public class NavigationService {
             throw new IllegalArgumentException("Elements must not be empty");
         }
 
-        return elements.stream().min(comparing(t -> t.getPosition().distanceSquared(position))).get();
+        return elements.stream().min(comparingDouble(t -> t.getPosition().distanceSquared(position))).get();
     }
 }
