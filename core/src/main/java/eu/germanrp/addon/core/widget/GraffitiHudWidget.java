@@ -44,17 +44,19 @@ public class GraffitiHudWidget extends TextHudWidget<TextHudWidgetConfig> {
     }
 
     private void renderGraffiti(final Graffiti graffiti, final Instant endInstant) {
-        final Duration between = Duration.between(Instant.now(), endInstant);
+        final Instant now = Instant.now();
+
+        final Duration between = Duration.between(now, endInstant);
 
         final TextLine textLine = lines.get(graffiti.ordinal());
 
-        if (between.isNegative()) {
+        if (now.isAfter(endInstant)) {
             textLine.updateAndFlush("verfügbar");
             return;
         }
 
         textLine.setState(TextLine.State.VISIBLE);
-        textLine.updateAndFlush(between.toSeconds());
+        textLine.updateAndFlush(String.format("%02d:%02d", between.toMinutes(), between.toSecondsPart()));
     }
 
 }
