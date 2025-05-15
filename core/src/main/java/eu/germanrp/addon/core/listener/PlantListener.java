@@ -5,7 +5,7 @@ import eu.germanrp.addon.api.models.PlantFactory;
 import eu.germanrp.addon.api.models.PlantType;
 import eu.germanrp.addon.api.network.PaketFactory;
 import eu.germanrp.addon.api.network.PlantPaket;
-import eu.germanrp.addon.core.GRUtilsAddon;
+import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.Utils;
 import eu.germanrp.addon.core.widget.HeilkrautpflanzeHudWidget;
 import eu.germanrp.addon.core.widget.RoseHudWidget;
@@ -26,22 +26,22 @@ import static eu.germanrp.addon.api.models.PlantHeilkraut.WATER_TIME;
 
 public class PlantListener {
 
-    public static final String HEILKRAUT_FERTILIZE_MESSAGE = "germanrputils.message.plant.heilkrautpflanze.fertilize";
-    public static final String HEILKRAUT_WATER_MESSAGE = "germanrputils.message.plant.heilkrautpflanze.water";
-    public static final String PLANT_HARVEST_MESSAGE = "germanrputils.message.plant.harvest";
+    public static final String HEILKRAUT_FERTILIZE_MESSAGE = "germanrpaddon.message.plant.heilkrautpflanze.fertilize";
+    public static final String HEILKRAUT_WATER_MESSAGE = "germanrpaddon.message.plant.heilkrautpflanze.water";
+    public static final String PLANT_HARVEST_MESSAGE = "germanrpaddon.message.plant.harvest";
     public static final TextColor NOTIFICATION_COLOR = TextColor.color(0x75, 0x15, 0x1E);
 
     private static final Pattern HARVEST_PATTERN = Pattern.compile(
             "^► Du hast \\S* (\\S+) mit \\d+(?: Stück|x|g)? Erlös geerntet\\.$", Pattern.CANON_EQ);
     private static final String PLANT_DIED_MESSAGE = "► Du hast deine Pflanze nicht rechtzeitig geerntet.";
 
-    private final GRUtilsAddon addon;
+    private final GermanRPAddon addon;
     private final HeilkrautpflanzeHudWidget heilkrautpflanzeHudWidget;
     private final RoseHudWidget roseHudWidget;
     private final StoffHudWidget stoffHudWidget;
 
     public PlantListener(
-            final GRUtilsAddon addon
+            final GermanRPAddon addon
     ) {
         this.addon = addon;
         this.heilkrautpflanzeHudWidget = addon.getHeilkrautpflanzeHudWidget();

@@ -3,7 +3,7 @@ package eu.germanrp.addon.core.listener;
 import eu.germanrp.addon.core.Enum.FactionName;
 import eu.germanrp.addon.core.Enum.FactionName.FactionType;
 import eu.germanrp.addon.core.Enum.NameTag;
-import eu.germanrp.addon.core.GRUtilsAddon;
+import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.NameTagSubConfig;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.network.NetworkPlayerInfo;
@@ -23,13 +23,14 @@ import static eu.germanrp.addon.core.pattern.NameTagPattern.REMOVE_WANTEDS_PATTE
 
 public class NameTagListener {
 
-    private final GRUtilsAddon addon;
+    private final GermanRPAddon addon;
+
     private final NameTagSubConfig nameTagSubConfig;
     private final FactionName factionName;
     private final ServerJoinListener serverJoinListener;
 
-    public NameTagListener(GRUtilsAddon grUtilsAddon) {
-        this.addon = grUtilsAddon;
+    public NameTagListener(GermanRPAddon germanRPAddon) {
+        this.addon = germanRPAddon;
         this.nameTagSubConfig = addon.configuration().NameTagSubConfig();
         this.factionName = nameTagSubConfig.factionName().get();
         this.serverJoinListener = addon.getServerJoinListener();

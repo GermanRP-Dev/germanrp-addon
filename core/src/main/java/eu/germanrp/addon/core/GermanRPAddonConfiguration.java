@@ -9,7 +9,7 @@ import net.labymod.api.configuration.loader.property.ConfigProperty;
 
 @ConfigName("settings")
 @SpriteTexture("settings")
-public class GRUtilsConfiguration extends AddonConfig {
+public class GermanRPAddonConfiguration extends AddonConfig {
 
     @SwitchSetting
     private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);

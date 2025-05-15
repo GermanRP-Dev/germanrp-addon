@@ -1,7 +1,7 @@
 package eu.germanrp.addon.core.listener;
 
 import eu.germanrp.addon.core.Enum.FactionName;
-import eu.germanrp.addon.core.GRUtilsAddon;
+import eu.germanrp.addon.core.GermanRPAddon;
 import lombok.Getter;
 import net.labymod.api.Laby;
 import net.labymod.api.event.Subscribe;
@@ -28,7 +28,7 @@ public class ServerJoinListener {
     @Getter
     private final List<String> wantedPlayers = new ArrayList<>();
 
-    private final GRUtilsAddon addon;
+    private final GermanRPAddon addon;
 
     private int emptyMessages = 0;
     @Getter
@@ -40,7 +40,7 @@ public class ServerJoinListener {
     private boolean isGR = false;
     private FactionName factionName;
 
-    public ServerJoinListener(GRUtilsAddon addon) {
+    public ServerJoinListener(GermanRPAddon addon) {
         this.addon = addon;
     }
 
