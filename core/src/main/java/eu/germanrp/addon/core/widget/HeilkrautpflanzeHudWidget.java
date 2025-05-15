@@ -9,20 +9,19 @@ import net.labymod.api.client.gui.icon.Icon;
 @SuppressWarnings("java:S110")
 public class HeilkrautpflanzeHudWidget extends PlantHudWidget {
 
-  private static final Plant DUMMY_PLANT = PlantFactory.createPlant(
-      PlantType.HEILKRAUTPFLANZE,
-      true,
-      20,
-      5
-  );
+    private static final Plant DUMMY_PLANT = PlantFactory.createPlant(
+            PlantType.HEILKRAUTPFLANZE,
+            true,
+            20,
+            5
+    );
 
-  public HeilkrautpflanzeHudWidget(HudWidgetCategory category, Icon icon) {
-    super("heilkrautpflanze", category, icon);
-  }
+    public HeilkrautpflanzeHudWidget(HudWidgetCategory category, Icon icon) {
+        super("heilkrautpflanze", category, icon);
+    }
 
-  @Override
-  public Plant getDummyPlant() {
-    return DUMMY_PLANT;
-  }
-
+    @Override
+    public Plant getDummyPlant() {
+        return DUMMY_PLANT;
+    }
 }

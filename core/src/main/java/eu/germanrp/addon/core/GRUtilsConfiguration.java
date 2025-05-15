@@ -14,17 +14,15 @@ public class GRUtilsConfiguration extends AddonConfig {
     @SwitchSetting
     private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);
 
+    private final NameTagSubConfig NameTagSubConfig = new NameTagSubConfig();
 
-  private final NameTagSubConfig NameTagSubConfig = new NameTagSubConfig();
-  @SpriteSlot(
-      size = 32,
-      x = 1
-  )  @Override
+    @SpriteSlot(size = 32, x = 1)
+    @Override
     public ConfigProperty<Boolean> enabled() {
         return this.enabled;
     }
 
-  public NameTagSubConfig NameTagSubConfig() {
-    return this.NameTagSubConfig;
-  }
+    public NameTagSubConfig NameTagSubConfig() {
+        return this.NameTagSubConfig;
+    }
 }

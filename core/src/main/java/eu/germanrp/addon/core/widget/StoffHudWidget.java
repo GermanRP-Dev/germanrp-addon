@@ -8,23 +8,22 @@ import net.labymod.api.client.gui.icon.Icon;
 
 public class StoffHudWidget extends PlantHudWidget {
 
-  private static final Plant DUMMY_PLANT = PlantFactory.createPlant(
-      PlantType.STOFF,
-      true,
-      1,
-      5
-  );
+    private static final Plant DUMMY_PLANT = PlantFactory.createPlant(
+            PlantType.STOFF,
+            true,
+            1,
+            5
+    );
 
-  public StoffHudWidget(
-      HudWidgetCategory category,
-      Icon icon
-  ) {
-    super("stoff", category, icon);
-  }
+    public StoffHudWidget(
+            HudWidgetCategory category,
+            Icon icon
+    ) {
+        super("stoff", category, icon);
+    }
 
-  @Override
-  public Plant getDummyPlant() {
-    return DUMMY_PLANT;
-  }
-
+    @Override
+    public Plant getDummyPlant() {
+        return DUMMY_PLANT;
+    }
 }

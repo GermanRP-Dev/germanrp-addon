@@ -1,10 +1,14 @@
 package eu.germanrp.addon.core;
 
-import eu.germanrp.addon.core.executor.ExampleChatExecutor;
+import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
+import eu.germanrp.addon.core.executor.HitResultExecutor;
 import eu.germanrp.addon.core.generated.DefaultReferenceStorage;
+import eu.germanrp.addon.core.listener.GraffitiListener;
 import eu.germanrp.addon.core.listener.NameTagListener;
 import eu.germanrp.addon.core.listener.PlantListener;
 import eu.germanrp.addon.core.listener.ServerJoinListener;
+import eu.germanrp.addon.core.services.GraffitiService;
+import eu.germanrp.addon.core.widget.GraffitiHudWidget;
 import eu.germanrp.addon.core.widget.HeilkrautpflanzeHudWidget;
 import eu.germanrp.addon.core.widget.RoseHudWidget;
 import eu.germanrp.addon.core.widget.StoffHudWidget;
@@ -21,65 +25,85 @@ import net.labymod.api.models.addon.annotation.AddonMain;
 @AddonMain
 public class GRUtilsAddon extends LabyAddon<GRUtilsConfiguration> {
 
-  public static final String NAMESPACE = "germanrputils";
+    public static final String NAMESPACE = "germanrputils";
 
-  private ExampleChatExecutor chatExecutor;
+    private HitResultExecutor hitResultExecutor;
 
-  private ServerJoinListener serverJoinListener;
+    private ServerJoinListener serverJoinListener;
 
-  private HeilkrautpflanzeHudWidget heilkrautpflanzeHudWidget;
-  private RoseHudWidget roseHudWidget;
-  private StoffHudWidget stoffHudWidget;
+    private HeilkrautpflanzeHudWidget heilkrautpflanzeHudWidget;
+    private RoseHudWidget roseHudWidget;
+    private StoffHudWidget stoffHudWidget;
+    private GraffitiHudWidget graffitiHudWidget;
 
-  @Override
-  protected void enable() {
-    this.registerSettingCategory();
+    private GraffitiService graffitiService;
 
-    registerVersionDependantExecutors();
-    registerWidgets();
-    registerListener();
+    @Override
+    protected void enable() {
+        this.registerSettingCategory();
 
-    this.logger().info("Enabled GermanRP Utils!");
-  }
+        registerVersionDependantExecutors();
+        registerServices();
+        registerWidgets();
+        registerServices();
+        registerListener();
+        registerCommands();
 
-  @Override
-  protected Class<GRUtilsConfiguration> configurationClass() {
-    return GRUtilsConfiguration.class;
-  }
+        this.logger().info("Enabled GermanRP Utils!");
+    }
 
-  private void registerVersionDependantExecutors() {
-    chatExecutor = ((DefaultReferenceStorage) this.referenceStorageAccessor()).exampleChatExecutor();
-  }
+    @Override
+    protected Class<GRUtilsConfiguration> configurationClass() {
+        return GRUtilsConfiguration.class;
+    }
 
-  private void registerWidgets() {
-    final HudWidgetRegistry widgetRegistry = this.labyAPI().hudWidgetRegistry();
-    final HudWidgetCategory widgetCategory = new GRUtilsWidgetCategory();
+    private void registerCommands() {
+        registerCommand(new GraffitiCommand(this));
+    }
 
-    this.heilkrautpflanzeHudWidget = new HeilkrautpflanzeHudWidget(
-        widgetCategory,
-        Icon.texture(ResourceLocation.create(NAMESPACE, "images/heilkrautpflanze.png"))
-    );
-    this.roseHudWidget = new RoseHudWidget(
-        widgetCategory,
-        Icon.texture(ResourceLocation.create(NAMESPACE, "images/rose.png"))
-    );
-    this.stoffHudWidget = new StoffHudWidget(
-        widgetCategory,
-        Icon.texture(ResourceLocation.create(NAMESPACE, "images/stoffpflanze.png"))
-    );
+    private void registerServices() {
+        this.graffitiService = new GraffitiService();
+    }
 
-    widgetRegistry.categoryRegistry().register(widgetCategory);
-    widgetRegistry.register(heilkrautpflanzeHudWidget);
-    widgetRegistry.register(roseHudWidget);
-    widgetRegistry.register(stoffHudWidget);
-  }
+    private void registerVersionDependantExecutors() {
+        hitResultExecutor = ((DefaultReferenceStorage) this.referenceStorageAccessor()).hitResultExecutor();
+    }
 
-  private void registerListener() {
-    this.serverJoinListener = new ServerJoinListener(this);
+    private void registerWidgets() {
+        final HudWidgetRegistry widgetRegistry = this.labyAPI().hudWidgetRegistry();
+        final HudWidgetCategory widgetCategory = new GRUtilsWidgetCategory();
 
-    registerListener(serverJoinListener);
-    registerListener(new NameTagListener(this));
-    registerListener(new PlantListener(this));
-  }
+        this.heilkrautpflanzeHudWidget = new HeilkrautpflanzeHudWidget(
+                widgetCategory,
+                Icon.texture(ResourceLocation.create(NAMESPACE, "images/heilkrautpflanze.png"))
+        );
+        this.roseHudWidget = new RoseHudWidget(
+                widgetCategory,
+                Icon.texture(ResourceLocation.create(NAMESPACE, "images/rose.png"))
+        );
+        this.stoffHudWidget = new StoffHudWidget(
+                widgetCategory,
+                Icon.texture(ResourceLocation.create(NAMESPACE, "images/stoffpflanze.png"))
+        );
+        this.graffitiHudWidget = new GraffitiHudWidget(
+                widgetCategory,
+                Icon.texture(ResourceLocation.create(NAMESPACE, "images/graffiti.png")),
+                this.graffitiService
+        );
 
+        widgetRegistry.categoryRegistry().register(widgetCategory);
+        widgetRegistry.register(heilkrautpflanzeHudWidget);
+        widgetRegistry.register(roseHudWidget);
+        widgetRegistry.register(stoffHudWidget);
+        widgetRegistry.register(graffitiHudWidget);
+    }
+
+    private void registerListener() {
+        this.serverJoinListener = new ServerJoinListener(this);
+
+        registerListener(serverJoinListener);
+        registerListener(new NameTagListener(this));
+        registerListener(new PlantListener(this));
+        registerListener(new GraffitiListener(this));
+    }
 }

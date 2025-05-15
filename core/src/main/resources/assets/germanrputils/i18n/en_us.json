@@ -1,145 +1,148 @@
 {
-  "germanrputils": {
-    "settings": {
-      "enabled": {
-        "name": "Enabled"
-      },
-      "NameTagSubConfig": {
-        "name": "Fraktion",
-        "factionColor": {
-          "name": "Member Color:",
-          "entries": {
-            "none": "§fAus",
-            "white": "§fWeiss",
-            "gray": "§7Grau",
-            "darkgray": "§8Dunkelgrau",
-            "black": "§0Schwarz",
-            "green": "§aGrün",
-            "darkgreen": "§2Dunkelgrün",
-            "lightblue": "§bHellblau",
-            "blue": "§9Blau",
-            "darkblue": "§1Dunkelblau",
-            "cyan": "§3Türkis",
-            "yellow": "§eGelb",
-            "orange": "§6Orange",
-            "pink": "§dPink",
-            "purple": "§5Lila"
-          }
+    "germanrputils": {
+        "settings": {
+            "enabled": {
+                "name": "Enabled"
+            },
+            "NameTagSubConfig": {
+                "name": "Fraktion",
+                "factionColor": {
+                    "name": "Member Color:",
+                    "entries": {
+                        "none": "§fAus",
+                        "white": "§fWeiss",
+                        "gray": "§7Grau",
+                        "darkgray": "§8Dunkelgrau",
+                        "black": "§0Schwarz",
+                        "green": "§aGrün",
+                        "darkgreen": "§2Dunkelgrün",
+                        "lightblue": "§bHellblau",
+                        "blue": "§9Blau",
+                        "darkblue": "§1Dunkelblau",
+                        "cyan": "§3Türkis",
+                        "yellow": "§eGelb",
+                        "orange": "§6Orange",
+                        "pink": "§dPink",
+                        "purple": "§5Lila"
+                    }
+                },
+                "darklistColor": {
+                    "name": "Darklist Color:",
+                    "entries": {
+                        "none": "§fAus",
+                        "white": "§fWeiss",
+                        "gray": "§7Grau",
+                        "darkgray": "§8Dunkelgrau",
+                        "black": "§0Schwarz",
+                        "green": "§aGrün",
+                        "darkgreen": "§2Dunkelgrün",
+                        "lightblue": "§bHellblau",
+                        "blue": "§9Blau",
+                        "darkblue": "§1Dunkelblau",
+                        "cyan": "§3Türkis",
+                        "yellow": "§eGelb",
+                        "orange": "§6Orange",
+                        "pink": "§dPink",
+                        "purple": "§5Lila"
+                    }
+                },
+                "factionName": {
+                    "name": "Fraktionsname:",
+                    "entries": {
+                        "none": "§8Zivilist",
+                        "polizei": "§3Polizei",
+                        "rettungsdienst": "§4Medics",
+                        "sinaloakartell": "§eSinaloa Kartell",
+                        "camorra": "§6Camorra",
+                        "rousseau": "§1Rousseau Familie",
+                        "presse": "§aPresseagentur",
+                        "mtfashion": "§aMT-Fashion",
+                        "establishment": "§1The Establishment",
+                        "kartell": "§6Medellín Kartell"
+                    }
+                },
+                "bountyColor": {
+                    "name": "Bounty Farbe:",
+                    "entries": {
+                        "none": "§fAus",
+                        "white": "§fWeiss",
+                        "gray": "§7Grau",
+                        "darkgray": "§8Dunkelgrau",
+                        "black": "§0Schwarz",
+                        "green": "§aGrün",
+                        "darkgreen": "§2Dunkelgrün",
+                        "lightblue": "§bHellblau",
+                        "blue": "§9Blau",
+                        "darkblue": "§1Dunkelblau",
+                        "cyan": "§3Türkis",
+                        "yellow": "§eGelb",
+                        "orange": "§6Orange",
+                        "pink": "§dPink",
+                        "purple": "§5Lila"
+                    }
+                },
+                "wantedColor": {
+                    "name": "Wanted Farbe:",
+                    "entries": {
+                        "none": "§fAus",
+                        "white": "§fWeiss",
+                        "gray": "§7Grau",
+                        "darkgray": "§8Dunkelgrau",
+                        "black": "§0Schwarz",
+                        "green": "§aGrün",
+                        "darkgreen": "§2Dunkelgrün",
+                        "lightblue": "§bHellblau",
+                        "blue": "§9Blau",
+                        "darkblue": "§1Dunkelblau",
+                        "cyan": "§3Türkis",
+                        "yellow": "§eGelb",
+                        "orange": "§6Orange",
+                        "pink": "§dPink",
+                        "purple": "§5Lila"
+                    }
+                }
+            }
         },
-        "darklistColor": {
-          "name": "Darklist Color:",
-          "entries": {
-            "none": "§fAus",
-            "white": "§fWeiss",
-            "gray": "§7Grau",
-            "darkgray": "§8Dunkelgrau",
-            "black": "§0Schwarz",
-            "green": "§aGrün",
-            "darkgreen": "§2Dunkelgrün",
-            "lightblue": "§bHellblau",
-            "blue": "§9Blau",
-            "darkblue": "§1Dunkelblau",
-            "cyan": "§3Türkis",
-            "yellow": "§eGelb",
-            "orange": "§6Orange",
-            "pink": "§dPink",
-            "purple": "§5Lila"
-          }
+        "message": {
+            "plant": {
+                "heilkrautpflanze": {
+                    "fertilize": "Du musst deine Heilkrautpflanze jetzt düngen.",
+                    "water": "Du musst deine Heilkrautpflanze jetzt wässern."
+                },
+                "harvest": "%s kann geerntet werden."
+            }
         },
-        "factionName": {
-          "name": "Fraktionsname:",
-          "entries": {
-            "none": "§8Zivilist",
-            "polizei": "§3Polizei",
-            "rettungsdienst": "§4Medics",
-            "sinaloakartell": "§eSinaloa Kartell",
-            "camorra": "§6Camorra",
-            "rousseau": "§1Rousseau Familie",
-            "presse": "§aPresseagentur",
-            "mtfashion": "§aMT-Fashion",
-            "establishment": "§1The Establishment",
-            "kartell": "§6Medellín Kartell"
-          }
+        "hudWidget": {
+            "heilkrautpflanze": {
+                "name": "Heilkraut-\npflanze",
+                "showTimer.name": "Timer",
+                "showYield.name": "Erlös"
+            },
+            "rose": {
+                "name": "Rose",
+                "showTimer.name": "Timer",
+                "showYield.name": "Erlös"
+            },
+            "stoff": {
+                "name": "Stoffpflanze",
+                "showTimer.name": "Timer",
+                "showYield.name": "Erlös"
+            },
+            "graffiti": {
+                "name": "Graffiti"
+            }
         },
-        "bountyColor": {
-          "name": "Bounty Farbe:",
-          "entries": {
-            "none": "§fAus",
-            "white": "§fWeiss",
-            "gray": "§7Grau",
-            "darkgray": "§8Dunkelgrau",
-            "black": "§0Schwarz",
-            "green": "§aGrün",
-            "darkgreen": "§2Dunkelgrün",
-            "lightblue": "§bHellblau",
-            "blue": "§9Blau",
-            "darkblue": "§1Dunkelblau",
-            "cyan": "§3Türkis",
-            "yellow": "§eGelb",
-            "orange": "§6Orange",
-            "pink": "§dPink",
-            "purple": "§5Lila"
-          }
-        },
-        "wantedColor": {
-          "name": "Wanted Farbe:",
-          "entries": {
-            "none": "§fAus",
-            "white": "§fWeiss",
-            "gray": "§7Grau",
-            "darkgray": "§8Dunkelgrau",
-            "black": "§0Schwarz",
-            "green": "§aGrün",
-            "darkgreen": "§2Dunkelgrün",
-            "lightblue": "§bHellblau",
-            "blue": "§9Blau",
-            "darkblue": "§1Dunkelblau",
-            "cyan": "§3Türkis",
-            "yellow": "§eGelb",
-            "orange": "§6Orange",
-            "pink": "§dPink",
-            "purple": "§5Lila"
-          }
+        "widget": {
+            "category": {
+                "title": "GermanRP",
+                "description": "Shows you information about stuff on GermanRP"
+            },
+            "plant": {
+                "progressKey": "Fortschritt",
+                "progressValue": "%s/%smin",
+                "yieldKey": "Erlös",
+                "yieldValue": "%s%s %s"
+            }
         }
-      }
-    },
-    "message": {
-      "plant": {
-        "heilkrautpflanze": {
-          "fertilize": "Du musst deine Heilkrautpflanze jetzt düngen.",
-          "water": "Du musst deine Heilkrautpflanze jetzt wässern."
-        },
-        "harvest": "%s kann geerntet werden."
-      }
-    },
-    "hudWidget": {
-      "heilkrautpflanze": {
-        "name": "Heilkraut-\npflanze",
-        "showTimer.name": "Timer",
-        "showYield.name": "Erlös"
-      },
-      "rose": {
-        "name": "Rose",
-        "showTimer.name": "Timer",
-        "showYield.name": "Erlös"
-      },
-      "stoff": {
-        "name": "Stoffpflanze",
-        "showTimer.name": "Timer",
-        "showYield.name": "Erlös"
-      }
-    },
-    "widget": {
-      "category": {
-        "title": "GermanRP",
-        "description": "Shows you information about stuff on GermanRP"
-      },
-      "plant": {
-        "progressKey": "Fortschritt",
-        "progressValue": "%s/%smin",
-        "yieldKey": "Erlös",
-        "yieldValue": "%s%s %s"
-      }
     }
-  }
 }

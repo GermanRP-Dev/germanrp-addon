@@ -19,5 +19,4 @@ public class GRUtilsWidgetCategory extends HudWidgetCategory {
     public @NotNull Component description() {
         return Component.translatable("germanrputils.widget.category.description");
     }
-
 }
