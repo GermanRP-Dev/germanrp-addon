@@ -127,6 +127,9 @@
         "name": "Stoffpflanze",
         "showTimer.name": "Timer",
         "showYield.name": "Erlös"
+      },
+      "graffiti": {
+        "name": "Graffiti"
       }
     },
     "widget": {
