@@ -27,13 +27,11 @@ public class GraffitiHudWidget extends TextHudWidget<TextHudWidgetConfig> {
     public void load(TextHudWidgetConfig config) {
         super.load(config);
 
-
         Arrays.stream(Graffiti.values())
                 .forEach(graffiti -> {
                     final TextLine line = this.createLine(graffiti.getName(), Duration.ZERO);
                     line.setState(TextLine.State.HIDDEN);
                 });
-
     }
 
     @Override
@@ -58,5 +56,4 @@ public class GraffitiHudWidget extends TextHudWidget<TextHudWidgetConfig> {
         textLine.setState(TextLine.State.VISIBLE);
         textLine.updateAndFlush(String.format("%02d:%02d", between.toMinutes(), between.toSecondsPart()));
     }
-
 }

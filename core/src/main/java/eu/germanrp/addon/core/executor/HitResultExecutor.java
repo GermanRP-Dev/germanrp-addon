@@ -9,5 +9,4 @@ import java.util.Optional;
 public interface HitResultExecutor {
 
     Optional<IntVector3> getBlockLookingAt();
-
 }

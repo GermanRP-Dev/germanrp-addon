@@ -31,5 +31,4 @@ public class VersionedHitResultExecutor implements HitResultExecutor {
 
         return Optional.of(new IntVector3(x, y, z));
     }
-
 }

@@ -24,5 +24,4 @@ public class GraffitiService {
     public void updateGraffiti(Graffiti graffiti, Instant instant) {
         GRAFFITI_AVAILABLILITY_MAP.put(graffiti, instant);
     }
-
 }

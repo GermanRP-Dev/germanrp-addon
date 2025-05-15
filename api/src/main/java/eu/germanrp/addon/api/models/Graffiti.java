@@ -1,11 +1,13 @@
 package eu.germanrp.addon.api.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.labymod.api.util.math.vector.IntVector3;
 
 import java.util.Optional;
 
 @Getter
+@AllArgsConstructor
 public enum Graffiti {
 
     CAMORRA_HQ("Autobahnbrücke (Reichenviertel)", new IntVector3(458, 71, 262)),
@@ -24,14 +26,6 @@ public enum Graffiti {
     private final String name;
     private final IntVector3 position;
 
-    Graffiti(
-            final String name,
-            final IntVector3 position
-    ) {
-        this.name = name;
-        this.position = position;
-    }
-
     public static Optional<Graffiti> getByBlockPosition(IntVector3 blockPosition) {
         for (Graffiti graffiti : Graffiti.values()) {
             if (graffiti.getPosition().equals(blockPosition)) {
@@ -49,5 +43,4 @@ public enum Graffiti {
         }
         return Optional.empty();
     }
-
 }

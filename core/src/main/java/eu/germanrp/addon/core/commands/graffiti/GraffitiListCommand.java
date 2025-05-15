@@ -38,9 +38,7 @@ public class GraffitiListCommand extends SubCommand {
                     .append(positionComponent)
                     .append(timeComponent)
             );
-
         });
         return true;
     }
-
 }

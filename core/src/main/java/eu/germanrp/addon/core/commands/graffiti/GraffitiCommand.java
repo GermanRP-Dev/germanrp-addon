@@ -14,5 +14,4 @@ public class GraffitiCommand extends Command {
     public boolean execute(String prefix, String[] arguments) {
         return true;
     }
-
 }

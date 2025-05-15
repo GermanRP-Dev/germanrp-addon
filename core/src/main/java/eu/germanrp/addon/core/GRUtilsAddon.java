@@ -43,12 +43,18 @@ public class GRUtilsAddon extends LabyAddon<GRUtilsConfiguration> {
         this.registerSettingCategory();
 
         registerVersionDependantExecutors();
-        registerServices();registerWidgets();
+        registerServices();
+        registerWidgets();
         registerServices();
         registerListener();
         registerCommands();
 
         this.logger().info("Enabled GermanRP Utils!");
+    }
+
+    @Override
+    protected Class<GRUtilsConfiguration> configurationClass() {
+        return GRUtilsConfiguration.class;
     }
 
     private void registerCommands() {
@@ -57,11 +63,6 @@ public class GRUtilsAddon extends LabyAddon<GRUtilsConfiguration> {
 
     private void registerServices() {
         this.graffitiService = new GraffitiService();
-    }
-
-    @Override
-    protected Class<GRUtilsConfiguration> configurationClass() {
-        return GRUtilsConfiguration.class;
     }
 
     private void registerVersionDependantExecutors() {
@@ -94,7 +95,7 @@ public class GRUtilsAddon extends LabyAddon<GRUtilsConfiguration> {
         widgetRegistry.register(heilkrautpflanzeHudWidget);
         widgetRegistry.register(roseHudWidget);
         widgetRegistry.register(stoffHudWidget);
-    widgetRegistry.register(graffitiHudWidget);
+        widgetRegistry.register(graffitiHudWidget);
     }
 
     private void registerListener() {
@@ -105,5 +106,4 @@ public class GRUtilsAddon extends LabyAddon<GRUtilsConfiguration> {
         registerListener(new PlantListener(this));
         registerListener(new GraffitiListener(this));
     }
-
 }

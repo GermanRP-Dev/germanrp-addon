@@ -4,10 +4,9 @@ import eu.germanrp.addon.api.network.PlantPaket;
 
 public interface PlantPaketReceiver {
 
-  void onPaketReceive(final PlantPaket paket);
+    void onPaketReceive(final PlantPaket paket);
 
-  void reset();
+    void reset();
 
-  void updatePlant(final Plant plant);
-
+    void updatePlant(final Plant plant);
 }

@@ -12,23 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 
-import static eu.germanrp.addon.core.pattern.NameTagPattern.*;
-
+import static eu.germanrp.addon.core.pattern.NameTagPattern.BOUNTY_MEMBER_WANTEDS_PATTERN;
+import static eu.germanrp.addon.core.pattern.NameTagPattern.DARKLIST_PATTERN;
+import static eu.germanrp.addon.core.pattern.NameTagPattern.FAHNDUNGSLISTE_TITLE;
+import static eu.germanrp.addon.core.pattern.NameTagPattern.FRAKTIONSMITGLIEDER_TITLE;
 
 public class ServerJoinListener {
 
-
-    private int emptyMessages = 0;
-
-    @Getter
-    private boolean justJoined = false;
-
-    private boolean faction;
-    private boolean bounty;
-    private boolean wanted;
-
-    @Getter
-    private boolean isGR = false;
     @Getter
     private final List<String> members = new ArrayList<>();
     @Getter
@@ -38,8 +28,17 @@ public class ServerJoinListener {
     @Getter
     private final List<String> wantedPlayers = new ArrayList<>();
 
-    private  FactionName factionName;
     private final GRUtilsAddon addon;
+
+    private int emptyMessages = 0;
+    @Getter
+    private boolean justJoined = false;
+    private boolean faction;
+    private boolean bounty;
+    private boolean wanted;
+    @Getter
+    private boolean isGR = false;
+    private FactionName factionName;
 
     public ServerJoinListener(GRUtilsAddon addon) {
         this.addon = addon;
@@ -59,7 +58,6 @@ public class ServerJoinListener {
 
         this.isGR = true;
         this.justJoined = true;
-
 
         if (factionName.equals(FactionName.NONE)) {
             return;
@@ -81,7 +79,6 @@ public class ServerJoinListener {
                 Laby.references().chatExecutor().chat("/wanteds");
             }
         }
-
     }
 
     @Subscribe
@@ -157,9 +154,7 @@ public class ServerJoinListener {
                         this.justJoined = false;
                     }
                     this.wantedPlayers.add(matcher.group(1).replace("[GR]", ""));
-
                 }
-
             }
         }
         if (message.isEmpty()) {
@@ -168,7 +163,5 @@ public class ServerJoinListener {
                 event.setCancelled(true);
             }
         }
-
     }
-
 }

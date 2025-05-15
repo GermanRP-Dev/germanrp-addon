@@ -9,20 +9,19 @@ import net.labymod.api.client.gui.icon.Icon;
 @SuppressWarnings("java:S110")
 public class RoseHudWidget extends PlantHudWidget {
 
-  private static final Plant DUMMY_PLANT = PlantFactory.createPlant(
-      PlantType.ROSE,
-      true,
-      3,
-      3
-  );
+    private static final Plant DUMMY_PLANT = PlantFactory.createPlant(
+            PlantType.ROSE,
+            true,
+            3,
+            3
+    );
 
-  public RoseHudWidget(HudWidgetCategory category, Icon icon) {
-    super("rose", category, icon);
-  }
+    public RoseHudWidget(HudWidgetCategory category, Icon icon) {
+        super("rose", category, icon);
+    }
 
-  @Override
-  public Plant getDummyPlant() {
-    return DUMMY_PLANT;
-  }
-
+    @Override
+    public Plant getDummyPlant() {
+        return DUMMY_PLANT;
+    }
 }

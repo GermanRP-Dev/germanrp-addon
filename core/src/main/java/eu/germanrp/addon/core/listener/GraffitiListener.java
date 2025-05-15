@@ -64,6 +64,5 @@ public class GraffitiListener {
             graffitiService.updateGraffiti(graffiti, Instant.now().plusSeconds((minutes * 60) + seconds));
         });
     }
-
 }
 

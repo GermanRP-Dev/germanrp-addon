@@ -26,13 +26,14 @@ import static eu.germanrp.addon.api.models.PlantHeilkraut.WATER_TIME;
 
 public class PlantListener {
 
-    private static final Pattern HARVEST_PATTERN = Pattern.compile(
-            "^► Du hast \\S* (\\S+) mit \\d+(?: Stück|x|g)? Erlös geerntet\\.$", Pattern.CANON_EQ);
-    private static final String PLANT_DIED_MESSAGE = "► Du hast deine Pflanze nicht rechtzeitig geerntet.";
     public static final String HEILKRAUT_FERTILIZE_MESSAGE = "germanrputils.message.plant.heilkrautpflanze.fertilize";
     public static final String HEILKRAUT_WATER_MESSAGE = "germanrputils.message.plant.heilkrautpflanze.water";
     public static final String PLANT_HARVEST_MESSAGE = "germanrputils.message.plant.harvest";
     public static final TextColor NOTIFICATION_COLOR = TextColor.color(0x75, 0x15, 0x1E);
+
+    private static final Pattern HARVEST_PATTERN = Pattern.compile(
+            "^► Du hast \\S* (\\S+) mit \\d+(?: Stück|x|g)? Erlös geerntet\\.$", Pattern.CANON_EQ);
+    private static final String PLANT_DIED_MESSAGE = "► Du hast deine Pflanze nicht rechtzeitig geerntet.";
 
     private final GRUtilsAddon addon;
     private final HeilkrautpflanzeHudWidget heilkrautpflanzeHudWidget;
@@ -119,7 +120,6 @@ public class PlantListener {
                 addon.displayMessage(Component.translatable(HEILKRAUT_WATER_MESSAGE)
                         .color(NOTIFICATION_COLOR));
             }
-
         });
     }
 
@@ -131,12 +131,12 @@ public class PlantListener {
     }
 
     /**
-     * Checks if the given message corresponds to a sow action for a specific plant type and
-     * initializes the respective HUD widget if applicable.
+     * Checks if the given message corresponds to a sow action for a specific plant type and initializes the respective HUD widget if
+     * applicable.
      *
      * @param message the chat message to be checked for sow actions
-     * @return true if the message corresponds to a sow action and the HUD widget was updated; false
-     * otherwise
+     *
+     * @return true if the message corresponds to a sow action and the HUD widget was updated; false otherwise
      */
     private boolean beginPlantIfSowMessage(final String message) {
         return PlantType.fromSowMessage(message).map(type -> {
@@ -153,5 +153,4 @@ public class PlantListener {
             return true;
         }).orElse(false);
     }
-
 }
