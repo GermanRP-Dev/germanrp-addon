@@ -24,7 +24,7 @@ import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.VISIB
 
 public class GraffitiHudWidget extends TextHudWidget<TextHudWidgetConfig> {
 
-    private final Map<Graffiti, Duration> graffitiRemainingTimes = new HashMap<>();
+    public static final Map<Graffiti, Duration> GRAFFITI_REMAINING_TIMES = new HashMap<>();
 
     public GraffitiHudWidget(HudWidgetCategory widgetCategory, Icon icon) {
         super("graffiti");
@@ -48,7 +48,7 @@ public class GraffitiHudWidget extends TextHudWidget<TextHudWidgetConfig> {
         Graffiti graffiti = event.getGraffiti();
         Duration remainingTime = event.getRemainingTime();
 
-        this.graffitiRemainingTimes.put(graffiti, remainingTime);
+        GRAFFITI_REMAINING_TIMES.put(graffiti, remainingTime);
         updateTextLines();
     }
 
@@ -60,7 +60,7 @@ public class GraffitiHudWidget extends TextHudWidget<TextHudWidgetConfig> {
     }
 
     private void updateTextLines() {
-        this.graffitiRemainingTimes.forEach((graffiti, remainingTime) -> {
+        GRAFFITI_REMAINING_TIMES.forEach((graffiti, remainingTime) -> {
             TextLine textLine = this.lines.get(graffiti.ordinal());
 
             if (remainingTime.isZero()) {
@@ -69,7 +69,7 @@ public class GraffitiHudWidget extends TextHudWidget<TextHudWidgetConfig> {
             }
 
             remainingTime = remainingTime.minusSeconds(1);
-            this.graffitiRemainingTimes.put(graffiti, remainingTime);
+            GRAFFITI_REMAINING_TIMES.put(graffiti, remainingTime);
 
             textLine.setState(VISIBLE);
             textLine.updateAndFlush(utilService.text().parseTimer(remainingTime.toSeconds()));
