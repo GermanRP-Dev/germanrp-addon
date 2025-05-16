@@ -11,10 +11,7 @@ import eu.germanrp.addon.core.listener.ServerJoinListener;
 import eu.germanrp.addon.core.services.GraffitiService;
 import eu.germanrp.addon.core.services.NavigationService;
 import eu.germanrp.addon.core.services.UtilService;
-import eu.germanrp.addon.core.widget.GraffitiHudWidget;
-import eu.germanrp.addon.core.widget.HeilkrautpflanzeHudWidget;
-import eu.germanrp.addon.core.widget.RoseHudWidget;
-import eu.germanrp.addon.core.widget.StoffHudWidget;
+import eu.germanrp.addon.core.widget.*;
 import eu.germanrp.addon.core.widget.category.GermanRPAddonWidgetCategory;
 import lombok.Getter;
 import net.labymod.api.addon.LabyAddon;
@@ -41,8 +38,8 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private RoseHudWidget roseHudWidget;
     private StoffHudWidget stoffHudWidget;
     private GraffitiHudWidget graffitiHudWidget;
-
     private GraffitiService graffitiService;
+    private MajorEventWidget majorEventWidget;
 
     @Override
     protected void enable() {
@@ -98,12 +95,16 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
                 Icon.texture(ResourceLocation.create(NAMESPACE, "images/graffiti.png")),
                 this.graffitiService
         );
+        this.majorEventWidget = new MajorEventWidget(
+                this
+        );
 
         widgetRegistry.categoryRegistry().register(widgetCategory);
         widgetRegistry.register(heilkrautpflanzeHudWidget);
         widgetRegistry.register(roseHudWidget);
         widgetRegistry.register(stoffHudWidget);
         widgetRegistry.register(graffitiHudWidget);
+        widgetRegistry.register(majorEventWidget);
     }
 
     private void registerListener() {
