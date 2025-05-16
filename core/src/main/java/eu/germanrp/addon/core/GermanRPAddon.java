@@ -1,6 +1,8 @@
 package eu.germanrp.addon.core;
 
 import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
+import eu.germanrp.addon.core.common.AddonPlayer;
+import eu.germanrp.addon.core.common.DefaultAddonPlayer;
 import eu.germanrp.addon.core.executor.HitResultExecutor;
 import eu.germanrp.addon.core.generated.DefaultReferenceStorage;
 import eu.germanrp.addon.core.listener.EventRegistrationListener;
@@ -33,6 +35,8 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     public static NavigationService navigationService;
     public static UtilService utilService;
 
+    private AddonPlayer player;
+
     private HitResultExecutor hitResultExecutor;
 
     private ServerJoinListener serverJoinListener;
@@ -43,6 +47,16 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private GraffitiHudWidget graffitiHudWidget;
 
     private GraffitiService graffitiService;
+
+    @Override
+    protected void load() {
+        this.player = new DefaultAddonPlayer(this);
+
+        navigationService = new NavigationService();
+        utilService = new UtilService(this);
+
+        this.logger().info("Loaded germanrpaddon");
+    }
 
     @Override
     protected void enable() {
@@ -69,8 +83,6 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
     private void registerServices() {
         this.graffitiService = new GraffitiService();
-        navigationService = new NavigationService();
-        utilService = new UtilService(this);
     }
 
     private void registerVersionDependantExecutors() {
