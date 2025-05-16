@@ -21,8 +21,8 @@ import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.
 import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.SECOND_5;
 import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.TICK;
 import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.TICK_5;
-import static java.lang.Long.parseLong;
 import static java.time.Duration.ofSeconds;
+import static java.util.Optional.ofNullable;
 import static net.labymod.api.Laby.fireEvent;
 import static net.labymod.api.Laby.labyAPI;
 import static net.labymod.api.event.Phase.POST;
@@ -64,8 +64,8 @@ public class EventRegistrationListener {
 
         Matcher graffitiTimeMatcher = GRAFFITI_TIME_PATTERN.matcher(plainText);
         if (graffitiTimeMatcher.matches()) {
-            long minutes = parseLong(graffitiTimeMatcher.group("minutes"));
-            long seconds = parseLong(graffitiTimeMatcher.group("seconds"));
+            long minutes = ofNullable(graffitiTimeMatcher.group("minutes")).map(Long::parseLong).orElse(0L);
+            long seconds = ofNullable(graffitiTimeMatcher.group("seconds")).map(Long::parseLong).orElse(0L);
 
             Graffiti nearestGraffiti = navigationService.getNearest(null, List.of(Graffiti.values()));
             this.addon.logger().info("[{}] Graffiti {} remaining time: {}:{}", getClass(), nearestGraffiti.getName(), graffitiTimeMatcher.group("minutes"), graffitiTimeMatcher.group("seconds"));
