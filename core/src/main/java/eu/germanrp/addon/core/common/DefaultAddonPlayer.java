@@ -26,6 +26,8 @@ import static net.labymod.api.client.component.format.TextDecoration.BOLD;
  */
 public class DefaultAddonPlayer implements AddonPlayer {
 
+    private static final String ADDON_PREFIX_SYMBOL = "  ₪ ";
+
     private boolean shouting = false;
     private boolean whispering = false;
 
@@ -123,7 +125,7 @@ public class DefaultAddonPlayer implements AddonPlayer {
     @Override
     public void setNaviRoute(@NotNull FloatVector3 location) {
         stopRoute();
-        sendServerMessage("/navi " + location.getX() + " " + location.getY() + " " + location.getZ());
+        sendServerMessage(String.format("/navi %.2f %.2f %.2f", location.getX(), location.getY(), location.getZ()));
     }
 
     @Override
@@ -152,6 +154,6 @@ public class DefaultAddonPlayer implements AddonPlayer {
     }
 
     private Component prefix() {
-        return text("  ₪ ", DARK_AQUA, BOLD).hoverEvent(showText(text("Nachricht vom GermanRP-Addon", DARK_AQUA)));
+        return text(ADDON_PREFIX_SYMBOL, DARK_AQUA, BOLD).hoverEvent(showText(text("Nachricht vom GermanRP-Addon", DARK_AQUA)));
     }
 }
