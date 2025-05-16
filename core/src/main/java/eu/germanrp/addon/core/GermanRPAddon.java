@@ -6,11 +6,9 @@ import eu.germanrp.addon.core.common.DefaultAddonPlayer;
 import eu.germanrp.addon.core.executor.HitResultExecutor;
 import eu.germanrp.addon.core.generated.DefaultReferenceStorage;
 import eu.germanrp.addon.core.listener.EventRegistrationListener;
-import eu.germanrp.addon.core.listener.GraffitiListener;
 import eu.germanrp.addon.core.listener.NameTagListener;
 import eu.germanrp.addon.core.listener.PlantListener;
 import eu.germanrp.addon.core.listener.ServerJoinListener;
-import eu.germanrp.addon.core.services.GraffitiService;
 import eu.germanrp.addon.core.services.NavigationService;
 import eu.germanrp.addon.core.services.UtilService;
 import eu.germanrp.addon.core.widget.GraffitiHudWidget;
@@ -46,8 +44,6 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private StoffHudWidget stoffHudWidget;
     private GraffitiHudWidget graffitiHudWidget;
 
-    private GraffitiService graffitiService;
-
     @Override
     protected void load() {
         this.player = new DefaultAddonPlayer(this);
@@ -63,9 +59,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         this.registerSettingCategory();
 
         registerVersionDependantExecutors();
-        registerServices();
         registerWidgets();
-        registerServices();
         registerListener();
         registerCommands();
 
@@ -79,10 +73,6 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
     private void registerCommands() {
         registerCommand(new GraffitiCommand(this));
-    }
-
-    private void registerServices() {
-        this.graffitiService = new GraffitiService();
     }
 
     private void registerVersionDependantExecutors() {
@@ -107,8 +97,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         );
         this.graffitiHudWidget = new GraffitiHudWidget(
                 widgetCategory,
-                Icon.texture(ResourceLocation.create(NAMESPACE, "images/graffiti.png")),
-                this.graffitiService
+                Icon.texture(ResourceLocation.create(NAMESPACE, "images/graffiti.png"))
         );
 
         widgetRegistry.categoryRegistry().register(widgetCategory);
@@ -125,6 +114,5 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerListener(new EventRegistrationListener(this));
         registerListener(new NameTagListener(this));
         registerListener(new PlantListener(this));
-        registerListener(new GraffitiListener(this));
     }
 }
