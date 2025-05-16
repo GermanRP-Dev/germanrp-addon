@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 
-import static eu.germanrp.addon.core.pattern.NameTagPattern.BOUNTY_MEMBER_WANTEDS_PATTERN;
-import static eu.germanrp.addon.core.pattern.NameTagPattern.DARKLIST_PATTERN;
-import static eu.germanrp.addon.core.pattern.NameTagPattern.FAHNDUNGSLISTE_TITLE;
-import static eu.germanrp.addon.core.pattern.NameTagPattern.FRAKTIONSMITGLIEDER_TITLE;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.BOUNTY_LIST_ENTRY;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.DARK_LIST_ENTRY;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.TITLE_WANTED_LIST;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.TITLE_FACTION_MEMBER_LIST;
 
 public class ServerJoinListener {
 
@@ -92,7 +92,7 @@ public class ServerJoinListener {
             this.justJoined = false;
             return;
         }
-        if (FRAKTIONSMITGLIEDER_TITLE.matcher(message).find()) {
+        if (TITLE_FACTION_MEMBER_LIST.getPattern().matcher(message).find()) {
             event.setCancelled(true);
             this.faction = true;
             return;
@@ -100,7 +100,7 @@ public class ServerJoinListener {
 
         if (this.faction) {
             event.setCancelled(true);
-            final Matcher matcher = BOUNTY_MEMBER_WANTEDS_PATTERN.matcher(message);
+            final Matcher matcher = BOUNTY_LIST_ENTRY.getPattern().matcher(message);
             if (!matcher.find()) {
                 if (!message.startsWith("        (Insgesamt ") || !message.endsWith(" verfügbar)")) {
                     return;
@@ -115,7 +115,7 @@ public class ServerJoinListener {
             case BADFRAK -> {
                 if (message.startsWith("► [Darklist] ")) {
                     event.setCancelled(true);
-                    final Matcher matcher = DARKLIST_PATTERN.matcher(message);
+                    final Matcher matcher = DARK_LIST_ENTRY.getPattern().matcher(message);
                     if (!matcher.find()) {
                         return;
                     }
@@ -129,7 +129,7 @@ public class ServerJoinListener {
                 }
                 if (this.bounty) {
                     event.setCancelled(true);
-                    final Matcher matcher = BOUNTY_MEMBER_WANTEDS_PATTERN.matcher(message);
+                    final Matcher matcher = BOUNTY_LIST_ENTRY.getPattern().matcher(message);
                     if (!matcher.find()) {
                         this.bounty = false;
                         this.justJoined = false;
@@ -141,14 +141,14 @@ public class ServerJoinListener {
             }
 
             case STAAT -> {
-                if (FAHNDUNGSLISTE_TITLE.matcher(message).find()) {
+                if (TITLE_WANTED_LIST.getPattern().matcher(message).find()) {
                     event.setCancelled(true);
                     this.wanted = true;
                     return;
                 }
                 if (this.wanted) {
                     event.setCancelled(true);
-                    final Matcher matcher = BOUNTY_MEMBER_WANTEDS_PATTERN.matcher(message);
+                    final Matcher matcher = BOUNTY_LIST_ENTRY.getPattern().matcher(message);
                     if (!matcher.find()) {
                         this.wanted = false;
                         this.justJoined = false;

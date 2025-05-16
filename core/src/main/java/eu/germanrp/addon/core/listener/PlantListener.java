@@ -19,10 +19,10 @@ import net.labymod.api.event.client.network.server.ServerDisconnectEvent;
 import net.labymod.api.util.GsonUtil;
 
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static eu.germanrp.addon.api.models.PlantHeilkraut.FERTILIZE_TIME;
 import static eu.germanrp.addon.api.models.PlantHeilkraut.WATER_TIME;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.PLANT_HARVEST;
 
 public class PlantListener {
 
@@ -31,8 +31,6 @@ public class PlantListener {
     public static final String PLANT_HARVEST_MESSAGE = "germanrpaddon.message.plant.harvest";
     public static final TextColor NOTIFICATION_COLOR = TextColor.color(0x75, 0x15, 0x1E);
 
-    private static final Pattern HARVEST_PATTERN = Pattern.compile(
-            "^► Du hast \\S* (\\S+) mit \\d+(?: Stück|x|g)? Erlös geerntet\\.$", Pattern.CANON_EQ);
     private static final String PLANT_DIED_MESSAGE = "► Du hast deine Pflanze nicht rechtzeitig geerntet.";
 
     private final GermanRPAddon addon;
@@ -62,7 +60,7 @@ public class PlantListener {
             return;
         }
 
-        final Matcher matcher = HARVEST_PATTERN.matcher(message);
+        final Matcher matcher = PLANT_HARVEST.getPattern().matcher(message);
 
         if (!matcher.find()) {
             return;
