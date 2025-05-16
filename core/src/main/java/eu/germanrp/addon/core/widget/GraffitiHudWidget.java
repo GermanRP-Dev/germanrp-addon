@@ -1,59 +1,78 @@
 package eu.germanrp.addon.core.widget;
 
 import eu.germanrp.addon.api.models.Graffiti;
-import eu.germanrp.addon.core.services.GraffitiService;
+import eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent;
+import eu.germanrp.addon.core.common.events.GraffitiUpdateEvent;
 import net.labymod.api.client.gui.hud.binding.category.HudWidgetCategory;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidget;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidgetConfig;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextLine;
 import net.labymod.api.client.gui.icon.Icon;
+import net.labymod.api.event.Subscribe;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
-import java.time.Instant;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+import static eu.germanrp.addon.core.GermanRPAddon.utilService;
+import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.SECOND;
+import static java.time.Duration.ZERO;
+import static java.util.Arrays.stream;
+import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.HIDDEN;
+import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.VISIBLE;
 
 public class GraffitiHudWidget extends TextHudWidget<TextHudWidgetConfig> {
 
-    private final GraffitiService graffitiService;
+    private final Map<Graffiti, Duration> graffitiRemainingTimes = new HashMap<>();
 
-    public GraffitiHudWidget(HudWidgetCategory widgetCategory, Icon icon, GraffitiService graffitiService) {
+    public GraffitiHudWidget(HudWidgetCategory widgetCategory, Icon icon) {
         super("graffiti");
-        this.graffitiService = graffitiService;
-        this.bindCategory(widgetCategory);
-        this.setIcon(icon);
+        bindCategory(widgetCategory);
+        setIcon(icon);
     }
 
     @Override
     public void load(TextHudWidgetConfig config) {
         super.load(config);
 
-        Arrays.stream(Graffiti.values())
+        stream(Graffiti.values())
                 .forEach(graffiti -> {
-                    final TextLine line = this.createLine(graffiti.getName(), Duration.ZERO);
-                    line.setState(TextLine.State.HIDDEN);
+                    TextLine textLine = createLine(graffiti.getName(), ZERO);
+                    textLine.setState(HIDDEN);
                 });
     }
 
-    @Override
-    public void onTick(boolean isEditorContext) {
-        super.onTick(isEditorContext);
+    @Subscribe
+    public void onGraffitiUpdate(@NotNull GraffitiUpdateEvent event) {
+        Graffiti graffiti = event.getGraffiti();
+        Duration remainingTime = event.getRemainingTime();
 
-        graffitiService.getGraffitiMap().forEach(this::renderGraffiti);
+        this.graffitiRemainingTimes.put(graffiti, remainingTime);
+        updateTextLines();
     }
 
-    private void renderGraffiti(final Graffiti graffiti, final Instant endInstant) {
-        final Instant now = Instant.now();
-
-        final Duration between = Duration.between(now, endInstant);
-
-        final TextLine textLine = lines.get(graffiti.ordinal());
-
-        if (now.isAfter(endInstant)) {
-            textLine.updateAndFlush("verfügbar");
-            return;
+    @Subscribe
+    public void onGermanRPAddonTick(@NotNull GermanRPAddonTickEvent event) {
+        if (event.isPhase(SECOND)) {
+            updateTextLines();
         }
+    }
 
-        textLine.setState(TextLine.State.VISIBLE);
-        textLine.updateAndFlush(String.format("%02d:%02d", between.toMinutes(), between.toSecondsPart()));
+    private void updateTextLines() {
+        this.graffitiRemainingTimes.forEach((graffiti, remainingTime) -> {
+            TextLine textLine = this.lines.get(graffiti.ordinal());
+
+            if (remainingTime.isZero()) {
+                textLine.setState(HIDDEN);
+                return;
+            }
+
+            remainingTime = remainingTime.minusSeconds(1);
+            this.graffitiRemainingTimes.put(graffiti, remainingTime);
+
+            textLine.setState(VISIBLE);
+            textLine.updateAndFlush(utilService.text().parseTimer(remainingTime.toSeconds()));
+        });
     }
 }
