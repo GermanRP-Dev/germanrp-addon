@@ -1,4 +1,4 @@
-package eu.germanrp.addon.core.common.events.plant;
+package eu.germanrp.addon.api.events.plant;
 
 import eu.germanrp.addon.api.models.PlantType;
 import lombok.Data;
