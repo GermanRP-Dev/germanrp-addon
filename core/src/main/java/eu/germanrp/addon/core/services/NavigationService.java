@@ -5,16 +5,18 @@ import net.labymod.api.util.math.position.Position;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Comparator.comparingDouble;
 
 public class NavigationService {
 
-    public <T extends Nearest> T getNearest(Position position, @NotNull List<T> elements) {
+    public <T extends Nearest> Optional<T> getNearest(@NotNull Position position, @NotNull List<T> elements) {
         if (elements.isEmpty()) {
-            throw new IllegalArgumentException("Elements must not be empty");
+            return Optional.empty();
         }
 
-        return elements.stream().min(comparingDouble(t -> t.getPosition().distanceSquared(position))).get();
+        return elements.stream().min(comparingDouble(t -> t.getPosition().distanceSquared(position)));
     }
+
 }
