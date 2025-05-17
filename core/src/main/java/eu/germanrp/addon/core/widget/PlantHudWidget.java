@@ -9,6 +9,7 @@ import eu.germanrp.addon.api.models.PlantType;
 import eu.germanrp.addon.api.events.plant.PlantCreateEvent;
 import eu.germanrp.addon.api.events.plant.PlantDestroyEvent;
 import eu.germanrp.addon.api.events.plant.PlantPacketReceiveEvent;
+import eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent;
 import eu.germanrp.addon.core.executor.PlaySoundExecutor;
 import lombok.val;
 import net.labymod.api.client.component.Component;
@@ -43,6 +44,7 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
     private TextLine yieldLine;
 
     private @Nullable Plant plant;
+    private boolean hudNeedsUpdate = false;
 
     protected PlantHudWidget(
             final String id,
@@ -79,7 +81,20 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
             return;
         }
 
+        if(!hudNeedsUpdate) {
+            return;
+        }
+
+        this.hudNeedsUpdate = false;
         updateLines();
+    }
+
+    @Subscribe
+    @SuppressWarnings("unused")
+    public void onGermanRPAddonTickEvent(final GermanRPAddonTickEvent event) {
+        if (event.isPhase(GermanRPAddonTickEvent.Phase.SECOND)) {
+            this.hudNeedsUpdate = true;
+        }
     }
 
     public abstract Plant getDummyPlant();
