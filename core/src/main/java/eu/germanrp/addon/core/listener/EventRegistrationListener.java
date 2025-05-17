@@ -12,9 +12,11 @@ import org.jetbrains.annotations.NotNull;
 import java.time.Duration;
 import java.util.List;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static eu.germanrp.addon.core.GermanRPAddon.navigationService;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.GRAFFITI_ADD;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.GRAFFITI_TIME;
+import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.MINUTE;
 import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.SECOND;
 import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.SECOND_3;
 import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.SECOND_30;
@@ -28,14 +30,6 @@ import static net.labymod.api.Laby.labyAPI;
 import static net.labymod.api.event.Phase.POST;
 
 public class EventRegistrationListener {
-
-    private static final Pattern GRAFFITI_ADDED_PATTERN = Pattern.compile(
-            "^► \\[✦] (?:\\[GR])?(?<player>\\w{3,16}) hat (?:ein|das) Graffiti(?: angebracht)? \\((\\S*\\s*\\S*)\\)(?:!| aufgefrischt!)$"
-    );
-    private static final Pattern GRAFFITI_TIME_PATTERN = Pattern.compile(
-            "^► Diese Stelle kann noch nicht wieder besprüht werden \\((?:(?<minutes>\\d+)\\s+Minuten?)?(?:\\s*(?<seconds>\\d+)\\s+Sekunden?)?\\)$",
-            Pattern.CANON_EQ
-    );
 
     private final GermanRPAddon addon;
 
@@ -51,7 +45,7 @@ public class EventRegistrationListener {
 
         this.addon.logger().info("plain: " + plainText);
 
-        Matcher graffitiAddedMatcher = GRAFFITI_ADDED_PATTERN.matcher(plainText);
+        Matcher graffitiAddedMatcher = GRAFFITI_ADD.getPattern().matcher(plainText);
         if (graffitiAddedMatcher.matches()) {
             String graffitiName = graffitiAddedMatcher.group(2);
             this.addon.logger().info("[{}] Graffiti {} remaining time: 15:00", getClass(), graffitiName);
@@ -62,7 +56,7 @@ public class EventRegistrationListener {
             return;
         }
 
-        Matcher graffitiTimeMatcher = GRAFFITI_TIME_PATTERN.matcher(plainText);
+        Matcher graffitiTimeMatcher = GRAFFITI_TIME.getPattern().matcher(plainText);
         if (graffitiTimeMatcher.matches()) {
             long minutes = ofNullable(graffitiTimeMatcher.group("minutes")).map(Long::parseLong).orElse(0L);
             long seconds = ofNullable(graffitiTimeMatcher.group("seconds")).map(Long::parseLong).orElse(0L);
@@ -110,7 +104,7 @@ public class EventRegistrationListener {
 
             // 1 MINUTE
             if (this.currentTick % 1200 == 0) {
-                labyAPI().eventBus().fire(new GermanRPAddonTickEvent(GermanRPAddonTickEvent.Phase.MINUTE));
+                labyAPI().eventBus().fire(new GermanRPAddonTickEvent(MINUTE));
             }
         }
     }
