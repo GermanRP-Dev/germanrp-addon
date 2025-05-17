@@ -128,6 +128,10 @@
             },
             "graffiti": {
                 "name": "Graffiti"
+            },
+            "majorEvent": {
+                "name": "Großakti",
+                "countdown": "Countdown"
             }
         },
         "widget": {
@@ -140,6 +144,12 @@
                 "progressValue": "%s/%smin",
                 "yieldKey": "Erlös",
                 "yieldValue": "%s%s %s"
+            },
+            "majorEvent": {
+                "eventKey": "Event",
+                "eventValue": "Apothekenraub",
+                "countdownKey": "Countdown",
+                "countdownValue": "%s:%s%s"
             }
         }
     }

@@ -22,7 +22,10 @@ public enum GlobalRegexRegistry {
     GRAFFITI_TIME(compile("^► Diese Stelle kann noch nicht wieder besprüht werden \\((?:(?<minutes>\\d+)\\s+Minuten?)?(?:\\s*(?<seconds>\\d+)\\s+Sekunden?)?\\)$")),
     PLANT_HARVEST(compile("^► Du hast \\S* (\\S+) mit \\d+(?: Stück|x|g)? Erlös geerntet\\.$")),
     WANTED_ADD(compile("► \\[✦] Neue Fahndung: (\\w{3,16}|\\[GR]\\w{3,16})")),
-    WANTED_REMOVE(compile("► \\[✦] (\\w{3,16}|\\[GR]\\w{3,16}) hat die Fahndung von (\\w{3,16}|\\[GR]\\w{3,16}) gelöscht"));
-
+    WANTED_REMOVE(compile("► \\[✦] (\\w{3,16}|\\[GR]\\w{3,16}) hat die Fahndung von (\\w{3,16}|\\[GR]\\w{3,16}) gelöscht")),
+    BOMBE_START(compile("")),
+    SHOP_RAUB(compile("^► Die Fraktion (.+?) hat den Apothekenraub gestartet!$")),
+    APOTHEKEN_RAUB(compile("^► Die Fraktion (.+?) hat den Apothekenraub gestartet!$")),
+    JUWELEN_RAUB(compile("^► Die Fraktion (.+?) hat den Apothekenraub gestartet!$"));
     private final Pattern pattern;
 }

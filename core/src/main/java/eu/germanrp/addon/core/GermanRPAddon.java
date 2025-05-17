@@ -119,5 +119,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerListener(serverJoinListener);
         registerListener(new EventRegistrationListener(this));
         registerListener(new NameTagListener(this));
+        registerListener(new PlantListener(this));
+        registerListener(new GraffitiListener(this));
     }
 }
