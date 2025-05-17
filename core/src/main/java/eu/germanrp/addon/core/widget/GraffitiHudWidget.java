@@ -1,6 +1,7 @@
 package eu.germanrp.addon.core.widget;
 
 import eu.germanrp.addon.api.models.Graffiti;
+import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent;
 import eu.germanrp.addon.core.common.events.GraffitiUpdateEvent;
 import net.labymod.api.client.gui.hud.binding.category.HudWidgetCategory;
@@ -15,7 +16,6 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
-import static eu.germanrp.addon.core.GermanRPAddon.utilService;
 import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.SECOND;
 import static java.time.Duration.ZERO;
 import static java.util.Arrays.stream;
@@ -25,11 +25,13 @@ import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.VISIB
 public class GraffitiHudWidget extends TextHudWidget<TextHudWidgetConfig> {
 
     public static final Map<Graffiti, Duration> GRAFFITI_REMAINING_TIMES = new HashMap<>();
+    private final GermanRPAddon addon;
 
-    public GraffitiHudWidget(HudWidgetCategory widgetCategory, Icon icon) {
+    public GraffitiHudWidget(HudWidgetCategory widgetCategory, Icon icon, GermanRPAddon addon) {
         super("graffiti");
         bindCategory(widgetCategory);
         setIcon(icon);
+        this.addon = addon;
     }
 
     @Override
@@ -72,7 +74,7 @@ public class GraffitiHudWidget extends TextHudWidget<TextHudWidgetConfig> {
             GRAFFITI_REMAINING_TIMES.put(graffiti, remainingTime);
 
             textLine.setState(VISIBLE);
-            textLine.updateAndFlush(utilService.text().parseTimer(remainingTime.toSeconds()));
+            textLine.updateAndFlush(addon.getUtilService().text().parseTimer(remainingTime.toSeconds()));
         });
     }
 }
