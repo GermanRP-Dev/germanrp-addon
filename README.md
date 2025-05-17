@@ -1,68 +1,26 @@
-# GermanRP Utils
-GermanRP Addon ist ein LabyMod Addon, welches das Spielerlebnis auf dem Server GermanRP.eu verbessern und erleichtern soll.\
-Das Addon und dessen Funktionen sind vom Server (GermanRP.eu) ausdrücklich erlaubt und es besteht keine Gefahr, für die Verwendung, eine Bestrafung zu bekommen.
+# GermanRP Addon
 
-## Derzeitige Features:
-**Hotkeys**
-- Tempomat: Tempomat wird (de-)aktiviert und kann mit extra Hotkeys in 10er-Schritten verändert werden
-- Job Befehl: Bei beispielsweise Transport-Jobs, wird via Hotkey direkt der passende Befehl zum Abgeben eingegeben
-- Motor An/Aus: Der Motor vom Fahrzeug kann als Fahrer an-/ausgeschaltet werden
-- SoSi An/Aus: Das Sondersignal des Fahrzeugs kann hiermit direkt ein-/ausgeschaltet werden
-- SoSi Stumm/Laut: Das Sondersignal des Fahrzeugs kann hiermit stumm/laut geschaltet werden
-- Blinker: Die Blinker des Fahrzeugs (Links, Rechts & Warn) können hiermit leichter verwendet werden
+Willkommen beim offiziellen **LabyMod 4 Addon für den [GermanRP.eu](https://germanrp.eu) Minecraft Server**!
 
-**Kontostand & Bargeld Anzeige**
-- Widget, dass dir deinen aktuellen Kontostand bzw. dein aktuelles Bargeld anzeigt\
-	<sub>(Ingame unter /settings -> Benachrichtungen das LabyMod Economy-Display muss aktiviert sein!)</sub>
+Dieses Addon befindet sich aktuell noch in der **Entwicklung** (*Work in Progress*) und soll die Funktionen des früheren
+[*GermanRP Utils*](https://germanrp.eu/forum/index.php?thread/17173-germanrp-utils-labymod-addon/) übernehmen und
+erweitern.
 
-**PayDay Timer**
-- Widget, dass dir die aktuelle Zeit vom PayDay anzeigt
+## 🔧 Ziel des Projekts
 
-**Gehaltsanzeige**
-- Widget, dass dir dein nächstes Gehalt am PayDay anzeigt\
-  <sub>(In den Einstellungen des Addons kann eingestellt werden, welche Gehälter angezeigt werden)</sub>
+Das Ziel des Projekts ist es, ein modernes LabyMod 4 Addon bereitzustellen, welches:
 
-**Hydrationsanzeige**
-- Widget, dass dir deine derzeitige Hydration anzeigt
+* die Spielerfahrung auf dem **GermanRP Server** verbessert,
+* nützliche Funktionen wie Widgets, QoL-Features und Ingame-Informationen bietet,
+* und langfristig wartbar sowie offen für Community-Beiträge ist.
 
-**Hydrations-Einstellungen**
-- Möglichkeit die Hydrierungsnachrichten zu deaktivieren, in der Actionbar anzuzeigen
-oder bis zu einem bestimmten Punkt auszublenden
+## 📦 Aktueller Stand
 
-**Großaktivitäten Timer**
-- Widget, bei dem während Großaktivitäten wie Bomben, Gewerberäuben, etc. ein Timer aufwärts läuft
-und die bereits vergangene Zeit seit Beginn anzeigt\
-  <sub>(In den Einstellungen des Addons kann eingestellt werden, welche Timer sichbar sein sollen)</sub>
+* 🔄 **Work in Progress**: Die Implementierung der ursprünglichen Features aus *GermanRP Utils* hat Priorität.
+* ✅ Ziel: Kompatibilität mit **LabyMod 4 und Minecraft 1.21.5**
 
-**Schwarzmarkt Timer**
-- Widget, welches die Zeit bis zum nächsten Schwarzmarkt anzeigt\n
+## 👨‍💻 Mitwirken
 
-**Plantagen Stats**
-- Widget, dass dir anzeigt die Zeit & maximale Zeit der Plantage, als auch den Ertrag anzeigt\
-  <sub>(In den Einstellungen des Addons kann eingestellt werden, welche Stats man sehen möchte)</sub>
+Dieses Addon wird **von der Community entwickelt** und vom **GermanRP Serverteam** betreut.
 
-**Gangwar Stats**
-- Widget, dass dir anzeigt welche Fraktionen derzeit einen Gangwar um welches Gebiet führen und wie der derzeitige Punktestand ist\
-<sub>(In den Einstellungen des Addons kann eingestellt werden, welche Stats man sehen möchte)</sub>
-
-**Anti-Chat-OOC**
-- Schreibt man eine OOC-Nachricht in den normalen Chat mit einem "ooc", so wird diese Nachricht automatisch in den OOC-Chat geschrieben
-
-**Levelfortschritt**
-- Widget, dass dir anzeigt welches Level du hast und wieviel XP du hast bzw benötigst bis zum nächsten Level\
-<sub>(In den Einstellungen des Addons kann eingestellt werden, wie es angezeigt werden soll)</sub>
-
-**Letzter Skill**
-- Widget, dass dir anzeigt welche Skill du zuletzt erhalten hast und wieviel XP du hast bzw benötigst bis zum nächsten Level\
-<sub>(In den Einstellungen des Addons kann eingestellt werden, wie es angezeigt werden soll)</sub>
-
-**Herzen Anzeige**
-- Widget, dass dir deine derzeitigen HP anzeigt.
-
-**Sprachunterstützung**
-- Die Sprachunterstützung passt einzelne deutsche Wörter an, zu den der Fraktion angepassten Äquivalenten\n
-
-**Custom NameTag**
-- Hiermit kannst du für deine Fraktionsmitglieder, Personen mit Kopfgeld, Personen auf der Darklist und Polizisten die Farbe des NameTags anpassen\
-<sub>(Beachte dass immer nur eine Farbe angezeigt wird absteigend folgender Reihenfolge: Frakmitglieder -> Kopfgeld -> Darklist -> Polizei)\
-(Für die Verwendung von diesem Feature ist es nötig vorher & zum updaten, die entsprechenden Befehle: /members /kopfgelder /darklist zu verwenden)</sub>
+**Pull Requests und Issues sind willkommen!**
