@@ -4,6 +4,7 @@ import eu.germanrp.addon.api.models.Graffiti;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent;
 import eu.germanrp.addon.core.common.events.GraffitiUpdateEvent;
+import lombok.val;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import net.labymod.api.event.client.lifecycle.GameTickEvent;
@@ -50,7 +51,7 @@ public class EventRegistrationListener {
             String graffitiName = graffitiAddedMatcher.group(2);
             this.addon.logger().info("[{}] Graffiti {} remaining time: 15:00", getClass(), graffitiName);
             Graffiti.fromName(graffitiName).ifPresent(graffiti -> {
-                Duration remainingTime = ofSeconds(15 * 60);
+                Duration remainingTime = ofSeconds(900); // 15 minutes
                 fireEvent(new GraffitiUpdateEvent(graffiti, remainingTime));
             });
             return;
@@ -61,12 +62,25 @@ public class EventRegistrationListener {
             long minutes = ofNullable(graffitiTimeMatcher.group("minutes")).map(Long::parseLong).orElse(0L);
             long seconds = ofNullable(graffitiTimeMatcher.group("seconds")).map(Long::parseLong).orElse(0L);
 
-            Graffiti nearestGraffiti = navigationService.getNearest(null, List.of(Graffiti.values()));
+            val clientPlayer = this.addon.labyAPI().minecraft().getClientPlayer();
+
+            if (clientPlayer == null) {
+                return;
+            }
+
+
+            val nearestGraffitiCandidate =
+                    navigationService.getNearest(clientPlayer.position(), List.of(Graffiti.values()));
+
+            if (nearestGraffitiCandidate.isEmpty()) {
+                return;
+            }
+
+            Graffiti nearestGraffiti = nearestGraffitiCandidate.get();
             this.addon.logger().info("[{}] Graffiti {} remaining time: {}:{}", getClass(), nearestGraffiti.getName(), graffitiTimeMatcher.group("minutes"), graffitiTimeMatcher.group("seconds"));
 
             Duration remainingTime = ofSeconds(minutes * 60 + seconds);
             fireEvent(new GraffitiUpdateEvent(nearestGraffiti, remainingTime));
-            return;
         }
     }
 
