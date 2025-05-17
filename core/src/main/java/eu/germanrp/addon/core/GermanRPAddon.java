@@ -30,8 +30,8 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
     public static final String NAMESPACE = "germanrpaddon";
 
-    public static NavigationService navigationService;
-    public static UtilService utilService;
+    private NavigationService navigationService;
+    private UtilService utilService;
 
     private AddonPlayer player;
 
@@ -49,8 +49,8 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     protected void load() {
         this.player = new DefaultAddonPlayer(this);
 
-        navigationService = new NavigationService();
-        utilService = new UtilService(this);
+        this.navigationService = new NavigationService();
+        this.utilService = new UtilService(this);
 
         this.logger().info("Loaded germanrpaddon");
     }

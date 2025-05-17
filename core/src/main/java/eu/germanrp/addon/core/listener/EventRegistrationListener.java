@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 
-import static eu.germanrp.addon.core.GermanRPAddon.navigationService;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.*;
 import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.*;
 import static java.time.Duration.ofSeconds;
@@ -77,7 +76,7 @@ public class EventRegistrationListener {
 
 
             val nearestGraffitiCandidate =
-                    navigationService.getNearest(clientPlayer.position(), List.of(Graffiti.values()));
+                    addon.getNavigationService().getNearest(clientPlayer.position(), List.of(Graffiti.values()));
 
             if (nearestGraffitiCandidate.isEmpty()) {
                 return;
