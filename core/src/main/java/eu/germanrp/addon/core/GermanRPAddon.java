@@ -1,20 +1,17 @@
 package eu.germanrp.addon.core;
 
 import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
-import eu.germanrp.addon.core.common.AddonPlayer;
-import eu.germanrp.addon.core.common.DefaultAddonPlayer;
 import eu.germanrp.addon.core.executor.HitResultExecutor;
 import eu.germanrp.addon.core.generated.DefaultReferenceStorage;
 import eu.germanrp.addon.core.listener.EventRegistrationListener;
+import eu.germanrp.addon.core.listener.GraffitiListener;
 import eu.germanrp.addon.core.listener.NameTagListener;
 import eu.germanrp.addon.core.listener.PlantListener;
 import eu.germanrp.addon.core.listener.ServerJoinListener;
+import eu.germanrp.addon.core.services.GraffitiService;
 import eu.germanrp.addon.core.services.NavigationService;
 import eu.germanrp.addon.core.services.UtilService;
-import eu.germanrp.addon.core.widget.GraffitiHudWidget;
-import eu.germanrp.addon.core.widget.HeilkrautpflanzeHudWidget;
-import eu.germanrp.addon.core.widget.RoseHudWidget;
-import eu.germanrp.addon.core.widget.StoffHudWidget;
+import eu.germanrp.addon.core.widget.*;
 import eu.germanrp.addon.core.widget.category.GermanRPAddonWidgetCategory;
 import lombok.Getter;
 import net.labymod.api.addon.LabyAddon;
@@ -33,8 +30,6 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     public static NavigationService navigationService;
     public static UtilService utilService;
 
-    private AddonPlayer player;
-
     private HitResultExecutor hitResultExecutor;
 
     private ServerJoinListener serverJoinListener;
@@ -43,23 +38,17 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private RoseHudWidget roseHudWidget;
     private StoffHudWidget stoffHudWidget;
     private GraffitiHudWidget graffitiHudWidget;
-
-    @Override
-    protected void load() {
-        this.player = new DefaultAddonPlayer(this);
-
-        navigationService = new NavigationService();
-        utilService = new UtilService(this);
-
-        this.logger().info("Loaded germanrpaddon");
-    }
+    private GraffitiService graffitiService;
+    private MajorEventWidget majorEventWidget;
 
     @Override
     protected void enable() {
         this.registerSettingCategory();
 
         registerVersionDependantExecutors();
+        registerServices();
         registerWidgets();
+        registerServices();
         registerListener();
         registerCommands();
 
@@ -73,6 +62,12 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
     private void registerCommands() {
         registerCommand(new GraffitiCommand(this));
+    }
+
+    private void registerServices() {
+        this.graffitiService = new GraffitiService();
+        navigationService = new NavigationService();
+        utilService = new UtilService(this);
     }
 
     private void registerVersionDependantExecutors() {
@@ -97,7 +92,11 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         );
         this.graffitiHudWidget = new GraffitiHudWidget(
                 widgetCategory,
-                Icon.texture(ResourceLocation.create(NAMESPACE, "images/graffiti.png"))
+                Icon.texture(ResourceLocation.create(NAMESPACE, "images/graffiti.png")),
+                this.graffitiService
+        );
+        this.majorEventWidget = new MajorEventWidget(
+                this
         );
 
         widgetRegistry.categoryRegistry().register(widgetCategory);
@@ -105,6 +104,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         widgetRegistry.register(roseHudWidget);
         widgetRegistry.register(stoffHudWidget);
         widgetRegistry.register(graffitiHudWidget);
+        widgetRegistry.register(majorEventWidget);
     }
 
     private void registerListener() {
@@ -114,5 +114,6 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerListener(new EventRegistrationListener(this));
         registerListener(new NameTagListener(this));
         registerListener(new PlantListener(this));
+        registerListener(new GraffitiListener(this));
     }
 }
