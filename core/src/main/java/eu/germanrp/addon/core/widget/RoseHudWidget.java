@@ -3,6 +3,7 @@ package eu.germanrp.addon.core.widget;
 import eu.germanrp.addon.api.models.Plant;
 import eu.germanrp.addon.api.models.PlantFactory;
 import eu.germanrp.addon.api.models.PlantType;
+import eu.germanrp.addon.core.executor.PlaySoundExecutor;
 import net.labymod.api.client.gui.hud.binding.category.HudWidgetCategory;
 import net.labymod.api.client.gui.icon.Icon;
 
@@ -16,12 +17,18 @@ public class RoseHudWidget extends PlantHudWidget {
             3
     );
 
-    public RoseHudWidget(HudWidgetCategory category, Icon icon) {
-        super("rose", category, icon);
+    public RoseHudWidget(HudWidgetCategory category, Icon icon, PlaySoundExecutor playSoundExecutor) {
+        super("rose", category, icon, playSoundExecutor);
     }
 
     @Override
     public Plant getDummyPlant() {
         return DUMMY_PLANT;
     }
+
+    @Override
+    public PlantType getPlantType() {
+        return PlantType.ROSE;
+    }
+
 }
