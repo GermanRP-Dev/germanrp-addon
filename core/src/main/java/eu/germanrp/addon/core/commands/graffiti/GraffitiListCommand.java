@@ -44,7 +44,7 @@ public class GraffitiListCommand extends SubCommand {
                     .append(text(": ", DARK_GRAY))
                     .append(text(remainingTime != ZERO ? utilService.text().parseTimer(remainingTime.toSeconds()) : "Cooldown abgelaufen", GRAY));
 
-            this.addon.getPlayer().sendMessage(component);
+            //this.addon.getPlayer().sendMessage(component);
         });
 
         return true;
