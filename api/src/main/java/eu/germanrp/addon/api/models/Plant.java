@@ -1,7 +1,10 @@
 package eu.germanrp.addon.api.models;
 
+import eu.germanrp.addon.api.events.plant.PlantReadyToHarvestEvent;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
+
+import static net.labymod.api.Laby.fireEvent;
 
 @Data
 public abstract sealed class Plant permits PlantHeilkraut, PlantRose, PlantStoff {
@@ -13,7 +16,7 @@ public abstract sealed class Plant permits PlantHeilkraut, PlantRose, PlantStoff
     protected int maxTime;
     protected int missedTimes;
 
-    public Plant(PlantType plantType, boolean active, int value, int currentTime) {
+    protected Plant(PlantType plantType, boolean active, int value, int currentTime) {
         this.yieldUnit = plantType.getYieldUnit();
         this.active = active;
         this.value = value;
@@ -26,9 +29,16 @@ public abstract sealed class Plant permits PlantHeilkraut, PlantRose, PlantStoff
 
     public void tick(final int newYield) {
         currentTime += 1;
+
+        if (currentTime == maxTime) {
+            fireEvent(new PlantReadyToHarvestEvent(this));
+        }
+
         if (currentTime >= maxTime) {
             missedTimes += 1;
         }
+
         this.value = newYield;
     }
+
 }

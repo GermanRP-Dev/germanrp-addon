@@ -4,6 +4,7 @@ import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
 import eu.germanrp.addon.core.common.AddonPlayer;
 import eu.germanrp.addon.core.common.DefaultAddonPlayer;
 import eu.germanrp.addon.core.executor.HitResultExecutor;
+import eu.germanrp.addon.core.executor.PlaySoundExecutor;
 import eu.germanrp.addon.core.generated.DefaultReferenceStorage;
 import eu.germanrp.addon.core.listener.EventRegistrationListener;
 import eu.germanrp.addon.core.listener.NameTagListener;
@@ -35,6 +36,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private AddonPlayer player;
 
     private HitResultExecutor hitResultExecutor;
+    private PlaySoundExecutor playSoundExecutor;
 
     private ServerJoinListener serverJoinListener;
 
@@ -76,6 +78,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
     private void registerVersionDependantExecutors() {
         hitResultExecutor = ((DefaultReferenceStorage) this.referenceStorageAccessor()).hitResultExecutor();
+        playSoundExecutor = ((DefaultReferenceStorage) this.referenceStorageAccessor()).playSoundExecutor();
     }
 
     private void registerWidgets() {
@@ -84,15 +87,18 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
         this.heilkrautpflanzeHudWidget = new HeilkrautpflanzeHudWidget(
                 widgetCategory,
-                Icon.texture(ResourceLocation.create(NAMESPACE, "images/heilkrautpflanze.png"))
+                Icon.texture(ResourceLocation.create(NAMESPACE, "images/heilkrautpflanze.png")),
+                playSoundExecutor
         );
         this.roseHudWidget = new RoseHudWidget(
                 widgetCategory,
-                Icon.texture(ResourceLocation.create(NAMESPACE, "images/rose.png"))
+                Icon.texture(ResourceLocation.create(NAMESPACE, "images/rose.png")),
+                playSoundExecutor
         );
         this.stoffHudWidget = new StoffHudWidget(
                 widgetCategory,
-                Icon.texture(ResourceLocation.create(NAMESPACE, "images/stoffpflanze.png"))
+                Icon.texture(ResourceLocation.create(NAMESPACE, "images/stoffpflanze.png")),
+                playSoundExecutor
         );
         this.graffitiHudWidget = new GraffitiHudWidget(
                 widgetCategory,

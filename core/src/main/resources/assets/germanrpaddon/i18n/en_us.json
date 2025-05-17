@@ -105,11 +105,9 @@
         },
         "message": {
             "plant": {
-                "heilkrautpflanze": {
-                    "fertilize": "Du musst deine Heilkrautpflanze jetzt düngen.",
-                    "water": "Du musst deine Heilkrautpflanze jetzt wässern."
-                },
-                "harvest": "%s kann geerntet werden."
+                "harvest": "%s kann geerntet werden.",
+                "fertilize": "%s muss jetzt gedüngt werden.",
+                "water": "%s muss jetzt bewässert werden."
             }
         },
         "hudWidget": {

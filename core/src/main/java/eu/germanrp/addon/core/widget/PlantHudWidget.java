@@ -1,14 +1,18 @@
 package eu.germanrp.addon.core.widget;
 
+import eu.germanrp.addon.api.events.plant.PlantNeedsFertilizerEvent;
+import eu.germanrp.addon.api.events.plant.PlantNeedsWaterEvent;
+import eu.germanrp.addon.api.events.plant.PlantReadyToHarvestEvent;
 import eu.germanrp.addon.api.models.Plant;
 import eu.germanrp.addon.api.models.PlantFactory;
 import eu.germanrp.addon.api.models.PlantType;
-import eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent;
 import eu.germanrp.addon.core.common.events.plant.PlantCreateEvent;
 import eu.germanrp.addon.core.common.events.plant.PlantDestroyEvent;
 import eu.germanrp.addon.core.common.events.plant.PlantPacketReceiveEvent;
+import eu.germanrp.addon.core.executor.PlaySoundExecutor;
 import lombok.val;
 import net.labymod.api.client.component.Component;
+import net.labymod.api.client.component.format.TextColor;
 import net.labymod.api.client.gui.hud.binding.category.HudWidgetCategory;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidget;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidgetConfig;
@@ -28,16 +32,28 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
             "germanrpaddon.widget.plant.yieldKey");
     private static final String PROGRESS_TRANSLATABLE_VALUE = "germanrpaddon.widget.plant.progressValue";
     private static final String YIELD_TRANSLATABLE_VALUE = "germanrpaddon.widget.plant.yieldValue";
+    private static final String PLANT_HARVEST_MESSAGE = "germanrpaddon.message.plant.harvest";
+    private static final String PLANT_FERTILIZE_MESSAGE = "germanrpaddon.message.plant.fertilize";
+    private static final String PLANT_WATER_MESSAGE = "germanrpaddon.message.plant.water";
+    private static final TextColor NOTIFICATION_COLOR = TextColor.color(0xFF75151E);
+
+    private final PlaySoundExecutor playSoundExecutor;
 
     private TextLine progressLine;
     private TextLine yieldLine;
 
     private @Nullable Plant plant;
 
-    protected PlantHudWidget(final String id, final HudWidgetCategory category, final Icon icon) {
+    protected PlantHudWidget(
+            final String id,
+            final HudWidgetCategory category,
+            final Icon icon,
+            final PlaySoundExecutor playSoundExecutor
+    ) {
         super(id);
         this.bindCategory(category);
         this.setIcon(icon);
+        this.playSoundExecutor = playSoundExecutor;
     }
 
     @Override
@@ -92,7 +108,7 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
             return;
         }
 
-        if(plant == null) {
+        if (plant == null) {
             return;
         }
 
@@ -110,6 +126,54 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
         this.plant = null;
         this.progressLine.setState(State.HIDDEN);
         this.yieldLine.setState(State.HIDDEN);
+    }
+
+    @Subscribe
+    @SuppressWarnings("unused")
+    public void onPlantReadyToHarvestEvent(final PlantReadyToHarvestEvent event) {
+        if (!event.getPlant().getType().equals(getPlantType())) {
+            return;
+        }
+
+        playSoundExecutor.playNotificationSound();
+        this.labyAPI.minecraft().chatExecutor().displayClientMessage(
+                Component.translatable(
+                        PLANT_HARVEST_MESSAGE,
+                        Component.text(event.getPlant().getType().getDisplayName())
+                ).color(NOTIFICATION_COLOR)
+        );
+    }
+
+    @Subscribe
+    @SuppressWarnings("unused")
+    public void onPlantNeedsFertilizerEvent(final PlantNeedsFertilizerEvent event) {
+        if (!event.getPlant().getType().equals(getPlantType())) {
+            return;
+        }
+
+        playSoundExecutor.playNotificationSound();
+        this.labyAPI.minecraft().chatExecutor().displayClientMessage(
+                Component.translatable(
+                        PLANT_FERTILIZE_MESSAGE,
+                        Component.text(event.getPlant().getType().getDisplayName())
+                ).color(NOTIFICATION_COLOR)
+        );
+    }
+
+    @Subscribe
+    @SuppressWarnings("unused")
+    public void onPlantNeedsWaterEvent(final PlantNeedsWaterEvent event) {
+        if (!event.getPlant().getType().equals(getPlantType())) {
+            return;
+        }
+
+        playSoundExecutor.playNotificationSound();
+        this.labyAPI.minecraft().chatExecutor().displayClientMessage(
+                Component.translatable(
+                        PLANT_WATER_MESSAGE,
+                        Component.text(event.getPlant().getType().getDisplayName())
+                ).color(NOTIFICATION_COLOR)
+        );
     }
 
     private void updateLines() {
