@@ -1,29 +1,36 @@
 package eu.germanrp.addon.core.listener;
 
+import com.google.gson.JsonObject;
 import eu.germanrp.addon.api.models.Graffiti;
+import eu.germanrp.addon.api.models.PlantType;
+import eu.germanrp.addon.api.network.PlantPacket;
 import eu.germanrp.addon.core.GermanRPAddon;
+import eu.germanrp.addon.core.Utils;
 import eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent;
 import eu.germanrp.addon.core.common.events.GraffitiUpdateEvent;
+import eu.germanrp.addon.core.common.events.LegacyGermanRPUtilsPayloadEvent;
+import eu.germanrp.addon.core.common.events.plant.PlantCreateEvent;
+import eu.germanrp.addon.core.common.events.plant.PlantDestroyEvent;
+import eu.germanrp.addon.core.common.events.plant.PlantPacketReceiveEvent;
 import lombok.val;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import net.labymod.api.event.client.lifecycle.GameTickEvent;
+import net.labymod.api.event.client.network.server.NetworkPayloadEvent;
+import net.labymod.api.event.client.network.server.ServerDisconnectEvent;
+import net.labymod.api.util.GsonUtil;
+import net.labymod.serverapi.api.payload.io.PayloadReader;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 
 import static eu.germanrp.addon.core.GermanRPAddon.navigationService;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.GRAFFITI_ADD;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.GRAFFITI_TIME;
-import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.MINUTE;
-import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.SECOND;
-import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.SECOND_3;
-import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.SECOND_30;
-import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.SECOND_5;
-import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.TICK;
-import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.TICK_5;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.*;
+import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.*;
 import static java.time.Duration.ofSeconds;
 import static java.util.Optional.ofNullable;
 import static net.labymod.api.Laby.fireEvent;
@@ -77,11 +84,104 @@ public class EventRegistrationListener {
             }
 
             Graffiti nearestGraffiti = nearestGraffitiCandidate.get();
-            this.addon.logger().info("[{}] Graffiti {} remaining time: {}:{}", getClass(), nearestGraffiti.getName(), graffitiTimeMatcher.group("minutes"), graffitiTimeMatcher.group("seconds"));
+            this.addon.logger().info(
+                    "[{}] Graffiti {} remaining time: {}:{}",
+                    getClass(),
+                    nearestGraffiti.getName(),
+                    graffitiTimeMatcher.group("minutes"),
+                    graffitiTimeMatcher.group("seconds")
+            );
 
             Duration remainingTime = ofSeconds(minutes * 60 + seconds);
             fireEvent(new GraffitiUpdateEvent(nearestGraffiti, remainingTime));
         }
+    }
+
+    @Subscribe
+    @SuppressWarnings("unused")
+    public void onChatReceiveEvent(final ChatReceiveEvent event) {
+        final String message = event.chatMessage().getPlainText();
+
+        final Optional<PlantType> sowType = PlantType.fromSowMessage(message);
+        if (sowType.isPresent()) {
+            fireEvent(new PlantCreateEvent(sowType.get()));
+            return;
+        }
+
+        final Matcher matcher = PLANT_HARVEST.getPattern().matcher(message);
+
+        if (!matcher.find()) {
+            return;
+        }
+
+        final String displayName = matcher.group(1);
+        PlantType.fromDisplayName(displayName).ifPresent(plantType -> fireEvent(new PlantDestroyEvent(plantType)));
+    }
+
+    @Subscribe
+    @SuppressWarnings("unused")
+    public void onNetworkPayloadEvent(final NetworkPayloadEvent event) {
+        if (!Utils.isLegacyAddonPacket(event.identifier())) {
+            return;
+        }
+
+        val payloadReader = new PayloadReader(event.getPayload());
+        val header = payloadReader.readString();
+
+        if (!header.startsWith("GRAddon-")) {
+            return;
+        }
+
+        val payload = payloadReader.readString();
+        val jsonObject = GsonUtil.DEFAULT_GSON.fromJson(payload, JsonObject.class);
+
+        this.addon.logger().info("Legacy packet received: {} - {}", header, jsonObject);
+
+        fireEvent(new LegacyGermanRPUtilsPayloadEvent(header, jsonObject));
+    }
+
+    @Subscribe
+    @SuppressWarnings("unused")
+    public void onLegacyGermanRPUtilsPayloadEvent(final LegacyGermanRPUtilsPayloadEvent event) {
+        switch (event.getHeader()) {
+            case "GRAddon-Plant" -> {
+                val payloadContent = event.getPayloadContent();
+                val type = PlantType.fromPaketType(payloadContent.get("type").getAsString());
+
+                if (type.isEmpty()) {
+                    return;
+                }
+
+                val time = payloadContent.getAsJsonObject("time");
+
+                val plantPaket = new PlantPacket(
+                        payloadContent.get("active").getAsBoolean(),
+                        type.get(),
+                        payloadContent.get("value").getAsInt(),
+                        time.get("current").getAsInt(),
+                        time.get("max").getAsInt()
+                );
+
+                // Ignore the first paket that is sent by the server
+                // which would normally be used to create a plant
+                // we use the chat message to create a plant
+                // and not the first packet
+                if (plantPaket.getCurrentTime() == 0) {
+                    return;
+                }
+
+                fireEvent(new PlantPacketReceiveEvent(plantPaket));
+            }
+            default -> {
+                // Ignore unknown pakets
+            }
+        }
+    }
+
+    @Subscribe
+    @SuppressWarnings("unused")
+    public void onServerDisconnectEvent(final ServerDisconnectEvent event) {
+        Arrays.stream(PlantType.values()).forEach(plantType -> fireEvent(new PlantDestroyEvent(plantType)));
     }
 
     @Subscribe

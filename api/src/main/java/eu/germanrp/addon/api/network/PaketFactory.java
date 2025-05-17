@@ -37,7 +37,7 @@ public final class PaketFactory {
 
                 val time = jsonObject.getAsJsonObject("time");
 
-                val plantPaket = new PlantPaket(
+                val plantPaket = new PlantPacket(
                         jsonObject.get("active").getAsBoolean(),
                         type.get(),
                         jsonObject.get("value").getAsInt(),

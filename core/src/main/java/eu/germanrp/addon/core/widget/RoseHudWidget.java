@@ -24,4 +24,10 @@ public class RoseHudWidget extends PlantHudWidget {
     public Plant getDummyPlant() {
         return DUMMY_PLANT;
     }
+
+    @Override
+    public PlantType getPlantType() {
+        return PlantType.ROSE;
+    }
+
 }
