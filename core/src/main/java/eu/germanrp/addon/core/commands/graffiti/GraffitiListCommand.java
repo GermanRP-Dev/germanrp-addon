@@ -8,7 +8,6 @@ import net.labymod.api.util.math.position.Position;
 
 import java.time.Duration;
 
-import static eu.germanrp.addon.core.GermanRPAddon.utilService;
 import static eu.germanrp.addon.core.widget.GraffitiHudWidget.GRAFFITI_REMAINING_TIMES;
 import static java.time.Duration.ZERO;
 import static java.util.Arrays.stream;
@@ -42,7 +41,7 @@ public class GraffitiListCommand extends SubCommand {
                             .hoverEvent(showText(text(naviCommand)))
                             .clickEvent(runCommand(naviCommand)))
                     .append(text(": ", DARK_GRAY))
-                    .append(text(remainingTime != ZERO ? utilService.text().parseTimer(remainingTime.toSeconds()) : "Cooldown abgelaufen", GRAY));
+                    .append(text(remainingTime != ZERO ? addon.getUtilService().text().parseTimer(remainingTime.toSeconds()) : "Cooldown abgelaufen", GRAY));
 
             this.addon.getPlayer().sendMessage(component);
         });
