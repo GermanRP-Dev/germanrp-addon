@@ -46,16 +46,10 @@ jobs:
         env:
           VERSION: ${{ env.VERSION }}
         run: ./gradlew build --full-stacktrace
-
-      - name: List build folder
-        run: ls -R build/libs/
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: germanrp-addon
-          path: build/libs/germanrp-addon-release.jar
-
+          path: build/libs/GermanRPAddon-nightly-*.jar
 
   release:
 
@@ -79,7 +73,7 @@ jobs:
             --notes "$RELEASE_NOTES" \
             --prerelease \
             --target develop \
-            ./artifacts/germanrp-addon-release.jar
+            ./artifacts/GermanRPAddon-nightly-*.jar
       - uses: actions/download-artifact@v4
         with:
           name: germanrp-addon
