@@ -49,6 +49,8 @@ jobs:
           name: germanrp-addon
           path: build/libs/germanrp-addon-release.jar
 
+      - name: List build artifacts
+        run: ls -R build/libs
 
   release:
 
