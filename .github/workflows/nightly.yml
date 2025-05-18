@@ -16,7 +16,7 @@ concurrency:
 jobs:
   build:
 
-    name: 🎉 Release GermanRP Addon (Nightly)
+    name: ⚒️ Build GermanRP Addon (Nightly)
     runs-on: ubuntu-latest
 
     steps:
@@ -53,8 +53,8 @@ jobs:
 
   release:
 
+    name: 🎉 Release GermanRP Addon (Nightly)
     if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-    name: 🚀 Nightly Release
     runs-on: ubuntu-latest
 
     steps:
@@ -65,8 +65,8 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v4
         with:
-           name: germanrp-addon
-           path: ./artifacts
+          name: germanrp-addon
+          path: ./artifacts
 
       - name: Create a Nightly Release
         env:
