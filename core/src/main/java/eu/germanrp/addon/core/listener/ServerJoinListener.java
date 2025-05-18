@@ -12,10 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.BOUNTY_LIST_ENTRY;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.DARK_LIST_ENTRY;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.TITLE_WANTED_LIST;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.TITLE_FACTION_MEMBER_LIST;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.*;
 
 public class ServerJoinListener {
 
@@ -39,6 +36,7 @@ public class ServerJoinListener {
     @Getter
     private boolean isGR = false;
     private FactionName factionName;
+    private boolean wasAFK;
 
     public ServerJoinListener(GermanRPAddon addon) {
         this.addon = addon;
@@ -86,7 +84,6 @@ public class ServerJoinListener {
         if (!this.isGR || !this.justJoined) {
             return;
         }
-
         String message = event.chatMessage().getPlainText();
         if (factionName.equals(FactionName.NONE)) {
             this.justJoined = false;
@@ -100,7 +97,7 @@ public class ServerJoinListener {
 
         if (this.faction) {
             event.setCancelled(true);
-            final Matcher matcher = BOUNTY_LIST_ENTRY.getPattern().matcher(message);
+            final Matcher matcher = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
             if (!matcher.find()) {
                 if (!message.startsWith("        (Insgesamt ") || !message.endsWith(" verfügbar)")) {
                     return;
@@ -129,9 +126,14 @@ public class ServerJoinListener {
                 }
                 if (this.bounty) {
                     event.setCancelled(true);
-                    final Matcher matcher = BOUNTY_LIST_ENTRY.getPattern().matcher(message);
+                    final Matcher matcher = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
                     if (!matcher.find()) {
                         this.bounty = false;
+                        if(this.wasAFK){
+                            Laby.references().chatExecutor().chat("/afk");
+                            this.wasAFK = false;
+                            return;
+                        }
                         this.justJoined = false;
                         return;
                     }
@@ -148,14 +150,36 @@ public class ServerJoinListener {
                 }
                 if (this.wanted) {
                     event.setCancelled(true);
-                    final Matcher matcher = BOUNTY_LIST_ENTRY.getPattern().matcher(message);
+                    final Matcher matcher = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
                     if (!matcher.find()) {
                         this.wanted = false;
+                        if(this.wasAFK){
+
+                            Laby.references().chatExecutor().chat("/afk");
+                            this.wasAFK = false;
+                            return;
+                        }
                         this.justJoined = false;
+                        return;
                     }
                     this.wantedPlayers.add(matcher.group(1).replace("[GR]", ""));
+                    return;
                 }
             }
+        }
+        if(message.equals("► [System] Du bist jetzt als abwesend markiert.")){
+            event.setCancelled(true);
+            return;
+        }
+        if(message.equals("► Verwende erneut \"/afk\", um den AFK-Modus zu verlassen.")){
+            event.setCancelled(true);
+            this.justJoined = false;
+            return;
+        }
+        if(message.equals("► [System] Du bist jetzt wieder anwesend.")){
+            event.setCancelled(true);
+            this.wasAFK = true;
+            return;
         }
         if (message.isEmpty()) {
             emptyMessages++;

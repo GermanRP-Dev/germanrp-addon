@@ -43,8 +43,8 @@ public class MajorEventWidget  extends TextHudWidget<TextHudWidgetConfig> {
         this.eventNameLine = this.createLine(EVENT_KEY, i18nProgressValue);
         this.countDownLine = this.createLine(COUNTDOWN_KEY, i18nYieldValue);
 
-        this.eventNameLine.setState(TextLine.State.VISIBLE);
-        this.countDownLine.setState(TextLine.State.VISIBLE);
+        this.eventNameLine.setState(TextLine.State.HIDDEN);
+        this.countDownLine.setState(TextLine.State.HIDDEN);
     }
     public void reset() {
         this.majorEvent = false;
