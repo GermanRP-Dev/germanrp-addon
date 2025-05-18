@@ -1,6 +1,8 @@
 name: Nightly Release
 
 on:
+  pull_request:
+    branches: [ "develop" ]
   push:
     branches: [ "develop" ]
   schedule:
@@ -47,8 +49,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: germanrp-addon
-          path: build/libs/germanrp-addon-release.jar
-
+          path: build/libs/GermanRPAddon-nightly-*.jar
 
   release:
 
@@ -72,7 +73,7 @@ jobs:
             --notes "$RELEASE_NOTES" \
             --prerelease \
             --target develop \
-            ./artifacts/germanrp-addon-release.jar
+            ./artifacts/GermanRPAddon-nightly-*.jar
       - uses: actions/download-artifact@v4
         with:
           name: germanrp-addon
