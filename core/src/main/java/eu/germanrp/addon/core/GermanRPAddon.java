@@ -3,11 +3,8 @@ package eu.germanrp.addon.core;
 import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
 import eu.germanrp.addon.core.executor.HitResultExecutor;
 import eu.germanrp.addon.core.generated.DefaultReferenceStorage;
-import eu.germanrp.addon.core.listener.EventRegistrationListener;
+import eu.germanrp.addon.core.listener.*;
 //import eu.germanrp.addon.core.listener.GraffitiListener;
-import eu.germanrp.addon.core.listener.NameTagListener;
-import eu.germanrp.addon.core.listener.PlantListener;
-import eu.germanrp.addon.core.listener.ServerJoinListener;
 //import eu.germanrp.addon.core.services.GraffitiService;
 import eu.germanrp.addon.core.services.NavigationService;
 import eu.germanrp.addon.core.services.UtilService;
@@ -115,6 +112,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerListener(new EventRegistrationListener(this));
         registerListener(new NameTagListener(this));
         registerListener(new PlantListener(this));
+        registerListener(new ChatListener(this));
         //registerListener(new GraffitiListener(this));
     }
 }

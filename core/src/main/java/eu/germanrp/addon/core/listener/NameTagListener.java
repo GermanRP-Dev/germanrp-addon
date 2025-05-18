@@ -67,6 +67,7 @@ public class NameTagListener {
                 replace("literal{ }, literal{◈}[style={color=gray}]]]", "§7 ◈").
                 replace("literal{ }, literal{◈}[style={color=light_purple}]]]", "§d ◈").
                 replace("literal{ }, literal{Ⓣ}[style={color=dark_purple}], ", "§5 Ⓣ").
+                replace("literal{ }, literal{Ⓣ}[style={color=dark_purple}]]]", "§5 Ⓣ").
                 replace("literal{ }, literal{◈}[style={color=red}]]]", "§c ◈").
                 replace("empty", "");
 
