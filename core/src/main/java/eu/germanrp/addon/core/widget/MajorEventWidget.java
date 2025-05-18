@@ -2,6 +2,8 @@ package eu.germanrp.addon.core.widget;
 
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent;
+import lombok.Getter;
+import lombok.Setter;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.gui.hud.binding.category.HudWidgetCategory;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidget;
@@ -10,9 +12,8 @@ import net.labymod.api.client.gui.hud.hudwidget.text.TextLine;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.util.I18n;
 import java.time.Duration;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
-
+@Getter @Setter
 public class MajorEventWidget  extends TextHudWidget<TextHudWidgetConfig> {
 
     private final GermanRPAddon addon;
@@ -22,7 +23,6 @@ public class MajorEventWidget  extends TextHudWidget<TextHudWidgetConfig> {
     private static final Component COUNTDOWN_KEY = Component.translatable("germanrpaddon.widget.majorEvent.countdownKey");
     private static final String EVENT_VALUE = "germanrpaddon.widget.majorEvent.eventValue";
     private static final String COUNTDOWN_VALUE = "germanrpaddon.widget.majorEvent.countdownValue";
-
     private TextLine eventNameLine;
     private TextLine countDownLine;
 
@@ -64,6 +64,6 @@ public class MajorEventWidget  extends TextHudWidget<TextHudWidgetConfig> {
         Duration duration = Duration.between(now, countdownTarget);
         this.countDownLine.updateAndFlush(String.format("\n%02d:%02d", duration.toMinutes(), duration.toSeconds()));
 
-
     }
+
 }
