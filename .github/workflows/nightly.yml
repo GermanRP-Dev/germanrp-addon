@@ -1,0 +1,82 @@
+name: Release
+
+on:
+  push:
+    branches: [ "develop" ]
+  schedule:
+    - cron: '55 1 * * *' # 5 Minutes before Server restart
+  workflow_dispatch:
+
+run-name: Build+${{ github.run_number }} release/${{ github.sha }}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+
+    name: 🎉 Release GermanRP Addon (Nightly)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Set build version
+        run: |
+          VERSION=nightly-$(date -u +'%Y-%m-%d')-$(git rev-parse --short HEAD)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Build with Gradle
+        env:
+          VERSION: ${{ env.VERSION }}
+        run: ./gradlew build --full-stacktrace
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: germanrp-addon
+          path: build/libs/germanrp-addon-release.jar
+
+  release:
+
+    if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+    name: 🚀 Nightly Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+           name: germanrp-addon
+           path: ./artifacts
+
+      - name: Create a Nightly Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG_NAME="nightly"
+          RELEASE_NOTES="Dies ist ein automatisch erstellter Nightly-Build. Er kann neue Features oder Änderungen enthalten, die noch nicht fertiggestellt sind. Dieser Build ist nur für Tests gedacht. Es kann passieren, dass er Fehler hat oder nicht richtig funktioniert."
+          gh release create "$TAG_NAME" \
+            --title "${{ env.VERSION }}" \
+            --notes "$RELEASE_NOTES" \
+            --prerelease \
+            --target develop \
+            ./artifacts/germanrp-addon-release.jar
