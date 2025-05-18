@@ -1,6 +1,8 @@
 name: Nightly Release
 
 on:
+  pull_request:
+    branches: [ "develop" ]
   push:
     branches: [ "develop" ]
   schedule:
@@ -44,7 +46,12 @@ jobs:
         env:
           VERSION: ${{ env.VERSION }}
         run: ./gradlew build --full-stacktrace
-      - uses: actions/upload-artifact@v4
+
+      - name: List build folder
+        run: ls -R build/libs/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
           name: germanrp-addon
           path: build/libs/germanrp-addon-release.jar
