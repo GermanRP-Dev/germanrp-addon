@@ -61,6 +61,15 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: germanrp-addon
+          path: artifacts/
+
+      - name: List artifacts
+        run: ls -lahR artifacts/
+
       - name: Create a Nightly Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -72,8 +81,4 @@ jobs:
             --notes "$RELEASE_NOTES" \
             --prerelease \
             --target develop \
-            ./artifacts/GermanRPAddon-nightly-*.jar
-      - uses: actions/download-artifact@v4
-        with:
-          name: germanrp-addon
-          path: ./artifacts
+            artifacts/GermanRPAddon-nightly-*.jar
