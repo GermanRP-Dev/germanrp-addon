@@ -47,7 +47,7 @@ jobs:
       run: ./gradlew build --full-stacktrace
 
     - name: Upload Build Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@4.6.2
       with:
         name: germanrp-addon-release
         path: build/libs/germanrp-addon-release.jar
@@ -64,7 +64,7 @@ jobs:
           fetch-depth: 0
 
       - name: Download Build Artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@4.3.0
         with:
           name: germanrp-addon-release
           path: ./artifacts
