@@ -35,15 +35,22 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
-    - name: Build with Gradle (Nightly)
+    - name: Set Build Version
       if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+      run: |
+        VERSION=nightly-$(git rev-parse --short HEAD)
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+    - name: Build with Gradle
       env:
-        VERSION: nightly
+        VERSION: $ {{ env.VERSION }}
       run: ./gradlew build --full-stacktrace
 
-    - name: Build with Gradle (Regular)
-      if: ${{ github.event_name == 'pull_request' }}
-      run: ./gradlew build --full-stacktrace
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: germanrp-addon-release
+        path: build/libs/germanrp-addon-release.jar
 
   release:
 
@@ -56,6 +63,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: germanrp-addon-release
+          path: ./artifacts
+
       - name: Create a Nightly Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -66,4 +79,5 @@ jobs:
             --title "$RELEASE_NAME" \
             --notes "Hinweis: Dies ist ein Nightly-Build. Dieser Build wird automatisch generiert und kann Fehler enthalten oder nicht ordnungsgemäß funktionieren." \
             --prerelease \
-            --target develop
+            --target develop \
+            ./artifacts/germanrp-addon-release.jar
