@@ -3,6 +3,10 @@ name: Build
 on:
   pull_request:
     branches: [ "main", "develop" ]
+  schedule:
+    - cron: "55 1 * * *" # 5 Minutes before Server restart
+  workflow_dispatch:
+
 
 run-name: Build+${{ github.run_number }} build/${{ github.sha }}
 
@@ -31,5 +35,35 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
-    - name: Build with Gradle
+    - name: Build with Gradle (Nightly)
+      if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+      env:
+        VERSION: nightly
       run: ./gradlew build --full-stacktrace
+
+    - name: Build with Gradle (Regular)
+      if: ${{ github.event_name == 'pull_request' }}
+      run: ./gradlew build --full-stacktrace
+
+  release:
+
+    if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+    name: 🚀 Nightly Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create a Nightly Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG_NAME="nightly"
+          RELEASE_NAME="Nightly Build - $(date -u +"%Y-%m-%d %H:%M:%S")"
+          gh release create "$TAG_NAME" \
+            --title "$RELEASE_NAME" \
+            --notes "Hinweis: Dies ist ein Nightly-Build. Dieser Build wird automatisch generiert und kann Fehler enthalten oder nicht ordnungsgemäß funktionieren." \
+            --prerelease \
+            --target develop
