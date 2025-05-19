@@ -23,7 +23,7 @@ jobs:
         name: Artifacts
         path: artifacts/
 
-    - if: inputs.nightly == 'true'
+    - if: inputs.nightly == true
       name: Create release notes
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -37,7 +37,7 @@ jobs:
           --target develop \
           artifacts/*-release.jar
 
-    - if: inputs.nightly == 'false'
+    - if: inputs.nightly == false
       name: Create release notes nightly
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
