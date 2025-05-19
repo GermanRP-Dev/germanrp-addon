@@ -15,11 +15,7 @@ import net.labymod.api.event.client.render.PlayerNameTagRenderEvent;
 import java.util.List;
 import java.util.regex.Matcher;
 
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.BOUNTY_ADD;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.DARK_LIST_ADD;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.DARK_LIST_REMOVE;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.WANTED_ADD;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.WANTED_REMOVE;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.*;
 
 public class NameTagListener {
 
@@ -63,6 +59,7 @@ public class NameTagListener {
         String suffix = team.getSuffix().toString().
                 replace("empty[siblings=[", "").
                 replace("literal{ }, literal{Ⓑ}[style={color=aqua}], ", "§b Ⓑ").
+                replace("literal{ }, literal{Ⓑ}[style={color=aqua}]]]", "§b Ⓑ").
                 replace("literal{ }, literal{☣}[style={color=dark_gray}], ", "§8 ☣").
                 replace("literal{ }, literal{☣}[style={color=dark_gray}]]]", "§8 ☣").
                 replace("literal{ }, literal{◈}[style={color=aqua}]]]", "§b ◈").
@@ -70,7 +67,10 @@ public class NameTagListener {
                 replace("literal{ }, literal{◈}[style={color=gray}]]]", "§7 ◈").
                 replace("literal{ }, literal{◈}[style={color=light_purple}]]]", "§d ◈").
                 replace("literal{ }, literal{Ⓣ}[style={color=dark_purple}], ", "§5 Ⓣ").
-                replace("literal{ }, literal{◈}[style={color=red}]]]", "§c ◈");
+                replace("literal{ }, literal{Ⓣ}[style={color=dark_purple}]]]", "§5 Ⓣ").
+                replace("literal{ }, literal{◈}[style={color=red}]]]", "§c ◈").
+                replace("empty", "");
+
         boolean gr = prefix.contains("GR");
 
         if (prefix.contains("red") || prefix.contains("dark_red") || prefix.contains("dark_aqua")
@@ -79,10 +79,10 @@ public class NameTagListener {
         }
         if (serverJoinListener.getMembers() != null) {
             List<String> memberlist = serverJoinListener.getMembers();
-            NameTag factiontag = nameTagSubConfig.factionColor().get();
+            NameTag factionTag = nameTagSubConfig.factionColor().get();
 
-            if (memberlist.contains(playerName) && factiontag != NameTag.NONE) {
-                String var17 = factiontag.getColor();
+            if (memberlist.contains(playerName) && factionTag != NameTag.NONE) {
+                String var17 = factionTag.getColor();
                 prefix = var17 + (gr ? "[GR]" : "");
                 event.setNameTag(Component.text(prefix + playerName + suffix));
                 return;
@@ -93,10 +93,10 @@ public class NameTagListener {
             case BADFRAK -> {
                 if (serverJoinListener.getBounties() != null) {
                     List<String> bountylist = serverJoinListener.getBounties();
-                    NameTag bountytag = nameTagSubConfig.bountyColor().get();
+                    NameTag bountyTag = nameTagSubConfig.bountyColor().get();
 
-                    if (bountylist.contains(playerName) && bountytag != NameTag.NONE) {
-                        String color = bountytag.getColor();
+                    if (bountylist.contains(playerName) && bountyTag != NameTag.NONE) {
+                        String color = bountyTag.getColor();
                         prefix = color + (gr ? "[GR]" : "");
                         event.setNameTag(Component.text(prefix + playerName + suffix));
                         return;
@@ -155,6 +155,11 @@ public class NameTagListener {
                 if (nametagBountyAddMatcher.find()) {
                     serverJoinListener.getBounties().add(nametagBountyAddMatcher.group(1).replace("[GR]", ""));
                     return;
+                }
+
+                final Matcher nametagBountyRemoveMatcher = BOUNTY_REMOVE.getPattern().matcher(message);
+                if (nametagBountyRemoveMatcher.find()){
+                    serverJoinListener.getBounties().remove(nametagBountyRemoveMatcher.group(1).replace("[GR]", ""));
                 }
             }
             case STAAT -> {
