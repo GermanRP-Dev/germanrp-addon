@@ -45,7 +45,6 @@ jobs:
       run: |
         gh release create "$tag" \
           --title "$tag" \
-          --notes "$RELEASE_NOTES" \
           --target main \
           --generate-notes \
           artifacts/*-release.jar
