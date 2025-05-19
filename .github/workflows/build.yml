@@ -18,10 +18,6 @@ on:
 
 run-name: Build+${{ github.run_number }} build/${{ github.sha }}
 
-concurrency:
-  group: build-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
-
 jobs:
   build:
 
