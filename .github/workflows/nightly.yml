@@ -42,6 +42,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: Set build version
+      id: set_build_version
       run: |
         VERSION=nightly-$(git rev-parse --short develop)
         echo "VERSION=$VERSION" >> $GITHUB_ENV
@@ -65,4 +66,4 @@ jobs:
     uses: ./.github/workflows/create-release-notes.yml
     with:
       nightly: true
-      version: ${{ needs.nightly.outputs.VERSION }}
+      version: ${{ steps.set_build_version.outputs.VERSION }}
