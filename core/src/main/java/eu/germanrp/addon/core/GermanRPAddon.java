@@ -72,7 +72,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     }
 
     private void registerCommands() {
-        registerCommand(new GraffitiCommand(this));
+        registerCommand(new GraffitiCommand(this, graffitiHudWidget.getConfig()));
     }
 
     private void registerVersionDependantExecutors() {

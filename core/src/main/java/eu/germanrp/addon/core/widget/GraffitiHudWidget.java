@@ -13,29 +13,31 @@ import net.labymod.api.event.Subscribe;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.SECOND;
+import static eu.germanrp.addon.core.widget.GraffitiHudWidget.GraffitiHudWidgetConfig;
 import static java.time.Duration.ZERO;
 import static java.util.Arrays.stream;
 import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.HIDDEN;
 import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.VISIBLE;
 
-public class GraffitiHudWidget extends TextHudWidget<TextHudWidgetConfig> {
+public class GraffitiHudWidget extends TextHudWidget<GraffitiHudWidgetConfig> {
 
-    public static final Map<Graffiti, Duration> GRAFFITI_REMAINING_TIMES = new HashMap<>();
+    public static final Map<Graffiti, Duration> GRAFFITI_REMAINING_TIMES = new EnumMap<>(Graffiti.class);
+
     private final GermanRPAddon addon;
 
     public GraffitiHudWidget(HudWidgetCategory widgetCategory, Icon icon, GermanRPAddon addon) {
-        super("graffiti");
+        super("graffiti", GraffitiHudWidgetConfig.class);
         bindCategory(widgetCategory);
         setIcon(icon);
         this.addon = addon;
     }
 
     @Override
-    public void load(TextHudWidgetConfig config) {
+    public void load(GraffitiHudWidgetConfig config) {
         super.load(config);
 
         stream(Graffiti.values())
@@ -46,6 +48,7 @@ public class GraffitiHudWidget extends TextHudWidget<TextHudWidgetConfig> {
     }
 
     @Subscribe
+    @SuppressWarnings("unused")
     public void onGraffitiUpdate(@NotNull GraffitiUpdateEvent event) {
         Graffiti graffiti = event.getGraffiti();
         Duration remainingTime = event.getRemainingTime();
@@ -55,6 +58,7 @@ public class GraffitiHudWidget extends TextHudWidget<TextHudWidgetConfig> {
     }
 
     @Subscribe
+    @SuppressWarnings("unused")
     public void onGermanRPAddonTick(@NotNull GermanRPAddonTickEvent event) {
         if (event.isPhase(SECOND)) {
             updateTextLines();
@@ -77,4 +81,8 @@ public class GraffitiHudWidget extends TextHudWidget<TextHudWidgetConfig> {
             textLine.updateAndFlush(addon.getUtilService().text().parseTimer(remainingTime.toSeconds()));
         });
     }
+
+    public static class GraffitiHudWidgetConfig extends TextHudWidgetConfig {
+    }
+
 }
