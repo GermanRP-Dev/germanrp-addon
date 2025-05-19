@@ -25,6 +25,9 @@ jobs:
 
     if: needs.new_commits_check.outputs.HAS_NEW_COMMITS == 'true'
 
+    outputs:
+      version: ${{ steps.set_build_version.outputs.version }}
+
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -44,14 +47,16 @@ jobs:
     needs: retrieve_version
     uses: ./.github/workflows/build.yml
     with:
-      version: ${{ needs.retrieve_version.steps.set_build_version.outputs.version }}
+      version: ${{ needs.retrieve_version.outputs.version }}
       upload_artifacts: 'true'
 
   release:
 
     name: 🎉 Create release
-    needs: build
+    needs:
+      - build
+      - retrieve_version
     uses: ./.github/workflows/create-release.yml
     with:
       nightly: true
-      version: ${{ steps.set_build_version.outputs.VERSION }}
+      version: ${{ needs.retrieve_version.outputs.version }}
