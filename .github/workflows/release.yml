@@ -17,43 +17,19 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  build:
+
+    name: 🚀 Build release
+    uses: ./.github/workflows/build.yml
+    with:
+      version: ${{ inputs.version }}
+      upload_artifacts: 'true'
+
   release:
 
-    name: 🎉 Release GermanRP Addon
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        ref: main
-        fetch-depth: 0
-
-    - name: Set up JDK
-      uses: actions/setup-java@v4
-      with:
-        java-version: '21'
-        distribution: 'temurin'
-        cache: gradle
-
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-
-    - name: Build with Gradle
-      env:
-        VERSION: ${{ inputs.version }}
-      run: ./gradlew build --full-stacktrace
-
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: Artifacts
-        path: build/libs/*-release.jar
-
-  create_release_notes:
-
-    name: 📑 Create release notes
-    needs: release
-    uses: ./.github/workflows/create-release-notes.yml
+    name: 🎉 Create release
+    needs: build
+    uses: ./.github/workflows/create-release.yml
     with:
       nightly: false
       version: ${{ inputs.version }}

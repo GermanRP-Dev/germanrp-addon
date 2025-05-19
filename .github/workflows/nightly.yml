@@ -17,53 +17,41 @@ jobs:
     name: ⚙️ New commits check
     uses: ./.github/workflows/new-commits-check.yml
 
-  nightly:
+  retrieve_version:
 
-    name: 🌙 Release GermanRP Addon (Nightly)
+    name: 📑 Retrieve version
     needs: new_commits_check
     runs-on: ubuntu-latest
 
     if: needs.new_commits_check.outputs.HAS_NEW_COMMITS == 'true'
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout
+      uses: actions/checkout@v4
       with:
         ref: develop
         fetch-depth: 0
 
-    - name: Set up JDK
-      uses: actions/setup-java@v4
-      with:
-        java-version: '21'
-        distribution: 'temurin'
-        cache: gradle
-
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-
     - name: Set build version
       id: set_build_version
       run: |
-        VERSION=nightly-$(git rev-parse --short develop)
-        echo "VERSION=$VERSION" >> $GITHUB_ENV
-        echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+        VERSION=nightly/${{ github.sha }}
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-    - name: Build with Gradle
-      env:
-        VERSION: ${{ env.VERSION }}
-      run: ./gradlew build --full-stacktrace
+  build:
 
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: Artifacts
-        path: build/libs/*-release.jar
+    name: 🌙 Build nightly release
+    needs: retrieve_version
+    uses: ./.github/workflows/build.yml
+    with:
+      version: ${{ needs.retrieve_version.steps.set_build_version.outputs.version }}
+      upload_artifacts: 'true'
 
-  create_release_notes:
+  release:
 
-    name: 📑 Create release notes
-    needs: nightly
-    uses: ./.github/workflows/create-release-notes.yml
+    name: 🎉 Create release
+    needs: build
+    uses: ./.github/workflows/create-release.yml
     with:
       nightly: true
       version: ${{ steps.set_build_version.outputs.VERSION }}
