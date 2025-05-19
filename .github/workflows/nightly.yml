@@ -1,84 +1,67 @@
-name: Nightly Release
+name: Release (Nightly)
 
 on:
-  push:
-    branches: [ "develop" ]
   schedule:
-    - cron: '55 1 * * *' # 5 Minutes before Server restart
+  - cron: '55 1 * * *' # 5 Minutes before Server restart
   workflow_dispatch:
 
-run-name: Build+${{ github.run_number }} release/${{ github.sha }}
+run-name: Build+${{ github.run_number }} nightly/${{ github.sha }}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
-  build:
+  new_commits_check:
 
-    name: ⚒️ Build GermanRP Addon (Nightly)
+    name: ⚙️ New commits check
+    uses: ./.github/workflows/new-commits-check.yml
+
+  nightly:
+
+    name: 🌙 Release GermanRP Addon (Nightly)
+    needs: new_commits_check
     runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: main
-          fetch-depth: 0
-
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: gradle
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
-      - name: Set build version
-        run: |
-          VERSION=nightly-$(date -u +'%Y-%m-%d')-$(git rev-parse --short HEAD)
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-
-      - name: Build with Gradle
-        env:
-          VERSION: ${{ env.VERSION }}
-        run: ./gradlew build --full-stacktrace
-      - uses: actions/upload-artifact@v4
-        with:
-          name: germanrp-addon
-          path: build/libs/GermanRPAddon-nightly-*.jar
-
-  release:
-
-    name: 🎉 Release GermanRP Addon (Nightly)
-    needs: build
-    if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-    runs-on: ubuntu-latest
+    if: needs.new_commits_check.outputs.HAS_NEW_COMMITS == 'true'
 
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+    - uses: actions/checkout@v4
+      with:
+        ref: develop
+        fetch-depth: 0
 
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: germanrp-addon
-          path: artifacts/
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: gradle
 
-      - name: List artifacts
-        run: ls -lahR artifacts/
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
 
-      - name: Create a Nightly Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          TAG_NAME="nightly"
-          RELEASE_NOTES="Dies ist ein automatisch erstellter Nightly-Build. Er kann neue Features oder Änderungen enthalten, die noch nicht fertiggestellt sind. Dieser Build ist nur für Tests gedacht. Es kann passieren, dass er Fehler hat oder nicht richtig funktioniert."
-          gh release create "$TAG_NAME" \
-            --title "${{ env.VERSION }}" \
-            --notes "$RELEASE_NOTES" \
-            --prerelease \
-            --target develop \
-            artifacts/GermanRPAddon-nightly-*.jar
+    - name: Set build version
+      run: |
+        VERSION=nightly-$(git rev-parse --short develop)
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+    - name: Build with Gradle
+      env:
+        VERSION: ${{ env.VERSION }}
+      run: ./gradlew build --full-stacktrace
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: Artifacts
+        path: build/libs/*-release.jar
+
+  create_release_notes:
+
+    name: 📑 Create release notes
+    needs: nightly
+    uses: ./.github/workflows/create-release-notes.yml
+    with:
+      nightly: true
+      version: ${{ env.VERSION }}
