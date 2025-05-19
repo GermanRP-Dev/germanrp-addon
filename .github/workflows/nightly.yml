@@ -48,7 +48,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       version: ${{ needs.retrieve_version.outputs.version }}
-      upload_artifacts: 'true'
+      upload_artifacts: true
 
   release:
 

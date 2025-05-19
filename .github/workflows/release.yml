@@ -23,7 +23,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       version: ${{ inputs.version }}
-      upload_artifacts: 'true'
+      upload_artifacts: true
 
   release:
 
