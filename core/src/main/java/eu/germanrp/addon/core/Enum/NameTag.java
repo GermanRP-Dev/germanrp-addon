@@ -5,6 +5,9 @@
 
 package eu.germanrp.addon.core.Enum;
 
+import lombok.Getter;
+
+@Getter
 public enum NameTag {
 
     NONE("§f"),
@@ -29,7 +32,4 @@ public enum NameTag {
         this.color = color;
     }
 
-    public String getColor() {
-        return color;
-    }
 }

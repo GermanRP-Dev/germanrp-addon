@@ -7,7 +7,6 @@ import net.labymod.api.Laby;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import net.labymod.api.event.client.network.server.ServerJoinEvent;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -167,24 +166,23 @@ public class ServerJoinListener {
                 }
             }
         }
-        if(message.equals("► [System] Du bist jetzt als abwesend markiert.")){
-            event.setCancelled(true);
-            return;
-        }
-        if(message.equals("► Verwende erneut \"/afk\", um den AFK-Modus zu verlassen.")){
-            event.setCancelled(true);
-            this.justJoined = false;
-            return;
-        }
-        if(message.equals("► [System] Du bist jetzt wieder anwesend.")){
-            event.setCancelled(true);
-            this.wasAFK = true;
-            return;
-        }
-        if (message.isEmpty()) {
-            emptyMessages++;
-            if (emptyMessages > 2) {
+        switch (message) {
+            case "► [System] Du bist jetzt als abwesend markiert." -> {
                 event.setCancelled(true);
+            }
+            case "► Verwende erneut \"/afk\", um den AFK-Modus zu verlassen." -> {
+                event.setCancelled(true);
+                this.justJoined = false;
+            }
+            case "► [System] Du bist jetzt wieder anwesend." -> {
+                event.setCancelled(true);
+                this.wasAFK = true;
+            }
+            case "" -> {
+                emptyMessages++;
+                if (emptyMessages > 2) {
+                    event.setCancelled(true);
+                }
             }
         }
     }

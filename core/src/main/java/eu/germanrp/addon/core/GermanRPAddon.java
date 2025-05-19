@@ -1,11 +1,15 @@
 package eu.germanrp.addon.core;
 
 import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
+import eu.germanrp.addon.core.common.AddonPlayer;
+import eu.germanrp.addon.core.common.DefaultAddonPlayer;
 import eu.germanrp.addon.core.executor.HitResultExecutor;
+import eu.germanrp.addon.core.executor.PlaySoundExecutor;
 import eu.germanrp.addon.core.generated.DefaultReferenceStorage;
+import eu.germanrp.addon.core.listener.EventRegistrationListener;
+import eu.germanrp.addon.core.listener.NameTagListener;
+import eu.germanrp.addon.core.listener.ServerJoinListener;
 import eu.germanrp.addon.core.listener.*;
-//import eu.germanrp.addon.core.listener.GraffitiListener;
-//import eu.germanrp.addon.core.services.GraffitiService;
 import eu.germanrp.addon.core.services.NavigationService;
 import eu.germanrp.addon.core.services.UtilService;
 import eu.germanrp.addon.core.widget.*;
@@ -24,10 +28,13 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
     public static final String NAMESPACE = "germanrpaddon";
 
-    public static NavigationService navigationService;
-    public static UtilService utilService;
+    private NavigationService navigationService;
+    private UtilService utilService;
+
+    private AddonPlayer player;
 
     private HitResultExecutor hitResultExecutor;
+    private PlaySoundExecutor playSoundExecutor;
 
     private ServerJoinListener serverJoinListener;
 
@@ -35,17 +42,24 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private RoseHudWidget roseHudWidget;
     private StoffHudWidget stoffHudWidget;
     private GraffitiHudWidget graffitiHudWidget;
-   // private GraffitiService graffitiService;
     private MajorEventWidget majorEventWidget;
+
+    @Override
+    protected void load() {
+        this.player = new DefaultAddonPlayer(this);
+
+        this.navigationService = new NavigationService();
+        this.utilService = new UtilService(this);
+
+        this.logger().info("Loaded germanrpaddon");
+    }
 
     @Override
     protected void enable() {
         this.registerSettingCategory();
 
         registerVersionDependantExecutors();
-        registerServices();
         registerWidgets();
-        registerServices();
         registerListener();
         registerCommands();
 
@@ -61,14 +75,9 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerCommand(new GraffitiCommand(this));
     }
 
-    private void registerServices() {
-       // this.graffitiService = new GraffitiService();
-        navigationService = new NavigationService();
-        utilService = new UtilService(this);
-    }
-
     private void registerVersionDependantExecutors() {
         hitResultExecutor = ((DefaultReferenceStorage) this.referenceStorageAccessor()).hitResultExecutor();
+
     }
 
     private void registerWidgets() {
@@ -77,21 +86,24 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
         this.heilkrautpflanzeHudWidget = new HeilkrautpflanzeHudWidget(
                 widgetCategory,
-                Icon.texture(ResourceLocation.create(NAMESPACE, "images/heilkrautpflanze.png"))
+                Icon.texture(ResourceLocation.create(NAMESPACE, "images/heilkrautpflanze.png")),
+                playSoundExecutor
         );
         this.roseHudWidget = new RoseHudWidget(
                 widgetCategory,
-                Icon.texture(ResourceLocation.create(NAMESPACE, "images/rose.png"))
+                Icon.texture(ResourceLocation.create(NAMESPACE, "images/rose.png")),
+                playSoundExecutor
         );
         this.stoffHudWidget = new StoffHudWidget(
                 widgetCategory,
-                Icon.texture(ResourceLocation.create(NAMESPACE, "images/stoffpflanze.png"))
+                Icon.texture(ResourceLocation.create(NAMESPACE, "images/stoffpflanze.png")),
+                playSoundExecutor
         );
-        /*this.graffitiHudWidget = new GraffitiHudWidget(
+        this.graffitiHudWidget = new GraffitiHudWidget(
                 widgetCategory,
                 Icon.texture(ResourceLocation.create(NAMESPACE, "images/graffiti.png")),
-                this.graffitiService
-        );*/
+                this
+        );
         this.majorEventWidget = new MajorEventWidget(
                 this,
                 widgetCategory
@@ -101,7 +113,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         widgetRegistry.register(heilkrautpflanzeHudWidget);
         widgetRegistry.register(roseHudWidget);
         widgetRegistry.register(stoffHudWidget);
-       // widgetRegistry.register(graffitiHudWidget);
+        widgetRegistry.register(graffitiHudWidget);
         widgetRegistry.register(majorEventWidget);
     }
 
@@ -111,8 +123,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerListener(serverJoinListener);
         registerListener(new EventRegistrationListener(this));
         registerListener(new NameTagListener(this));
-        registerListener(new PlantListener(this));
         registerListener(new ChatListener(this));
-        //registerListener(new GraffitiListener(this));
+
     }
 }

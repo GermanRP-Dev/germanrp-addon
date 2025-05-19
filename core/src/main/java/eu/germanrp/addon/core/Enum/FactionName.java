@@ -1,5 +1,8 @@
 package eu.germanrp.addon.core.Enum;
 
+import lombok.Getter;
+
+@Getter
 public enum FactionName {
 
     NONE(null, FactionType.NEUTRAL),
@@ -19,14 +22,6 @@ public enum FactionName {
     FactionName(String memberInfoCommandArg, FactionType type) {
         this.memberInfoCommandArg = memberInfoCommandArg;
         this.type = type;
-    }
-
-    public String getMemberInfoCommandArg() {
-        return memberInfoCommandArg;
-    }
-
-    public FactionType getType() {
-        return type;
     }
 
     public enum FactionType {
