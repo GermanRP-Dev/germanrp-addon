@@ -29,7 +29,15 @@ jobs:
         path: artifacts/
 
     - if: inputs.nightly == true
-      name: Create release notes
+      name: Delete existing nightly release
+      run: |
+        gh release delete nightly --yes || true
+        git push origin :refs/tags/nightly || true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - if: inputs.nightly == true
+      name: Create release notes nightly
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         tag: 'nightly'
@@ -43,7 +51,7 @@ jobs:
           artifacts/*-release.jar
 
     - if: inputs.nightly == false
-      name: Create release notes nightly
+      name: Create release notes
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         tag: ${{ inputs.version }}
