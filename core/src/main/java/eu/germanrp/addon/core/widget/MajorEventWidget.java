@@ -2,6 +2,7 @@ package eu.germanrp.addon.core.widget;
 
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent;
+import eu.germanrp.addon.core.common.events.MajorWidgetUpdateEvent;
 import lombok.Getter;
 import lombok.Setter;
 import net.labymod.api.client.component.Component;
@@ -33,7 +34,14 @@ public class MajorEventWidget  extends TextHudWidget<TextHudWidgetConfig> {
         this.addon = addon;
 
     }
-
+    @Subscribe
+    public void majorWidgetUpdate(MajorWidgetUpdateEvent event){
+        this.majorEvent = true;
+        eventNameLine.updateAndFlush(event.getMajorEventName());
+        countdownTarget = ZonedDateTime.now().plusMinutes(event.getCountDownTime());
+        eventNameLine.setState(TextLine.State.VISIBLE);
+        countDownLine.setState(TextLine.State.VISIBLE);
+    }
     @Override
     public void load(TextHudWidgetConfig config) {
         super.load(config);
@@ -62,7 +70,7 @@ public class MajorEventWidget  extends TextHudWidget<TextHudWidgetConfig> {
             return;
         }
         Duration duration = Duration.between(now, countdownTarget);
-        this.countDownLine.updateAndFlush(String.format("\n%02d:%02d", duration.toMinutes(), duration.toSeconds()));
+        this.countDownLine.updateAndFlush(String.format("\n%02d:%02d", duration.toMinutesPart(), duration.toSecondsPart()));
 
     }
 
