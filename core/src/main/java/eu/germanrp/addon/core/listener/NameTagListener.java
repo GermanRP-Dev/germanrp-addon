@@ -11,6 +11,7 @@ import net.labymod.api.client.scoreboard.ScoreboardTeam;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import net.labymod.api.event.client.render.PlayerNameTagRenderEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -72,6 +73,7 @@ public class NameTagListener {
                 replace("empty", "");
 
         boolean gr = prefix.contains("GR");
+        boolean afk = event.nameTag().toString().contains("italic");
 
         if (prefix.contains("red") || prefix.contains("dark_red") || prefix.contains("dark_aqua")
                 || prefix.contains("✝")) {
@@ -83,7 +85,7 @@ public class NameTagListener {
 
             if (memberlist.contains(playerName) && factionTag != NameTag.NONE) {
                 String var17 = factionTag.getColor();
-                prefix = var17 + (gr ? "[GR]" : "");
+                prefix = var17 + (afk ? "§o": gr ? "[GR]" : "");
                 event.setNameTag(Component.text(prefix + playerName + suffix));
                 return;
             }
@@ -97,7 +99,7 @@ public class NameTagListener {
 
                     if (bountylist.contains(playerName) && bountyTag != NameTag.NONE) {
                         String color = bountyTag.getColor();
-                        prefix = color + (gr ? "[GR]" : "");
+                        prefix = color + (afk ? "§o": gr ? "[GR]" : "");
                         event.setNameTag(Component.text(prefix + playerName + suffix));
                         return;
                     }
@@ -109,7 +111,7 @@ public class NameTagListener {
 
                     if (darklist.contains(playerName) && darklisttag != NameTag.NONE) {
                         String color = darklisttag.getColor();
-                        prefix = color + (gr ? "[GR]" : "");
+                        prefix = color + (afk ? "§o": gr ? "[GR]" : "");
                         event.setNameTag(Component.text(prefix + playerName + suffix));
                     }
                 }
@@ -125,7 +127,7 @@ public class NameTagListener {
 
                 if (wantedList.contains(playerName) && wantedColor != NameTag.NONE) {
                     String color = wantedColor.getColor();
-                    prefix = color + (gr ? "[GR]" : "");
+                    prefix = color + (afk ? "§o": gr ? "[GR]" : "");
                     event.setNameTag(Component.text(prefix + playerName + suffix));
                 }
             }
