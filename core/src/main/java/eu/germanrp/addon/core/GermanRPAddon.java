@@ -77,7 +77,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
     private void registerVersionDependantExecutors() {
         hitResultExecutor = ((DefaultReferenceStorage) this.referenceStorageAccessor()).hitResultExecutor();
-
+        playSoundExecutor = ((DefaultReferenceStorage) this.referenceStorageAccessor()).playSoundExecutor();
     }
 
     private void registerWidgets() {
