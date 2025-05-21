@@ -18,10 +18,6 @@ public final class PaketFactory {
         final PayloadReader payloadReader = new PayloadReader(payload);
         final String header = payloadReader.readString();
 
-        if (!header.startsWith("GRAddon-")) {
-            return Optional.empty();
-        }
-
         return switch (header) {
 
             case "GRAddon-Plant" -> {
@@ -47,6 +43,7 @@ public final class PaketFactory {
 
                 yield Optional.of(plantPaket);
             }
+
 
             default -> Optional.empty();
         };

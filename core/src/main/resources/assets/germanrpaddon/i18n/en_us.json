@@ -101,6 +101,23 @@
                         "purple": "§5Lila"
                     }
                 }
+            },
+            "vehicleHotkeyConfig": {
+                "name": "Fahrzeug Hotkeys",
+                "header": {
+                    "car.name": "Fahrzeug",
+                    "cruiseControl.name": "Tempomat",
+                    "emergencySignal.name": "Sondersignal"
+                },
+                "toggleEngine.name": "Motor an/aus",
+                "toggleTurnSignalLeft.name": "Blinker Links an/aus",
+                "toggleTurnSignalRight.name": "Blinker Rechts an/aus",
+                "toggleHazardWarnSignal.name": "Warnblinkanlage an/aus",
+                "toggleCruiseControl.name": "Tempomat an/aus",
+                "increaseCruiseControlSpeed.name": "Tempomat Geschwindigkeit erhöhen",
+                "decreaseCruiseControlSpeed.name": "Tempomat Geschwindigkeit verringern",
+                "toggleEmergencySignal.name": "Sondersignal an/aus",
+                "toggleEmergencySignalSound.name": "Sondersignal laut/stumm"
             }
         },
         "message": {
