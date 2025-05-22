@@ -12,6 +12,7 @@ import eu.germanrp.addon.core.listener.ServerJoinListener;
 import eu.germanrp.addon.core.listener.*;
 import eu.germanrp.addon.core.services.NavigationService;
 import eu.germanrp.addon.core.services.UtilService;
+import eu.germanrp.addon.core.services.VehicleService;
 import eu.germanrp.addon.core.widget.*;
 import eu.germanrp.addon.core.widget.category.GermanRPAddonWidgetCategory;
 import lombok.Getter;
@@ -30,6 +31,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
     private NavigationService navigationService;
     private UtilService utilService;
+    private VehicleService vehicleService;
 
     private AddonPlayer player;
 
@@ -50,6 +52,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
         this.navigationService = new NavigationService();
         this.utilService = new UtilService(this);
+        this.vehicleService = new VehicleService(this);
 
         this.logger().info("Loaded germanrpaddon");
     }

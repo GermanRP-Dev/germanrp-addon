@@ -27,6 +27,8 @@ public enum GlobalRegexRegistry {
     BOMBE_START(compile("^► \\[✦] Es wurde ein Sprengsatz in der Nähe von .+? gefunden!$")),
     SHOP_RAUB(compile("TO-BE-FIXED")),
     APOTHEKEN_RAUB(compile("^► Die Fraktion (.+?) hat den Apothekenraub gestartet!$")),
-    JUWELEN_RAUB(compile("^► Die Fraktion (.+?) hat den Apothekenraub gestartet!$"));
+    JUWELEN_RAUB(compile("^► Die Fraktion (.+?) hat den Apothekenraub gestartet!$")),
+    CRUISE_CONTROL_START(compile("^► Tempomat auf \\d+ km/h eingestellt\\.$"));
+
     private final Pattern pattern;
 }
