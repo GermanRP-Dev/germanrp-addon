@@ -149,6 +149,10 @@
             "majorEvent": {
                 "name": "Großakti",
                 "countdown": "Countdown"
+            },
+            "playerExperience": {
+                "name": "Level",
+                "name2": "XP bis Levelup"
             }
         },
         "widget": {
@@ -167,6 +171,12 @@
                 "eventValue": "Apothekenraub",
                 "countdownKey": "Countdown",
                 "countdownValue": "0:00"
+            },
+            "playerExperience": {
+                "playerXPKey": "Level",
+                "playerXPValue": "0/10",
+                "xpLeftKey": "XP bis Levelup",
+                "xpLeftValue": "10"
             }
         }
     }

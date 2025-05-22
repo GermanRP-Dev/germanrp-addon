@@ -25,8 +25,6 @@ import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.models.addon.annotation.AddonMain;
 
-import java.util.List;
-
 @Getter
 @AddonMain
 public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
@@ -50,6 +48,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private StoffHudWidget stoffHudWidget;
     private GraffitiHudWidget graffitiHudWidget;
     private MajorEventWidget majorEventWidget;
+    private PlayerExperienceWidget playerExperienceWidget;
 
     @Override
     protected void load() {
@@ -117,6 +116,11 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
                 this,
                 widgetCategory
         );
+        this.playerExperienceWidget = new PlayerExperienceWidget(
+                this,
+                widgetCategory,
+                Icon.texture(ResourceLocation.create(NAMESPACE, "images/experience_bottle.png"))
+        );
 
         widgetRegistry.categoryRegistry().register(widgetCategory);
         widgetRegistry.register(heilkrautpflanzeHudWidget);
@@ -124,6 +128,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         widgetRegistry.register(stoffHudWidget);
         widgetRegistry.register(graffitiHudWidget);
         widgetRegistry.register(majorEventWidget);
+        widgetRegistry.register(playerExperienceWidget);
     }
 
     private void registerListener() {

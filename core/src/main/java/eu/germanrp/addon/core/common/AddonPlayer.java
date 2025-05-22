@@ -61,6 +61,8 @@ public interface AddonPlayer {
 
     void setPlayerXP(int i);
 
+    void addPlayerXP(int i);
+
     int getPlayerXP();
 
     void setPlayerNeededXP(int i);
