@@ -1,6 +1,8 @@
 package eu.germanrp.addon.core.common;
 
+import eu.germanrp.addon.core.Enum.FactionName;
 import eu.germanrp.addon.core.GermanRPAddon;
+import lombok.Setter;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.client.scoreboard.Scoreboard;
@@ -30,8 +32,17 @@ public class DefaultAddonPlayer implements AddonPlayer {
 
     private boolean shouting = false;
     private boolean whispering = false;
+    private boolean playerGR = false;
+
+    private String playerName;
 
     private final GermanRPAddon addon;
+    private int playerXP;
+    private int playerTBonusTime;
+    private int playerNeededXP;
+    private int playerPayDayTime;
+    private FactionName playerFactionName;
+
 
     public DefaultAddonPlayer(GermanRPAddon addon) {
         this.addon = addon;
@@ -153,7 +164,68 @@ public class DefaultAddonPlayer implements AddonPlayer {
         this.whispering = whispering;
     }
 
+    @Override
+    public void setPlayerXP(int i) {
+        this.playerXP = i;
+    }
+
+    @Override
+    public int getPlayerXP() {
+        return this.playerXP;
+    }
+
+    @Override
+    public void setPlayerNeededXP(int i) {
+        this.playerNeededXP = i;
+    }
+
+    @Override
+    public int getPlayerNeededXP() {
+        return this.playerNeededXP;
+    }
+
+    @Override
+    public void setPlayerPayDayTime(int i) {
+        this.playerPayDayTime = i;
+    }
+
+    @Override
+    public int getPlayerPayDayTime() {
+        return this.playerPayDayTime;
+    }
+
+    @Override
+    public void setPlayerTBonusTime(int i) {
+        this.playerTBonusTime = i;
+    }
+
+    @Override
+    public int getPlayerTBonusTime() {
+        return this.playerTBonusTime;
+    }
+
+    @Override
+    public void setPlayerGR(boolean b) {
+        this.playerGR = b;
+    }
+
+    @Override
+    public boolean isPlayerGR() {
+        return this.playerGR;
+    }
+
+    @Override
+    public FactionName getPlayerFactionName() {
+        return this.playerFactionName;
+    }
+
+    @Override
+    public void setPlayerFactionName(FactionName playerFactionName) {
+        this.playerFactionName = playerFactionName;
+    }
+
     private Component prefix() {
         return text(ADDON_PREFIX_SYMBOL, DARK_AQUA, BOLD).hoverEvent(showText(text("Nachricht vom GermanRP-Addon", DARK_AQUA)));
     }
+
 }
