@@ -27,8 +27,10 @@ public enum GlobalRegexRegistry {
     BOMBE_START(compile("^► \\[✦] Es wurde ein Sprengsatz in der Nähe von .+? gefunden!$")),
     SHOP_RAUB(compile("TO-BE-FIXED")),
     APOTHEKEN_RAUB(compile("^► Die Fraktion (.+?) hat den Apothekenraub gestartet!$")),
-    JUWELEN_RAUB(compile("^► Die Fraktion (.+?) hat den Apothekenraub gestartet!$")),
-    CRUISE_CONTROL_START(compile("^► Tempomat auf \\d+ km/h eingestellt\\.$"));
-
+    CRUISE_CONTROL_START(compile("^► Tempomat auf \\d+ km/h eingestellt\\.$")),
+    JUWELEN_RAUB(compile("TO-BE-FIXED")),
+    XP_READER_STATS(compile("^► \\[System] - XP: (\\d+)\\/(\\d+)$")),
+    FRAKTION_NAME_STATS(compile("^► \\[System] - Fraktion: (.+?)$")),
+    PLAYER_NAME_STATS(compile("^► \\[System] Statistiken von (\\w{3,16}|\\[GR]\\w{3,16}):$"));
     private final Pattern pattern;
 }

@@ -163,10 +163,10 @@
                 "yieldValue": "%s%s %s"
             },
             "majorEvent": {
-                "eventKey": "Event",
+                "eventKey": "Großakti",
                 "eventValue": "Apothekenraub",
                 "countdownKey": "Countdown",
-                "countdownValue": "%s:%s%s"
+                "countdownValue": "0:00"
             }
         }
     }

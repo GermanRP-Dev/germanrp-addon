@@ -5,6 +5,7 @@ import eu.germanrp.addon.core.Enum.FactionName.FactionType;
 import eu.germanrp.addon.core.Enum.NameTag;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.NameTagSubConfig;
+import eu.germanrp.addon.core.common.AddonVariables;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.network.NetworkPlayerInfo;
 import net.labymod.api.client.scoreboard.ScoreboardTeam;
@@ -23,27 +24,31 @@ public class NameTagListener {
     private final GermanRPAddon addon;
 
     private final NameTagSubConfig nameTagSubConfig;
-    private final FactionName factionName;
+    private  FactionName factionName;
     private final ServerJoinListener serverJoinListener;
+    private final AddonVariables addonVariables;
 
     public NameTagListener(GermanRPAddon germanRPAddon) {
         this.addon = germanRPAddon;
+        this.addonVariables = this.addon.getVariables();
         this.nameTagSubConfig = addon.configuration().NameTagSubConfig();
-        this.factionName = nameTagSubConfig.factionName().get();
         this.serverJoinListener = addon.getServerJoinListener();
     }
 
     @Subscribe
     public void onNameTag(PlayerNameTagRenderEvent event) {
-        if (!serverJoinListener.isGR()) {
+        if (!this.addon.getUtilService().isGermanRP()) {
             return;
         }
+        this.factionName = this.addon.getPlayer().getPlayerFactionName();
 
         NetworkPlayerInfo playerInfo = event.getPlayerInfo();
         if (playerInfo == null) {
             return;
         }
-
+        if (this.factionName == null){
+            return;
+        }
         if (factionName.getType() == FactionType.NEUTRAL) {
             return;
         }
@@ -79,8 +84,8 @@ public class NameTagListener {
                 || prefix.contains("✝")) {
             return;
         }
-        if (serverJoinListener.getMembers() != null) {
-            List<String> memberlist = serverJoinListener.getMembers();
+        if (this.addonVariables.getMembers()!= null) {
+            List<String> memberlist = this.addonVariables.getMembers();
             NameTag factionTag = nameTagSubConfig.factionColor().get();
 
             if (memberlist.contains(playerName) && factionTag != NameTag.NONE) {
@@ -93,8 +98,8 @@ public class NameTagListener {
 
         switch (factionName.getType()) {
             case BADFRAK -> {
-                if (serverJoinListener.getBounties() != null) {
-                    List<String> bountylist = serverJoinListener.getBounties();
+                if (this.addonVariables.getBounties() != null) {
+                    List<String> bountylist = this.addonVariables.getBounties();
                     NameTag bountyTag = nameTagSubConfig.bountyColor().get();
 
                     if (bountylist.contains(playerName) && bountyTag != NameTag.NONE) {
@@ -105,8 +110,8 @@ public class NameTagListener {
                     }
                 }
 
-                if (serverJoinListener.getDarklist() != null) {
-                    List<String> darklist = serverJoinListener.getDarklist();
+                if (this.addonVariables.getDarklist()!= null) {
+                    List<String> darklist = this.addonVariables.getDarklist();
                     NameTag darklisttag = nameTagSubConfig.darklistColor().get();
 
                     if (darklist.contains(playerName) && darklisttag != NameTag.NONE) {
@@ -118,64 +123,17 @@ public class NameTagListener {
             }
 
             case STAAT -> {
-                if (serverJoinListener.getWantedPlayers() == null) {
+                if (this.addonVariables.getWantedPlayers() == null) {
                     return;
                 }
 
-                List<String> wantedList = serverJoinListener.getWantedPlayers();
+                List<String> wantedList = this.addonVariables.getWantedPlayers();
                 NameTag wantedColor = nameTagSubConfig.wantedColor().get();
 
                 if (wantedList.contains(playerName) && wantedColor != NameTag.NONE) {
                     String color = wantedColor.getColor();
                     prefix = color + (afk ? "§o": gr ? "[GR]" : "");
                     event.setNameTag(Component.text(prefix + playerName + suffix));
-                }
-            }
-        }
-    }
-
-    @Subscribe
-    public void onChatReceive(ChatReceiveEvent event) {
-
-        String message = event.chatMessage().getPlainText();
-        switch (factionName.getType()) {
-            case BADFRAK -> {
-                final Matcher nametagDarkListAddMatcher = DARK_LIST_ADD.getPattern().matcher(message);
-
-                if (nametagDarkListAddMatcher.find()) {
-                    serverJoinListener.getDarklist().add(nametagDarkListAddMatcher.group(2).replace("[GR]", ""));
-                    return;
-                }
-
-                final Matcher nametagDarkListRemoveMatcher = DARK_LIST_REMOVE.getPattern().matcher(message);
-                if (nametagDarkListRemoveMatcher.find()) {
-                    serverJoinListener.getDarklist().remove(nametagDarkListRemoveMatcher.group(2).replace("[GR]", ""));
-                    return;
-                }
-
-                final Matcher nametagBountyAddMatcher = BOUNTY_ADD.getPattern().matcher(message);
-                if (nametagBountyAddMatcher.find()) {
-                    serverJoinListener.getBounties().add(nametagBountyAddMatcher.group(1).replace("[GR]", ""));
-                    return;
-                }
-
-                final Matcher nametagBountyRemoveMatcher = BOUNTY_REMOVE.getPattern().matcher(message);
-                if (nametagBountyRemoveMatcher.find()){
-                    serverJoinListener.getBounties().remove(nametagBountyRemoveMatcher.group(1).replace("[GR]", ""));
-                }
-            }
-            case STAAT -> {
-                final Matcher nametagWantedRemoveMatcher = WANTED_REMOVE.getPattern().matcher(message);
-                final Matcher nametagWantedAddMatcher = WANTED_ADD.getPattern().matcher(message);
-
-                if (nametagWantedRemoveMatcher.find()) {
-                    serverJoinListener.getWantedPlayers().
-                            remove(nametagWantedRemoveMatcher.group(2).replace("[GR]", ""));
-                    return;
-                }
-                if (nametagWantedAddMatcher.find()) {
-                    serverJoinListener.getWantedPlayers().remove(nametagWantedAddMatcher.group(1).replace("[GR]", ""));
-                    return;
                 }
             }
         }
