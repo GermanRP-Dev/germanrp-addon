@@ -1,5 +1,6 @@
 package eu.germanrp.addon.core.common;
 
+import eu.germanrp.addon.core.Enum.FactionName;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.client.scoreboard.Scoreboard;
@@ -57,4 +58,28 @@ public interface AddonPlayer {
     boolean isWhispering();
 
     void setWhispering(boolean whispering);
+
+    void setPlayerXP(int i);
+
+    int getPlayerXP();
+
+    void setPlayerNeededXP(int i);
+
+    int getPlayerNeededXP();
+
+    void setPlayerPayDayTime(int i);
+
+    int getPlayerPayDayTime();
+
+    void setPlayerTBonusTime(int i);
+
+    int getPlayerTBonusTime();
+
+    void setPlayerGR(boolean b);
+
+    boolean isPlayerGR();
+
+    void setPlayerFactionName(FactionName factionName);
+
+    FactionName getPlayerFactionName();
 }
