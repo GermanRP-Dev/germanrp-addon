@@ -2,187 +2,56 @@ package eu.germanrp.addon.core.listener;
 
 import eu.germanrp.addon.core.Enum.FactionName;
 import eu.germanrp.addon.core.GermanRPAddon;
-import lombok.Getter;
+import eu.germanrp.addon.core.common.AddonPlayer;
+import eu.germanrp.addon.core.common.AddonVariables;
 import net.labymod.api.Laby;
 import net.labymod.api.event.Subscribe;
-import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import net.labymod.api.event.client.network.server.ServerJoinEvent;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.*;
+import eu.germanrp.addon.core.common.events.JustJoinedEvent;
 
 public class ServerJoinListener {
 
-    @Getter
-    private final List<String> members = new ArrayList<>();
-    @Getter
-    private final List<String> darklist = new ArrayList<>();
-    @Getter
-    private final List<String> bounties = new ArrayList<>();
-    @Getter
-    private final List<String> wantedPlayers = new ArrayList<>();
-
     private final GermanRPAddon addon;
-
-    private int emptyMessages = 0;
-    @Getter
-    private boolean justJoined = false;
-    private boolean faction;
-    private boolean bounty;
-    private boolean wanted;
-    @Getter
-    private boolean isGR = false;
-    private FactionName factionName;
-    private boolean wasAFK;
+    private final AddonPlayer player;
+    private final AddonVariables addonVariables;
+    private boolean forward;
 
     public ServerJoinListener(GermanRPAddon addon) {
         this.addon = addon;
+        this.player = this.addon.getPlayer();
+        this.addonVariables = this.addon.getVariables();
     }
 
     @Subscribe
-    public void onServerJoin(ServerJoinEvent event) {
-        factionName = this.addon.configuration().NameTagSubConfig().factionName().get();
-        String ip = String.valueOf(event.serverData().address());
-        emptyMessages = 0;
-
-        if (!ip.toLowerCase().contains("germanrp.eu") && !ip.contentEquals("91.218.66.124")) {
-            this.justJoined = false;
-            this.isGR = false;
+    public void onServerJoin(ServerJoinEvent event) throws InterruptedException {
+        if (!this.addon.getUtilService().isGermanRP()) {
             return;
         }
 
-        this.isGR = true;
-        this.justJoined = true;
+        Laby.fireEvent(new JustJoinedEvent(true));
 
-        if (factionName.equals(FactionName.NONE)) {
+        Laby.references().chatExecutor().chat("/stats", false);
+
+    }
+    public void onFactionNameGet(){
+        FactionName factionName = player.getPlayerFactionName();
+        if(factionName.equals(FactionName.NONE)){
             return;
         }
-
-        this.members.clear();
+        this.addonVariables.getMembers().clear();
         Laby.references().chatExecutor()
-                .chat(String.format("/memberinfo %s", factionName.getMemberInfoCommandArg()));
+                .chat(String.format("/memberinfo %s", factionName.getMemberInfoCommandArg()), false);
 
         switch (factionName.getType()) {
             case BADFRAK -> {
-                this.darklist.clear();
-                this.bounties.clear();
-                Laby.references().chatExecutor().chat("/darklist");
-                Laby.references().chatExecutor().chat("/kopfgelder");
+                this.addonVariables.getDarklist().clear();
+                this.addonVariables.getBounties().clear();
+                Laby.references().chatExecutor().chat("/darklist", false);
+                Laby.references().chatExecutor().chat("/kopfgelder", false);
             }
             case STAAT -> {
-                this.wantedPlayers.clear();
-                Laby.references().chatExecutor().chat("/wanteds");
-            }
-        }
-    }
-
-    @Subscribe
-    public void onChatReceive(ChatReceiveEvent event) {
-        if (!this.isGR || !this.justJoined) {
-            return;
-        }
-        String message = event.chatMessage().getPlainText();
-        if (factionName.equals(FactionName.NONE)) {
-            this.justJoined = false;
-            return;
-        }
-        if (TITLE_FACTION_MEMBER_LIST.getPattern().matcher(message).find()) {
-            event.setCancelled(true);
-            this.faction = true;
-            return;
-        }
-
-        if (this.faction) {
-            event.setCancelled(true);
-            final Matcher matcher = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
-            if (!matcher.find()) {
-                if (!message.startsWith("        (Insgesamt ") || !message.endsWith(" verfügbar)")) {
-                    return;
-                }
-                this.faction = false;
-                return;
-            }
-            this.members.add(matcher.group(1).replace("[GR]", ""));
-        }
-
-        switch (factionName.getType()) {
-            case BADFRAK -> {
-                if (message.startsWith("► [Darklist] ")) {
-                    event.setCancelled(true);
-                    final Matcher matcher = DARK_LIST_ENTRY.getPattern().matcher(message);
-                    if (!matcher.find()) {
-                        return;
-                    }
-                    this.darklist.add(matcher.group(1).replace("[GR]", ""));
-                    return;
-                }
-                if (message.contentEquals("            KOPFGELDER")) {
-                    event.setCancelled(true);
-                    this.bounty = true;
-                    return;
-                }
-                if (this.bounty) {
-                    event.setCancelled(true);
-                    final Matcher matcher = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
-                    if (!matcher.find()) {
-                        this.bounty = false;
-                        if(this.wasAFK){
-                            Laby.references().chatExecutor().chat("/afk");
-                            this.wasAFK = false;
-                            return;
-                        }
-                        this.justJoined = false;
-                        return;
-                    }
-                    this.bounties.add(matcher.group(1).replace("[GR]", ""));
-                    return;
-                }
-            }
-
-            case STAAT -> {
-                if (TITLE_WANTED_LIST.getPattern().matcher(message).find()) {
-                    event.setCancelled(true);
-                    this.wanted = true;
-                    return;
-                }
-                if (this.wanted) {
-                    event.setCancelled(true);
-                    final Matcher matcher = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
-                    if (!matcher.find()) {
-                        this.wanted = false;
-                        if(this.wasAFK){
-
-                            Laby.references().chatExecutor().chat("/afk");
-                            this.wasAFK = false;
-                            return;
-                        }
-                        this.justJoined = false;
-                        return;
-                    }
-                    this.wantedPlayers.add(matcher.group(1).replace("[GR]", ""));
-                    return;
-                }
-            }
-        }
-        switch (message) {
-            case "► [System] Du bist jetzt als abwesend markiert." -> {
-                event.setCancelled(true);
-            }
-            case "► Verwende erneut \"/afk\", um den AFK-Modus zu verlassen." -> {
-                event.setCancelled(true);
-                this.justJoined = false;
-            }
-            case "► [System] Du bist jetzt wieder anwesend." -> {
-                event.setCancelled(true);
-                this.wasAFK = true;
-            }
-            case "" -> {
-                emptyMessages++;
-                if (emptyMessages > 2) {
-                    event.setCancelled(true);
-                }
+                this.addonVariables.getWantedPlayers().clear();
+                Laby.references().chatExecutor().chat("/wanteds", false);
             }
         }
     }

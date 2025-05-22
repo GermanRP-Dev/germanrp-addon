@@ -22,6 +22,4 @@ public class NameTagSubConfig extends Config {
     private final ConfigProperty<NameTag> bountyColor = new ConfigProperty<>(NameTag.NONE);
     @DropdownSetting
     private final ConfigProperty<NameTag> wantedColor = new ConfigProperty<>(NameTag.NONE);
-    @DropdownSetting
-    private final ConfigProperty<FactionName> factionName = new ConfigProperty<>(FactionName.NONE);
 }

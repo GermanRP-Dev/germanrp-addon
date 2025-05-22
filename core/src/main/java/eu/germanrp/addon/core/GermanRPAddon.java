@@ -2,7 +2,9 @@ package eu.germanrp.addon.core;
 
 import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
 import eu.germanrp.addon.core.common.AddonPlayer;
+import eu.germanrp.addon.core.common.AddonVariables;
 import eu.germanrp.addon.core.common.DefaultAddonPlayer;
+import eu.germanrp.addon.core.common.DefaultAddonVariables;
 import eu.germanrp.addon.core.executor.HitResultExecutor;
 import eu.germanrp.addon.core.executor.PlaySoundExecutor;
 import eu.germanrp.addon.core.generated.DefaultReferenceStorage;
@@ -23,6 +25,8 @@ import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.models.addon.annotation.AddonMain;
 
+import java.util.List;
+
 @Getter
 @AddonMain
 public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
@@ -34,6 +38,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private VehicleService vehicleService;
 
     private AddonPlayer player;
+    private AddonVariables variables;
 
     private HitResultExecutor hitResultExecutor;
     private PlaySoundExecutor playSoundExecutor;
@@ -49,6 +54,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     @Override
     protected void load() {
         this.player = new DefaultAddonPlayer(this);
+        this.variables = new DefaultAddonVariables(this);
 
         this.navigationService = new NavigationService();
         this.utilService = new UtilService(this);
