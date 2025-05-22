@@ -10,6 +10,7 @@ import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import net.labymod.api.event.client.input.KeyEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
