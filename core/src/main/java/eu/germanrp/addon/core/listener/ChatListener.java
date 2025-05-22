@@ -4,7 +4,6 @@ import eu.germanrp.addon.core.Enum.FactionName;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.AddonPlayer;
 import eu.germanrp.addon.core.common.AddonVariables;
-import eu.germanrp.addon.core.common.events.ExperienceUpdateEvent;
 import eu.germanrp.addon.core.common.events.JustJoinedEvent;
 import eu.germanrp.addon.core.common.events.MajorWidgetUpdateEvent;
 import eu.germanrp.addon.core.widget.MajorEventWidget;
@@ -13,7 +12,6 @@ import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Locale;
 import java.util.regex.Matcher;
 
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.*;
@@ -40,7 +38,9 @@ public class ChatListener {
         this.player = this.addon.getPlayer();
         this.addonVariables = this.addon.getVariables();
     }
+
     @Subscribe
+    @SuppressWarnings("unused")
     public void onChatReceiveMajorEvent(ChatReceiveEvent e){
         if(this.majorEventWidget.isMajorEvent()){
             return;
@@ -71,12 +71,15 @@ public class ChatListener {
             return;
         }
     }
+
     @Subscribe
+    @SuppressWarnings("unused")
     public void onGRJoin(JustJoinedEvent event){
     this.justJoined = true;
     }
 
     @Subscribe
+    @SuppressWarnings("unused")
     public void onChatReceiveJustJoined(ChatReceiveEvent event) {
         if (!this.justJoined) {
             return;
@@ -217,7 +220,9 @@ public class ChatListener {
             }
         }
     }
+
     @Subscribe
+    @SuppressWarnings("unused")
     public void onChatReceiveListsChange(ChatReceiveEvent event) {
 
         FactionName factionName = this.player.getPlayerFactionName();
@@ -255,20 +260,23 @@ public class ChatListener {
                 final Matcher nametagWantedRemoveMatcher = WANTED_REMOVE.getPattern().matcher(message);
                 final Matcher nametagWantedAddMatcher = WANTED_ADD.getPattern().matcher(message);
 
-                if (nametagWantedRemoveMatcher.find()) {
+                if (nametagWantedRemoveMatcher.matches()) {
                     this.addonVariables.getWantedPlayers().
                             remove(nametagWantedRemoveMatcher.group(2).replace("[GR]", ""));
                     return;
                 }
-                if (nametagWantedAddMatcher.find()) {
-                    this.addonVariables.getWantedPlayers().remove(nametagWantedAddMatcher.group(1).replace("[GR]", ""));
-                    return;
+
+                if (nametagWantedAddMatcher.matches()) {
+                    this.addonVariables.getWantedPlayers().add(nametagWantedAddMatcher.group(1).replace("[GR]", ""));
                 }
+
             }
         }
     }
+
     @Subscribe
-    public void onChatRecieveUpdateStats(ChatReceiveEvent event){
+    @SuppressWarnings("unused")
+    public void onChatReceiveUpdateStats(ChatReceiveEvent event){
         @NotNull String message = event.chatMessage().getPlainText();
         Matcher matcher = XP_ADD_CHAT.getPattern().matcher(message);
         if(matcher.find()){
