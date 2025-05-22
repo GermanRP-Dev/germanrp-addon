@@ -48,6 +48,7 @@ public class EventRegistrationListener {
     }
 
     @Subscribe
+    @SuppressWarnings("unused")
     public void onChatReceive(ChatReceiveEvent event) {
         String plainText = event.chatMessage().getPlainText();
 
@@ -118,7 +119,7 @@ public class EventRegistrationListener {
         PlantType.fromDisplayName(displayName).ifPresent(plantType -> fireEvent(new PlantDestroyEvent(plantType)));
     }
 
-   /* @Subscribe
+    @Subscribe
     @SuppressWarnings("unused")
     public void onNetworkPayloadEvent(final NetworkPayloadEvent event) {
         if (!Utils.isLegacyAddonPacket(event.identifier())) {
@@ -128,13 +129,17 @@ public class EventRegistrationListener {
         val payloadReader = new PayloadReader(event.getPayload());
         val header = payloadReader.readString();
 
+        if(!header.startsWith("GRAddon-")) {
+            return;
+        }
+
         val payload = payloadReader.readString();
         val jsonObject = GsonUtil.DEFAULT_GSON.fromJson(payload, JsonObject.class);
 
         this.addon.logger().info("Legacy packet received: {} - {}", header, jsonObject);
 
         fireEvent(new LegacyGermanRPUtilsPayloadEvent(header, jsonObject));
-    }*/
+    }
 
     @Subscribe
     @SuppressWarnings("unused")
@@ -194,6 +199,7 @@ public class EventRegistrationListener {
     }
 
     @Subscribe
+    @SuppressWarnings("unused")
     public void onGameTick(GameTickEvent event) {
         if (event.phase().equals(POST)) {
             this.currentTick++;
