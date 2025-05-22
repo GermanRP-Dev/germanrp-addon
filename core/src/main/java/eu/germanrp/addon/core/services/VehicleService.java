@@ -62,7 +62,7 @@ public class VehicleService {
     }
 
     public void toggleEmergencySignal() {
-        sendPayloadToServer(VehicleCommand.TOGGLE_SIGNAL_HAZARD_WARN);
+        sendPayloadToServer(VehicleCommand.TOGGLE_SOSI);
     }
 
     public void toggleEmergencySignalSound() {
