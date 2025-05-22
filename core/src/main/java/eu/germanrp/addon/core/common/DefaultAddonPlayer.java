@@ -2,7 +2,9 @@ package eu.germanrp.addon.core.common;
 
 import eu.germanrp.addon.core.Enum.FactionName;
 import eu.germanrp.addon.core.GermanRPAddon;
+import eu.germanrp.addon.core.common.events.ExperienceUpdateEvent;
 import lombok.Setter;
+import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.client.scoreboard.Scoreboard;
@@ -167,6 +169,13 @@ public class DefaultAddonPlayer implements AddonPlayer {
     @Override
     public void setPlayerXP(int i) {
         this.playerXP = i;
+        Laby.fireEvent(new ExperienceUpdateEvent());
+    }
+
+    @Override
+    public void addPlayerXP(int i) {
+        this.playerXP = this.playerXP + i;
+        Laby.fireEvent(new ExperienceUpdateEvent());
     }
 
     @Override

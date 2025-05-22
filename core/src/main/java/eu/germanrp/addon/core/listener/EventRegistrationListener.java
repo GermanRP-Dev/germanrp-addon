@@ -118,7 +118,7 @@ public class EventRegistrationListener {
         PlantType.fromDisplayName(displayName).ifPresent(plantType -> fireEvent(new PlantDestroyEvent(plantType)));
     }
 
-    @Subscribe
+   /* @Subscribe
     @SuppressWarnings("unused")
     public void onNetworkPayloadEvent(final NetworkPayloadEvent event) {
         if (!Utils.isLegacyAddonPacket(event.identifier())) {
@@ -134,7 +134,7 @@ public class EventRegistrationListener {
         this.addon.logger().info("Legacy packet received: {} - {}", header, jsonObject);
 
         fireEvent(new LegacyGermanRPUtilsPayloadEvent(header, jsonObject));
-    }
+    }*/
 
     @Subscribe
     @SuppressWarnings("unused")

@@ -31,6 +31,6 @@ public enum GlobalRegexRegistry {
     JUWELEN_RAUB(compile("TO-BE-FIXED")),
     XP_READER_STATS(compile("^► \\[System] - XP: (\\d+)\\/(\\d+)$")),
     FRAKTION_NAME_STATS(compile("^► \\[System] - Fraktion: (.+?)$")),
-    PLAYER_NAME_STATS(compile("^► \\[System] Statistiken von (\\w{3,16}|\\[GR]\\w{3,16}):$"));
+    XP_ADD_CHAT(compile("^ \\+(\\d+) Erfahrungspunkte(| \\(x2\\)| \\(x3\\))$"));
     private final Pattern pattern;
 }

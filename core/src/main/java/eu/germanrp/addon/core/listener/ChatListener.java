@@ -4,20 +4,19 @@ import eu.germanrp.addon.core.Enum.FactionName;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.AddonPlayer;
 import eu.germanrp.addon.core.common.AddonVariables;
+import eu.germanrp.addon.core.common.events.ExperienceUpdateEvent;
 import eu.germanrp.addon.core.common.events.JustJoinedEvent;
 import eu.germanrp.addon.core.common.events.MajorWidgetUpdateEvent;
 import eu.germanrp.addon.core.widget.MajorEventWidget;
-import lombok.NonNull;
 import net.labymod.api.Laby;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import java.util.Locale;
 import java.util.regex.Matcher;
 
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.*;
-import static java.util.Optional.ofNullable;
 
 
 public class ChatListener {
@@ -84,13 +83,12 @@ public class ChatListener {
         }
 
         String message = event.chatMessage().getPlainText();
-        final Matcher playerNameStatsMatcher = PLAYER_NAME_STATS.getPattern().matcher(message);
         if (message.startsWith("► [System] ")){
             event.setCancelled(true);
             Matcher matcher = XP_READER_STATS.getPattern().matcher(message);
             if (matcher.find()) {
-                this.player.setPlayerXP(Integer.parseInt(matcher.group(1)));
                 this.player.setPlayerNeededXP(Integer.parseInt(matcher.group(2)));
+                this.player.setPlayerXP(Integer.parseInt(matcher.group(1)));
             }
             matcher = FRAKTION_NAME_STATS.getPattern().matcher(message);
             if(matcher.find()){
@@ -267,6 +265,21 @@ public class ChatListener {
                     return;
                 }
             }
+        }
+    }
+    @Subscribe
+    public void onChatRecieveUpdateStats(ChatReceiveEvent event){
+        @NotNull String message = event.chatMessage().getPlainText();
+        Matcher matcher = XP_ADD_CHAT.getPattern().matcher(message);
+        if(matcher.find()){
+            String x = matcher.group(2);
+            int i = 1;
+            if (x.contains("2")) {
+                i = 2;
+            }else if(x.contains("3")){
+                i = 3;
+            }
+            player.addPlayerXP(Integer.parseInt(matcher.group(1))*i);
         }
     }
 }
