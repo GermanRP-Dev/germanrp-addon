@@ -1,6 +1,10 @@
 package eu.germanrp.addon.core.listener;
 
 import com.google.gson.JsonObject;
+import eu.germanrp.addon.api.events.plant.PlantCreateEvent;
+import eu.germanrp.addon.api.events.plant.PlantDestroyEvent;
+import eu.germanrp.addon.api.events.plant.PlantPacketReceiveEvent;
+import eu.germanrp.addon.api.events.vehicle.CurrentTempomatReceiveEvent;
 import eu.germanrp.addon.api.models.Graffiti;
 import eu.germanrp.addon.api.models.PlantType;
 import eu.germanrp.addon.api.network.PlantPacket;
@@ -9,9 +13,6 @@ import eu.germanrp.addon.core.Utils;
 import eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent;
 import eu.germanrp.addon.core.common.events.GraffitiUpdateEvent;
 import eu.germanrp.addon.core.common.events.LegacyGermanRPUtilsPayloadEvent;
-import eu.germanrp.addon.api.events.plant.PlantCreateEvent;
-import eu.germanrp.addon.api.events.plant.PlantDestroyEvent;
-import eu.germanrp.addon.api.events.plant.PlantPacketReceiveEvent;
 import lombok.val;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
@@ -127,10 +128,6 @@ public class EventRegistrationListener {
         val payloadReader = new PayloadReader(event.getPayload());
         val header = payloadReader.readString();
 
-        if (!header.startsWith("GRAddon-")) {
-            return;
-        }
-
         val payload = payloadReader.readString();
         val jsonObject = GsonUtil.DEFAULT_GSON.fromJson(payload, JsonObject.class);
 
@@ -171,6 +168,19 @@ public class EventRegistrationListener {
 
                 fireEvent(new PlantPacketReceiveEvent(plantPaket));
             }
+
+            case "CURRENTTEMPOMAT" -> {
+                final JsonObject jsonObject =
+                        GsonUtil.DEFAULT_GSON.fromJson(event.getPayloadContent(), JsonObject.class);
+                final int value = Integer.parseInt(jsonObject.get("value").getAsString());
+
+                if (value == -1) {
+                    return;
+                }
+
+                fireEvent(new CurrentTempomatReceiveEvent(value));
+            }
+
             default -> {
                 // Ignore unknown pakets
             }
