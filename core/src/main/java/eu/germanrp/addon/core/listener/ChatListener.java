@@ -255,15 +255,16 @@ public class ChatListener {
                 final Matcher nametagWantedRemoveMatcher = WANTED_REMOVE.getPattern().matcher(message);
                 final Matcher nametagWantedAddMatcher = WANTED_ADD.getPattern().matcher(message);
 
-                if (nametagWantedRemoveMatcher.find()) {
+                if (nametagWantedRemoveMatcher.matches()) {
                     this.addonVariables.getWantedPlayers().
                             remove(nametagWantedRemoveMatcher.group(2).replace("[GR]", ""));
                     return;
                 }
-                if (nametagWantedAddMatcher.find()) {
-                    this.addonVariables.getWantedPlayers().remove(nametagWantedAddMatcher.group(1).replace("[GR]", ""));
-                    return;
+
+                if (nametagWantedAddMatcher.matches()) {
+                    this.addonVariables.getWantedPlayers().add(nametagWantedAddMatcher.group(1).replace("[GR]", ""));
                 }
+
             }
         }
     }
