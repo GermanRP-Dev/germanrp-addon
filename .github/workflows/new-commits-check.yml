@@ -1,0 +1,37 @@
+name: New commits check
+
+on:
+  workflow_call:
+    outputs:
+      HAS_NEW_COMMITS:
+        description: "True, if there are new commits"
+        value: ${{ jobs.new_commits_check.outputs.HAS_NEW_COMMITS }}
+  workflow_dispatch:
+
+jobs:
+  new_commits_check:
+
+    name: ⌚ New commits check
+    runs-on: ubuntu-latest
+
+    outputs:
+      HAS_NEW_COMMITS: ${{ steps.check.outputs.HAS_NEW_COMMITS }}
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
+
+    - name: Compare commits
+      id: check
+      run: |
+        COMMITS=$(git log origin/develop --since="24 hours ago" --oneline)
+          if [ -z "$COMMITS" ]; then
+            echo "HAS_NEW_COMMITS=false" >> $GITHUB_OUTPUT
+          else
+            echo "HAS_NEW_COMMITS=true" >> $GITHUB_OUTPUT
+          fi
+
+    - name: Output result
+      run: |
+        echo "New commits found: ${{ steps.check.outputs.HAS_NEW_COMMITS }}"
