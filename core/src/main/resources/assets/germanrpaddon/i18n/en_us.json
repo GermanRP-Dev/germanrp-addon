@@ -153,6 +153,10 @@
             "playerExperience": {
                 "name": "Level",
                 "name2": "XP bis Levelup"
+            },
+            "blackMarketWidget": {
+                "name": "Blackmarket",
+                "countdown": "30:45"
             }
         },
         "widget": {
@@ -177,6 +181,10 @@
                 "playerXPValue": "0/10",
                 "xpLeftKey": "XP bis Levelup",
                 "xpLeftValue": "10"
+            },
+            "blackMarketWidget": {
+                "eventKey": "Blackmarket",
+                "eventValue": "30:45"
             }
         }
     }
