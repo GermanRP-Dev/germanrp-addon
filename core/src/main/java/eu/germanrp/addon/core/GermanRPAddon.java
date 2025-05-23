@@ -49,6 +49,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private GraffitiHudWidget graffitiHudWidget;
     private MajorEventWidget majorEventWidget;
     private PlayerExperienceWidget playerExperienceWidget;
+    private BlackMarketWidget blackMarketWidget;
 
     @Override
     protected void load() {
@@ -121,6 +122,10 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
                 widgetCategory,
                 Icon.texture(ResourceLocation.create(NAMESPACE, "images/experience_bottle.png"))
         );
+        this.blackMarketWidget = new BlackMarketWidget(
+                this,
+                widgetCategory
+        );
 
         widgetRegistry.categoryRegistry().register(widgetCategory);
         widgetRegistry.register(heilkrautpflanzeHudWidget);
@@ -129,6 +134,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         widgetRegistry.register(graffitiHudWidget);
         widgetRegistry.register(majorEventWidget);
         widgetRegistry.register(playerExperienceWidget);
+        widgetRegistry.register(blackMarketWidget);
     }
 
     private void registerListener() {
