@@ -107,7 +107,11 @@ public class ChatListener {
                     case "Medellín Kartell" -> this.player.setPlayerFactionName(FactionName.KARTELL);
                     default ->{
                         this.player.setPlayerFactionName(FactionName.NONE);
-                        this.player.sendErrorMessage("Faction not found... please Report this");
+                        this.player.sendErrorMessage("Deine Fraktion wurde nicht gefunden... Bitte hier reporten:");
+                        this.player.sendErrorMessage("""
+                                https://germanrp.eu/forum/index.php?thread/25432-germanrp-addon-labymod-4-addon/""");
+
+
                     }
                 }
                 this.addon.getServerJoinListener().onFactionNameGet();
@@ -235,7 +239,7 @@ public class ChatListener {
                 final Matcher nametagDarkListAddMatcher = DARK_LIST_ADD.getPattern().matcher(message);
 
                 if (nametagDarkListAddMatcher.find()) {
-                    this.addonVariables.getDarklist().add(nametagDarkListAddMatcher.group(2).replace("[GR]", ""));
+                    this.addonVariables.getDarklist().add(nametagDarkListAddMatcher.group(1).replace("[GR]", ""));
                     return;
                 }
 
@@ -276,7 +280,7 @@ public class ChatListener {
 
     @Subscribe
     @SuppressWarnings("unused")
-    public void onChatReceiveUpdateStats(ChatReceiveEvent event){
+    public void onChatReceiveUpdateStats(@NotNull ChatReceiveEvent event){
         @NotNull String message = event.chatMessage().getPlainText();
         Matcher matcher = XP_ADD_CHAT.getPattern().matcher(message);
         if(matcher.find()){
