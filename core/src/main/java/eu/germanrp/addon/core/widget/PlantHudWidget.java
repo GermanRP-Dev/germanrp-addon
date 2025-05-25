@@ -9,6 +9,7 @@ import eu.germanrp.addon.api.models.PlantType;
 import eu.germanrp.addon.api.events.plant.PlantCreateEvent;
 import eu.germanrp.addon.api.events.plant.PlantDestroyEvent;
 import eu.germanrp.addon.api.events.plant.PlantPacketReceiveEvent;
+import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent;
 import eu.germanrp.addon.core.executor.PlaySoundExecutor;
 import lombok.val;
@@ -39,6 +40,7 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
     private static final TextColor NOTIFICATION_COLOR = TextColor.color(0xFF75151E);
 
     private final PlaySoundExecutor playSoundExecutor;
+    private final GermanRPAddon addon;
 
     private TextLine progressLine;
     private TextLine yieldLine;
@@ -50,12 +52,13 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
             final String id,
             final HudWidgetCategory category,
             final Icon icon,
-            final PlaySoundExecutor playSoundExecutor
-    ) {
+            final PlaySoundExecutor playSoundExecutor,
+            GermanRPAddon addon) {
         super(id);
         this.bindCategory(category);
         this.setIcon(icon);
         this.playSoundExecutor = playSoundExecutor;
+        this.addon = addon;
     }
 
     @Override
@@ -151,12 +154,11 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
         }
 
         playSoundExecutor.playNotificationSound();
-        this.labyAPI.minecraft().chatExecutor().displayClientMessage(
-                Component.translatable(
-                        PLANT_HARVEST_MESSAGE,
-                        Component.text(event.getPlant().getType().getDisplayName())
-                ).color(NOTIFICATION_COLOR)
-        );
+
+        this.addon.getPlayer().sendInfoMessage(Component.translatable(
+                PLANT_HARVEST_MESSAGE,
+                Component.text(event.getPlant().getType().getDisplayName())
+        ));
     }
 
     @Subscribe
@@ -167,11 +169,11 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
         }
 
         playSoundExecutor.playNotificationSound();
-        this.labyAPI.minecraft().chatExecutor().displayClientMessage(
+        this.addon.getPlayer().sendInfoMessage(
                 Component.translatable(
                         PLANT_FERTILIZE_MESSAGE,
                         Component.text(event.getPlant().getType().getDisplayName())
-                ).color(NOTIFICATION_COLOR)
+                )
         );
     }
 
@@ -183,11 +185,11 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
         }
 
         playSoundExecutor.playNotificationSound();
-        this.labyAPI.minecraft().chatExecutor().displayClientMessage(
+        this.addon.getPlayer().sendInfoMessage(
                 Component.translatable(
                         PLANT_WATER_MESSAGE,
                         Component.text(event.getPlant().getType().getDisplayName())
-                ).color(NOTIFICATION_COLOR)
+                )
         );
     }
 
