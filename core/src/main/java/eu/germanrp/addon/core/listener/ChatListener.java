@@ -50,6 +50,7 @@ public class ChatListener {
         final Matcher ShopRaubMatcher = SHOP_RAUB.getPattern().matcher(m);
         final Matcher BombeStartMatcher = BOMBE_START.getPattern().matcher(m);
         final Matcher JuwelenRaubMatcher = JUWELEN_RAUB.getPattern().matcher(m);
+        final Matcher HackangriffStartMatcher = HACKANGRIFF_START.getPattern().matcher(m);
 
         if(ShopRaubMatcher.find()){
             Laby.fireEvent(new MajorWidgetUpdateEvent("Shopraub", 3));
@@ -68,6 +69,14 @@ public class ChatListener {
 
         if (BombeStartMatcher.find()){
             Laby.fireEvent(new MajorWidgetUpdateEvent("Bombe", 10));
+            return;
+        }
+        if (e.chatMessage().getPlainText().equals("► Du nimmst am Hackangriff deiner Fraktion teil.")){
+            Laby.fireEvent(new MajorWidgetUpdateEvent("Hackangriff", 8));
+            return;
+        }
+        if (HackangriffStartMatcher.find()){
+            Laby.fireEvent(new MajorWidgetUpdateEvent(HackangriffStartMatcher.group(1), 8));
             return;
         }
     }
@@ -259,6 +268,7 @@ public class ChatListener {
                 if (nametagBountyRemoveMatcher.find()){
                     this.addonVariables.getBounties().remove(nametagBountyRemoveMatcher.group(1).replace("[GR]", ""));
                 }
+
             }
             case STAAT -> {
                 final Matcher nametagWantedRemoveMatcher = WANTED_REMOVE.getPattern().matcher(message);

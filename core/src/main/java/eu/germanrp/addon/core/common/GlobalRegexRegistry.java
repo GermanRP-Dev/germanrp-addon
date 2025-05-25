@@ -14,7 +14,7 @@ public enum GlobalRegexRegistry {
     TITLE_FACTION_MEMBER_LIST(compile("^ {1,18}► Fraktionsmitglieder ")),
     TITLE_WANTED_LIST(compile("^ {1,18}FAHNDUNGSLISTE")),
     BOUNTY_ADD(compile("^► \\[✦] Neuer Auftragsmord: (\\w{3,16}|\\[GR]\\w{3,16})")),
-    BOUNTY_REMOVE(compile("^► \\[✦] Die Fraktion .+? (?:hat|hat sich das Kopfgeld von) (\\w{3,16}|\\[GR]\\w{3,16}) (?:geholt|ausgeschaltet)!$")),
+    BOUNTY_REMOVE(compile("► \\[✦] Die Fraktion .+? hat (?:sich das Kopfgeld von |)(\\w{3,16}|\\[GR]\\w{3,16}) (?:ausgeschaltet|geholt)!$")),
     BOUNTY_MEMBER_WANTED_LIST_ENTRY(compile("^ {4}[►»] (\\w{3,16}|\\[GR]\\w{3,16})")),
     DARK_LIST_ENTRY(compile("^► \\[Darklist] - (\\w{3,16}|\\[GR]\\w{3,16})")),
     DARK_LIST_ADD(compile("^► \\[Darklist] (?:\\w{3,16}|\\[GR]\\w{3,16}) hat (\\w{3,16}|\\[GR]\\w{3,16}) auf die Darklist gesetzt!$")),
@@ -31,6 +31,7 @@ public enum GlobalRegexRegistry {
     JUWELEN_RAUB(compile("TO-BE-FIXED")),
     XP_READER_STATS(compile("^► \\[System] - XP: (\\d+)\\/(\\d+)$")),
     FRAKTION_NAME_STATS(compile("^► \\[System] - Fraktion: (.+?)$")),
-    XP_ADD_CHAT(compile("^ \\+(\\d+) Erfahrungspunkte(| \\(x2\\)| \\(x3\\))$"));
+    HACKANGRIFF_START(compile("^\\[⚠] Die Gangzone (.+?) wird von Hackern angegriffen! Zerstöre den Datenkoffer, bevor sie ihren Angriff vollenden können!$")),
+    XP_ADD_CHAT(compile("^ \\+(\\d+) Erfahrungspunkte(| \\(x2\\)| \\(x3 Gameboost\\))$"));
     private final Pattern pattern;
 }

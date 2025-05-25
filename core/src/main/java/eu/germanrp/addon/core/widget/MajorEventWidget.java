@@ -54,11 +54,13 @@ public class MajorEventWidget  extends TextHudWidget<TextHudWidgetConfig> {
         this.eventNameLine.setState(TextLine.State.HIDDEN);
         this.countDownLine.setState(TextLine.State.HIDDEN);
     }
+
     public void reset() {
         this.majorEvent = false;
         this.eventNameLine.setState(TextLine.State.HIDDEN);
         this.countDownLine.setState(TextLine.State.HIDDEN);
     }
+
     @Subscribe
     public void onGermanRPAddonTick(GermanRPAddonTickEvent e) {
         if (!e.isPhase(GermanRPAddonTickEvent.Phase.SECOND) || !this.majorEvent) {
