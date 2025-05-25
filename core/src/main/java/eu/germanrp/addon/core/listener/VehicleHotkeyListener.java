@@ -16,10 +16,6 @@ import java.util.Map;
 
 public class VehicleHotkeyListener {
 
-    private int cruiseControlSpeed = 50;
-
-    private boolean cruiseControlEnabled = false;
-
     private final GermanRPAddon addon;
     private final VehicleService vehicleService;
     private final List<Map.Entry<ConfigProperty<Key>, Runnable>> keyActionList;
@@ -69,7 +65,6 @@ public class VehicleHotkeyListener {
         final VehicleHotkeyConfig config = addon.configuration().vehicleHotkeyConfig();
         final List<Map.Entry<ConfigProperty<Key>, Runnable>> actionList = new ArrayList<>();
         actionList.add(Map.entry(config.toggleEngine(), vehicleService::toggleEngine));
-        actionList.add(Map.entry(config.toggleCruiseControl(), vehicleService::toggleCruiseControl));
         actionList.add(Map.entry(config.toggleTurnSignalLeft(), vehicleService::toggleSignalLeft));
         actionList.add(Map.entry(config.toggleTurnSignalRight(), vehicleService::toggleSignalRight));
         actionList.add(Map.entry(config.toggleHazardWarnSignal(), vehicleService::toggleHazardWarnSignal));

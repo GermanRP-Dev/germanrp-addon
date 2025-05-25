@@ -106,7 +106,6 @@
                 "toggleTurnSignalLeft.name": "Blinker Links an/aus",
                 "toggleTurnSignalRight.name": "Blinker Rechts an/aus",
                 "toggleHazardWarnSignal.name": "Warnblinkanlage an/aus",
-                "toggleCruiseControl.name": "Tempomat an/aus",
                 "increaseCruiseControlSpeed.name": "Tempomat Geschwindigkeit erhöhen",
                 "decreaseCruiseControlSpeed.name": "Tempomat Geschwindigkeit verringern",
                 "toggleEmergencySignal.name": "Sondersignal an/aus",

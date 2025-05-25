@@ -22,11 +22,6 @@ public class VehicleService {
         this.addon = addon;
     }
 
-    public void toggleCruiseControl() {
-        cruiseControlEnabled = !cruiseControlEnabled;
-        sendPayloadToServer(VehicleCommand.TOGGLE_CRUISE_CONTROL);
-    }
-
     public void toggleEngine() {
         sendPayloadToServer(VehicleCommand.TOGGLE_ENGINE);
     }
@@ -77,7 +72,6 @@ public class VehicleService {
         TOGGLE_SIGNAL_LEFT("TOGGLESIGNALLEFT"),
         TOGGLE_SIGNAL_RIGHT("TOGGLESIGNALRIGHT"),
         TOGGLE_SIGNAL_HAZARD_WARN("TOGGLEWARNSIGNAL"),
-        TOGGLE_CRUISE_CONTROL("TOGGLECRUISECONTROL"),
         INCREASE_CRUISE_CONTROL("ADDCRUISECONTROL"),
         DECREASE_CRUISE_CONTROL("REMOVECRUISECONTROL"),
         TOGGLE_SOSI("TOGGLESOSI"),
