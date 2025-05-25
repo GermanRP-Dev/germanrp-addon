@@ -94,17 +94,20 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         this.heilkrautpflanzeHudWidget = new HeilkrautpflanzeHudWidget(
                 widgetCategory,
                 Icon.texture(ResourceLocation.create(NAMESPACE, "images/heilkrautpflanze.png")),
-                playSoundExecutor
+                playSoundExecutor,
+                this
         );
         this.roseHudWidget = new RoseHudWidget(
                 widgetCategory,
                 Icon.texture(ResourceLocation.create(NAMESPACE, "images/rose.png")),
-                playSoundExecutor
+                playSoundExecutor,
+                this
         );
         this.stoffHudWidget = new StoffHudWidget(
                 widgetCategory,
                 Icon.texture(ResourceLocation.create(NAMESPACE, "images/stoffpflanze.png")),
-                playSoundExecutor
+                playSoundExecutor,
+                this
         );
         this.graffitiHudWidget = new GraffitiHudWidget(
                 widgetCategory,
