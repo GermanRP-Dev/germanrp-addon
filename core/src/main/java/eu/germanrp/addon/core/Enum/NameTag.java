@@ -5,31 +5,28 @@
 
 package eu.germanrp.addon.core.Enum;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.labymod.api.client.component.ComponentService;
+import net.labymod.api.client.component.format.TextColor;
 
 @Getter
+@AllArgsConstructor
 public enum NameTag {
 
-    NONE("§f"),
-    WHITE("§f"),
-    GRAY("§7"),
-    DARKGRAY("§8"),
-    BLACK("§0"),
-    GREEN("§a"),
-    DARKGREEN("§2"),
-    LIGHTBLUE("§b"),
-    BLUE("§9"),
-    DARKBLUE("§1"),
-    CYAN("$3"),
-    YELLOW("§e"),
-    ORANGE("§6"),
-    PINK("§d"),
-    PURPLE("§5");
-
-    private final String color;
-
-    NameTag(String color) {
-        this.color = color;
-    }
-
+    NONE(ComponentService.parseTextColor("black")),
+    BLACK (ComponentService.parseTextColor("black")),
+    DARKBLUE (ComponentService.parseTextColor("dark_blue")),
+    DARKGREEN (ComponentService.parseTextColor("dark_green")),
+    DARKPURPLE (ComponentService.parseTextColor("dark_purple")),
+    GOLD (ComponentService.parseTextColor("gold")),
+    GRAY (ComponentService.parseTextColor("gray")),
+    DARKGRAY (ComponentService.parseTextColor("dark_gray")),
+    BLUE (ComponentService.parseTextColor("blue")),
+    GREEN (ComponentService.parseTextColor("green")),
+    AQUA (ComponentService.parseTextColor("aqua")),
+    LIGHTPURPLE (ComponentService.parseTextColor("light_purple")),
+    YELLOW (ComponentService.parseTextColor("yellow")),
+    WHITE (ComponentService.parseTextColor("white"));
+    private final TextColor textColor;
 }
