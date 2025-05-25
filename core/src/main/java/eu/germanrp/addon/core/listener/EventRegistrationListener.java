@@ -4,7 +4,6 @@ import com.google.gson.JsonObject;
 import eu.germanrp.addon.api.events.plant.PlantCreateEvent;
 import eu.germanrp.addon.api.events.plant.PlantDestroyEvent;
 import eu.germanrp.addon.api.events.plant.PlantPacketReceiveEvent;
-import eu.germanrp.addon.api.events.vehicle.CurrentTempomatReceiveEvent;
 import eu.germanrp.addon.api.models.Graffiti;
 import eu.germanrp.addon.api.models.PlantType;
 import eu.germanrp.addon.api.network.PlantPacket;
@@ -172,18 +171,6 @@ public class EventRegistrationListener {
                 }
 
                 fireEvent(new PlantPacketReceiveEvent(plantPaket));
-            }
-
-            case "CURRENTTEMPOMAT" -> {
-                final JsonObject jsonObject =
-                        GsonUtil.DEFAULT_GSON.fromJson(event.getPayloadContent(), JsonObject.class);
-                final int value = Integer.parseInt(jsonObject.get("value").getAsString());
-
-                if (value == -1) {
-                    return;
-                }
-
-                fireEvent(new CurrentTempomatReceiveEvent(value));
             }
 
             default -> {
