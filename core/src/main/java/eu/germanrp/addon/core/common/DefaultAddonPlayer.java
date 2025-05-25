@@ -91,6 +91,13 @@ public class DefaultAddonPlayer implements AddonPlayer {
     }
 
     @Override
+    public void sendErrorMessage(Component component) {
+        this.addon.displayMessage(prefix()
+                .append(text("Fehler! ", DARK_RED, BOLD))
+                .append(component.color(RED)));
+    }
+
+    @Override
     public void sendErrorMessage(String message) {
         this.addon.displayMessage(prefix()
                 .append(text("Fehler! ", DARK_RED, BOLD))
@@ -98,15 +105,32 @@ public class DefaultAddonPlayer implements AddonPlayer {
     }
 
     @Override
-    public void sendInfoMessage(String message) {
-        this.addon.displayMessage(prefix()
+    public void sendInfoMessage(Component component) {
+        Laby.labyAPI().minecraft().chatExecutor().displayClientMessage(prefix()
                 .append(text("Info! ", AQUA, BOLD))
-                .append(text(message, WHITE)));
+                .append(component.color(WHITE)));
+    }
+
+    @Override
+    public void sendInfoMessage(String string) {
+        Laby.labyAPI().minecraft().chatExecutor().displayClientMessage(prefix()
+                .append(text("Info! ", AQUA, BOLD))
+                .append(text(string, WHITE)));
+    }
+
+    @Override
+    public void sendSyntaxMessage(Component component) {
+        sendErrorMessage("Syntax: " + component);
     }
 
     @Override
     public void sendSyntaxMessage(String message) {
         sendErrorMessage("Syntax: " + message);
+    }
+
+    @Override
+    public void sendServerMessage(Component component) {
+
     }
 
     @Override
