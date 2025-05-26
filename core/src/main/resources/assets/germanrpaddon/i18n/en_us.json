@@ -149,6 +149,9 @@
             "blackMarketWidget": {
                 "name": "Blackmarket",
                 "countdown": "30:45"
+            },
+            "payDay": {
+                "name": "PayDay"
             }
         },
         "widget": {
@@ -177,6 +180,14 @@
             "blackMarketWidget": {
                 "eventKey": "Blackmarket",
                 "eventValue": "30:45"
+            },
+            "payDay": {
+                "fgehaltKey": "Frak",
+                "jgehaltKey": "Jobs",
+                "paydayKey": "Time to PD",
+                "fGehaltValue": "loading",
+                "jGehaltValue": "loading",
+                "paydayValue": "loading"
             }
         }
     }
