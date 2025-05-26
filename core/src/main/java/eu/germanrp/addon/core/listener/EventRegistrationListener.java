@@ -7,7 +7,6 @@ import eu.germanrp.addon.api.events.plant.PlantDestroyEvent;
 import eu.germanrp.addon.api.events.plant.PlantPacketReceiveEvent;
 import eu.germanrp.addon.api.models.Graffiti;
 import eu.germanrp.addon.api.models.PlantType;
-import eu.germanrp.addon.api.network.PayDayPacket;
 import eu.germanrp.addon.api.network.PlantPacket;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.Utils;

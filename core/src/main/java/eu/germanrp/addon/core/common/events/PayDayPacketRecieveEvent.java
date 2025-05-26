@@ -1,6 +1,5 @@
 package eu.germanrp.addon.core.common.events;
 
-import eu.germanrp.addon.api.network.PayDayPacket;
 import lombok.Data;
 import net.labymod.api.event.Event;
 
