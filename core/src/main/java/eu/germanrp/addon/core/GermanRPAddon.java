@@ -49,6 +49,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private PlayerExperienceWidget playerExperienceWidget;
     private BlackMarketWidget blackMarketWidget;
     private HydrationWidget hydrationWidget;
+    private PayDayWidget paydayWidget;
 
     @Override
     protected void load() {
@@ -132,6 +133,10 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
                 this,
                 widgetCategory
         );
+        this.paydayWidget = new PayDayWidget(
+                this,
+                widgetCategory
+        );
 
         widgetRegistry.categoryRegistry().register(widgetCategory);
         widgetRegistry.register(heilkrautpflanzeHudWidget);
@@ -142,6 +147,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         widgetRegistry.register(playerExperienceWidget);
         widgetRegistry.register(blackMarketWidget);
         widgetRegistry.register(hydrationWidget);
+        widgetRegistry.register(paydayWidget);
     }
 
     private void registerListener() {

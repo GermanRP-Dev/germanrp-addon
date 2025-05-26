@@ -13,7 +13,9 @@ import eu.germanrp.addon.core.Utils;
 import eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent;
 import eu.germanrp.addon.core.common.events.GraffitiUpdateEvent;
 import eu.germanrp.addon.core.common.events.LegacyGermanRPUtilsPayloadEvent;
+import eu.germanrp.addon.core.common.events.PayDayPacketRecieveEvent;
 import lombok.val;
+import net.labymod.api.Laby;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import net.labymod.api.event.client.lifecycle.GameTickEvent;
@@ -178,6 +180,15 @@ public class EventRegistrationListener {
                 val hydration = payloadContent.get("value").getAsDouble();
                 fireEvent(new HydrationUpdateEvent(hydration));
             }
+            case "GRAddon-PayDay" -> {
+                val payloadContent = event.getPayloadContent();
+                Laby.fireEvent(new PayDayPacketRecieveEvent(
+                        payloadContent.get("time").getAsInt(),
+                        payloadContent.get("salary").getAsJsonObject().get("faction").getAsFloat(),
+                        payloadContent.get("salary").getAsJsonObject().get("job").getAsFloat()));
+
+            }
+
             default -> {
                 // Ignore unknown pakets
             }
