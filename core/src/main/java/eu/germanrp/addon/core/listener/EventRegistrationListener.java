@@ -1,6 +1,7 @@
 package eu.germanrp.addon.core.listener;
 
 import com.google.gson.JsonObject;
+import eu.germanrp.addon.api.events.network.HydrationUpdateEvent;
 import eu.germanrp.addon.api.events.plant.PlantCreateEvent;
 import eu.germanrp.addon.api.events.plant.PlantDestroyEvent;
 import eu.germanrp.addon.api.events.plant.PlantPacketReceiveEvent;
@@ -172,7 +173,11 @@ public class EventRegistrationListener {
 
                 fireEvent(new PlantPacketReceiveEvent(plantPaket));
             }
-
+            case "GRAddon-Hydration" -> {
+                val payloadContent = event.getPayloadContent();
+                val hydration = payloadContent.get("value").getAsDouble();
+                fireEvent(new HydrationUpdateEvent(hydration));
+            }
             default -> {
                 // Ignore unknown pakets
             }

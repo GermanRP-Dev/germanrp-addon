@@ -1,5 +1,6 @@
 package eu.germanrp.addon.core;
 
+import eu.germanrp.addon.core.config.HydrationConfig;
 import eu.germanrp.addon.core.config.VehicleHotkeyConfig;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -21,5 +22,7 @@ public class GermanRPAddonConfiguration extends AddonConfig {
     private final NameTagSubConfig NameTagSubConfig = new NameTagSubConfig();
 
     private final VehicleHotkeyConfig vehicleHotkeyConfig = new VehicleHotkeyConfig();
+
+    private final HydrationConfig hydrationConfig = new HydrationConfig();
 
 }
