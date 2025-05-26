@@ -51,18 +51,21 @@ public class NameTagListener {
             return;
         }
 
-        String prefix = team.getPrefix().toString();
-        if (prefix.contains("red") || prefix.contains("dark_red") || prefix.contains("dark_aqua")
-                || prefix.contains("✝")) {
+        Component prefix = team.getPrefix().copy();
+        if (prefix.toString().contains("red") || prefix.toString().contains("dark_red") ||
+                prefix.toString().contains("dark_aqua") || prefix.toString().contains("✝")) {
             return;
         }
+
 
         if (this.addonVariables.getMembers()!= null) {
             List<String> memberlist = this.addonVariables.getMembers();
             NameTag factionTag = nameTagSubConfig.factionColor().get();
 
+
             if (memberlist.contains(playerName) && factionTag != NameTag.NONE) {
-                event.setNameTag(team.getPrefix().append(Component.text(playerInfo.profile().getUsername())).append(team.getSuffix()).color(factionTag.getTextColor()));
+                event.setNameTag(prefix.append(Component.text(playerName)).append(team.getSuffix()).color(factionTag.getTextColor()));
+                Component test = event.nameTag();
                 return;
             }
         }
@@ -74,7 +77,7 @@ public class NameTagListener {
                     NameTag bountyTag = nameTagSubConfig.bountyColor().get();
 
                     if (bountylist.contains(playerName) && bountyTag != NameTag.NONE) {
-                        event.setNameTag(team.getPrefix().append(Component.text(playerInfo.profile().getUsername())).append(team.getSuffix()).color(bountyTag.getTextColor()));
+                        event.setNameTag(prefix.append(Component.text(playerName)).append(team.getSuffix()).color(bountyTag.getTextColor()));
 
                         return;
                     }
@@ -85,7 +88,7 @@ public class NameTagListener {
                     NameTag darklisttag = nameTagSubConfig.darklistColor().get();
 
                     if (darklist.contains(playerName) && darklisttag != NameTag.NONE) {
-                        event.setNameTag(team.getPrefix().append(Component.text(playerInfo.profile().getUsername())).append(team.getSuffix()).color(darklisttag.getTextColor()));
+                        event.setNameTag(prefix.append(Component.text(playerName)).append(team.getSuffix()).color(darklisttag.getTextColor()));
                     }
                 }
             }
@@ -98,7 +101,7 @@ public class NameTagListener {
                 NameTag wantedColor = nameTagSubConfig.wantedColor().get();
 
                 if (wantedList.contains(playerName) && wantedColor != NameTag.NONE) {
-                    event.setNameTag(team.getPrefix().append(Component.text(playerInfo.profile().getUsername())).append(team.getSuffix()).color(wantedColor.getTextColor()));
+                    event.setNameTag(prefix.append(Component.text(playerName)).append(team.getSuffix()).color(wantedColor.getTextColor()));
                 }
             }
         }
