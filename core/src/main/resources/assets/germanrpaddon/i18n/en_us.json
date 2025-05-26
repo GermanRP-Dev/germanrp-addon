@@ -110,6 +110,11 @@
                 "decreaseCruiseControlSpeed.name": "Tempomat Geschwindigkeit verringern",
                 "toggleEmergencySignal.name": "Sondersignal an/aus",
                 "toggleEmergencySignalSound.name": "Sondersignal laut/stumm"
+            },
+            "hydrationConfig": {
+                "name": "Hydrierung",
+                "hideHydrationChatMessage.name": "Hydrierungsnachricht verstecken",
+                "displayHydrationMessageInActionBar.name": "Hydrierungsnachricht in Action-Bar anzeigen"
             }
         },
         "message": {
@@ -149,12 +154,15 @@
             "blackMarketWidget": {
                 "name": "Blackmarket",
                 "countdown": "30:45"
+            },
+            "hydration": {
+                "name": "Hydrierung"
             }
         },
         "widget": {
             "category": {
                 "title": "GermanRP",
-                "description": "Shows you information about stuff on GermanRP"
+                "description": "Zeigt dir Informationen über Dinge auf GermanRP an."
             },
             "plant": {
                 "progressKey": "Fortschritt",
@@ -177,6 +185,9 @@
             "blackMarketWidget": {
                 "eventKey": "Blackmarket",
                 "eventValue": "30:45"
+            },
+            "hydration": {
+                "key": "Hydrierung"
             }
         }
     }
