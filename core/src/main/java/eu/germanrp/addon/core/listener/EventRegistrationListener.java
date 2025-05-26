@@ -173,6 +173,7 @@ public class EventRegistrationListener {
                 if (plantPaket.getCurrentTime() == 0) {
                     return;
                 }
+
                 fireEvent(new PlantPacketReceiveEvent(plantPaket));
             }
             case "GRAddon-Hydration" -> {
