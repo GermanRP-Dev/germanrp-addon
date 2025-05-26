@@ -95,7 +95,7 @@ public class ChatListener {
         }
 
         String message = event.chatMessage().getPlainText();
-        if (message.startsWith("► [System] ")){
+        if (message.startsWith("► [System] ") && !message.endsWith("anwesend.")){
             event.setCancelled(true);
             Matcher matcher = XP_READER_STATS.getPattern().matcher(message);
             if (matcher.find()) {

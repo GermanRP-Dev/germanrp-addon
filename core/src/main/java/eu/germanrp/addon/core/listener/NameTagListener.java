@@ -7,6 +7,7 @@ import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.NameTagSubConfig;
 import eu.germanrp.addon.core.common.AddonVariables;
 import net.labymod.api.client.component.Component;
+import net.labymod.api.client.component.format.TextDecoration;
 import net.labymod.api.client.network.NetworkPlayerInfo;
 import net.labymod.api.client.scoreboard.ScoreboardTeam;
 import net.labymod.api.event.Subscribe;
@@ -56,7 +57,7 @@ public class NameTagListener {
                 prefix.toString().contains("dark_aqua") || prefix.toString().contains("✝")) {
             return;
         }
-
+        boolean isAFK = event.nameTag().toString().contains("italic");
 
         if (this.addonVariables.getMembers()!= null) {
             List<String> memberlist = this.addonVariables.getMembers();
@@ -64,8 +65,13 @@ public class NameTagListener {
 
 
             if (memberlist.contains(playerName) && factionTag != NameTag.NONE) {
-                event.setNameTag(prefix.append(Component.text(playerName)).append(team.getSuffix()).color(factionTag.getTextColor()));
-                Component test = event.nameTag();
+                if(isAFK){
+                    event.setNameTag(prefix.append(Component.text(playerName)).append(team.getSuffix()).color(factionTag.getTextColor()).decorate(TextDecoration.ITALIC));
+
+                } else  {
+                    event.setNameTag(prefix.append(Component.text(playerName)).append(team.getSuffix()).color(factionTag.getTextColor()));
+
+                }
                 return;
             }
         }
@@ -77,8 +83,13 @@ public class NameTagListener {
                     NameTag bountyTag = nameTagSubConfig.bountyColor().get();
 
                     if (bountylist.contains(playerName) && bountyTag != NameTag.NONE) {
-                        event.setNameTag(prefix.append(Component.text(playerName)).append(team.getSuffix()).color(bountyTag.getTextColor()));
+                        if(isAFK){
+                            event.setNameTag(prefix.append(Component.text(playerName)).append(team.getSuffix()).color(bountyTag.getTextColor()).decorate(TextDecoration.ITALIC));
 
+                        } else  {
+                            event.setNameTag(prefix.append(Component.text(playerName)).append(team.getSuffix()).color(bountyTag.getTextColor()));
+
+                        }
                         return;
                     }
                 }
@@ -88,8 +99,14 @@ public class NameTagListener {
                     NameTag darklisttag = nameTagSubConfig.darklistColor().get();
 
                     if (darklist.contains(playerName) && darklisttag != NameTag.NONE) {
-                        event.setNameTag(prefix.append(Component.text(playerName)).append(team.getSuffix()).color(darklisttag.getTextColor()));
-                    }
+                        if(isAFK){
+                            event.setNameTag(prefix.append(Component.text(playerName)).append(team.getSuffix()).color(darklisttag.getTextColor()).decorate(TextDecoration.ITALIC));
+
+                        } else  {
+                            event.setNameTag(prefix.append(Component.text(playerName)).append(team.getSuffix()).color(darklisttag.getTextColor()));
+
+                        }
+                        return;}
                 }
             }
 
@@ -101,8 +118,14 @@ public class NameTagListener {
                 NameTag wantedColor = nameTagSubConfig.wantedColor().get();
 
                 if (wantedList.contains(playerName) && wantedColor != NameTag.NONE) {
-                    event.setNameTag(prefix.append(Component.text(playerName)).append(team.getSuffix()).color(wantedColor.getTextColor()));
-                }
+                    if(isAFK){
+                        event.setNameTag(prefix.append(Component.text(playerName)).append(team.getSuffix()).color(wantedColor.getTextColor()).decorate(TextDecoration.ITALIC));
+
+                    } else  {
+                        event.setNameTag(prefix.append(Component.text(playerName)).append(team.getSuffix()).color(wantedColor.getTextColor()));
+
+                    }
+                    return; }
             }
         }
     }
