@@ -25,10 +25,4 @@ public class GermanRPAddonConfiguration extends AddonConfig {
 
     private final HydrationConfig hydrationConfig = new HydrationConfig();
 
-
-    @Override
-    public int getConfigVersion() {
-        return 2;
-    }
-
 }
