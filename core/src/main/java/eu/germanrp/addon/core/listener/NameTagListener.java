@@ -27,21 +27,19 @@ public class NameTagListener {
         this.addonVariables = this.addon.getVariables();
         this.nameTagSubConfig = addon.configuration().NameTagSubConfig();
     }
+
     @Subscribe
+    @SuppressWarnings("unused")
     public void onNameTag(PlayerNameTagRenderEvent event) {
         if (!this.addon.getUtilService().isGermanRP()) {
             return;
         }
+
         FactionName factionName = this.addon.getPlayer().getPlayerFactionName();
 
         NetworkPlayerInfo playerInfo = event.getPlayerInfo();
-        if (playerInfo == null) {
-            return;
-        }
-        if (factionName == null){
-            return;
-        }
-        if (factionName.getType() == FactionType.NEUTRAL) {
+
+        if (playerInfo == null || factionName == null || factionName.getType() == FactionType.NEUTRAL) {
             return;
         }
 
@@ -53,27 +51,19 @@ public class NameTagListener {
         }
 
         Component prefix = team.getPrefix().copy();
-        if (prefix.toString().contains("red") || prefix.toString().contains("dark_red") ||
-                prefix.toString().contains("dark_aqua") || prefix.toString().contains("✝")) {
+
+        if (prefix.toString().contains("red") || prefix.toString().contains("dark_red") || prefix.toString()
+                .contains("dark_aqua") || prefix.toString().contains("✝")) {
             return;
         }
+
         boolean isAFK = event.nameTag().toString().contains("italic");
 
-        if (this.addonVariables.getMembers()!= null) {
+        if (this.addonVariables.getMembers() != null) {
             List<String> memberlist = this.addonVariables.getMembers();
             NameTag factionTag = nameTagSubConfig.factionColor().get();
 
-
-            if (memberlist.contains(playerName) && factionTag != NameTag.NONE) {
-                if(isAFK){
-                    event.setNameTag(prefix.append(Component.text(playerName)).append(team.getSuffix()).color(factionTag.getTextColor()).decorate(TextDecoration.ITALIC));
-
-                } else  {
-                    event.setNameTag(prefix.append(Component.text(playerName)).append(team.getSuffix()).color(factionTag.getTextColor()));
-
-                }
-                return;
-            }
+            if (changeNameTag(event, playerName, team, prefix, isAFK, memberlist, factionTag)) return;
         }
 
         switch (factionName.getType()) {
@@ -82,51 +72,57 @@ public class NameTagListener {
                     List<String> bountylist = this.addonVariables.getBounties();
                     NameTag bountyTag = nameTagSubConfig.bountyColor().get();
 
-                    if (bountylist.contains(playerName) && bountyTag != NameTag.NONE) {
-                        if(isAFK){
-                            event.setNameTag(prefix.append(Component.text(playerName)).append(team.getSuffix()).color(bountyTag.getTextColor()).decorate(TextDecoration.ITALIC));
-
-                        } else  {
-                            event.setNameTag(prefix.append(Component.text(playerName)).append(team.getSuffix()).color(bountyTag.getTextColor()));
-
-                        }
+                    if (changeNameTag(event, playerName, team, prefix, isAFK, bountylist, bountyTag)) {
                         return;
                     }
                 }
 
-                if (this.addonVariables.getDarklist()!= null) {
+                if (this.addonVariables.getDarklist() != null) {
                     List<String> darklist = this.addonVariables.getDarklist();
-                    NameTag darklisttag = nameTagSubConfig.darklistColor().get();
+                    NameTag darklistTag = nameTagSubConfig.darklistColor().get();
 
-                    if (darklist.contains(playerName) && darklisttag != NameTag.NONE) {
-                        if(isAFK){
-                            event.setNameTag(prefix.append(Component.text(playerName)).append(team.getSuffix()).color(darklisttag.getTextColor()).decorate(TextDecoration.ITALIC));
-
-                        } else  {
-                            event.setNameTag(prefix.append(Component.text(playerName)).append(team.getSuffix()).color(darklisttag.getTextColor()));
-
-                        }
-                        return;}
+                    changeNameTag(event, playerName, team, prefix, isAFK, darklist, darklistTag);
                 }
+
             }
 
             case STAAT -> {
                 if (this.addonVariables.getWantedPlayers() == null) {
                     return;
                 }
+
                 List<String> wantedList = this.addonVariables.getWantedPlayers();
                 NameTag wantedColor = nameTagSubConfig.wantedColor().get();
 
-                if (wantedList.contains(playerName) && wantedColor != NameTag.NONE) {
-                    if(isAFK){
-                        event.setNameTag(prefix.append(Component.text(playerName)).append(team.getSuffix()).color(wantedColor.getTextColor()).decorate(TextDecoration.ITALIC));
+                changeNameTag(event, playerName, team, prefix, isAFK, wantedList, wantedColor);
+            }
 
-                    } else  {
-                        event.setNameTag(prefix.append(Component.text(playerName)).append(team.getSuffix()).color(wantedColor.getTextColor()));
-
-                    }
-                    return; }
+            default -> {
+                // Don't do anything for the other types
             }
         }
+    }
+
+    private boolean changeNameTag(
+            PlayerNameTagRenderEvent event,
+            String playerName,
+            ScoreboardTeam team,
+            Component prefix,
+            boolean isAFK,
+            List<String> list,
+            NameTag tag
+    ) {
+        if (!list.contains(playerName) || tag == NameTag.NONE) {
+            return false;
+        }
+
+        Component nameTag =
+                prefix.append(Component.text(playerName)).append(team.getSuffix()).color(tag.getTextColor());
+        if (isAFK) {
+            nameTag = nameTag.decorate(TextDecoration.ITALIC);
+        }
+
+        event.setNameTag(nameTag);
+        return true;
     }
 }
