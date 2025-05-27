@@ -1,6 +1,6 @@
 package eu.germanrp.addon.core.common;
 
-import eu.germanrp.addon.core.Enum.FactionName;
+import eu.germanrp.addon.api.models.FactionName;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.client.scoreboard.Scoreboard;

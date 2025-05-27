@@ -1,9 +1,8 @@
 package eu.germanrp.addon.core.common;
 
-import eu.germanrp.addon.core.Enum.FactionName;
+import eu.germanrp.addon.api.models.FactionName;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.ExperienceUpdateEvent;
-import lombok.Setter;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.entity.player.ClientPlayer;

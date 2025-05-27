@@ -1,4 +1,4 @@
-package eu.germanrp.addon.core.Enum;
+package eu.germanrp.addon.api.models;
 
 import lombok.Getter;
 

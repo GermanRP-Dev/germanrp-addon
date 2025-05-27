@@ -1,8 +1,8 @@
 package eu.germanrp.addon.core.listener;
 
-import eu.germanrp.addon.core.Enum.FactionName;
-import eu.germanrp.addon.core.Enum.FactionName.FactionType;
-import eu.germanrp.addon.core.Enum.NameTag;
+import eu.germanrp.addon.api.models.FactionName;
+import eu.germanrp.addon.api.models.FactionName.FactionType;
+import eu.germanrp.addon.api.models.NameTag;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.NameTagSubConfig;
 import eu.germanrp.addon.core.common.AddonVariables;
@@ -25,7 +25,7 @@ public class NameTagListener {
     public NameTagListener(GermanRPAddon germanRPAddon) {
         this.addon = germanRPAddon;
         this.addonVariables = this.addon.getVariables();
-        this.nameTagSubConfig = addon.configuration().NameTagSubConfig();
+        this.nameTagSubConfig = addon.configuration().nameTagSubConfig();
     }
 
     @Subscribe
