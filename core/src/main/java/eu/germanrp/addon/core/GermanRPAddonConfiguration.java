@@ -19,7 +19,7 @@ public class GermanRPAddonConfiguration extends AddonConfig {
     @SwitchSetting
     private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);
 
-    private final NameTagSubConfig NameTagSubConfig = new NameTagSubConfig();
+    private final NameTagSubConfig nameTagSubConfig = new NameTagSubConfig();
 
     private final VehicleHotkeyConfig vehicleHotkeyConfig = new VehicleHotkeyConfig();
 

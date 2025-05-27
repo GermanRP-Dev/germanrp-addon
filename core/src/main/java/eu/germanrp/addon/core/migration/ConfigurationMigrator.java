@@ -13,18 +13,20 @@ public final class ConfigurationMigrator {
     public void onConfigVersionUpdateEvent(ConfigurationVersionUpdateEvent event) {
         final Class<? extends Config> configClass = event.getConfigClass();
 
-        if(configClass == VehicleHotkeyConfig.class) {
+
+        if (configClass == VehicleHotkeyConfig.class) {
             migrateVehicleConfig(event);
         }
+
     }
 
     private void migrateVehicleConfig(final ConfigurationVersionUpdateEvent event) {
         final int usedVersion = event.getUsedVersion();
 
-        if(usedVersion == 1) {
+        if (usedVersion == 1) {
             final JsonObject config = event.getJsonObject();
 
-            if(config.has("toggleCruiseControl")) {
+            if (config.has("toggleCruiseControl")) {
                 config.remove("toggleCruiseControl");
             }
 

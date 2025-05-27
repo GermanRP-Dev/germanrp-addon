@@ -1,6 +1,6 @@
 package eu.germanrp.addon.core.listener;
 
-import eu.germanrp.addon.core.Enum.FactionName;
+import eu.germanrp.addon.api.models.FactionName;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.AddonPlayer;
 import eu.germanrp.addon.core.common.AddonVariables;

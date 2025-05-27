@@ -4,32 +4,10 @@
             "enabled": {
                 "name": "Enabled"
             },
-            "NameTagSubConfig": {
+            "nameTagSubConfig": {
                 "name": "Fraktion",
                 "factionColor": {
-                    "name": "Member Color:",
-                    "entries": {
-                        "none": "§fOff",
-                        "white": "§fWhite",
-                        "gray": "§7Gray",
-                        "darkgray": "§8Dark_gray",
-                        "black": "§0Black",
-                        "green": "§aGreen",
-                        "darkgreen": "§2dark_green",
-                        "lightblue": "§bLight_blue",
-                        "blue": "§9Blue",
-                        "darkblue": "§1Dark_blue",
-                        "cyan": "§3Cyan",
-                        "yellow": "§eYellow",
-                        "gold": "§6Gold",
-                        "pink": "§dPink",
-                        "darkpurple": "§5Dark_purple",
-                        "aqua": "§bAqua",
-                        "lightpurple": "§dLight_purple"
-                    }
-                },
-                "darklistColor": {
-                    "name": "Darklist Color:",
+                    "name": "Mitgliederfarbe:",
                     "entries": {
                         "none": "§fOff",
                         "white": "§fWhite",
@@ -51,7 +29,29 @@
                     }
                 },
                 "bountyColor": {
-                    "name": "Bounty Farbe:",
+                    "name": "Kopfgeldfarbe:",
+                    "entries": {
+                        "none": "§fOff",
+                        "white": "§fWhite",
+                        "gray": "§7Gray",
+                        "darkgray": "§8Dark_gray",
+                        "black": "§0Black",
+                        "green": "§aGreen",
+                        "darkgreen": "§2dark_green",
+                        "lightblue": "§bLight_blue",
+                        "blue": "§9Blue",
+                        "darkblue": "§1Dark_blue",
+                        "cyan": "§3Cyan",
+                        "yellow": "§eYellow",
+                        "gold": "§6Gold",
+                        "pink": "§dPink",
+                        "darkpurple": "§5Dark_purple",
+                        "aqua": "§bAqua",
+                        "lightpurple": "§dLight_purple"
+                    }
+                },
+                "darklistColor": {
+                    "name": "Darklistfarbe:",
                     "entries": {
                         "none": "§fOff",
                         "white": "§fWhite",
@@ -73,7 +73,7 @@
                     }
                 },
                 "wantedColor": {
-                    "name": "Wanted Farbe:",
+                    "name": "Fahndungsfarbe:",
                     "entries": {
                         "none": "§fOff",
                         "white": "§fWhite",
