@@ -66,7 +66,10 @@ public class NameTagListener {
             Color factionTag = nameTagSubConfig.factionColor().get();
             boolean colorEnabled = nameTagSubConfig.factionColorEnabled().get();
 
-            if (changeNameTag(playerName, team, prefix, isAFK, memberlist, factionTag, colorEnabled).isPresent()) {
+            final Optional<Component> component =
+                    changeNameTag(playerName, team, prefix, isAFK, memberlist, factionTag, colorEnabled);
+            if (component.isPresent()) {
+                event.setNameTag(component.get());
                 return;
             }
         }
@@ -78,15 +81,10 @@ public class NameTagListener {
                     Color bountyTag = nameTagSubConfig.bountyColor().get();
                     boolean colorEnabled = nameTagSubConfig.bountyColorEnabled().get();
 
-                    if (changeNameTag(
-                            playerName,
-                            team,
-                            prefix,
-                            isAFK,
-                            bountylist,
-                            bountyTag,
-                            colorEnabled
-                    ).isPresent()) {
+                    final Optional<Component> component =
+                            changeNameTag(playerName, team, prefix, isAFK, bountylist, bountyTag, colorEnabled);
+                    if (component.isPresent()) {
+                        event.setNameTag(component.get());
                         return;
                     }
                 }
@@ -96,7 +94,15 @@ public class NameTagListener {
                     Color darklistTag = nameTagSubConfig.darklistColor().get();
                     boolean colorEnabled = nameTagSubConfig.darklistColorEnabled().get();
 
-                    changeNameTag(playerName, team, prefix, isAFK, darklist, darklistTag, colorEnabled);
+                    changeNameTag(
+                            playerName,
+                            team,
+                            prefix,
+                            isAFK,
+                            darklist,
+                            darklistTag,
+                            colorEnabled
+                    ).ifPresent(event::setNameTag);
                 }
 
             }
@@ -110,7 +116,15 @@ public class NameTagListener {
                 Color wantedColor = nameTagSubConfig.wantedColor().get();
                 boolean colorEnabled = nameTagSubConfig.wantedColorEnabled().get();
 
-                changeNameTag(playerName, team, prefix, isAFK, wantedList, wantedColor, colorEnabled);
+                changeNameTag(
+                        playerName,
+                        team,
+                        prefix,
+                        isAFK,
+                        wantedList,
+                        wantedColor,
+                        colorEnabled
+                ).ifPresent(event::setNameTag);
             }
 
             default -> {
