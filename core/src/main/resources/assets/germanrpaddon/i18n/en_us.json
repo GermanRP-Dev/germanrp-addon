@@ -6,94 +6,14 @@
             },
             "nameTagSubConfig": {
                 "name": "Fraktion",
-                "factionColor": {
-                    "name": "Mitgliederfarbe:",
-                    "entries": {
-                        "none": "§fOff",
-                        "white": "§fWhite",
-                        "gray": "§7Gray",
-                        "darkgray": "§8Dark_gray",
-                        "black": "§0Black",
-                        "green": "§aGreen",
-                        "darkgreen": "§2dark_green",
-                        "lightblue": "§bLight_blue",
-                        "blue": "§9Blue",
-                        "darkblue": "§1Dark_blue",
-                        "cyan": "§3Cyan",
-                        "yellow": "§eYellow",
-                        "gold": "§6Gold",
-                        "pink": "§dPink",
-                        "darkpurple": "§5Dark_purple",
-                        "aqua": "§bAqua",
-                        "lightpurple": "§dLight_purple"
-                    }
-                },
-                "bountyColor": {
-                    "name": "Kopfgeldfarbe:",
-                    "entries": {
-                        "none": "§fOff",
-                        "white": "§fWhite",
-                        "gray": "§7Gray",
-                        "darkgray": "§8Dark_gray",
-                        "black": "§0Black",
-                        "green": "§aGreen",
-                        "darkgreen": "§2dark_green",
-                        "lightblue": "§bLight_blue",
-                        "blue": "§9Blue",
-                        "darkblue": "§1Dark_blue",
-                        "cyan": "§3Cyan",
-                        "yellow": "§eYellow",
-                        "gold": "§6Gold",
-                        "pink": "§dPink",
-                        "darkpurple": "§5Dark_purple",
-                        "aqua": "§bAqua",
-                        "lightpurple": "§dLight_purple"
-                    }
-                },
-                "darklistColor": {
-                    "name": "Darklistfarbe:",
-                    "entries": {
-                        "none": "§fOff",
-                        "white": "§fWhite",
-                        "gray": "§7Gray",
-                        "darkgray": "§8Dark_gray",
-                        "black": "§0Black",
-                        "green": "§aGreen",
-                        "darkgreen": "§2dark_green",
-                        "lightblue": "§bLight_blue",
-                        "blue": "§9Blue",
-                        "darkblue": "§1Dark_blue",
-                        "cyan": "§3Cyan",
-                        "yellow": "§eYellow",
-                        "gold": "§6Gold",
-                        "pink": "§dPink",
-                        "darkpurple": "§5Dark_purple",
-                        "aqua": "§bAqua",
-                        "lightpurple": "§dLight_purple"
-                    }
-                },
-                "wantedColor": {
-                    "name": "Fahndungsfarbe:",
-                    "entries": {
-                        "none": "§fOff",
-                        "white": "§fWhite",
-                        "gray": "§7Gray",
-                        "darkgray": "§8Dark_gray",
-                        "black": "§0Black",
-                        "green": "§aGreen",
-                        "darkgreen": "§2dark_green",
-                        "lightblue": "§bLight_blue",
-                        "blue": "§9Blue",
-                        "darkblue": "§1Dark_blue",
-                        "cyan": "§3Cyan",
-                        "yellow": "§eYellow",
-                        "gold": "§6Gold",
-                        "pink": "§dPink",
-                        "darkpurple": "§5Dark_purple",
-                        "aqua": "§bAqua",
-                        "lightpurple": "§dLight_purple"
-                    }
-                }
+                "factionColorEnabled.name": "Mitgliederfarbe an/aus",
+                "factionColor.name": "Mitgliederfarbe",
+                "bountyColorEnabled.name": "Kopfgeldfarbe an/aus",
+                "bountyColor.name": "Kopfgeldfarbe",
+                "darklistColorEnabled.name": "Darklistfarbe an/aus",
+                "darklistColor.name": "Darklistfarbe",
+                "wantedColorEnabled.name": "Fahndungsfarbe an/aus",
+                "wantedColor.name": "Fahndungsfarbe"
             },
             "vehicleHotkeyConfig": {
                 "name": "Fahrzeug Hotkeys",
