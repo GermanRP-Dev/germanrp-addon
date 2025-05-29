@@ -1,23 +1,25 @@
 {
-    "$schema" : "https://docs.renovatebot.com/renovate-schema.json",
-    "extends" : [
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
         "config:recommended",
         ":semanticCommitsDisabled"
     ],
-    "automerge" : true,
-    "labels" : [
+    "automerge": true,
+    "labels": [
         "Renovate"
     ],
-    "rebaseWhen" : "conflicted",
-    "schedule" : [
+    "rebaseWhen": "conflicted",
+    "schedule": [
         "on the first day of the month"
     ],
-    "customManagers" : [
+    "customManagers": [
         {
-            "customType" : "regex",
-            "datasourceTemplate" : "maven",
-            "fileMatch" : "^settings\\.gradle\\.kts$",
-            "matchStrings" : [
+            "customType": "regex",
+            "datasourceTemplate": "maven",
+            "managerFilePatterns": [
+                "/^settings\\.gradle\\.kts$/"
+            ],
+            "matchStrings": [
                 "val labyGradlePluginVersion = \"(?<currentValue>.*?)\""
             ],
             "matchStringsStrategy": "combination",
