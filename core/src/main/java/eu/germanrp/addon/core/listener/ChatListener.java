@@ -110,7 +110,7 @@ public class ChatListener {
                     case "Polizei" -> this.player.setPlayerFactionName(FactionName.POLIZEI);
                     case "Camorra" -> this.player.setPlayerFactionName(FactionName.CAMORRA);
                     case "The Establishment" -> this.player.setPlayerFactionName(FactionName.ESTABLISHMENT);
-                    case "MT-Fasion" -> this.player.setPlayerFactionName(FactionName.MTFASHION);
+                    case "MT-Fashion" -> this.player.setPlayerFactionName(FactionName.MTFASHION);
                     case "Presseagentur" -> this.player.setPlayerFactionName(FactionName.PRESSE);
                     case "Sinaloa Kartell" -> this.player.setPlayerFactionName(FactionName.SINALOAKARTELL);
                     case "Medellín Kartell" -> this.player.setPlayerFactionName(FactionName.KARTELL);
