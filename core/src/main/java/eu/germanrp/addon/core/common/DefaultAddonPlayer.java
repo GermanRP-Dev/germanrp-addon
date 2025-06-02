@@ -127,11 +127,6 @@ public class DefaultAddonPlayer implements AddonPlayer {
     }
 
     @Override
-    public void sendServerMessage(Component component) {
-
-    }
-
-    @Override
     public void sendServerMessage(String message) {
         this.addon.sendMessage(message);
         this.addon.logger().info("AddonPlayer sent chat message: " + message);
