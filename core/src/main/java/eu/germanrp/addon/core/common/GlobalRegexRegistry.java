@@ -33,5 +33,6 @@ public enum GlobalRegexRegistry {
     FRAKTION_NAME_STATS(compile("^► \\[System] - Fraktion: (.+?)$")),
     HACKANGRIFF_START(compile("^\\[⚠] Die Gangzone (.+?) wird von Hackern angegriffen! Zerstöre den Datenkoffer, bevor sie ihren Angriff vollenden können!$")),
     XP_ADD_CHAT(compile("^ \\+(\\d+) Erfahrungspunkte(| \\(x2\\)| \\(x3 Gameboost\\))$"));
+
     private final Pattern pattern;
 }
