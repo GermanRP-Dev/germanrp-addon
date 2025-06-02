@@ -34,7 +34,7 @@ public class HydrationWidget extends TextHudWidget<TextHudWidgetConfig> {
     @Subscribe
     @SuppressWarnings("unused")
     public void onHydrationUpdate(HydrationUpdateEvent event) {
-        this.textLine.updateAndFlush(format(event.amount()));
+        this.textLine.updateAndFlush(format(event.getAmount()));
     }
 
     @Subscribe
