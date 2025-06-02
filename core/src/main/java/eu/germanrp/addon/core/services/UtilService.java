@@ -41,6 +41,11 @@ public class UtilService {
         return false;
     }
 
+    public boolean isLegacyAddonPacket(ResourceLocation eventIdentifier) {
+        return eventIdentifier.getNamespace().equals("labymod3")
+                && eventIdentifier.getPath().equals("main");
+    }
+
 //    public void debug(String debugMessage) {
 //        if (this.addon.configuration().debug().get()) {
 //            this.addon.player().sendMessage(Message.getBuilder()

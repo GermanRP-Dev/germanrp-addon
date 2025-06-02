@@ -1,7 +1,7 @@
 package eu.germanrp.addon.core.widget;
 
 import eu.germanrp.addon.api.models.Plant;
-import eu.germanrp.addon.api.models.PlantFactory;
+import eu.germanrp.addon.api.models.PlantStoff;
 import eu.germanrp.addon.api.models.PlantType;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.executor.PlaySoundExecutor;
@@ -10,12 +10,7 @@ import net.labymod.api.client.gui.icon.Icon;
 
 public class StoffHudWidget extends PlantHudWidget {
 
-    private static final Plant DUMMY_PLANT = PlantFactory.createPlant(
-            PlantType.STOFF,
-            true,
-            1,
-            5
-    );
+    private static final Plant DUMMY_PLANT = new PlantStoff(true, 1, 5);
 
     public StoffHudWidget(
             HudWidgetCategory category,
@@ -34,5 +29,4 @@ public class StoffHudWidget extends PlantHudWidget {
     public PlantType getPlantType() {
         return PlantType.STOFF;
     }
-
 }

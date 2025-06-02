@@ -104,7 +104,6 @@ public class NameTagListener {
                             colorEnabled
                     ).ifPresent(event::setNameTag);
                 }
-
             }
 
             case STAAT -> {
@@ -154,5 +153,4 @@ public class NameTagListener {
 
         return Optional.of(nameTag);
     }
-
 }

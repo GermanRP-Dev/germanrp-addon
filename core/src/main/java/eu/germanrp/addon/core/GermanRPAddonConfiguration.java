@@ -24,5 +24,4 @@ public class GermanRPAddonConfiguration extends AddonConfig {
     private final VehicleHotkeyConfig vehicleHotkeyConfig = new VehicleHotkeyConfig();
 
     private final HydrationConfig hydrationConfig = new HydrationConfig();
-
 }

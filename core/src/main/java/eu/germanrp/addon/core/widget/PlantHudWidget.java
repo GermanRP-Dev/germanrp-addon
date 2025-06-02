@@ -1,14 +1,16 @@
 package eu.germanrp.addon.core.widget;
 
-import eu.germanrp.addon.api.events.plant.PlantNeedsFertilizerEvent;
-import eu.germanrp.addon.api.events.plant.PlantNeedsWaterEvent;
-import eu.germanrp.addon.api.events.plant.PlantReadyToHarvestEvent;
-import eu.germanrp.addon.api.models.Plant;
-import eu.germanrp.addon.api.models.PlantFactory;
-import eu.germanrp.addon.api.models.PlantType;
 import eu.germanrp.addon.api.events.plant.PlantCreateEvent;
 import eu.germanrp.addon.api.events.plant.PlantDestroyEvent;
+import eu.germanrp.addon.api.events.plant.PlantNeedsFertilizerEvent;
+import eu.germanrp.addon.api.events.plant.PlantNeedsWaterEvent;
 import eu.germanrp.addon.api.events.plant.PlantPacketReceiveEvent;
+import eu.germanrp.addon.api.events.plant.PlantReadyToHarvestEvent;
+import eu.germanrp.addon.api.models.Plant;
+import eu.germanrp.addon.api.models.PlantHeilkraut;
+import eu.germanrp.addon.api.models.PlantRose;
+import eu.germanrp.addon.api.models.PlantStoff;
+import eu.germanrp.addon.api.models.PlantType;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent;
 import eu.germanrp.addon.core.executor.PlaySoundExecutor;
@@ -48,12 +50,11 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
     private @Nullable Plant plant;
     private boolean hudNeedsUpdate = false;
 
-    protected PlantHudWidget(
-            final String id,
-            final HudWidgetCategory category,
-            final Icon icon,
-            final PlaySoundExecutor playSoundExecutor,
-            GermanRPAddon addon) {
+    protected PlantHudWidget(final String id,
+                             final HudWidgetCategory category,
+                             final Icon icon,
+                             final PlaySoundExecutor playSoundExecutor,
+                             GermanRPAddon addon) {
         super(id);
         this.bindCategory(category);
         this.setIcon(icon);
@@ -84,7 +85,7 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
             return;
         }
 
-        if(!hudNeedsUpdate) {
+        if (!hudNeedsUpdate) {
             return;
         }
 
@@ -111,7 +112,12 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
             return;
         }
 
-        this.plant = PlantFactory.createPlant(event.getType());
+        this.plant = switch (event.getType()) {
+            case HEILKRAUTPFLANZE -> new PlantHeilkraut();
+            case ROSE -> new PlantRose();
+            case STOFF -> new PlantStoff();
+        };
+
         updateLines();
         this.progressLine.setState(State.VISIBLE);
         this.yieldLine.setState(State.VISIBLE);
@@ -217,5 +223,4 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
                         plant.getType().getSubstanceName()
                 ));
     }
-
 }

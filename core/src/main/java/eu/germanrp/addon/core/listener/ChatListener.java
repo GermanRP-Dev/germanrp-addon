@@ -14,8 +14,25 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Matcher;
 
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.*;
-
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.APOTHEKEN_RAUB;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.BOMBE_START;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.BOUNTY_ADD;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.BOUNTY_MEMBER_WANTED_LIST_ENTRY;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.BOUNTY_REMOVE;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.DARK_LIST_ADD;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.DARK_LIST_ENTRY;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.DARK_LIST_REMOVE;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.FRAKTION_NAME_STATS;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.HACKANGRIFF_START;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.JUWELEN_RAUB;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.SHOP_RAUB;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.TITLE_FACTION_MEMBER_LIST;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.TITLE_WANTED_LIST;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.WANTED_ADD;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.WANTED_REMOVE;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.XP_ADD_CHAT;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.XP_READER_STATS;
+import static net.labymod.api.Laby.fireEvent;
 
 public class ChatListener {
 
@@ -41,8 +58,8 @@ public class ChatListener {
 
     @Subscribe
     @SuppressWarnings("unused")
-    public void onChatReceiveMajorEvent(ChatReceiveEvent e){
-        if(this.majorEventWidget.isMajorEvent()){
+    public void onChatReceiveMajorEvent(ChatReceiveEvent e) {
+        if (this.majorEventWidget.isMajorEvent()) {
             return;
         }
         String m = e.chatMessage().getPlainText();
@@ -52,39 +69,40 @@ public class ChatListener {
         final Matcher JuwelenRaubMatcher = JUWELEN_RAUB.getPattern().matcher(m);
         final Matcher HackangriffStartMatcher = HACKANGRIFF_START.getPattern().matcher(m);
 
-        if(ShopRaubMatcher.find()){
-            Laby.fireEvent(new MajorWidgetUpdateEvent("Shopraub", 3));
+        if (ShopRaubMatcher.find()) {
+            fireEvent(new MajorWidgetUpdateEvent("Shopraub", 3));
             return;
         }
 
-        if (ApothekenRaubMatcher.find()){
-            Laby.fireEvent(new MajorWidgetUpdateEvent("Apothekenraub", 8));
+        if (ApothekenRaubMatcher.find()) {
+            fireEvent(new MajorWidgetUpdateEvent("Apothekenraub", 8));
             return;
         }
 
         if (JuwelenRaubMatcher.find()) {
-            Laby.fireEvent(new MajorWidgetUpdateEvent("Juwelenraub", 3));
+            fireEvent(new MajorWidgetUpdateEvent("Juwelenraub", 3));
             return;
         }
 
-        if (BombeStartMatcher.find()){
-            Laby.fireEvent(new MajorWidgetUpdateEvent("Bombe", 10));
+        if (BombeStartMatcher.find()) {
+            fireEvent(new MajorWidgetUpdateEvent("Bombe", 10));
             return;
         }
-        if (e.chatMessage().getPlainText().equals("► Du nimmst am Hackangriff deiner Fraktion teil.")){
-            Laby.fireEvent(new MajorWidgetUpdateEvent("Hackangriff", 8));
+
+        if (e.chatMessage().getPlainText().equals("► Du nimmst am Hackangriff deiner Fraktion teil.")) {
+            fireEvent(new MajorWidgetUpdateEvent("Hackangriff", 8));
             return;
         }
-        if (HackangriffStartMatcher.find()){
-            Laby.fireEvent(new MajorWidgetUpdateEvent(HackangriffStartMatcher.group(1), 8));
-            return;
+
+        if (HackangriffStartMatcher.find()) {
+            fireEvent(new MajorWidgetUpdateEvent(HackangriffStartMatcher.group(1), 8));
         }
     }
 
     @Subscribe
     @SuppressWarnings("unused")
-    public void onGRJoin(JustJoinedEvent event){
-    this.justJoined = true;
+    public void onGRJoin(JustJoinedEvent event) {
+        this.justJoined = true;
     }
 
     @Subscribe
@@ -95,7 +113,7 @@ public class ChatListener {
         }
 
         String message = event.chatMessage().getPlainText();
-        if (message.startsWith("► [System] ") && !message.endsWith("anwesend.")){
+        if (message.startsWith("► [System] ") && !message.endsWith("anwesend.")) {
             event.setCancelled(true);
             Matcher matcher = XP_READER_STATS.getPattern().matcher(message);
             if (matcher.find()) {
@@ -103,8 +121,8 @@ public class ChatListener {
                 this.player.setPlayerXP(Integer.parseInt(matcher.group(1)));
             }
             matcher = FRAKTION_NAME_STATS.getPattern().matcher(message);
-            if(matcher.find()){
-                switch (matcher.group(1)){
+            if (matcher.find()) {
+                switch (matcher.group(1)) {
                     case "Keine (Zivilist)" -> this.player.setPlayerFactionName(FactionName.NONE);
                     case "Rousseau Familie" -> this.player.setPlayerFactionName(FactionName.ROUSSEAU);
                     case "Polizei" -> this.player.setPlayerFactionName(FactionName.POLIZEI);
@@ -114,13 +132,11 @@ public class ChatListener {
                     case "Presseagentur" -> this.player.setPlayerFactionName(FactionName.PRESSE);
                     case "Sinaloa Kartell" -> this.player.setPlayerFactionName(FactionName.SINALOAKARTELL);
                     case "Medellín Kartell" -> this.player.setPlayerFactionName(FactionName.KARTELL);
-                    default ->{
+                    default -> {
                         this.player.setPlayerFactionName(FactionName.NONE);
                         this.player.sendErrorMessage("Deine Fraktion wurde nicht gefunden... Bitte hier reporten:");
                         this.player.sendErrorMessage("""
                                 https://germanrp.eu/forum/index.php?thread/25432-germanrp-addon-labymod-4-addon/""");
-
-
                     }
                 }
                 this.addon.getServerJoinListener().onFactionNameGet();
@@ -129,7 +145,7 @@ public class ChatListener {
             return;
         }
         FactionName factionName = this.player.getPlayerFactionName();
-        if (factionName == null){
+        if (factionName == null) {
             return;
         }
         if (factionName.equals(FactionName.NONE)) {
@@ -175,7 +191,7 @@ public class ChatListener {
                     final Matcher matcher = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
                     if (!matcher.find()) {
                         this.bounty = false;
-                        if(this.wasAFK){
+                        if (this.wasAFK) {
                             Laby.references().chatExecutor().chat("/afk");
                             this.wasAFK = false;
                             return;
@@ -199,7 +215,7 @@ public class ChatListener {
                     final Matcher matcher = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
                     if (!matcher.find()) {
                         this.wanted = false;
-                        if(this.wasAFK){
+                        if (this.wasAFK) {
 
                             Laby.references().chatExecutor().chat("/afk");
                             this.wasAFK = false;
@@ -265,10 +281,9 @@ public class ChatListener {
                 }
 
                 final Matcher nametagBountyRemoveMatcher = BOUNTY_REMOVE.getPattern().matcher(message);
-                if (nametagBountyRemoveMatcher.find()){
+                if (nametagBountyRemoveMatcher.find()) {
                     this.addonVariables.getBounties().remove(nametagBountyRemoveMatcher.group(1).replace("[GR]", ""));
                 }
-
             }
             case STAAT -> {
                 final Matcher nametagWantedRemoveMatcher = WANTED_REMOVE.getPattern().matcher(message);
@@ -283,25 +298,24 @@ public class ChatListener {
                 if (nametagWantedAddMatcher.matches()) {
                     this.addonVariables.getWantedPlayers().add(nametagWantedAddMatcher.group(1).replace("[GR]", ""));
                 }
-
             }
         }
     }
 
     @Subscribe
     @SuppressWarnings("unused")
-    public void onChatReceiveUpdateStats(@NotNull ChatReceiveEvent event){
+    public void onChatReceiveUpdateStats(@NotNull ChatReceiveEvent event) {
         @NotNull String message = event.chatMessage().getPlainText();
         Matcher matcher = XP_ADD_CHAT.getPattern().matcher(message);
-        if(matcher.find()){
+        if (matcher.find()) {
             String x = matcher.group(2);
             int i = 1;
             if (x.contains("2")) {
                 i = 2;
-            }else if(x.contains("3")){
+            } else if (x.contains("3")) {
                 i = 3;
             }
-            player.addPlayerXP(Integer.parseInt(matcher.group(1))*i);
+            player.addPlayerXP(Integer.parseInt(matcher.group(1)) * i);
         }
     }
 }

@@ -6,5 +6,4 @@ import net.labymod.api.reference.annotation.Referenceable;
 public interface PlaySoundExecutor {
 
     void playNotificationSound();
-
 }

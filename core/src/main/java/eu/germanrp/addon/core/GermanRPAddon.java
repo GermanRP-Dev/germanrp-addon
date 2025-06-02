@@ -8,12 +8,24 @@ import eu.germanrp.addon.core.common.DefaultAddonVariables;
 import eu.germanrp.addon.core.executor.HitResultExecutor;
 import eu.germanrp.addon.core.executor.PlaySoundExecutor;
 import eu.germanrp.addon.core.generated.DefaultReferenceStorage;
-import eu.germanrp.addon.core.listener.*;
+import eu.germanrp.addon.core.listener.ChatListener;
+import eu.germanrp.addon.core.listener.EventRegistrationListener;
+import eu.germanrp.addon.core.listener.NameTagListener;
+import eu.germanrp.addon.core.listener.ServerJoinListener;
+import eu.germanrp.addon.core.listener.VehicleHotkeyListener;
 import eu.germanrp.addon.core.migration.ConfigurationMigrator;
 import eu.germanrp.addon.core.services.NavigationService;
 import eu.germanrp.addon.core.services.UtilService;
 import eu.germanrp.addon.core.services.VehicleService;
-import eu.germanrp.addon.core.widget.*;
+import eu.germanrp.addon.core.widget.BlackMarketWidget;
+import eu.germanrp.addon.core.widget.GraffitiHudWidget;
+import eu.germanrp.addon.core.widget.HeilkrautpflanzeHudWidget;
+import eu.germanrp.addon.core.widget.HydrationWidget;
+import eu.germanrp.addon.core.widget.MajorEventWidget;
+import eu.germanrp.addon.core.widget.PayDayWidget;
+import eu.germanrp.addon.core.widget.PlayerExperienceWidget;
+import eu.germanrp.addon.core.widget.RoseHudWidget;
+import eu.germanrp.addon.core.widget.StoffHudWidget;
 import eu.germanrp.addon.core.widget.category.GermanRPAddonWidgetCategory;
 import lombok.Getter;
 import net.labymod.api.addon.LabyAddon;
@@ -54,7 +66,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     @Override
     protected void load() {
         this.player = new DefaultAddonPlayer(this);
-        this.variables = new DefaultAddonVariables(this);
+        this.variables = new DefaultAddonVariables();
 
         this.navigationService = new NavigationService();
         this.utilService = new UtilService(this);
@@ -160,5 +172,4 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerListener(new VehicleHotkeyListener(this));
         registerListener(new ConfigurationMigrator());
     }
-
 }

@@ -26,5 +26,4 @@ public class GermanRPAddonTickEvent implements Event {
         SECOND_5,
         SECOND_30
     }
-
 }

@@ -5,6 +5,6 @@ import net.labymod.api.event.Event;
 
 @Data
 public class JustJoinedEvent implements Event {
-    private final boolean justJoined;
 
+    private final boolean justJoined;
 }

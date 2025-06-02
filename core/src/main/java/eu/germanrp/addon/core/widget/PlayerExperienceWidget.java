@@ -14,7 +14,9 @@ import net.labymod.api.client.gui.hud.hudwidget.text.TextLine;
 import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.util.I18n;
-@Getter @Setter
+
+@Getter
+@Setter
 public class PlayerExperienceWidget extends TextHudWidget<TextHudWidgetConfig> {
 
     private static final Component EVENT_KEY = Component.translatable("germanrpaddon.widget.playerExperience.playerXPKey");
@@ -27,10 +29,10 @@ public class PlayerExperienceWidget extends TextHudWidget<TextHudWidgetConfig> {
     private TextLine xpLeft;
 
     public PlayerExperienceWidget(GermanRPAddon germanRPAddon, HudWidgetCategory category, Icon icon) {
-            super("playerExperience");
-            this.addon = germanRPAddon;
-            this.bindCategory(category);
-            this.setIcon(icon);
+        super("playerExperience");
+        this.addon = germanRPAddon;
+        this.bindCategory(category);
+        this.setIcon(icon);
     }
 
     @Override
@@ -46,11 +48,9 @@ public class PlayerExperienceWidget extends TextHudWidget<TextHudWidgetConfig> {
         this.xpLeft.setState(TextLine.State.VISIBLE);
     }
 
-
-
     @Subscribe
-    public void experienceUpdate(ExperienceUpdateEvent event){
-        if(this.addon.getPlayer().getPlayerXP() >= this.addon.getPlayer().getPlayerNeededXP()){
+    public void experienceUpdate(ExperienceUpdateEvent event) {
+        if (this.addon.getPlayer().getPlayerXP() >= this.addon.getPlayer().getPlayerNeededXP()) {
             Laby.fireEvent(new LevelUPEvent());
         }
         this.currentXPfromNeededXP.updateAndFlush(String.format("\n%02d/%02d",

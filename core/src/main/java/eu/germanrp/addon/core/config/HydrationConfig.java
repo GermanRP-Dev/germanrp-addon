@@ -15,5 +15,4 @@ public class HydrationConfig extends Config {
 
     @SwitchWidget.SwitchSetting
     private final ConfigProperty<Boolean> displayHydrationMessageInActionBar = new ConfigProperty<>(false);
-
 }

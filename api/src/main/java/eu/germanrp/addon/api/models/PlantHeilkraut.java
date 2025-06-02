@@ -4,7 +4,6 @@ import eu.germanrp.addon.api.events.plant.PlantNeedsFertilizerEvent;
 import eu.germanrp.addon.api.events.plant.PlantNeedsWaterEvent;
 import lombok.Getter;
 import lombok.Setter;
-import org.jetbrains.annotations.NotNull;
 
 import static eu.germanrp.addon.api.models.PlantType.HEILKRAUTPFLANZE;
 import static net.labymod.api.Laby.fireEvent;
@@ -18,6 +17,10 @@ public final class PlantHeilkraut extends Plant {
 
     private boolean fertilized = false;
     private boolean watered = false;
+
+    public PlantHeilkraut() {
+        super(HEILKRAUTPFLANZE, true, 0, 0);
+    }
 
     public PlantHeilkraut(boolean active, int value, int currentTime) {
         super(HEILKRAUTPFLANZE, active, value, currentTime);

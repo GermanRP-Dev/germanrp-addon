@@ -65,5 +65,4 @@ public class HydrationWidget extends TextHudWidget<TextHudWidgetConfig> {
     private String format(double hydration) {
         return String.format("%.2f%%", hydration);
     }
-
 }

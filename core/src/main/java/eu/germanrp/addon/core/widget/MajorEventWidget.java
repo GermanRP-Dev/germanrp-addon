@@ -12,10 +12,13 @@ import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidgetConfig;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextLine;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.util.I18n;
+
 import java.time.Duration;
 import java.time.ZonedDateTime;
-@Getter @Setter
-public class MajorEventWidget  extends TextHudWidget<TextHudWidgetConfig> {
+
+@Getter
+@Setter
+public class MajorEventWidget extends TextHudWidget<TextHudWidgetConfig> {
 
     private final GermanRPAddon addon;
     private boolean majorEvent;
@@ -27,21 +30,21 @@ public class MajorEventWidget  extends TextHudWidget<TextHudWidgetConfig> {
     private TextLine eventNameLine;
     private TextLine countDownLine;
 
-
     public MajorEventWidget(GermanRPAddon addon, HudWidgetCategory category) {
         super("majorEvent");
         this.bindCategory(category);
         this.addon = addon;
-
     }
+
     @Subscribe
-    public void majorWidgetUpdate(MajorWidgetUpdateEvent event){
+    public void majorWidgetUpdate(MajorWidgetUpdateEvent event) {
         this.majorEvent = true;
         eventNameLine.updateAndFlush(event.getMajorEventName());
         countdownTarget = ZonedDateTime.now().plusMinutes(event.getCountDownTime());
         eventNameLine.setState(TextLine.State.VISIBLE);
         countDownLine.setState(TextLine.State.VISIBLE);
     }
+
     @Override
     public void load(TextHudWidgetConfig config) {
         super.load(config);
@@ -67,13 +70,11 @@ public class MajorEventWidget  extends TextHudWidget<TextHudWidgetConfig> {
             return;
         }
         ZonedDateTime now = ZonedDateTime.now();
-        if(countdownTarget.isBefore(now)){
+        if (countdownTarget.isBefore(now)) {
             reset();
             return;
         }
         Duration duration = Duration.between(now, countdownTarget);
         this.countDownLine.updateAndFlush(String.format("\n%02d:%02d", duration.toMinutesPart(), duration.toSecondsPart()));
-
     }
-
 }

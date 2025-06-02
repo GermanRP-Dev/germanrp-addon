@@ -16,7 +16,10 @@ public abstract sealed class Plant permits PlantHeilkraut, PlantRose, PlantStoff
     protected int maxTime;
     protected int missedTimes;
 
+    private final PlantType type;
+
     protected Plant(@NotNull PlantType plantType, boolean active, int quantity, int currentTime) {
+        this.type = plantType;
         this.yieldUnit = plantType.getYieldUnit();
         this.active = active;
         this.value = quantity;
