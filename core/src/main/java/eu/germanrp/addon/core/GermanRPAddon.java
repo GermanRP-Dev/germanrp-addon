@@ -2,9 +2,7 @@ package eu.germanrp.addon.core;
 
 import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
 import eu.germanrp.addon.core.common.AddonPlayer;
-import eu.germanrp.addon.core.common.AddonVariables;
 import eu.germanrp.addon.core.common.DefaultAddonPlayer;
-import eu.germanrp.addon.core.common.DefaultAddonVariables;
 import eu.germanrp.addon.core.executor.HitResultExecutor;
 import eu.germanrp.addon.core.executor.PlaySoundExecutor;
 import eu.germanrp.addon.core.generated.DefaultReferenceStorage;
@@ -14,6 +12,7 @@ import eu.germanrp.addon.core.listener.NameTagListener;
 import eu.germanrp.addon.core.listener.ServerJoinListener;
 import eu.germanrp.addon.core.listener.VehicleHotkeyListener;
 import eu.germanrp.addon.core.migration.ConfigurationMigrator;
+import eu.germanrp.addon.core.services.NameTagService;
 import eu.germanrp.addon.core.services.NavigationService;
 import eu.germanrp.addon.core.services.UtilService;
 import eu.germanrp.addon.core.services.VehicleService;
@@ -41,12 +40,12 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
     public static final String NAMESPACE = "germanrpaddon";
 
+    private NameTagService nameTagService;
     private NavigationService navigationService;
     private UtilService utilService;
     private VehicleService vehicleService;
 
     private AddonPlayer player;
-    private AddonVariables variables;
 
     private HitResultExecutor hitResultExecutor;
     private PlaySoundExecutor playSoundExecutor;
@@ -66,8 +65,8 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     @Override
     protected void load() {
         this.player = new DefaultAddonPlayer(this);
-        this.variables = new DefaultAddonVariables();
 
+        this.nameTagService = new NameTagService();
         this.navigationService = new NavigationService();
         this.utilService = new UtilService(this);
         this.vehicleService = new VehicleService(this);

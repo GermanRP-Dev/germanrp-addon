@@ -3,7 +3,6 @@ package eu.germanrp.addon.core.listener;
 import eu.germanrp.addon.api.models.FactionName;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.AddonPlayer;
-import eu.germanrp.addon.core.common.AddonVariables;
 import eu.germanrp.addon.core.common.events.JustJoinedEvent;
 import net.labymod.api.Laby;
 import net.labymod.api.event.Subscribe;
@@ -13,13 +12,11 @@ public class ServerJoinListener {
 
     private final GermanRPAddon addon;
     private final AddonPlayer player;
-    private final AddonVariables addonVariables;
     private boolean forward;
 
     public ServerJoinListener(GermanRPAddon addon) {
         this.addon = addon;
         this.player = this.addon.getPlayer();
-        this.addonVariables = this.addon.getVariables();
     }
 
     @Subscribe
@@ -38,19 +35,20 @@ public class ServerJoinListener {
         if (factionName.equals(FactionName.NONE)) {
             return;
         }
-        this.addonVariables.getMembers().clear();
+
+        this.addon.getNameTagService().getMembers().clear();
         Laby.references().chatExecutor()
                 .chat(String.format("/memberinfo %s", factionName.getMemberInfoCommandArg()), false);
 
         switch (factionName.getType()) {
             case BADFRAK -> {
-                this.addonVariables.getDarklist().clear();
-                this.addonVariables.getBounties().clear();
+                this.addon.getNameTagService().getDarklist().clear();
+                this.addon.getNameTagService().getBounties().clear();
                 Laby.references().chatExecutor().chat("/darklist", false);
                 Laby.references().chatExecutor().chat("/kopfgelder", false);
             }
             case STAAT -> {
-                this.addonVariables.getWantedPlayers().clear();
+                this.addon.getNameTagService().getWantedPlayers().clear();
                 Laby.references().chatExecutor().chat("/wanteds", false);
             }
         }

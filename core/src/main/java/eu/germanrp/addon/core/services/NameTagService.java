@@ -1,13 +1,13 @@
-package eu.germanrp.addon.core.common;
+package eu.germanrp.addon.core.services;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiredArgsConstructor
-public class DefaultAddonVariables implements AddonVariables {
+@NoArgsConstructor
+public class NameTagService {
 
     @Getter
     private final List<String> members = new ArrayList<>();

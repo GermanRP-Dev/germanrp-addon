@@ -3,7 +3,6 @@ package eu.germanrp.addon.core.listener;
 import eu.germanrp.addon.api.models.FactionName;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.AddonPlayer;
-import eu.germanrp.addon.core.common.AddonVariables;
 import eu.germanrp.addon.core.common.events.JustJoinedEvent;
 import eu.germanrp.addon.core.common.events.MajorWidgetUpdateEvent;
 import eu.germanrp.addon.core.widget.MajorEventWidget;
@@ -39,7 +38,6 @@ public class ChatListener {
     private final GermanRPAddon addon;
     private final MajorEventWidget majorEventWidget;
     private final AddonPlayer player;
-    private final AddonVariables addonVariables;
     private boolean playerStats;
     private boolean justJoined;
     private boolean faction;
@@ -53,7 +51,6 @@ public class ChatListener {
         this.addon = addon;
         this.majorEventWidget = this.addon.getMajorEventWidget();
         this.player = this.addon.getPlayer();
-        this.addonVariables = this.addon.getVariables();
     }
 
     @Subscribe
@@ -168,7 +165,7 @@ public class ChatListener {
                 this.faction = false;
                 return;
             }
-            this.addonVariables.getMembers().add(matcher.group(1).replace("[GR]", ""));
+            this.addon.getNameTagService().getMembers().add(matcher.group(1).replace("[GR]", ""));
         }
         switch (factionName.getType()) {
             case BADFRAK -> {
@@ -178,7 +175,7 @@ public class ChatListener {
                     if (!matcher.find()) {
                         return;
                     }
-                    this.addonVariables.getDarklist().add(matcher.group(1).replace("[GR]", ""));
+                    this.addon.getNameTagService().getDarklist().add(matcher.group(1).replace("[GR]", ""));
                     return;
                 }
                 if (message.contentEquals("            KOPFGELDER")) {
@@ -199,7 +196,7 @@ public class ChatListener {
                         this.justJoined = false;
                         return;
                     }
-                    this.addonVariables.getBounties().add(matcher.group(1).replace("[GR]", ""));
+                    this.addon.getNameTagService().getBounties().add(matcher.group(1).replace("[GR]", ""));
                     return;
                 }
             }
@@ -224,7 +221,7 @@ public class ChatListener {
                         this.justJoined = false;
                         return;
                     }
-                    this.addonVariables.getWantedPlayers().add(matcher.group(1).replace("[GR]", ""));
+                    this.addon.getNameTagService().getWantedPlayers().add(matcher.group(1).replace("[GR]", ""));
                     return;
                 }
             }
@@ -262,25 +259,25 @@ public class ChatListener {
                 final Matcher nametagDarkListAddMatcher = DARK_LIST_ADD.getPattern().matcher(message);
 
                 if (nametagDarkListAddMatcher.find()) {
-                    this.addonVariables.getDarklist().add(nametagDarkListAddMatcher.group(1).replace("[GR]", ""));
+                    this.addon.getNameTagService().getDarklist().add(nametagDarkListAddMatcher.group(1).replace("[GR]", ""));
                     return;
                 }
 
                 final Matcher nametagDarkListRemoveMatcher = DARK_LIST_REMOVE.getPattern().matcher(message);
                 if (nametagDarkListRemoveMatcher.find()) {
-                    this.addonVariables.getDarklist().remove(nametagDarkListRemoveMatcher.group(2).replace("[GR]", ""));
+                    this.addon.getNameTagService().getDarklist().remove(nametagDarkListRemoveMatcher.group(2).replace("[GR]", ""));
                     return;
                 }
 
                 final Matcher nametagBountyAddMatcher = BOUNTY_ADD.getPattern().matcher(message);
                 if (nametagBountyAddMatcher.find()) {
-                    this.addonVariables.getBounties().add(nametagBountyAddMatcher.group(1).replace("[GR]", ""));
+                    this.addon.getNameTagService().getBounties().add(nametagBountyAddMatcher.group(1).replace("[GR]", ""));
                     return;
                 }
 
                 final Matcher nametagBountyRemoveMatcher = BOUNTY_REMOVE.getPattern().matcher(message);
                 if (nametagBountyRemoveMatcher.find()) {
-                    this.addonVariables.getBounties().remove(nametagBountyRemoveMatcher.group(1).replace("[GR]", ""));
+                    this.addon.getNameTagService().getBounties().remove(nametagBountyRemoveMatcher.group(1).replace("[GR]", ""));
                 }
             }
             case STAAT -> {
@@ -288,13 +285,12 @@ public class ChatListener {
                 final Matcher nametagWantedAddMatcher = WANTED_ADD.getPattern().matcher(message);
 
                 if (nametagWantedRemoveMatcher.matches()) {
-                    this.addonVariables.getWantedPlayers().
-                            remove(nametagWantedRemoveMatcher.group(2).replace("[GR]", ""));
+                    this.addon.getNameTagService().getWantedPlayers().remove(nametagWantedRemoveMatcher.group(2).replace("[GR]", ""));
                     return;
                 }
 
                 if (nametagWantedAddMatcher.matches()) {
-                    this.addonVariables.getWantedPlayers().add(nametagWantedAddMatcher.group(1).replace("[GR]", ""));
+                    this.addon.getNameTagService().getWantedPlayers().add(nametagWantedAddMatcher.group(1).replace("[GR]", ""));
                 }
             }
         }
