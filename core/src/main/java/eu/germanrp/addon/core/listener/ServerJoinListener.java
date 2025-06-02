@@ -23,7 +23,7 @@ public class ServerJoinListener {
     }
 
     @Subscribe
-    public void onServerJoin(ServerJoinEvent event) throws InterruptedException {
+    public void onServerJoin(ServerJoinEvent event) {
         if (!this.addon.getUtilService().isGermanRP()) {
             return;
         }

@@ -230,9 +230,7 @@ public class ChatListener {
             }
         }
         switch (message) {
-            case "► [System] Du bist jetzt als abwesend markiert." -> {
-                event.setCancelled(true);
-            }
+            case "► [System] Du bist jetzt als abwesend markiert." -> event.setCancelled(true);
             case "► Verwende erneut \"/afk\", um den AFK-Modus zu verlassen." -> {
                 event.setCancelled(true);
                 this.justJoined = false;

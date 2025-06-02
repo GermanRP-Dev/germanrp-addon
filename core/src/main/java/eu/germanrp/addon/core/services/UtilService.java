@@ -4,11 +4,15 @@ import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.services.util.UtilTextService;
 import lombok.Getter;
 import lombok.experimental.Accessors;
+import net.labymod.api.client.component.Component;
 import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.client.network.server.ServerData;
 import net.labymod.api.client.resources.ResourceLocation;
 
 import static net.labymod.api.Laby.labyAPI;
+import static net.labymod.api.client.component.Component.empty;
+import static net.labymod.api.client.component.format.NamedTextColor.DARK_GRAY;
+import static net.labymod.api.client.component.format.NamedTextColor.GOLD;
 import static net.labymod.api.client.gui.icon.Icon.texture;
 
 /**
@@ -46,43 +50,15 @@ public class UtilService {
                 && eventIdentifier.getPath().equals("main");
     }
 
-//    public void debug(String debugMessage) {
-//        if (this.addon.configuration().debug().get()) {
-//            this.addon.player().sendMessage(Message.getBuilder()
-//                    .of("[").color(ColorCode.DARK_GRAY).advance()
-//                    .of("DEBUG").color(ColorCode.YELLOW).advance()
-//                    .of("]").color(ColorCode.DARK_GRAY).advance().space()
-//                    .add(debugMessage)
-//                    .createComponent());
-//        }
-//    }
+    public void debug(String debugMessage) {
+        if (this.addon.configuration().debug().get()) {
+            Component component = empty()
+                    .append(Component.text("[", DARK_GRAY))
+                    .append(Component.text("DEBUG", GOLD))
+                    .append(Component.text("] ", DARK_GRAY))
+                    .append(Component.text(debugMessage));
 
-//    public List<String> getOnlinePlayers() {
-//        ClientPacketListener clientPacketListener = labyAPI().minecraft().getClientPacketListener();
-//        if (clientPacketListener == null) {
-//            return Collections.emptyList();
-//        }
-//
-//        Collection<NetworkPlayerInfo> networkPlayerInfoCollection = clientPacketListener.getNetworkPlayerInfos();
-//
-//        return networkPlayerInfoCollection.stream()
-//                .map(networkPlayerInfo -> networkPlayerInfo.profile().getUsername())
-//                .map(this.text::stripColor)
-//                .map(this.text::stripPrefix)
-//                .sorted()
-//                .collect(Collectors.toList());
-//    }
-
-//    /**
-//     * Replaces the addon api token with "TOKEN"
-//     *
-//     * @param message Message which needs to be checked
-//     *
-//     * @return Message without addon api token
-//     */
-//    public String messageWithHiddenToken(String message) {
-//        return Optional.ofNullable(this.addon.api().getToken())
-//                .map(s -> message.replace(s, "TOKEN"))
-//                .orElse("Message cannot be displayed because it contains a token.");
-//    }
+            this.addon.getPlayer().sendMessage(component);
+        }
+    }
 }
