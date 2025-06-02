@@ -43,8 +43,6 @@ public interface AddonPlayer {
 
     void sendSyntaxMessage(String message);
 
-    void sendServerMessage(Component component);
-
     void sendServerMessage(String message);
 
     ClientWorld getWorld();

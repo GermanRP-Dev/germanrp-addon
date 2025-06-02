@@ -31,20 +31,19 @@ public class VehicleHotkeyListener {
     public void onChatMessageReceiveEvent(final ChatReceiveEvent event) {
         final String plainText = event.chatMessage().getPlainText();
 
-        if(plainText.equals("► Du sitzt in keinem Fahrzeug.") || plainText.equals("► Tempomat wurde deaktiviert.")) {
+        if (plainText.equals("► Du sitzt in keinem Fahrzeug.") || plainText.equals("► Tempomat wurde deaktiviert.")) {
             vehicleService.setCruiseControlEnabled(false);
         }
 
         if (GlobalRegexRegistry.CRUISE_CONTROL_START.getPattern().matcher(plainText).matches()) {
             vehicleService.setCruiseControlEnabled(true);
         }
-
     }
 
     @Subscribe
     @SuppressWarnings("unused")
     public void onKeyPressed(final KeyEvent event) {
-        if(event.state() != KeyEvent.State.PRESS) {
+        if (event.state() != KeyEvent.State.PRESS) {
             return;
         }
 
@@ -74,5 +73,4 @@ public class VehicleHotkeyListener {
         actionList.add(Map.entry(config.decreaseCruiseControlSpeed(), vehicleService::decreaseCruiseControlSpeed));
         return actionList;
     }
-
 }

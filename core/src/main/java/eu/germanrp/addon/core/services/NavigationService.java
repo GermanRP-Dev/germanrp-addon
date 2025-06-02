@@ -18,5 +18,4 @@ public class NavigationService {
 
         return elements.stream().min(comparingDouble(t -> t.getPosition().distanceSquared(position)));
     }
-
 }

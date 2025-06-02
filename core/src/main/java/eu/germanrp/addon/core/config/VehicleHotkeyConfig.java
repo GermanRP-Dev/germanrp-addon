@@ -43,5 +43,4 @@ public class VehicleHotkeyConfig extends Config {
     public int getConfigVersion() {
         return 2;
     }
-
 }

@@ -48,7 +48,7 @@ public class VehicleService {
     }
 
     public void decreaseCruiseControlSpeed() {
-        if(cruiseControlSpeed <= 0) {
+        if (cruiseControlSpeed <= 0) {
             return;
         }
 
@@ -64,7 +64,6 @@ public class VehicleService {
         sendPayloadToServer(VehicleCommand.TOGGLE_SOSI_MUTE);
     }
 
-
     @Getter
     @AllArgsConstructor
     public enum VehicleCommand {
@@ -78,7 +77,6 @@ public class VehicleService {
         TOGGLE_SOSI_MUTE("TOGGLESOSIMUTE");
 
         private final String command;
-
     }
 
     private void sendPayloadToServer(final VehicleCommand command) {
@@ -93,5 +91,4 @@ public class VehicleService {
         this.addon.labyAPI().serverController()
                 .sendPayload(ResourceLocation.create("labymod3", "main"), payloadWriter.toByteArray());
     }
-
 }

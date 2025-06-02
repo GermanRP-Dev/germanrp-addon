@@ -29,9 +29,10 @@ public enum GlobalRegexRegistry {
     APOTHEKEN_RAUB(compile("^► Die Fraktion .+? hat den Apothekenraub gestartet!$")),
     CRUISE_CONTROL_START(compile("^► Tempomat auf \\d+ km/h eingestellt\\.$")),
     JUWELEN_RAUB(compile("TO-BE-FIXED")),
-    XP_READER_STATS(compile("^► \\[System] - XP: (\\d+)\\/(\\d+)$")),
+    XP_READER_STATS(compile("^► \\[System] - XP: (\\d+)/(\\d+)$")),
     FRAKTION_NAME_STATS(compile("^► \\[System] - Fraktion: (.+?)$")),
     HACKANGRIFF_START(compile("^\\[⚠] Die Gangzone (.+?) wird von Hackern angegriffen! Zerstöre den Datenkoffer, bevor sie ihren Angriff vollenden können!$")),
     XP_ADD_CHAT(compile("^ \\+(\\d+) Erfahrungspunkte(| \\(x2\\)| \\(x3 Gameboost\\))$"));
+
     private final Pattern pattern;
 }

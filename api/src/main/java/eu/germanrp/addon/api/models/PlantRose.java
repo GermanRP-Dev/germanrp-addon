@@ -1,17 +1,14 @@
 package eu.germanrp.addon.api.models;
 
-import org.jetbrains.annotations.NotNull;
-
 import static eu.germanrp.addon.api.models.PlantType.ROSE;
 
-public non-sealed class PlantRose extends Plant {
+public final class PlantRose extends Plant {
 
-    protected PlantRose(boolean active, int value, int currentTime) {
-        super(ROSE, active, value, currentTime);
+    public PlantRose() {
+        super(ROSE, true, 0, 0);
     }
 
-    @Override
-    public @NotNull PlantType getType() {
-        return ROSE;
+    public PlantRose(boolean active, int value, int currentTime) {
+        super(ROSE, active, value, currentTime);
     }
 }

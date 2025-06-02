@@ -19,13 +19,11 @@ public final class ConfigurationMigrator {
     public void onConfigVersionUpdateEvent(ConfigurationVersionUpdateEvent event) {
         final Class<? extends Config> configClass = event.getConfigClass();
 
-
         if (configClass == VehicleHotkeyConfig.class) {
             migrateVehicleConfig(event);
         } else if (configClass == NameTagSubConfig.class) {
             migrateNameTagConfig(event);
         }
-
     }
 
     private void migrateNameTagConfig(ConfigurationVersionUpdateEvent event) {
@@ -87,5 +85,4 @@ public final class ConfigurationMigrator {
             event.setJsonObject(config);
         }
     }
-
 }

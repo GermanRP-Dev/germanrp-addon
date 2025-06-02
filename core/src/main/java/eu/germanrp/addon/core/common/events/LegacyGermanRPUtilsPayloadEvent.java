@@ -9,5 +9,4 @@ public class LegacyGermanRPUtilsPayloadEvent implements Event {
 
     private final String header;
     private final JsonObject payloadContent;
-
 }

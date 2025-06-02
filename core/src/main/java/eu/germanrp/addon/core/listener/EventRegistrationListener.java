@@ -9,7 +9,6 @@ import eu.germanrp.addon.api.models.Graffiti;
 import eu.germanrp.addon.api.models.PlantType;
 import eu.germanrp.addon.api.network.PlantPacket;
 import eu.germanrp.addon.core.GermanRPAddon;
-import eu.germanrp.addon.core.Utils;
 import eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent;
 import eu.germanrp.addon.core.common.events.GraffitiUpdateEvent;
 import eu.germanrp.addon.core.common.events.LegacyGermanRPUtilsPayloadEvent;
@@ -31,8 +30,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.*;
-import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.*;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.GRAFFITI_ADD;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.GRAFFITI_TIME;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.PLANT_HARVEST;
+import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.MINUTE;
+import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.SECOND;
+import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.SECOND_3;
+import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.SECOND_30;
+import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.SECOND_5;
+import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.TICK;
+import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.TICK_5;
 import static java.time.Duration.ofSeconds;
 import static java.util.Optional.ofNullable;
 import static net.labymod.api.Laby.fireEvent;
@@ -77,7 +84,6 @@ public class EventRegistrationListener {
             if (clientPlayer == null) {
                 return;
             }
-
 
             val nearestGraffitiCandidate =
                     addon.getNavigationService().getNearest(clientPlayer.position(), List.of(Graffiti.values()));
@@ -124,14 +130,14 @@ public class EventRegistrationListener {
     @Subscribe
     @SuppressWarnings("unused")
     public void onNetworkPayloadEvent(final NetworkPayloadEvent event) {
-        if (!Utils.isLegacyAddonPacket(event.identifier())) {
+        if (!this.addon.getUtilService().isLegacyAddonPacket(event.identifier())) {
             return;
         }
 
         val payloadReader = new PayloadReader(event.getPayload());
         val header = payloadReader.readString();
 
-        if(!header.startsWith("GRAddon-")) {
+        if (!header.startsWith("GRAddon-")) {
             return;
         }
 
@@ -186,7 +192,6 @@ public class EventRegistrationListener {
                         payloadContent.get("time").getAsInt(),
                         payloadContent.get("salary").getAsJsonObject().get("faction").getAsFloat(),
                         payloadContent.get("salary").getAsJsonObject().get("job").getAsFloat()));
-
             }
 
             default -> {

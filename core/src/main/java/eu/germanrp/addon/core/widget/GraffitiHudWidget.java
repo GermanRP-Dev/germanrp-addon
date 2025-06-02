@@ -84,5 +84,4 @@ public class GraffitiHudWidget extends TextHudWidget<GraffitiHudWidgetConfig> {
 
     public static class GraffitiHudWidgetConfig extends TextHudWidgetConfig {
     }
-
 }

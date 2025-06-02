@@ -34,7 +34,7 @@ public class HydrationWidget extends TextHudWidget<TextHudWidgetConfig> {
     @Subscribe
     @SuppressWarnings("unused")
     public void onHydrationUpdate(HydrationUpdateEvent event) {
-        this.textLine.updateAndFlush(format(event.amount()));
+        this.textLine.updateAndFlush(format(event.getAmount()));
     }
 
     @Subscribe
@@ -65,5 +65,4 @@ public class HydrationWidget extends TextHudWidget<TextHudWidgetConfig> {
     private String format(double hydration) {
         return String.format("%.2f%%", hydration);
     }
-
 }

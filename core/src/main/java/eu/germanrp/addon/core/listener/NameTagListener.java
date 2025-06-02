@@ -4,7 +4,6 @@ import eu.germanrp.addon.api.models.FactionName;
 import eu.germanrp.addon.api.models.FactionName.FactionType;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.NameTagSubConfig;
-import eu.germanrp.addon.core.common.AddonVariables;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.TextColor;
 import net.labymod.api.client.component.format.TextDecoration;
@@ -22,11 +21,9 @@ public class NameTagListener {
     private final GermanRPAddon addon;
 
     private final NameTagSubConfig nameTagSubConfig;
-    private final AddonVariables addonVariables;
 
     public NameTagListener(GermanRPAddon germanRPAddon) {
         this.addon = germanRPAddon;
-        this.addonVariables = this.addon.getVariables();
         this.nameTagSubConfig = addon.configuration().nameTagSubConfig();
     }
 
@@ -61,8 +58,8 @@ public class NameTagListener {
 
         boolean isAFK = event.nameTag().toString().contains("italic");
 
-        if (this.addonVariables.getMembers() != null) {
-            List<String> memberlist = this.addonVariables.getMembers();
+        if (this.addon.getNameTagService().getMembers() != null) {
+            List<String> memberlist = this.addon.getNameTagService().getMembers();
             Color factionTag = nameTagSubConfig.factionColor().get();
             boolean colorEnabled = nameTagSubConfig.factionColorEnabled().get();
 
@@ -76,8 +73,8 @@ public class NameTagListener {
 
         switch (factionName.getType()) {
             case BADFRAK -> {
-                if (this.addonVariables.getBounties() != null) {
-                    List<String> bountylist = this.addonVariables.getBounties();
+                if (this.addon.getNameTagService().getBounties() != null) {
+                    List<String> bountylist = this.addon.getNameTagService().getBounties();
                     Color bountyTag = nameTagSubConfig.bountyColor().get();
                     boolean colorEnabled = nameTagSubConfig.bountyColorEnabled().get();
 
@@ -89,8 +86,8 @@ public class NameTagListener {
                     }
                 }
 
-                if (this.addonVariables.getDarklist() != null) {
-                    List<String> darklist = this.addonVariables.getDarklist();
+                if (this.addon.getNameTagService().getDarklist() != null) {
+                    List<String> darklist = this.addon.getNameTagService().getDarklist();
                     Color darklistTag = nameTagSubConfig.darklistColor().get();
                     boolean colorEnabled = nameTagSubConfig.darklistColorEnabled().get();
 
@@ -104,15 +101,14 @@ public class NameTagListener {
                             colorEnabled
                     ).ifPresent(event::setNameTag);
                 }
-
             }
 
             case STAAT -> {
-                if (this.addonVariables.getWantedPlayers() == null) {
+                if (this.addon.getNameTagService().getWantedPlayers() == null) {
                     return;
                 }
 
-                List<String> wantedList = this.addonVariables.getWantedPlayers();
+                List<String> wantedList = this.addon.getNameTagService().getWantedPlayers();
                 Color wantedColor = nameTagSubConfig.wantedColor().get();
                 boolean colorEnabled = nameTagSubConfig.wantedColorEnabled().get();
 
@@ -154,5 +150,4 @@ public class NameTagListener {
 
         return Optional.of(nameTag);
     }
-
 }

@@ -47,5 +47,4 @@ public class NameTagSubConfig extends Config {
     public int getConfigVersion() {
         return 2;
     }
-
 }

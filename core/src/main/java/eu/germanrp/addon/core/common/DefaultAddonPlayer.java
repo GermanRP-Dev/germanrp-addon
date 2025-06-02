@@ -44,7 +44,6 @@ public class DefaultAddonPlayer implements AddonPlayer {
     private int playerPayDayTime;
     private FactionName playerFactionName;
 
-
     public DefaultAddonPlayer(GermanRPAddon addon) {
         this.addon = addon;
     }
@@ -125,11 +124,6 @@ public class DefaultAddonPlayer implements AddonPlayer {
     @Override
     public void sendSyntaxMessage(String message) {
         sendErrorMessage("Syntax: " + message);
-    }
-
-    @Override
-    public void sendServerMessage(Component component) {
-
     }
 
     @Override
@@ -259,5 +253,4 @@ public class DefaultAddonPlayer implements AddonPlayer {
     private Component prefix() {
         return text(ADDON_PREFIX_SYMBOL, DARK_AQUA, BOLD).hoverEvent(showText(text("Nachricht vom GermanRP-Addon", DARK_AQUA)));
     }
-
 }
