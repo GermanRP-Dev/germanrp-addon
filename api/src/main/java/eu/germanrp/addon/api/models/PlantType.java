@@ -2,8 +2,11 @@ package eu.germanrp.addon.api.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
+
+import static java.util.Arrays.stream;
 
 @Getter
 @AllArgsConstructor
@@ -29,13 +32,10 @@ public enum PlantType {
      *
      * @return the associated {@link PlantType}
      */
-    public static Optional<PlantType> fromDisplayName(final String displayName) {
-        for (final PlantType value : values()) {
-            if (value.displayName.equals(displayName)) {
-                return Optional.of(value);
-            }
-        }
-        return Optional.empty();
+    public static @NotNull Optional<PlantType> fromDisplayName(final String displayName) {
+        return stream(PlantType.values())
+                .filter(plantType -> plantType.getDisplayName().equals(displayName))
+                .findFirst();
     }
 
     /**
@@ -45,21 +45,15 @@ public enum PlantType {
      *
      * @return the associated {@link PlantType}
      */
-    public static Optional<PlantType> fromPaketType(final String type) {
-        for (PlantType value : values()) {
-            if (value.paketType.equals(type)) {
-                return Optional.of(value);
-            }
-        }
-        return Optional.empty();
+    public static @NotNull Optional<PlantType> fromPaketType(final String type) {
+        return stream(PlantType.values())
+                .filter(plantType -> plantType.getPaketType().equals(type))
+                .findFirst();
     }
 
-    public static Optional<PlantType> fromSowMessage(final String message) {
-        for (final PlantType type : values()) {
-            if (type.sowMessage.equals(message)) {
-                return Optional.of(type);
-            }
-        }
-        return Optional.empty();
+    public static @NotNull Optional<PlantType> fromSowMessage(final String message) {
+        return stream(PlantType.values())
+                .filter(plantType -> plantType.getSowMessage().equals(message))
+                .findFirst();
     }
 }

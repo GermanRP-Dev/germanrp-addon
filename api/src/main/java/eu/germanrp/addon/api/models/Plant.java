@@ -16,29 +16,26 @@ public abstract sealed class Plant permits PlantHeilkraut, PlantRose, PlantStoff
     protected int maxTime;
     protected int missedTimes;
 
-    protected Plant(PlantType plantType, boolean active, int value, int currentTime) {
+    protected Plant(@NotNull PlantType plantType, boolean active, int quantity, int currentTime) {
         this.yieldUnit = plantType.getYieldUnit();
         this.active = active;
-        this.value = value;
+        this.value = quantity;
         this.currentTime = currentTime;
         this.maxTime = plantType.getMaxTime();
         this.missedTimes = 0;
     }
 
-    public abstract @NotNull PlantType getType();
+    public void tick(final int newQuantity) {
+        this.currentTime += 1;
 
-    public void tick(final int newYield) {
-        currentTime += 1;
-
-        if (currentTime == maxTime) {
+        if (this.currentTime == this.maxTime) {
             fireEvent(new PlantReadyToHarvestEvent(this));
         }
 
-        if (currentTime >= maxTime) {
-            missedTimes += 1;
+        if (this.currentTime >= this.maxTime) {
+            this.missedTimes += 1;
         }
 
-        this.value = newYield;
+        this.value = newQuantity;
     }
-
 }
