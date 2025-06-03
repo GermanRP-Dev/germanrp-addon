@@ -6,6 +6,7 @@ import eu.germanrp.addon.core.common.AddonPlayer;
 import eu.germanrp.addon.core.common.events.JustJoinedEvent;
 import eu.germanrp.addon.core.common.events.MajorWidgetUpdateEvent;
 import eu.germanrp.addon.core.widget.MajorEventWidget;
+import lombok.Setter;
 import net.labymod.api.Laby;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
@@ -32,6 +33,7 @@ import static eu.germanrp.addon.core.common.GlobalRegexRegistry.WANTED_REMOVE;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.XP_ADD_CHAT;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.XP_READER_STATS;
 import static net.labymod.api.Laby.fireEvent;
+import static net.labymod.api.Laby.labyAPI;
 
 public class ChatListener {
 
@@ -45,6 +47,7 @@ public class ChatListener {
     private boolean bounty;
     private boolean wasAFK;
 
+    @Setter
     private int emptyMessages;
 
     public ChatListener(GermanRPAddon addon) {
@@ -120,7 +123,12 @@ public class ChatListener {
             matcher = FRAKTION_NAME_STATS.getPattern().matcher(message);
             if (matcher.find()) {
                 switch (matcher.group(1)) {
-                    case "Keine (Zivilist)" -> this.player.setPlayerFactionName(FactionName.NONE);
+                    case "Keine (Zivilist)" -> {
+                        if(this.wasAFK){
+                            Laby.references().chatExecutor().chat("/afk");
+                        }
+                        this.player.setPlayerFactionName(FactionName.NONE);
+                    }
                     case "Rousseau Familie" -> this.player.setPlayerFactionName(FactionName.ROUSSEAU);
                     case "Polizei" -> this.player.setPlayerFactionName(FactionName.POLIZEI);
                     case "Camorra" -> this.player.setPlayerFactionName(FactionName.CAMORRA);
@@ -141,22 +149,32 @@ public class ChatListener {
             }
             return;
         }
+        switch (message) {
+            case "► [System] Du bist jetzt als abwesend markiert." -> event.setCancelled(true);
+            case "► Verwende erneut \"/afk\", um den AFK-Modus zu verlassen." -> {
+                event.setCancelled(true);
+                this.justJoined = false;
+            }
+            case "► [System] Du bist jetzt wieder anwesend." -> {
+                event.setCancelled(true);
+                this.wasAFK = true;
+            }
+            case "" -> {
+                emptyMessages++;
+                if (emptyMessages > 2) {
+                    event.setCancelled(true);
+                }
+            }
+        }
         FactionName factionName = this.player.getPlayerFactionName();
         if (factionName == null) {
-            if (this.wasAFK) {
-                Laby.references().chatExecutor().chat("/afk");
-                this.wasAFK = false;
-            }
-            this.justJoined = false;
             return;
         }
-        if (factionName.equals(FactionName.NONE)) {
-            if (this.wasAFK) {
-                Laby.references().chatExecutor().chat("/afk");
-                this.wasAFK = false;
+        if(factionName.equals(FactionName.NONE)) {
+            if (!wasAFK){
+                this.justJoined = false;
                 return;
             }
-            this.justJoined = false;
             return;
         }
         if (TITLE_FACTION_MEMBER_LIST.getPattern().matcher(message).find()) {
@@ -233,23 +251,6 @@ public class ChatListener {
                     }
                     this.addon.getNameTagService().getWantedPlayers().add(matcher.group(1).replace("[GR]", ""));
                     return;
-                }
-            }
-        }
-        switch (message) {
-            case "► [System] Du bist jetzt als abwesend markiert." -> event.setCancelled(true);
-            case "► Verwende erneut \"/afk\", um den AFK-Modus zu verlassen." -> {
-                event.setCancelled(true);
-                this.justJoined = false;
-            }
-            case "► [System] Du bist jetzt wieder anwesend." -> {
-                event.setCancelled(true);
-                this.wasAFK = true;
-            }
-            case "" -> {
-                emptyMessages++;
-                if (emptyMessages > 2) {
-                    event.setCancelled(true);
                 }
             }
         }

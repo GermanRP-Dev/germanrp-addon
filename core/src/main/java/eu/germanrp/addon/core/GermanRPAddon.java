@@ -61,6 +61,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private BlackMarketWidget blackMarketWidget;
     private HydrationWidget hydrationWidget;
     private PayDayWidget paydayWidget;
+    private ChatListener chatListener;
 
     @Override
     protected void load() {
@@ -163,11 +164,12 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
     private void registerListener() {
         this.serverJoinListener = new ServerJoinListener(this);
+        this.chatListener = new ChatListener(this);
 
         registerListener(serverJoinListener);
         registerListener(new EventRegistrationListener(this));
         registerListener(new NameTagListener(this));
-        registerListener(new ChatListener(this));
+        registerListener(chatListener);
         registerListener(new VehicleHotkeyListener(this));
         registerListener(new ConfigurationMigrator());
     }
