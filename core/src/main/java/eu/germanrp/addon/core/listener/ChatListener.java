@@ -143,9 +143,19 @@ public class ChatListener {
         }
         FactionName factionName = this.player.getPlayerFactionName();
         if (factionName == null) {
+            if (this.wasAFK) {
+                Laby.references().chatExecutor().chat("/afk");
+                this.wasAFK = false;
+            }
+            this.justJoined = false;
             return;
         }
         if (factionName.equals(FactionName.NONE)) {
+            if (this.wasAFK) {
+                Laby.references().chatExecutor().chat("/afk");
+                this.wasAFK = false;
+                return;
+            }
             this.justJoined = false;
             return;
         }
