@@ -24,7 +24,8 @@ public class ServerJoinListener {
         if (!this.addon.getUtilService().isGermanRP()) {
             return;
         }
-
+        this.addon.getChatListener().setEmptyMessages(0);
+        this.player.setPlayerFactionName(null);
         Laby.fireEvent(new JustJoinedEvent(true));
 
         Laby.references().chatExecutor().chat("/stats", false);
