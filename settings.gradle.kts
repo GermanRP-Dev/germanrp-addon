@@ -1,4 +1,4 @@
-rootProject.name = "germanrp-addon"
+rootProject.name = "germanrpaddon"
 
 pluginManagement {
     val labyGradlePluginVersion = "0.5.8"
