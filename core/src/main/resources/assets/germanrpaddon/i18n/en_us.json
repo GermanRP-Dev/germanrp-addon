@@ -43,6 +43,9 @@
             },
             "debug": {
                 "name": "Debug"
+            },
+            "silentATM": {
+                "name": "ATM Aufbruch stummschalten"
             }
         },
         "message": {
