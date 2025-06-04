@@ -1,6 +1,7 @@
 package eu.germanrp.addon.core.widget;
 
 import eu.germanrp.addon.core.GermanRPAddon;
+import eu.germanrp.addon.core.common.events.JustJoinedEvent;
 import eu.germanrp.addon.core.common.events.PayDayPacketRecieveEvent;
 import lombok.Getter;
 import lombok.Setter;
@@ -46,12 +47,19 @@ public class PayDayWidget extends TextHudWidget<TextHudWidgetConfig> {
         this.frakGehaltLine = this.createLine(FGEHALT_KEY, i18nFGehaltValue);
         this.jobGehaltLine = this.createLine(JGEHALT_KEY, i18nJGehaltValue);
         this.payDayTimeLine = this.createLine(PAYDAY_KEY, i18PaydayValue);
-
-        this.frakGehaltLine.setState(TextLine.State.VISIBLE);
-        this.jobGehaltLine.setState(TextLine.State.VISIBLE);
-        this.payDayTimeLine.setState(TextLine.State.VISIBLE);
     }
-
+    @Subscribe
+    public void onServerJoin(JustJoinedEvent e){
+        if(e.isJustJoined()){
+            this.frakGehaltLine.setState(TextLine.State.VISIBLE);
+            this.jobGehaltLine.setState(TextLine.State.VISIBLE);
+            this.payDayTimeLine.setState(TextLine.State.VISIBLE);
+        }else {
+            this.payDayTimeLine.setState(TextLine.State.HIDDEN);
+            this.frakGehaltLine.setState(TextLine.State.HIDDEN);
+            this.jobGehaltLine.setState(TextLine.State.HIDDEN);
+        }
+    }
     @Subscribe
     public void onPayDayPacketRecieve(PayDayPacketRecieveEvent e) {
         this.frakGehaltLine.updateAndFlush(String.format("%.2f €", e.getFSalary()));

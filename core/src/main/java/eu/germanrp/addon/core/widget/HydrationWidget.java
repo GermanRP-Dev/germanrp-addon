@@ -2,6 +2,7 @@ package eu.germanrp.addon.core.widget;
 
 import eu.germanrp.addon.api.events.network.HydrationUpdateEvent;
 import eu.germanrp.addon.core.GermanRPAddon;
+import eu.germanrp.addon.core.common.events.JustJoinedEvent;
 import lombok.val;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.gui.hud.binding.category.HudWidgetCategory;
@@ -29,6 +30,14 @@ public class HydrationWidget extends TextHudWidget<TextHudWidgetConfig> {
     public void load(TextHudWidgetConfig config) {
         super.load(config);
         this.textLine = this.createLine(hydrationKey, format(0));
+    }
+    @Subscribe
+    public void onServerJoin(JustJoinedEvent e){
+        if(e.isJustJoined()){
+            this.textLine.setState(TextLine.State.VISIBLE);
+        }else {
+            this.textLine.setState(TextLine.State.HIDDEN);
+        }
     }
 
     @Subscribe

@@ -22,6 +22,7 @@ public class ServerJoinListener {
     @Subscribe
     public void onServerJoin(ServerJoinEvent event) {
         if (!this.addon.getUtilService().isGermanRP()) {
+            Laby.fireEvent(new JustJoinedEvent(false));
             return;
         }
         this.addon.getChatListener().setEmptyMessages(0);
