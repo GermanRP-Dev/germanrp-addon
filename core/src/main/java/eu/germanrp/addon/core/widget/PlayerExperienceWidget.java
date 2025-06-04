@@ -2,6 +2,7 @@ package eu.germanrp.addon.core.widget;
 
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.ExperienceUpdateEvent;
+import eu.germanrp.addon.core.common.events.JustJoinedEvent;
 import eu.germanrp.addon.core.common.events.LevelUPEvent;
 import lombok.Getter;
 import lombok.Setter;
@@ -43,9 +44,16 @@ public class PlayerExperienceWidget extends TextHudWidget<TextHudWidgetConfig> {
 
         this.currentXPfromNeededXP = this.createLine(EVENT_KEY, i18nProgressValue);
         this.xpLeft = this.createLine(COUNTDOWN_KEY, i18nYieldValue);
-
-        this.currentXPfromNeededXP.setState(TextLine.State.VISIBLE);
-        this.xpLeft.setState(TextLine.State.VISIBLE);
+    }
+    @Subscribe
+    public void onServerJoin(JustJoinedEvent e){
+      if(e.isJustJoined()){
+          this.currentXPfromNeededXP.setState(TextLine.State.VISIBLE);
+          this.xpLeft.setState(TextLine.State.VISIBLE);
+      }else {
+          this.currentXPfromNeededXP.setState(TextLine.State.HIDDEN);
+          this.xpLeft.setState(TextLine.State.HIDDEN);
+      }
     }
 
     @Subscribe
