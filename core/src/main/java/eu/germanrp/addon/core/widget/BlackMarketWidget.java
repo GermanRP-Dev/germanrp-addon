@@ -54,6 +54,6 @@ public class BlackMarketWidget extends TextHudWidget<TextHudWidgetConfig> {
         }
         ZonedDateTime now = ZonedDateTime.now();
         Duration duration = Duration.between(now, now.plusHours(1).truncatedTo(ChronoUnit.HOURS));
-        this.countDownLine.updateAndFlush(String.format("\n%02d:%02d", duration.toMinutesPart(), duration.toSecondsPart()));
+        this.countDownLine.updateAndFlush(String.format("%02d:%02d", duration.toMinutesPart(), duration.toSecondsPart()));
     }
 }
