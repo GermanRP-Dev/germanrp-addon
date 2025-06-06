@@ -13,6 +13,10 @@ import net.labymod.api.client.gui.hud.hudwidget.text.TextLine;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.util.I18n;
 
+import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.HIDDEN;
+import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.VISIBLE;
+import static net.labymod.api.util.I18n.getTranslation;
+
 @Getter
 @Setter
 public class PayDayWidget extends TextHudWidget<TextHudWidgetConfig> {
@@ -40,9 +44,9 @@ public class PayDayWidget extends TextHudWidget<TextHudWidgetConfig> {
     @Override
     public void load(TextHudWidgetConfig config) {
         super.load(config);
-        final String i18nFGehaltValue = I18n.getTranslation(FGEHALT_VALUE);
-        final String i18nJGehaltValue = I18n.getTranslation(JGEHALT_VALUE);
-        final String i18PaydayValue = I18n.getTranslation(PAYDAY_VALUE);
+        final String i18nFGehaltValue = getTranslation(FGEHALT_VALUE);
+        final String i18nJGehaltValue = getTranslation(JGEHALT_VALUE);
+        final String i18PaydayValue = getTranslation(PAYDAY_VALUE);
 
         this.frakGehaltLine = this.createLine(FGEHALT_KEY, i18nFGehaltValue);
         this.jobGehaltLine = this.createLine(JGEHALT_KEY, i18nJGehaltValue);
@@ -51,13 +55,13 @@ public class PayDayWidget extends TextHudWidget<TextHudWidgetConfig> {
     @Subscribe
     public void onServerJoin(JustJoinedEvent e){
         if(e.isJustJoined()){
-            this.frakGehaltLine.setState(TextLine.State.VISIBLE);
-            this.jobGehaltLine.setState(TextLine.State.VISIBLE);
-            this.payDayTimeLine.setState(TextLine.State.VISIBLE);
+            this.frakGehaltLine.setState(VISIBLE);
+            this.jobGehaltLine.setState(VISIBLE);
+            this.payDayTimeLine.setState(VISIBLE);
         }else {
-            this.payDayTimeLine.setState(TextLine.State.HIDDEN);
-            this.frakGehaltLine.setState(TextLine.State.HIDDEN);
-            this.jobGehaltLine.setState(TextLine.State.HIDDEN);
+            this.payDayTimeLine.setState(HIDDEN);
+            this.frakGehaltLine.setState(HIDDEN);
+            this.jobGehaltLine.setState(HIDDEN);
         }
     }
     @Subscribe

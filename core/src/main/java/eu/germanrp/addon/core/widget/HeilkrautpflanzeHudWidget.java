@@ -7,6 +7,8 @@ import eu.germanrp.addon.core.GermanRPAddon;
 import net.labymod.api.client.gui.hud.binding.category.HudWidgetCategory;
 import net.labymod.api.client.gui.icon.Icon;
 
+import static eu.germanrp.addon.api.models.PlantType.HEILKRAUTPFLANZE;
+
 public class HeilkrautpflanzeHudWidget extends PlantHudWidget {
 
     private static final Plant DUMMY_PLANT = new PlantHeilkraut(true, 20, 5);
@@ -22,6 +24,6 @@ public class HeilkrautpflanzeHudWidget extends PlantHudWidget {
 
     @Override
     public PlantType getPlantType() {
-        return PlantType.HEILKRAUTPFLANZE;
+        return HEILKRAUTPFLANZE;
     }
 }

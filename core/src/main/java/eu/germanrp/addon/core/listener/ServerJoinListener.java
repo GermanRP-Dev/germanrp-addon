@@ -8,6 +8,8 @@ import net.labymod.api.Laby;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.network.server.ServerJoinEvent;
 
+import static net.labymod.api.Laby.fireEvent;
+
 public class ServerJoinListener {
 
     private final GermanRPAddon addon;
@@ -27,7 +29,7 @@ public class ServerJoinListener {
         }
         this.addon.getChatListener().setEmptyMessages(0);
         this.player.setPlayerFactionName(null);
-        Laby.fireEvent(new JustJoinedEvent(true));
+        fireEvent(new JustJoinedEvent(true));
 
         this.addon.getPlayer().sendServerMessage("/stats");
     }

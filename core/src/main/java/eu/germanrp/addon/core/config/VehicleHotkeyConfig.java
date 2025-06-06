@@ -8,35 +8,36 @@ import net.labymod.api.configuration.loader.Config;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
 import net.labymod.api.configuration.settings.annotation.SettingSection;
 
+import static net.labymod.api.client.gui.screen.key.Key.NONE;
+
 @Getter
 @Accessors(fluent = true)
 public class VehicleHotkeyConfig extends Config {
 
     @SettingSection("car")
     @KeybindWidget.KeyBindSetting
-    private final ConfigProperty<Key> toggleEngine = new ConfigProperty<>(Key.NONE);
+    private final ConfigProperty<Key> toggleEngine = new ConfigProperty<>(NONE);
 
     @KeybindWidget.KeyBindSetting
-    private final ConfigProperty<Key> toggleTurnSignalLeft = new ConfigProperty<>(Key.NONE);
+    private final ConfigProperty<Key> toggleTurnSignalLeft = new ConfigProperty<>(NONE);
 
     @KeybindWidget.KeyBindSetting
-    private final ConfigProperty<Key> toggleTurnSignalRight = new ConfigProperty<>(Key.NONE);
+    private final ConfigProperty<Key> toggleTurnSignalRight = new ConfigProperty<>(NONE);
 
     @KeybindWidget.KeyBindSetting
-    private final ConfigProperty<Key> toggleHazardWarnSignal = new ConfigProperty<>(Key.NONE);
+    private final ConfigProperty<Key> toggleHazardWarnSignal = new ConfigProperty<>(NONE);
 
     @SettingSection("cruiseControl")
     @KeybindWidget.KeyBindSetting
-    private final ConfigProperty<Key> increaseCruiseControlSpeed = new ConfigProperty<>(Key.NONE);
+    private final ConfigProperty<Key> increaseCruiseControlSpeed = new ConfigProperty<>(NONE);
 
     @KeybindWidget.KeyBindSetting
-    private final ConfigProperty<Key> decreaseCruiseControlSpeed = new ConfigProperty<>(Key.NONE);
+    private final ConfigProperty<Key> decreaseCruiseControlSpeed = new ConfigProperty<>(NONE);
 
     @SettingSection("emergencySignal")
     @KeybindWidget.KeyBindSetting
-    private final ConfigProperty<Key> toggleEmergencySignal = new ConfigProperty<>(Key.NONE);
+    private final ConfigProperty<Key> toggleEmergencySignal = new ConfigProperty<>(NONE);
 
     @KeybindWidget.KeyBindSetting
-    private final ConfigProperty<Key> toggleEmergencySignalSound = new ConfigProperty<>(Key.NONE);
-
+    private final ConfigProperty<Key> toggleEmergencySignalSound = new ConfigProperty<>(NONE);
 }

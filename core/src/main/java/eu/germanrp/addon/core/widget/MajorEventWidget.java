@@ -16,6 +16,11 @@ import net.labymod.api.util.I18n;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 
+import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.SECOND;
+import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.HIDDEN;
+import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.VISIBLE;
+import static net.labymod.api.util.I18n.getTranslation;
+
 @Getter
 @Setter
 public class MajorEventWidget extends TextHudWidget<TextHudWidgetConfig> {
@@ -48,25 +53,25 @@ public class MajorEventWidget extends TextHudWidget<TextHudWidgetConfig> {
     @Override
     public void load(TextHudWidgetConfig config) {
         super.load(config);
-        final String i18nProgressValue = I18n.getTranslation(EVENT_VALUE, 0, 0);
-        final String i18nYieldValue = I18n.getTranslation(COUNTDOWN_VALUE, 0, "", 0);
+        final String i18nProgressValue = getTranslation(EVENT_VALUE, 0, 0);
+        final String i18nYieldValue = getTranslation(COUNTDOWN_VALUE, 0, "", 0);
 
         this.eventNameLine = this.createLine(EVENT_KEY, i18nProgressValue);
         this.countDownLine = this.createLine(COUNTDOWN_KEY, i18nYieldValue);
 
-        this.eventNameLine.setState(TextLine.State.HIDDEN);
-        this.countDownLine.setState(TextLine.State.HIDDEN);
+        this.eventNameLine.setState(HIDDEN);
+        this.countDownLine.setState(HIDDEN);
     }
 
     public void reset() {
         this.majorEvent = false;
-        this.eventNameLine.setState(TextLine.State.HIDDEN);
-        this.countDownLine.setState(TextLine.State.HIDDEN);
+        this.eventNameLine.setState(HIDDEN);
+        this.countDownLine.setState(HIDDEN);
     }
 
     @Subscribe
     public void onGermanRPAddonTick(GermanRPAddonTickEvent e) {
-        if (!e.isPhase(GermanRPAddonTickEvent.Phase.SECOND) || !this.majorEvent) {
+        if (!e.isPhase(SECOND) || !this.majorEvent) {
             return;
         }
         ZonedDateTime now = ZonedDateTime.now();

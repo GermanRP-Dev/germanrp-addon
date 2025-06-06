@@ -8,6 +8,13 @@ import lombok.Setter;
 import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.serverapi.api.payload.io.PayloadWriter;
 
+import static eu.germanrp.addon.core.services.VehicleService.VehicleCommand.TOGGLE_ENGINE;
+import static eu.germanrp.addon.core.services.VehicleService.VehicleCommand.TOGGLE_SIGNAL_HAZARD_WARN;
+import static eu.germanrp.addon.core.services.VehicleService.VehicleCommand.TOGGLE_SIGNAL_LEFT;
+import static eu.germanrp.addon.core.services.VehicleService.VehicleCommand.TOGGLE_SIGNAL_RIGHT;
+import static eu.germanrp.addon.core.services.VehicleService.VehicleCommand.TOGGLE_SOSI;
+import static eu.germanrp.addon.core.services.VehicleService.VehicleCommand.TOGGLE_SOSI_MUTE;
+
 @Getter
 @Setter
 public class VehicleService {
@@ -22,7 +29,7 @@ public class VehicleService {
     }
 
     public void toggleEngine() {
-        sendPayloadToServer(VehicleCommand.TOGGLE_ENGINE);
+        sendPayloadToServer(TOGGLE_ENGINE);
     }
 
     private void applyCruiseControlSpeed() {
@@ -30,15 +37,15 @@ public class VehicleService {
     }
 
     public void toggleSignalLeft() {
-        sendPayloadToServer(VehicleCommand.TOGGLE_SIGNAL_LEFT);
+        sendPayloadToServer(TOGGLE_SIGNAL_LEFT);
     }
 
     public void toggleSignalRight() {
-        sendPayloadToServer(VehicleCommand.TOGGLE_SIGNAL_RIGHT);
+        sendPayloadToServer(TOGGLE_SIGNAL_RIGHT);
     }
 
     public void toggleHazardWarnSignal() {
-        sendPayloadToServer(VehicleCommand.TOGGLE_SIGNAL_HAZARD_WARN);
+        sendPayloadToServer(TOGGLE_SIGNAL_HAZARD_WARN);
     }
 
     public void increaseCruiseControlSpeed() {
@@ -56,11 +63,11 @@ public class VehicleService {
     }
 
     public void toggleEmergencySignal() {
-        sendPayloadToServer(VehicleCommand.TOGGLE_SOSI);
+        sendPayloadToServer(TOGGLE_SOSI);
     }
 
     public void toggleEmergencySignalSound() {
-        sendPayloadToServer(VehicleCommand.TOGGLE_SOSI_MUTE);
+        sendPayloadToServer(TOGGLE_SOSI_MUTE);
     }
 
     @Getter

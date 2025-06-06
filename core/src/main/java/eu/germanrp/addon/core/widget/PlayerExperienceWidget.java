@@ -16,6 +16,11 @@ import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.util.I18n;
 
+import static net.labymod.api.Laby.fireEvent;
+import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.HIDDEN;
+import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.VISIBLE;
+import static net.labymod.api.util.I18n.getTranslation;
+
 @Getter
 @Setter
 public class PlayerExperienceWidget extends TextHudWidget<TextHudWidgetConfig> {
@@ -39,8 +44,8 @@ public class PlayerExperienceWidget extends TextHudWidget<TextHudWidgetConfig> {
     @Override
     public void load(TextHudWidgetConfig config) {
         super.load(config);
-        final String i18nProgressValue = I18n.getTranslation(EVENT_VALUE, 0, 0);
-        final String i18nYieldValue = I18n.getTranslation(COUNTDOWN_VALUE, 0, "", 0);
+        final String i18nProgressValue = getTranslation(EVENT_VALUE, 0, 0);
+        final String i18nYieldValue = getTranslation(COUNTDOWN_VALUE, 0, "", 0);
 
         this.currentXPfromNeededXP = this.createLine(EVENT_KEY, i18nProgressValue);
         this.xpLeft = this.createLine(COUNTDOWN_KEY, i18nYieldValue);
@@ -48,18 +53,18 @@ public class PlayerExperienceWidget extends TextHudWidget<TextHudWidgetConfig> {
     @Subscribe
     public void onServerJoin(JustJoinedEvent e){
       if(e.isJustJoined()){
-          this.currentXPfromNeededXP.setState(TextLine.State.VISIBLE);
-          this.xpLeft.setState(TextLine.State.VISIBLE);
+          this.currentXPfromNeededXP.setState(VISIBLE);
+          this.xpLeft.setState(VISIBLE);
       }else {
-          this.currentXPfromNeededXP.setState(TextLine.State.HIDDEN);
-          this.xpLeft.setState(TextLine.State.HIDDEN);
+          this.currentXPfromNeededXP.setState(HIDDEN);
+          this.xpLeft.setState(HIDDEN);
       }
     }
 
     @Subscribe
     public void experienceUpdate(ExperienceUpdateEvent event) {
         if (this.addon.getPlayer().getPlayerXP() >= this.addon.getPlayer().getPlayerNeededXP()) {
-            Laby.fireEvent(new LevelUPEvent());
+            fireEvent(new LevelUPEvent());
         }
         this.currentXPfromNeededXP.updateAndFlush(String.format("\n%02d/%02d",
                 this.addon.getPlayer().getPlayerXP(),

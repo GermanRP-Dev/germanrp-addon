@@ -18,6 +18,11 @@ import net.labymod.api.util.I18n;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.SECOND;
+import static net.labymod.api.client.component.Component.text;
+import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.HIDDEN;
+import static net.labymod.api.util.I18n.getTranslation;
+
 public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> {
 
     private static final Component PROGRESS_KEY = Component.translatable(
@@ -52,14 +57,14 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
     public void load(final TextHudWidgetConfig config) {
         super.load(config);
 
-        final String i18nProgressValue = I18n.getTranslation(PROGRESS_TRANSLATABLE_VALUE, 0, 0);
-        final String i18nYieldValue = I18n.getTranslation(YIELD_TRANSLATABLE_VALUE, 0, "", 0);
+        final String i18nProgressValue = getTranslation(PROGRESS_TRANSLATABLE_VALUE, 0, 0);
+        final String i18nYieldValue = getTranslation(YIELD_TRANSLATABLE_VALUE, 0, "", 0);
 
         this.progressLine = this.createLine(PROGRESS_KEY, i18nProgressValue);
         this.yieldLine = this.createLine(YIELD_KEY, i18nYieldValue);
 
-        this.progressLine.setState(State.HIDDEN);
-        this.yieldLine.setState(State.HIDDEN);
+        this.progressLine.setState(HIDDEN);
+        this.yieldLine.setState(HIDDEN);
     }
 
     @Override
@@ -81,7 +86,7 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
 
     @Subscribe
     public void onGermanRPAddonTickEvent(final GermanRPAddonTickEvent event) {
-        if (event.isPhase(GermanRPAddonTickEvent.Phase.SECOND)) {
+        if (event.isPhase(SECOND)) {
             this.hudNeedsUpdate = true;
         }
     }
@@ -130,8 +135,8 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
         }
 
         this.plant = null;
-        this.progressLine.setState(State.HIDDEN);
-        this.yieldLine.setState(State.HIDDEN);
+        this.progressLine.setState(HIDDEN);
+        this.yieldLine.setState(HIDDEN);
     }
 
     @Subscribe
@@ -144,7 +149,7 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
 
         this.addon.getPlayer().sendInfoMessage(Component.translatable(
                 PLANT_HARVEST_MESSAGE,
-                Component.text(event.getPlant().getType().getDisplayName())
+                text(event.getPlant().getType().getDisplayName())
         ));
     }
 
@@ -159,7 +164,7 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
         this.addon.getPlayer().sendInfoMessage(
                 Component.translatable(
                         PLANT_FERTILIZE_MESSAGE,
-                        Component.text(event.getPlant().getType().getDisplayName())
+                        text(event.getPlant().getType().getDisplayName())
                 )
         );
     }
@@ -175,7 +180,7 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
         this.addon.getPlayer().sendInfoMessage(
                 Component.translatable(
                         PLANT_WATER_MESSAGE,
-                        Component.text(event.getPlant().getType().getDisplayName())
+                        text(event.getPlant().getType().getDisplayName())
                 )
         );
     }
@@ -190,14 +195,14 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
 
     private void updateLines(final @NotNull Plant plant) {
         this.progressLine.updateAndFlush(
-                I18n.getTranslation(
+                getTranslation(
                         PROGRESS_TRANSLATABLE_VALUE,
                         plant.getCurrentTime(),
                         plant.getMaxTime()
                 )
         );
         this.yieldLine.updateAndFlush(
-                I18n.getTranslation(
+                getTranslation(
                         YIELD_TRANSLATABLE_VALUE,
                         plant.getValue(),
                         plant.getYieldUnit(),
