@@ -5,7 +5,6 @@ import eu.germanrp.addon.core.GermanRPAddon;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import net.labymod.api.Laby;
 import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.serverapi.api.payload.io.PayloadWriter;
 
@@ -85,7 +84,6 @@ public class VehicleService {
 
         optionsObject.addProperty("Fahrzeugdata", command.getCommand());
         payloadWriter.writeString(command.getCommand());
-        payloadWriter.writeString(command.getCommand()); // I don't know why this is added two times, but that's how it was done in the old addon
         payloadWriter.writeString(optionsObject.toString());
 
         this.addon.labyAPI().serverController()
