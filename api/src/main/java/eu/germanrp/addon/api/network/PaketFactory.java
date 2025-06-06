@@ -18,7 +18,6 @@ public final class PaketFactory {
         final String header = payloadReader.readString();
 
         return switch (header) {
-
             case "GRAddon-Plant" -> {
                 final String payloadContent = payloadReader.readString();
 
@@ -42,8 +41,6 @@ public final class PaketFactory {
 
                 yield Optional.of(plantPaket);
             }
-
-
             default -> Optional.empty();
         };
     }

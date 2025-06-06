@@ -28,15 +28,14 @@ import org.jetbrains.annotations.Nullable;
 
 import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.SECOND;
 import static net.labymod.api.client.component.Component.text;
+import static net.labymod.api.client.component.Component.translatable;
 import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.HIDDEN;
 import static net.labymod.api.util.I18n.getTranslation;
 
 public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> {
 
-    private static final Component PROGRESS_KEY = Component.translatable(
-            "germanrpaddon.widget.plant.progressKey");
-    private static final Component YIELD_KEY = Component.translatable(
-            "germanrpaddon.widget.plant.yieldKey");
+    private static final Component PROGRESS_KEY = translatable("germanrpaddon.widget.plant.progressKey");
+    private static final Component YIELD_KEY = translatable("germanrpaddon.widget.plant.yieldKey");
     private static final String PROGRESS_TRANSLATABLE_VALUE = "germanrpaddon.widget.plant.progressValue";
     private static final String YIELD_TRANSLATABLE_VALUE = "germanrpaddon.widget.plant.yieldValue";
     private static final String PLANT_HARVEST_MESSAGE = "germanrpaddon.message.plant.harvest";
@@ -155,7 +154,7 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
 
         this.addon.getPlayer().playSound(ResourceLocation.parse("germanrp:chat.notify.info"), 1, 1);
 
-        this.addon.getPlayer().sendInfoMessage(Component.translatable(
+        this.addon.getPlayer().sendInfoMessage(translatable(
                 PLANT_HARVEST_MESSAGE,
                 text(event.getPlant().getType().getDisplayName())
         ));
@@ -170,10 +169,7 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
         this.addon.getPlayer().playSound(ResourceLocation.parse("germanrp:chat.notify.info"), 1, 1);
 
         this.addon.getPlayer().sendInfoMessage(
-                Component.translatable(
-                        PLANT_FERTILIZE_MESSAGE,
-                        text(event.getPlant().getType().getDisplayName())
-                )
+                translatable(PLANT_FERTILIZE_MESSAGE, text(event.getPlant().getType().getDisplayName()))
         );
     }
 
@@ -186,7 +182,7 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
         this.addon.getPlayer().playSound(ResourceLocation.parse("germanrp:chat.notify.info"), 1, 1);
 
         this.addon.getPlayer().sendInfoMessage(
-                Component.translatable(
+                translatable(
                         PLANT_WATER_MESSAGE,
                         text(event.getPlant().getType().getDisplayName())
                 )

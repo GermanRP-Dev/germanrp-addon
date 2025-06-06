@@ -93,5 +93,4 @@ public interface AddonPlayer {
     FactionName getPlayerFactionName();
 
     void playSound(ResourceLocation location, float volume, float pitch);
-
 }

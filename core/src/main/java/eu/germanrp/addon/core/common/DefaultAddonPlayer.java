@@ -32,13 +32,11 @@ public class DefaultAddonPlayer implements AddonPlayer {
 
     private static final String ADDON_PREFIX_SYMBOL = "  ₪ ";
 
+    private final GermanRPAddon addon;
+
     private boolean shouting = false;
     private boolean whispering = false;
     private boolean playerGR = false;
-
-    private String playerName;
-
-    private final GermanRPAddon addon;
     private int playerXP;
     private int playerTBonusTime;
     private int playerNeededXP;

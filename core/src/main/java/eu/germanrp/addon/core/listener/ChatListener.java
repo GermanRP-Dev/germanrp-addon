@@ -64,7 +64,7 @@ public class ChatListener {
             if (matcher.find()) {
                 switch (matcher.group(1)) {
                     case "Keine (Zivilist)" -> {
-                        if(this.wasAFK){
+                        if (this.wasAFK) {
                             Laby.references().chatExecutor().chat("/afk");
                         }
                         this.addon.getPlayer().setPlayerFactionName(FactionName.NONE);
@@ -110,8 +110,8 @@ public class ChatListener {
         if (factionName == null) {
             return;
         }
-        if(factionName.equals(FactionName.NONE)) {
-            if (!wasAFK){
+        if (factionName.equals(FactionName.NONE)) {
+            if (!wasAFK) {
                 this.justJoined = false;
                 return;
             }
@@ -165,7 +165,6 @@ public class ChatListener {
                         return;
                     }
                     this.addon.getNameTagService().getBounties().add(matcher.group(1).replace("[GR]", ""));
-                    return;
                 }
             }
 
@@ -189,7 +188,6 @@ public class ChatListener {
                         return;
                     }
                     this.addon.getNameTagService().getWantedPlayers().add(matcher.group(1).replace("[GR]", ""));
-                    return;
                 }
             }
         }

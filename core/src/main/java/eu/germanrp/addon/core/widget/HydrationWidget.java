@@ -11,12 +11,13 @@ import net.labymod.api.client.gui.hud.hudwidget.text.TextLine;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 
+import static net.labymod.api.client.component.Component.translatable;
 import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.HIDDEN;
 import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.VISIBLE;
 
 public class HydrationWidget extends TextHudWidget<TextHudWidgetConfig> {
 
-    private static final Component hydrationKey = Component.translatable("germanrpaddon.widget.hydration.key");
+    private static final Component hydrationKey = translatable("germanrpaddon.widget.hydration.key");
 
     private final GermanRPAddon addon;
 
@@ -33,8 +34,9 @@ public class HydrationWidget extends TextHudWidget<TextHudWidgetConfig> {
         super.load(config);
         this.textLine = this.createLine(hydrationKey, format(0));
     }
+
     @Subscribe
-    public void onServerJoin(JustJoinedEvent e){
+    public void onServerJoin(JustJoinedEvent e) {
         this.textLine.setState(e.isJustJoined() ? VISIBLE : HIDDEN);
     }
 

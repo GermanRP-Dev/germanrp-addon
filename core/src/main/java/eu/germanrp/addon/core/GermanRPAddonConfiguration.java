@@ -32,5 +32,4 @@ public class GermanRPAddonConfiguration extends AddonConfig {
     @SettingSection("debug")
     @SwitchSetting
     private final ConfigProperty<Boolean> debug = new ConfigProperty<>(false);
-
 }

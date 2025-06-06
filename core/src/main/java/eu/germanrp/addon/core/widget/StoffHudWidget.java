@@ -9,7 +9,6 @@ import net.labymod.api.client.gui.icon.Icon;
 
 import static eu.germanrp.addon.api.models.PlantType.STOFF;
 
-@SuppressWarnings("java:S110")
 public class StoffHudWidget extends PlantHudWidget {
 
     private static final Plant DUMMY_PLANT = new PlantStoff(true, 1, 5);

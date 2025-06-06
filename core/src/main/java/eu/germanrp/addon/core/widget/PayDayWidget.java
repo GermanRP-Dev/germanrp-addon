@@ -12,6 +12,7 @@ import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidgetConfig;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextLine;
 import net.labymod.api.event.Subscribe;
 
+import static net.labymod.api.client.component.Component.translatable;
 import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.HIDDEN;
 import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.VISIBLE;
 import static net.labymod.api.util.I18n.getTranslation;
@@ -23,9 +24,9 @@ public class PayDayWidget extends TextHudWidget<TextHudWidgetConfig> {
     private final GermanRPAddon addon;
     private boolean majorEvent;
 
-    private static final Component FGEHALT_KEY = Component.translatable("germanrpaddon.widget.payDay.fgehaltKey");
-    private static final Component JGEHALT_KEY = Component.translatable("germanrpaddon.widget.payDay.jgehaltKey");
-    private static final Component PAYDAY_KEY = Component.translatable("germanrpaddon.widget.payDay.paydayKey");
+    private static final Component FGEHALT_KEY = translatable("germanrpaddon.widget.payDay.fgehaltKey");
+    private static final Component JGEHALT_KEY = translatable("germanrpaddon.widget.payDay.jgehaltKey");
+    private static final Component PAYDAY_KEY = translatable("germanrpaddon.widget.payDay.paydayKey");
     private static final String FGEHALT_VALUE = "germanrpaddon.widget.payDay.fGehaltValue";
     private static final String JGEHALT_VALUE = "germanrpaddon.widget.payDay.jGehaltValue";
     private static final String PAYDAY_VALUE = "germanrpaddon.widget.payDay.paydayValue";
@@ -51,18 +52,14 @@ public class PayDayWidget extends TextHudWidget<TextHudWidgetConfig> {
         this.jobGehaltLine = this.createLine(JGEHALT_KEY, i18nJGehaltValue);
         this.payDayTimeLine = this.createLine(PAYDAY_KEY, i18PaydayValue);
     }
+
     @Subscribe
-    public void onServerJoin(JustJoinedEvent e){
-        if(e.isJustJoined()){
-            this.frakGehaltLine.setState(VISIBLE);
-            this.jobGehaltLine.setState(VISIBLE);
-            this.payDayTimeLine.setState(VISIBLE);
-        }else {
-            this.payDayTimeLine.setState(HIDDEN);
-            this.frakGehaltLine.setState(HIDDEN);
-            this.jobGehaltLine.setState(HIDDEN);
-        }
+    public void onServerJoin(JustJoinedEvent e) {
+        this.frakGehaltLine.setState(e.isJustJoined() ? VISIBLE : HIDDEN);
+        this.jobGehaltLine.setState(e.isJustJoined() ? VISIBLE : HIDDEN);
+        this.payDayTimeLine.setState(e.isJustJoined() ? VISIBLE : HIDDEN);
     }
+
     @Subscribe
     public void onPayDayPacketRecieve(PayDayPacketRecieveEvent e) {
         this.frakGehaltLine.updateAndFlush(String.format("%.2f €", e.getFSalary()));

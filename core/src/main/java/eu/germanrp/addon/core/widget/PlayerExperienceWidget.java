@@ -15,6 +15,7 @@ import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.event.Subscribe;
 
 import static net.labymod.api.Laby.fireEvent;
+import static net.labymod.api.client.component.Component.translatable;
 import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.HIDDEN;
 import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.VISIBLE;
 import static net.labymod.api.util.I18n.getTranslation;
@@ -23,8 +24,8 @@ import static net.labymod.api.util.I18n.getTranslation;
 @Setter
 public class PlayerExperienceWidget extends TextHudWidget<TextHudWidgetConfig> {
 
-    private static final Component EVENT_KEY = Component.translatable("germanrpaddon.widget.playerExperience.playerXPKey");
-    private static final Component COUNTDOWN_KEY = Component.translatable("germanrpaddon.widget.playerExperience.xpLeftKey");
+    private static final Component EVENT_KEY = translatable("germanrpaddon.widget.playerExperience.playerXPKey");
+    private static final Component COUNTDOWN_KEY = translatable("germanrpaddon.widget.playerExperience.xpLeftKey");
     private static final String EVENT_VALUE = "germanrpaddon.widget.playerExperience.playerXPValue";
     private static final String COUNTDOWN_VALUE = "germanrpaddon.widget.playerExperience.xpLeftValue";
     private final GermanRPAddon addon;
@@ -48,15 +49,11 @@ public class PlayerExperienceWidget extends TextHudWidget<TextHudWidgetConfig> {
         this.currentXPfromNeededXP = this.createLine(EVENT_KEY, i18nProgressValue);
         this.xpLeft = this.createLine(COUNTDOWN_KEY, i18nYieldValue);
     }
+
     @Subscribe
-    public void onServerJoin(JustJoinedEvent e){
-      if(e.isJustJoined()){
-          this.currentXPfromNeededXP.setState(VISIBLE);
-          this.xpLeft.setState(VISIBLE);
-      }else {
-          this.currentXPfromNeededXP.setState(HIDDEN);
-          this.xpLeft.setState(HIDDEN);
-      }
+    public void onServerJoin(JustJoinedEvent e) {
+        this.currentXPfromNeededXP.setState(e.isJustJoined() ? VISIBLE : HIDDEN);
+        this.xpLeft.setState(e.isJustJoined() ? VISIBLE : HIDDEN);
     }
 
     @Subscribe

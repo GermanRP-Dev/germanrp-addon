@@ -16,6 +16,7 @@ import java.time.Duration;
 import java.time.ZonedDateTime;
 
 import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.SECOND;
+import static net.labymod.api.client.component.Component.translatable;
 import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.HIDDEN;
 import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.VISIBLE;
 import static net.labymod.api.util.I18n.getTranslation;
@@ -27,8 +28,8 @@ public class MajorEventWidget extends TextHudWidget<TextHudWidgetConfig> {
     private final GermanRPAddon addon;
     private boolean majorEvent;
     private ZonedDateTime countdownTarget;
-    private static final Component EVENT_KEY = Component.translatable("germanrpaddon.widget.majorEvent.eventKey");
-    private static final Component COUNTDOWN_KEY = Component.translatable("germanrpaddon.widget.majorEvent.countdownKey");
+    private static final Component EVENT_KEY = translatable("germanrpaddon.widget.majorEvent.eventKey");
+    private static final Component COUNTDOWN_KEY = translatable("germanrpaddon.widget.majorEvent.countdownKey");
     private static final String EVENT_VALUE = "germanrpaddon.widget.majorEvent.eventValue";
     private static final String COUNTDOWN_VALUE = "germanrpaddon.widget.majorEvent.countdownValue";
     private TextLine eventNameLine;

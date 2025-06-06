@@ -42,5 +42,4 @@ public class NameTagSubConfig extends Config {
     @ColorPickerWidget.ColorPickerSetting
     @SettingRequires("wantedColorEnabled")
     private final ConfigProperty<Color> wantedColor = new ConfigProperty<>(Color.of(0xFFAAAAAA));
-
 }

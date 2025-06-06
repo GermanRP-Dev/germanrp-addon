@@ -60,7 +60,6 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private ChatListener chatListener;
 
     @Override
-    @SuppressWarnings("java:S2696")
     protected void load() {
         instance = this;
         this.player = new DefaultAddonPlayer(this);
@@ -161,5 +160,4 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerListener(chatListener);
         registerListener(new VehicleHotkeyListener(this));
     }
-
 }
