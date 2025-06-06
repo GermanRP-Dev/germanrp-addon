@@ -5,15 +5,10 @@ import eu.germanrp.addon.core.common.GlobalRegexRegistry;
 import eu.germanrp.addon.core.config.VehicleHotkeyConfig;
 import eu.germanrp.addon.core.services.VehicleService;
 import net.labymod.api.client.gui.screen.key.Key;
-import net.labymod.api.configuration.loader.property.ConfigProperty;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import net.labymod.api.event.client.input.KeyEvent;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class VehicleHotkeyListener {
 

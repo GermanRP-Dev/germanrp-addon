@@ -1,7 +1,16 @@
 package eu.germanrp.addon.core.widget;
 
-import eu.germanrp.addon.api.events.plant.*;
-import eu.germanrp.addon.api.models.*;
+import eu.germanrp.addon.api.events.plant.PlantCreateEvent;
+import eu.germanrp.addon.api.events.plant.PlantDestroyEvent;
+import eu.germanrp.addon.api.events.plant.PlantNeedsFertilizerEvent;
+import eu.germanrp.addon.api.events.plant.PlantNeedsWaterEvent;
+import eu.germanrp.addon.api.events.plant.PlantPacketReceiveEvent;
+import eu.germanrp.addon.api.events.plant.PlantReadyToHarvestEvent;
+import eu.germanrp.addon.api.models.Plant;
+import eu.germanrp.addon.api.models.PlantHeilkraut;
+import eu.germanrp.addon.api.models.PlantRose;
+import eu.germanrp.addon.api.models.PlantStoff;
+import eu.germanrp.addon.api.models.PlantType;
 import eu.germanrp.addon.api.network.PlantPacket;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent;
@@ -14,7 +23,6 @@ import net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State;
 import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.event.Subscribe;
-import net.labymod.api.util.I18n;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

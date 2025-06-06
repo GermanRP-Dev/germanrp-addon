@@ -15,7 +15,6 @@ import net.labymod.api.util.I18n;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
 
 import static java.time.temporal.ChronoUnit.HOURS;
 import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.HIDDEN;

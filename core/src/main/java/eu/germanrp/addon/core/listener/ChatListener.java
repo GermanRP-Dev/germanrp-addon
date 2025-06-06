@@ -2,10 +2,7 @@ package eu.germanrp.addon.core.listener;
 
 import eu.germanrp.addon.api.models.FactionName;
 import eu.germanrp.addon.core.GermanRPAddon;
-import eu.germanrp.addon.core.common.AddonPlayer;
 import eu.germanrp.addon.core.common.events.JustJoinedEvent;
-import eu.germanrp.addon.core.common.events.MajorWidgetUpdateEvent;
-import eu.germanrp.addon.core.widget.MajorEventWidget;
 import lombok.Setter;
 import net.labymod.api.Laby;
 import net.labymod.api.event.Subscribe;
@@ -14,8 +11,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Matcher;
 
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.APOTHEKEN_RAUB;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.BOMBE_START;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.BOUNTY_ADD;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.BOUNTY_MEMBER_WANTED_LIST_ENTRY;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.BOUNTY_REMOVE;
@@ -23,17 +18,12 @@ import static eu.germanrp.addon.core.common.GlobalRegexRegistry.DARK_LIST_ADD;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.DARK_LIST_ENTRY;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.DARK_LIST_REMOVE;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.FRAKTION_NAME_STATS;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.HACKANGRIFF_START;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.JUWELEN_RAUB;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.SHOP_RAUB;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.TITLE_FACTION_MEMBER_LIST;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.TITLE_WANTED_LIST;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.WANTED_ADD;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.WANTED_REMOVE;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.XP_ADD_CHAT;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.XP_READER_STATS;
-import static net.labymod.api.Laby.fireEvent;
-import static net.labymod.api.Laby.labyAPI;
 
 public class ChatListener {
 

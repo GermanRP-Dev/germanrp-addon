@@ -11,7 +11,6 @@ import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidget;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidgetConfig;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextLine;
 import net.labymod.api.event.Subscribe;
-import net.labymod.api.util.I18n;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;

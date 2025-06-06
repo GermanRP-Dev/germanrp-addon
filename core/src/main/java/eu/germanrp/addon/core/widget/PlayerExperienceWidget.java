@@ -6,7 +6,6 @@ import eu.germanrp.addon.core.common.events.JustJoinedEvent;
 import eu.germanrp.addon.core.common.events.LevelUPEvent;
 import lombok.Getter;
 import lombok.Setter;
-import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.gui.hud.binding.category.HudWidgetCategory;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidget;
@@ -14,7 +13,6 @@ import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidgetConfig;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextLine;
 import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.event.Subscribe;
-import net.labymod.api.util.I18n;
 
 import static net.labymod.api.Laby.fireEvent;
 import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.HIDDEN;
