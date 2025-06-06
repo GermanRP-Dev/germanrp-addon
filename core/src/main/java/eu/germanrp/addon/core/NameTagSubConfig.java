@@ -43,8 +43,4 @@ public class NameTagSubConfig extends Config {
     @SettingRequires("wantedColorEnabled")
     private final ConfigProperty<Color> wantedColor = new ConfigProperty<>(Color.of(0xFFAAAAAA));
 
-    @Override
-    public int getConfigVersion() {
-        return 2;
-    }
 }
