@@ -27,7 +27,7 @@ public class VehicleService {
     }
 
     private void applyCruiseControlSpeed() {
-        Laby.references().chatExecutor().chat("/tempomat " + cruiseControlSpeed, false);
+        this.addon.getPlayer().sendServerMessage("/tempomat " + cruiseControlSpeed);
     }
 
     public void toggleSignalLeft() {

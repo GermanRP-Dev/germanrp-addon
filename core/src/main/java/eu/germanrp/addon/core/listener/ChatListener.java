@@ -214,7 +214,7 @@ public class ChatListener {
                     if (!matcher.find()) {
                         this.bounty = false;
                         if (this.wasAFK) {
-                            Laby.references().chatExecutor().chat("/afk");
+                            this.addon.getPlayer().sendServerMessage("/afk");
                             this.wasAFK = false;
                             return;
                         }
@@ -238,8 +238,7 @@ public class ChatListener {
                     if (!matcher.find()) {
                         this.wanted = false;
                         if (this.wasAFK) {
-
-                            Laby.references().chatExecutor().chat("/afk");
+                            this.addon.getPlayer().sendServerMessage("/afk");
                             this.wasAFK = false;
                             return;
                         }

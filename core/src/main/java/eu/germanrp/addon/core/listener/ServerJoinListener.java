@@ -29,7 +29,7 @@ public class ServerJoinListener {
         this.player.setPlayerFactionName(null);
         Laby.fireEvent(new JustJoinedEvent(true));
 
-        Laby.references().chatExecutor().chat("/stats", false);
+        this.addon.getPlayer().sendServerMessage("/stats");
     }
 
     public void onFactionNameGet() {
@@ -39,19 +39,18 @@ public class ServerJoinListener {
         }
 
         this.addon.getNameTagService().getMembers().clear();
-        Laby.references().chatExecutor()
-                .chat(String.format("/memberinfo %s", factionName.getMemberInfoCommandArg()), false);
+        this.addon.getPlayer().sendServerMessage(String.format("/memberinfo %s", factionName.getMemberInfoCommandArg()));
 
         switch (factionName.getType()) {
             case BADFRAK -> {
                 this.addon.getNameTagService().getDarklist().clear();
                 this.addon.getNameTagService().getBounties().clear();
-                Laby.references().chatExecutor().chat("/darklist", false);
-                Laby.references().chatExecutor().chat("/kopfgelder", false);
+                this.addon.getPlayer().sendServerMessage("/darklist");
+                this.addon.getPlayer().sendServerMessage("/kopfgelder");
             }
             case STAAT -> {
                 this.addon.getNameTagService().getWantedPlayers().clear();
-                Laby.references().chatExecutor().chat("/wanteds", false);
+                this.addon.getPlayer().sendServerMessage("/wanteds");
             }
         }
     }
