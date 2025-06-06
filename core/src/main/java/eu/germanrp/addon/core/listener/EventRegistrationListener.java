@@ -12,6 +12,7 @@ import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent;
 import eu.germanrp.addon.core.common.events.GraffitiUpdateEvent;
 import eu.germanrp.addon.core.common.events.LegacyGermanRPUtilsPayloadEvent;
+import eu.germanrp.addon.core.common.events.MajorWidgetUpdateEvent;
 import eu.germanrp.addon.core.common.events.PayDayPacketRecieveEvent;
 import net.labymod.api.Laby;
 import net.labymod.api.client.entity.player.ClientPlayer;
@@ -93,26 +94,50 @@ public class EventRegistrationListener {
             final Duration remainingTime = ofSeconds(minutes * 60 + seconds);
             fireEvent(new GraffitiUpdateEvent(nearestGraffiti, remainingTime));
         }
-    }
 
-    @Subscribe
-    public void onChatReceiveEvent(final ChatReceiveEvent event) {
-        final String message = event.chatMessage().getPlainText();
-
-        final Optional<PlantType> sowType = PlantType.fromSowMessage(message);
-        if (sowType.isPresent()) {
-            fireEvent(new PlantCreateEvent(sowType.get()));
+        Matcher apothekenRaubMatcher = APOTHEKEN_RAUB.getPattern().matcher(plainText);
+        if (apothekenRaubMatcher.find()) {
+            fireEvent(new MajorWidgetUpdateEvent("Apothekenraub", 8));
             return;
         }
 
-        final Matcher matcher = PLANT_HARVEST.getPattern().matcher(message);
-
-        if (!matcher.find()) {
+        Matcher shopRaubMatcher = SHOP_RAUB.getPattern().matcher(plainText);
+        if (shopRaubMatcher.find()) {
+            fireEvent(new MajorWidgetUpdateEvent("Shopraub", 3));
             return;
         }
 
-        final String displayName = matcher.group(1);
-        PlantType.fromDisplayName(displayName).ifPresent(plantType -> fireEvent(new PlantDestroyEvent(plantType)));
+        Matcher bombeStartMatcher = BOMBE_START.getPattern().matcher(plainText);
+        if (bombeStartMatcher.find()) {
+            fireEvent(new MajorWidgetUpdateEvent("Bombe", 10));
+            return;
+        }
+
+        Matcher juwelenRaubMatcher = JUWELEN_RAUB.getPattern().matcher(plainText);
+        if (juwelenRaubMatcher.find()) {
+            fireEvent(new MajorWidgetUpdateEvent("Juwelenraub", 3));
+            return;
+        }
+
+        Matcher hackangriffStartMatcher = HACKANGRIFF_START.getPattern().matcher(plainText);
+        if (hackangriffStartMatcher.find()) {
+            fireEvent(new MajorWidgetUpdateEvent(hackangriffStartMatcher.group(1), 8));
+            return;
+        }
+
+        if (plainText.equals("► Du nimmst am Hackangriff deiner Fraktion teil.")) {
+            fireEvent(new MajorWidgetUpdateEvent("Hackangriff", 8));
+            return;
+        }
+
+        Matcher plantHarvestMatcher = PLANT_HARVEST.getPattern().matcher(plainText);
+        if (plantHarvestMatcher.find()) {
+            final String displayName = plantHarvestMatcher.group(1);
+            PlantType.fromDisplayName(displayName).ifPresent(plantType -> fireEvent(new PlantDestroyEvent(plantType)));
+            return;
+        }
+
+        PlantType.fromSowMessage(plainText).ifPresent(plantType -> fireEvent(new PlantCreateEvent(plantType)));
     }
 
     @Subscribe

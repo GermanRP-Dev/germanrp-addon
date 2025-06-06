@@ -38,8 +38,6 @@ import static net.labymod.api.Laby.labyAPI;
 public class ChatListener {
 
     private final GermanRPAddon addon;
-    private final MajorEventWidget majorEventWidget;
-    private boolean playerStats;
     private boolean justJoined;
     private boolean faction;
     private boolean wanted;
@@ -51,49 +49,6 @@ public class ChatListener {
 
     public ChatListener(GermanRPAddon addon) {
         this.addon = addon;
-        this.majorEventWidget = this.addon.getMajorEventWidget();
-    }
-
-    @Subscribe
-    public void onChatReceiveMajorEvent(ChatReceiveEvent e) {
-        if (this.majorEventWidget.isMajorEvent()) {
-            return;
-        }
-        String m = e.chatMessage().getPlainText();
-        final Matcher ApothekenRaubMatcher = APOTHEKEN_RAUB.getPattern().matcher(m);
-        final Matcher ShopRaubMatcher = SHOP_RAUB.getPattern().matcher(m);
-        final Matcher BombeStartMatcher = BOMBE_START.getPattern().matcher(m);
-        final Matcher JuwelenRaubMatcher = JUWELEN_RAUB.getPattern().matcher(m);
-        final Matcher HackangriffStartMatcher = HACKANGRIFF_START.getPattern().matcher(m);
-
-        if (ShopRaubMatcher.find()) {
-            fireEvent(new MajorWidgetUpdateEvent("Shopraub", 3));
-            return;
-        }
-
-        if (ApothekenRaubMatcher.find()) {
-            fireEvent(new MajorWidgetUpdateEvent("Apothekenraub", 8));
-            return;
-        }
-
-        if (JuwelenRaubMatcher.find()) {
-            fireEvent(new MajorWidgetUpdateEvent("Juwelenraub", 3));
-            return;
-        }
-
-        if (BombeStartMatcher.find()) {
-            fireEvent(new MajorWidgetUpdateEvent("Bombe", 10));
-            return;
-        }
-
-        if (e.chatMessage().getPlainText().equals("► Du nimmst am Hackangriff deiner Fraktion teil.")) {
-            fireEvent(new MajorWidgetUpdateEvent("Hackangriff", 8));
-            return;
-        }
-
-        if (HackangriffStartMatcher.find()) {
-            fireEvent(new MajorWidgetUpdateEvent(HackangriffStartMatcher.group(1), 8));
-        }
     }
 
     @Subscribe
