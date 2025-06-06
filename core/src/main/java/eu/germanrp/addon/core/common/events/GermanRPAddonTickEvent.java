@@ -18,6 +18,7 @@ public class GermanRPAddonTickEvent implements Event {
     }
 
     public enum Phase {
+
         TICK,
         TICK_5,
         MINUTE,

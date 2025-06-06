@@ -33,10 +33,12 @@ public class UtilService {
         this.text = new UtilTextService();
     }
 
+    @SuppressWarnings("SameReturnValue")
     public String version() {
         return "2.5.0";
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isGermanRP() {
         if (labyAPI().minecraft().isIngame()) {
             ServerData serverData = labyAPI().serverController().getCurrentServerData();

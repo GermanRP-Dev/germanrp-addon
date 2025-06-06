@@ -8,5 +8,4 @@ import net.labymod.api.event.Event;
 public class PlantPacketReceiveEvent implements Event {
 
     private final PlantPacket plantPacket;
-
 }

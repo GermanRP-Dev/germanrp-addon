@@ -8,5 +8,4 @@ import net.labymod.api.event.Event;
 public class PlantCreateEvent implements Event {
 
     private final PlantType type;
-
 }

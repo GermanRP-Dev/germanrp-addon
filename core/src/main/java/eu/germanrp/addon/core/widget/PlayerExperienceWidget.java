@@ -6,7 +6,6 @@ import eu.germanrp.addon.core.common.events.JustJoinedEvent;
 import eu.germanrp.addon.core.common.events.LevelUPEvent;
 import lombok.Getter;
 import lombok.Setter;
-import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.gui.hud.binding.category.HudWidgetCategory;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidget;
@@ -14,14 +13,19 @@ import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidgetConfig;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextLine;
 import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.event.Subscribe;
-import net.labymod.api.util.I18n;
+
+import static net.labymod.api.Laby.fireEvent;
+import static net.labymod.api.client.component.Component.translatable;
+import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.HIDDEN;
+import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.VISIBLE;
+import static net.labymod.api.util.I18n.getTranslation;
 
 @Getter
 @Setter
 public class PlayerExperienceWidget extends TextHudWidget<TextHudWidgetConfig> {
 
-    private static final Component EVENT_KEY = Component.translatable("germanrpaddon.widget.playerExperience.playerXPKey");
-    private static final Component COUNTDOWN_KEY = Component.translatable("germanrpaddon.widget.playerExperience.xpLeftKey");
+    private static final Component EVENT_KEY = translatable("germanrpaddon.widget.playerExperience.playerXPKey");
+    private static final Component COUNTDOWN_KEY = translatable("germanrpaddon.widget.playerExperience.xpLeftKey");
     private static final String EVENT_VALUE = "germanrpaddon.widget.playerExperience.playerXPValue";
     private static final String COUNTDOWN_VALUE = "germanrpaddon.widget.playerExperience.xpLeftValue";
     private final GermanRPAddon addon;
@@ -39,27 +43,23 @@ public class PlayerExperienceWidget extends TextHudWidget<TextHudWidgetConfig> {
     @Override
     public void load(TextHudWidgetConfig config) {
         super.load(config);
-        final String i18nProgressValue = I18n.getTranslation(EVENT_VALUE, 0, 0);
-        final String i18nYieldValue = I18n.getTranslation(COUNTDOWN_VALUE, 0, "", 0);
+        final String i18nProgressValue = getTranslation(EVENT_VALUE, 0, 0);
+        final String i18nYieldValue = getTranslation(COUNTDOWN_VALUE, 0, "", 0);
 
         this.currentXPfromNeededXP = this.createLine(EVENT_KEY, i18nProgressValue);
         this.xpLeft = this.createLine(COUNTDOWN_KEY, i18nYieldValue);
     }
+
     @Subscribe
-    public void onServerJoin(JustJoinedEvent e){
-      if(e.isJustJoined()){
-          this.currentXPfromNeededXP.setState(TextLine.State.VISIBLE);
-          this.xpLeft.setState(TextLine.State.VISIBLE);
-      }else {
-          this.currentXPfromNeededXP.setState(TextLine.State.HIDDEN);
-          this.xpLeft.setState(TextLine.State.HIDDEN);
-      }
+    public void onServerJoin(JustJoinedEvent e) {
+        this.currentXPfromNeededXP.setState(e.isJustJoined() ? VISIBLE : HIDDEN);
+        this.xpLeft.setState(e.isJustJoined() ? VISIBLE : HIDDEN);
     }
 
     @Subscribe
     public void experienceUpdate(ExperienceUpdateEvent event) {
         if (this.addon.getPlayer().getPlayerXP() >= this.addon.getPlayer().getPlayerNeededXP()) {
-            Laby.fireEvent(new LevelUPEvent());
+            fireEvent(new LevelUPEvent());
         }
         this.currentXPfromNeededXP.updateAndFlush(String.format("\n%02d/%02d",
                 this.addon.getPlayer().getPlayerXP(),

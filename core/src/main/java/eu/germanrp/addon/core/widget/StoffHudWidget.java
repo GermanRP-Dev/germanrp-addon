@@ -4,9 +4,10 @@ import eu.germanrp.addon.api.models.Plant;
 import eu.germanrp.addon.api.models.PlantStoff;
 import eu.germanrp.addon.api.models.PlantType;
 import eu.germanrp.addon.core.GermanRPAddon;
-import eu.germanrp.addon.core.executor.PlaySoundExecutor;
 import net.labymod.api.client.gui.hud.binding.category.HudWidgetCategory;
 import net.labymod.api.client.gui.icon.Icon;
+
+import static eu.germanrp.addon.api.models.PlantType.STOFF;
 
 public class StoffHudWidget extends PlantHudWidget {
 
@@ -15,9 +16,8 @@ public class StoffHudWidget extends PlantHudWidget {
     public StoffHudWidget(
             HudWidgetCategory category,
             Icon icon,
-            PlaySoundExecutor playSoundExecutor,
             GermanRPAddon addon) {
-        super("stoff", category, icon, playSoundExecutor, addon);
+        super("stoff", category, icon, addon);
     }
 
     @Override
@@ -27,6 +27,6 @@ public class StoffHudWidget extends PlantHudWidget {
 
     @Override
     public PlantType getPlantType() {
-        return PlantType.STOFF;
+        return STOFF;
     }
 }

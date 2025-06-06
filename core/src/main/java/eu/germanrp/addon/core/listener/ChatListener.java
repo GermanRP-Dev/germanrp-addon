@@ -2,10 +2,7 @@ package eu.germanrp.addon.core.listener;
 
 import eu.germanrp.addon.api.models.FactionName;
 import eu.germanrp.addon.core.GermanRPAddon;
-import eu.germanrp.addon.core.common.AddonPlayer;
 import eu.germanrp.addon.core.common.events.JustJoinedEvent;
-import eu.germanrp.addon.core.common.events.MajorWidgetUpdateEvent;
-import eu.germanrp.addon.core.widget.MajorEventWidget;
 import lombok.Setter;
 import net.labymod.api.Laby;
 import net.labymod.api.event.Subscribe;
@@ -14,8 +11,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Matcher;
 
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.APOTHEKEN_RAUB;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.BOMBE_START;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.BOUNTY_ADD;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.BOUNTY_MEMBER_WANTED_LIST_ENTRY;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.BOUNTY_REMOVE;
@@ -23,24 +18,16 @@ import static eu.germanrp.addon.core.common.GlobalRegexRegistry.DARK_LIST_ADD;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.DARK_LIST_ENTRY;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.DARK_LIST_REMOVE;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.FRAKTION_NAME_STATS;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.HACKANGRIFF_START;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.JUWELEN_RAUB;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.SHOP_RAUB;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.TITLE_FACTION_MEMBER_LIST;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.TITLE_WANTED_LIST;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.WANTED_ADD;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.WANTED_REMOVE;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.XP_ADD_CHAT;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.XP_READER_STATS;
-import static net.labymod.api.Laby.fireEvent;
-import static net.labymod.api.Laby.labyAPI;
 
 public class ChatListener {
 
     private final GermanRPAddon addon;
-    private final MajorEventWidget majorEventWidget;
-    private final AddonPlayer player;
-    private boolean playerStats;
     private boolean justJoined;
     private boolean faction;
     private boolean wanted;
@@ -52,61 +39,14 @@ public class ChatListener {
 
     public ChatListener(GermanRPAddon addon) {
         this.addon = addon;
-        this.majorEventWidget = this.addon.getMajorEventWidget();
-        this.player = this.addon.getPlayer();
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
-    public void onChatReceiveMajorEvent(ChatReceiveEvent e) {
-        if (this.majorEventWidget.isMajorEvent()) {
-            return;
-        }
-        String m = e.chatMessage().getPlainText();
-        final Matcher ApothekenRaubMatcher = APOTHEKEN_RAUB.getPattern().matcher(m);
-        final Matcher ShopRaubMatcher = SHOP_RAUB.getPattern().matcher(m);
-        final Matcher BombeStartMatcher = BOMBE_START.getPattern().matcher(m);
-        final Matcher JuwelenRaubMatcher = JUWELEN_RAUB.getPattern().matcher(m);
-        final Matcher HackangriffStartMatcher = HACKANGRIFF_START.getPattern().matcher(m);
-
-        if (ShopRaubMatcher.find()) {
-            fireEvent(new MajorWidgetUpdateEvent("Shopraub", 3));
-            return;
-        }
-
-        if (ApothekenRaubMatcher.find()) {
-            fireEvent(new MajorWidgetUpdateEvent("Apothekenraub", 8));
-            return;
-        }
-
-        if (JuwelenRaubMatcher.find()) {
-            fireEvent(new MajorWidgetUpdateEvent("Juwelenraub", 3));
-            return;
-        }
-
-        if (BombeStartMatcher.find()) {
-            fireEvent(new MajorWidgetUpdateEvent("Bombe", 10));
-            return;
-        }
-
-        if (e.chatMessage().getPlainText().equals("► Du nimmst am Hackangriff deiner Fraktion teil.")) {
-            fireEvent(new MajorWidgetUpdateEvent("Hackangriff", 8));
-            return;
-        }
-
-        if (HackangriffStartMatcher.find()) {
-            fireEvent(new MajorWidgetUpdateEvent(HackangriffStartMatcher.group(1), 8));
-        }
-    }
-
-    @Subscribe
-    @SuppressWarnings("unused")
     public void onGRJoin(JustJoinedEvent event) {
         this.justJoined = true;
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onChatReceiveJustJoined(ChatReceiveEvent event) {
         if (!this.justJoined) {
             return;
@@ -117,30 +57,30 @@ public class ChatListener {
             event.setCancelled(true);
             Matcher matcher = XP_READER_STATS.getPattern().matcher(message);
             if (matcher.find()) {
-                this.player.setPlayerNeededXP(Integer.parseInt(matcher.group(2)));
-                this.player.setPlayerXP(Integer.parseInt(matcher.group(1)));
+                this.addon.getPlayer().setPlayerNeededXP(Integer.parseInt(matcher.group(2)));
+                this.addon.getPlayer().setPlayerXP(Integer.parseInt(matcher.group(1)));
             }
             matcher = FRAKTION_NAME_STATS.getPattern().matcher(message);
             if (matcher.find()) {
                 switch (matcher.group(1)) {
                     case "Keine (Zivilist)" -> {
-                        if(this.wasAFK){
+                        if (this.wasAFK) {
                             Laby.references().chatExecutor().chat("/afk");
                         }
-                        this.player.setPlayerFactionName(FactionName.NONE);
+                        this.addon.getPlayer().setPlayerFactionName(FactionName.NONE);
                     }
-                    case "Rousseau Familie" -> this.player.setPlayerFactionName(FactionName.ROUSSEAU);
-                    case "Polizei" -> this.player.setPlayerFactionName(FactionName.POLIZEI);
-                    case "Camorra" -> this.player.setPlayerFactionName(FactionName.CAMORRA);
-                    case "The Establishment" -> this.player.setPlayerFactionName(FactionName.ESTABLISHMENT);
-                    case "MT-Fashion" -> this.player.setPlayerFactionName(FactionName.MTFASHION);
-                    case "Presseagentur" -> this.player.setPlayerFactionName(FactionName.PRESSE);
-                    case "Sinaloa Kartell" -> this.player.setPlayerFactionName(FactionName.SINALOAKARTELL);
-                    case "Medellín Kartell" -> this.player.setPlayerFactionName(FactionName.KARTELL);
+                    case "Rousseau Familie" -> this.addon.getPlayer().setPlayerFactionName(FactionName.ROUSSEAU);
+                    case "Polizei" -> this.addon.getPlayer().setPlayerFactionName(FactionName.POLIZEI);
+                    case "Camorra" -> this.addon.getPlayer().setPlayerFactionName(FactionName.CAMORRA);
+                    case "The Establishment" -> this.addon.getPlayer().setPlayerFactionName(FactionName.ESTABLISHMENT);
+                    case "MT-Fashion" -> this.addon.getPlayer().setPlayerFactionName(FactionName.MTFASHION);
+                    case "Presseagentur" -> this.addon.getPlayer().setPlayerFactionName(FactionName.PRESSE);
+                    case "Sinaloa Kartell" -> this.addon.getPlayer().setPlayerFactionName(FactionName.SINALOAKARTELL);
+                    case "Medellín Kartell" -> this.addon.getPlayer().setPlayerFactionName(FactionName.KARTELL);
                     default -> {
-                        this.player.setPlayerFactionName(FactionName.NONE);
-                        this.player.sendErrorMessage("Deine Fraktion wurde nicht gefunden... Bitte hier reporten:");
-                        this.player.sendErrorMessage("""
+                        this.addon.getPlayer().setPlayerFactionName(FactionName.NONE);
+                        this.addon.getPlayer().sendErrorMessage("Deine Fraktion wurde nicht gefunden... Bitte hier reporten:");
+                        this.addon.getPlayer().sendErrorMessage("""
                                 https://germanrp.eu/forum/index.php?thread/25432-germanrp-addon-labymod-4-addon/""");
                     }
                 }
@@ -166,12 +106,12 @@ public class ChatListener {
                 }
             }
         }
-        FactionName factionName = this.player.getPlayerFactionName();
+        FactionName factionName = this.addon.getPlayer().getPlayerFactionName();
         if (factionName == null) {
             return;
         }
-        if(factionName.equals(FactionName.NONE)) {
-            if (!wasAFK){
+        if (factionName.equals(FactionName.NONE)) {
+            if (!wasAFK) {
                 this.justJoined = false;
                 return;
             }
@@ -217,7 +157,7 @@ public class ChatListener {
                     if (!matcher.find()) {
                         this.bounty = false;
                         if (this.wasAFK) {
-                            Laby.references().chatExecutor().chat("/afk");
+                            this.addon.getPlayer().sendServerMessage("/afk");
                             this.wasAFK = false;
                             return;
                         }
@@ -225,7 +165,6 @@ public class ChatListener {
                         return;
                     }
                     this.addon.getNameTagService().getBounties().add(matcher.group(1).replace("[GR]", ""));
-                    return;
                 }
             }
 
@@ -241,8 +180,7 @@ public class ChatListener {
                     if (!matcher.find()) {
                         this.wanted = false;
                         if (this.wasAFK) {
-
-                            Laby.references().chatExecutor().chat("/afk");
+                            this.addon.getPlayer().sendServerMessage("/afk");
                             this.wasAFK = false;
                             return;
                         }
@@ -250,17 +188,15 @@ public class ChatListener {
                         return;
                     }
                     this.addon.getNameTagService().getWantedPlayers().add(matcher.group(1).replace("[GR]", ""));
-                    return;
                 }
             }
         }
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onChatReceiveListsChange(ChatReceiveEvent event) {
 
-        FactionName factionName = this.player.getPlayerFactionName();
+        FactionName factionName = this.addon.getPlayer().getPlayerFactionName();
         if (factionName == null) {
             return;
         }
@@ -308,7 +244,6 @@ public class ChatListener {
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onChatReceiveUpdateStats(@NotNull ChatReceiveEvent event) {
         @NotNull String message = event.chatMessage().getPlainText();
         Matcher matcher = XP_ADD_CHAT.getPattern().matcher(message);
@@ -320,7 +255,7 @@ public class ChatListener {
             } else if (x.contains("3")) {
                 i = 3;
             }
-            player.addPlayerXP(Integer.parseInt(matcher.group(1)) * i);
+            this.addon.getPlayer().addPlayerXP(Integer.parseInt(matcher.group(1)) * i);
         }
     }
 }

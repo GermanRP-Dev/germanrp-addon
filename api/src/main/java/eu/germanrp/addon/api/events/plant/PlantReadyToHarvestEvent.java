@@ -8,5 +8,4 @@ import net.labymod.api.event.Event;
 public class PlantReadyToHarvestEvent implements Event {
 
     private final Plant plant;
-
 }
