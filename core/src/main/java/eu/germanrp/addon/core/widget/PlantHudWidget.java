@@ -120,7 +120,7 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
             return;
         }
 
-        if (plant == null) {
+        if (this.plant == null) {
             return;
         }
 

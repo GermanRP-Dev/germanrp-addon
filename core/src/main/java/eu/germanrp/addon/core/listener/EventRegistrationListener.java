@@ -52,8 +52,6 @@ public class EventRegistrationListener {
     public void onChatReceive(ChatReceiveEvent event) {
         String plainText = event.chatMessage().getPlainText();
 
-        this.addon.logger().info("plain: " + plainText);
-
         Matcher graffitiAddedMatcher = GRAFFITI_ADD.getPattern().matcher(plainText);
         if (graffitiAddedMatcher.matches()) {
             String graffitiName = graffitiAddedMatcher.group(2);

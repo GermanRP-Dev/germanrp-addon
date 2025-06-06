@@ -76,7 +76,7 @@ public class GraffitiHudWidget extends TextHudWidget<GraffitiHudWidgetConfig> {
             GRAFFITI_REMAINING_TIMES.put(graffiti, remainingTime);
 
             textLine.setState(VISIBLE);
-            textLine.updateAndFlush(addon.getUtilService().text().parseTimer(remainingTime.toSeconds()));
+            textLine.updateAndFlush(this.addon.getUtilService().text().parseTimer(remainingTime.toSeconds()));
         });
     }
 

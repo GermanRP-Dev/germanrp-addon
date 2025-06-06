@@ -35,11 +35,7 @@ public class HydrationWidget extends TextHudWidget<TextHudWidgetConfig> {
     }
     @Subscribe
     public void onServerJoin(JustJoinedEvent e){
-        if(e.isJustJoined()){
-            this.textLine.setState(TextLine.State.VISIBLE);
-        }else {
-            this.textLine.setState(TextLine.State.HIDDEN);
-        }
+        this.textLine.setState(e.isJustJoined() ? VISIBLE : HIDDEN);
     }
 
     @Subscribe

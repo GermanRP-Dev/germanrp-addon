@@ -44,10 +44,10 @@ public class MajorEventWidget extends TextHudWidget<TextHudWidgetConfig> {
     @Subscribe
     public void majorWidgetUpdate(MajorWidgetUpdateEvent event) {
         this.majorEvent = true;
-        eventNameLine.updateAndFlush(event.getMajorEventName());
-        countdownTarget = ZonedDateTime.now().plusMinutes(event.getCountDownTime());
-        eventNameLine.setState(TextLine.State.VISIBLE);
-        countDownLine.setState(TextLine.State.VISIBLE);
+        this.eventNameLine.updateAndFlush(event.getMajorEventName());
+        this.countdownTarget = ZonedDateTime.now().plusMinutes(event.getCountDownTime());
+        this.eventNameLine.setState(VISIBLE);
+        this.countDownLine.setState(VISIBLE);
     }
 
     @Override
@@ -75,11 +75,11 @@ public class MajorEventWidget extends TextHudWidget<TextHudWidgetConfig> {
             return;
         }
         ZonedDateTime now = ZonedDateTime.now();
-        if (countdownTarget.isBefore(now)) {
+        if (this.countdownTarget.isBefore(now)) {
             reset();
             return;
         }
-        Duration duration = Duration.between(now, countdownTarget);
+        Duration duration = Duration.between(now, this.countdownTarget);
         this.countDownLine.updateAndFlush(String.format("%02d:%02d", duration.toMinutesPart(), duration.toSecondsPart()));
     }
 }
