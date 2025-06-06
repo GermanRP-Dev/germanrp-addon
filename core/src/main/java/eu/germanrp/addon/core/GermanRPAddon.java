@@ -3,7 +3,6 @@ package eu.germanrp.addon.core;
 import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
 import eu.germanrp.addon.core.common.AddonPlayer;
 import eu.germanrp.addon.core.common.DefaultAddonPlayer;
-import eu.germanrp.addon.core.executor.HitResultExecutor;
 import eu.germanrp.addon.core.executor.PlaySoundExecutor;
 import eu.germanrp.addon.core.generated.DefaultReferenceStorage;
 import eu.germanrp.addon.core.listener.*;
@@ -37,7 +36,6 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
     private AddonPlayer player;
 
-    private HitResultExecutor hitResultExecutor;
     private PlaySoundExecutor playSoundExecutor;
 
     private ServerJoinListener serverJoinListener;
@@ -89,7 +87,6 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     }
 
     private void registerVersionDependantExecutors() {
-        hitResultExecutor = ((DefaultReferenceStorage) this.referenceStorageAccessor()).hitResultExecutor();
         playSoundExecutor = ((DefaultReferenceStorage) this.referenceStorageAccessor()).playSoundExecutor();
     }
 
