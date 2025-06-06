@@ -75,6 +75,6 @@ public class MajorEventWidget extends TextHudWidget<TextHudWidgetConfig> {
             return;
         }
         Duration duration = Duration.between(now, countdownTarget);
-        this.countDownLine.updateAndFlush(String.format("\n%02d:%02d", duration.toMinutesPart(), duration.toSecondsPart()));
+        this.countDownLine.updateAndFlush(String.format("%02d:%02d", duration.toMinutesPart(), duration.toSecondsPart()));
     }
 }
