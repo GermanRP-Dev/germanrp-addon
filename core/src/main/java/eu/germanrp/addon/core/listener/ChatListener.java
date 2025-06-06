@@ -57,7 +57,6 @@ public class ChatListener {
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onChatReceiveMajorEvent(ChatReceiveEvent e) {
         if (this.majorEventWidget.isMajorEvent()) {
             return;
@@ -100,13 +99,11 @@ public class ChatListener {
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onGRJoin(JustJoinedEvent event) {
         this.justJoined = true;
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onChatReceiveJustJoined(ChatReceiveEvent event) {
         if (!this.justJoined) {
             return;
@@ -257,7 +254,6 @@ public class ChatListener {
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onChatReceiveListsChange(ChatReceiveEvent event) {
 
         FactionName factionName = this.player.getPlayerFactionName();
@@ -308,7 +304,6 @@ public class ChatListener {
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onChatReceiveUpdateStats(@NotNull ChatReceiveEvent event) {
         @NotNull String message = event.chatMessage().getPlainText();
         Matcher matcher = XP_ADD_CHAT.getPattern().matcher(message);

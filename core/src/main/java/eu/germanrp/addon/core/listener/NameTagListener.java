@@ -28,7 +28,6 @@ public class NameTagListener {
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onNameTag(PlayerNameTagRenderEvent event) {
         if (!this.addon.getUtilService().isGermanRP()) {
             return;

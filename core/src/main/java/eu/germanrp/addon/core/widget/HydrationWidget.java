@@ -40,13 +40,11 @@ public class HydrationWidget extends TextHudWidget<TextHudWidgetConfig> {
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onHydrationUpdate(HydrationUpdateEvent event) {
         this.textLine.updateAndFlush(format(event.getAmount()));
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onChatMessage(ChatReceiveEvent event) {
         final String plainText = event.chatMessage().getPlainText();
 

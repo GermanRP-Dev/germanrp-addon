@@ -49,7 +49,6 @@ public class EventRegistrationListener {
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onChatReceive(ChatReceiveEvent event) {
         String plainText = event.chatMessage().getPlainText();
 
@@ -99,7 +98,6 @@ public class EventRegistrationListener {
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onChatReceiveEvent(final ChatReceiveEvent event) {
         final String message = event.chatMessage().getPlainText();
 
@@ -120,7 +118,6 @@ public class EventRegistrationListener {
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onNetworkPayloadEvent(final NetworkPayloadEvent event) {
         if (!this.addon.getUtilService().isLegacyAddonPacket(event.identifier())) {
             return;
@@ -142,7 +139,6 @@ public class EventRegistrationListener {
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onLegacyGermanRPUtilsPayloadEvent(final LegacyGermanRPUtilsPayloadEvent event) {
         switch (event.getHeader()) {
             case "GRAddon-Plant" -> {
@@ -193,13 +189,11 @@ public class EventRegistrationListener {
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onServerDisconnectEvent(final ServerDisconnectEvent event) {
         Arrays.stream(PlantType.values()).forEach(plantType -> fireEvent(new PlantDestroyEvent(plantType)));
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onGameTick(GameTickEvent event) {
         if (event.phase().equals(POST)) {
             this.currentTick++;

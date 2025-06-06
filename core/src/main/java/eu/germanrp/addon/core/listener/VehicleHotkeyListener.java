@@ -27,7 +27,6 @@ public class VehicleHotkeyListener {
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onChatMessageReceiveEvent(final ChatReceiveEvent event) {
         final String plainText = event.chatMessage().getPlainText();
 
@@ -41,7 +40,6 @@ public class VehicleHotkeyListener {
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onKeyPressed(final KeyEvent event) {
         if (event.state() != KeyEvent.State.PRESS) {
             return;

@@ -85,7 +85,6 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onGermanRPAddonTickEvent(final GermanRPAddonTickEvent event) {
         if (event.isPhase(GermanRPAddonTickEvent.Phase.SECOND)) {
             this.hudNeedsUpdate = true;
@@ -97,7 +96,6 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
     public abstract PlantType getPlantType();
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onPlantCreateEvent(final PlantCreateEvent event) {
         if (!event.getType().equals(getPlantType())) {
             return;
@@ -115,7 +113,6 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onPlantPacketReceiveEvent(final PlantPacketReceiveEvent event) {
         final PlantPacket packet = event.getPlantPacket();
 
@@ -132,7 +129,6 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onPlantDestroyEvent(final PlantDestroyEvent event) {
         if (!event.getType().equals(getPlantType())) {
             return;
@@ -144,7 +140,6 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onPlantReadyToHarvestEvent(final PlantReadyToHarvestEvent event) {
         if (!event.getPlant().getType().equals(getPlantType())) {
             return;
@@ -159,7 +154,6 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onPlantNeedsFertilizerEvent(final PlantNeedsFertilizerEvent event) {
         if (!event.getPlant().getType().equals(getPlantType())) {
             return;
@@ -175,7 +169,6 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onPlantNeedsWaterEvent(final PlantNeedsWaterEvent event) {
         if (!event.getPlant().getType().equals(getPlantType())) {
             return;

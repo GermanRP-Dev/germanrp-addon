@@ -48,7 +48,6 @@ public class GraffitiHudWidget extends TextHudWidget<GraffitiHudWidgetConfig> {
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onGraffitiUpdate(@NotNull GraffitiUpdateEvent event) {
         Graffiti graffiti = event.getGraffiti();
         Duration remainingTime = event.getRemainingTime();
@@ -58,7 +57,6 @@ public class GraffitiHudWidget extends TextHudWidget<GraffitiHudWidgetConfig> {
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
     public void onGermanRPAddonTick(@NotNull GermanRPAddonTickEvent event) {
         if (event.isPhase(SECOND)) {
             updateTextLines();
