@@ -13,8 +13,8 @@ import eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent;
 import eu.germanrp.addon.core.common.events.GraffitiUpdateEvent;
 import eu.germanrp.addon.core.common.events.LegacyGermanRPUtilsPayloadEvent;
 import eu.germanrp.addon.core.common.events.PayDayPacketRecieveEvent;
-import lombok.val;
 import net.labymod.api.Laby;
+import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import net.labymod.api.event.client.lifecycle.GameTickEvent;
@@ -30,16 +30,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.GRAFFITI_ADD;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.GRAFFITI_TIME;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.PLANT_HARVEST;
-import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.MINUTE;
-import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.SECOND;
-import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.SECOND_3;
-import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.SECOND_30;
-import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.SECOND_5;
-import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.TICK;
-import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.TICK_5;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.*;
+import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.*;
 import static java.time.Duration.ofSeconds;
 import static java.util.Optional.ofNullable;
 import static net.labymod.api.Laby.fireEvent;
@@ -76,23 +68,23 @@ public class EventRegistrationListener {
 
         Matcher graffitiTimeMatcher = GRAFFITI_TIME.getPattern().matcher(plainText);
         if (graffitiTimeMatcher.matches()) {
-            long minutes = ofNullable(graffitiTimeMatcher.group("minutes")).map(Long::parseLong).orElse(0L);
-            long seconds = ofNullable(graffitiTimeMatcher.group("seconds")).map(Long::parseLong).orElse(0L);
+            final long minutes = ofNullable(graffitiTimeMatcher.group("minutes")).map(Long::parseLong).orElse(0L);
+            final long seconds = ofNullable(graffitiTimeMatcher.group("seconds")).map(Long::parseLong).orElse(0L);
 
-            val clientPlayer = this.addon.labyAPI().minecraft().getClientPlayer();
+            final ClientPlayer clientPlayer = this.addon.labyAPI().minecraft().getClientPlayer();
 
             if (clientPlayer == null) {
                 return;
             }
 
-            val nearestGraffitiCandidate =
+            final Optional<Graffiti> nearestGraffitiCandidate =
                     addon.getNavigationService().getNearest(clientPlayer.position(), List.of(Graffiti.values()));
 
             if (nearestGraffitiCandidate.isEmpty()) {
                 return;
             }
 
-            Graffiti nearestGraffiti = nearestGraffitiCandidate.get();
+            final Graffiti nearestGraffiti = nearestGraffitiCandidate.get();
             this.addon.logger().info(
                     "[{}] Graffiti {} remaining time: {}:{}",
                     getClass(),
@@ -101,7 +93,7 @@ public class EventRegistrationListener {
                     graffitiTimeMatcher.group("seconds")
             );
 
-            Duration remainingTime = ofSeconds(minutes * 60 + seconds);
+            final Duration remainingTime = ofSeconds(minutes * 60 + seconds);
             fireEvent(new GraffitiUpdateEvent(nearestGraffiti, remainingTime));
         }
     }
@@ -134,15 +126,15 @@ public class EventRegistrationListener {
             return;
         }
 
-        val payloadReader = new PayloadReader(event.getPayload());
-        val header = payloadReader.readString();
+        final PayloadReader payloadReader = new PayloadReader(event.getPayload());
+        final String header = payloadReader.readString();
 
         if (!header.startsWith("GRAddon-")) {
             return;
         }
 
-        val payload = payloadReader.readString();
-        val jsonObject = GsonUtil.DEFAULT_GSON.fromJson(payload, JsonObject.class);
+        final String payload = payloadReader.readString();
+        final JsonObject jsonObject = GsonUtil.DEFAULT_GSON.fromJson(payload, JsonObject.class);
 
         this.addon.logger().info("Legacy packet received: {} - {}", header, jsonObject);
 
@@ -154,16 +146,16 @@ public class EventRegistrationListener {
     public void onLegacyGermanRPUtilsPayloadEvent(final LegacyGermanRPUtilsPayloadEvent event) {
         switch (event.getHeader()) {
             case "GRAddon-Plant" -> {
-                val payloadContent = event.getPayloadContent();
-                val type = PlantType.fromPaketType(payloadContent.get("type").getAsString());
+                final JsonObject payloadContent = event.getPayloadContent();
+                final Optional<PlantType> type = PlantType.fromPaketType(payloadContent.get("type").getAsString());
 
                 if (type.isEmpty()) {
                     return;
                 }
 
-                val time = payloadContent.getAsJsonObject("time");
+                final JsonObject time = payloadContent.getAsJsonObject("time");
 
-                val plantPaket = new PlantPacket(
+                final PlantPacket plantPaket = new PlantPacket(
                         payloadContent.get("active").getAsBoolean(),
                         type.get(),
                         payloadContent.get("value").getAsInt(),
@@ -182,12 +174,12 @@ public class EventRegistrationListener {
                 fireEvent(new PlantPacketReceiveEvent(plantPaket));
             }
             case "GRAddon-Hydration" -> {
-                val payloadContent = event.getPayloadContent();
-                val hydration = payloadContent.get("value").getAsDouble();
+                final JsonObject payloadContent = event.getPayloadContent();
+                final double hydration = payloadContent.get("value").getAsDouble();
                 fireEvent(new HydrationUpdateEvent(hydration));
             }
             case "GRAddon-PayDay" -> {
-                val payloadContent = event.getPayloadContent();
+                final JsonObject payloadContent = event.getPayloadContent();
                 Laby.fireEvent(new PayDayPacketRecieveEvent(
                         payloadContent.get("time").getAsInt(),
                         payloadContent.get("salary").getAsJsonObject().get("faction").getAsFloat(),

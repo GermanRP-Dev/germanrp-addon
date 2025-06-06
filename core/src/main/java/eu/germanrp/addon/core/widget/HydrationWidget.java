@@ -3,7 +3,6 @@ package eu.germanrp.addon.core.widget;
 import eu.germanrp.addon.api.events.network.HydrationUpdateEvent;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.JustJoinedEvent;
-import lombok.val;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.gui.hud.binding.category.HudWidgetCategory;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidget;
@@ -49,7 +48,7 @@ public class HydrationWidget extends TextHudWidget<TextHudWidgetConfig> {
     @Subscribe
     @SuppressWarnings("unused")
     public void onChatMessage(ChatReceiveEvent event) {
-        val plainText = event.chatMessage().getPlainText();
+        final String plainText = event.chatMessage().getPlainText();
 
         // Ignore unknown messages
         if (!plainText.equals("► Du bist durstig.") && !plainText.equals("► Du bist sehr durstig.") && !plainText.equals(

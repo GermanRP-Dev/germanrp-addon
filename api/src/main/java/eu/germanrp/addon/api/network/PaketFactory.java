@@ -2,7 +2,6 @@ package eu.germanrp.addon.api.network;
 
 import com.google.gson.JsonObject;
 import eu.germanrp.addon.api.models.PlantType;
-import lombok.val;
 import net.labymod.api.util.GsonUtil;
 import net.labymod.serverapi.api.payload.io.PayloadReader;
 
@@ -21,19 +20,19 @@ public final class PaketFactory {
         return switch (header) {
 
             case "GRAddon-Plant" -> {
-                val payloadContent = payloadReader.readString();
+                final String payloadContent = payloadReader.readString();
 
-                val jsonObject = GsonUtil.DEFAULT_GSON.fromJson(payloadContent, JsonObject.class);
+                final JsonObject jsonObject = GsonUtil.DEFAULT_GSON.fromJson(payloadContent, JsonObject.class);
 
-                val type = PlantType.fromPaketType(jsonObject.get("type").getAsString());
+                final Optional<PlantType> type = PlantType.fromPaketType(jsonObject.get("type").getAsString());
 
                 if (type.isEmpty()) {
                     yield Optional.empty();
                 }
 
-                val time = jsonObject.getAsJsonObject("time");
+                final JsonObject time = jsonObject.getAsJsonObject("time");
 
-                val plantPaket = new PlantPacket(
+                final PlantPacket plantPaket = new PlantPacket(
                         jsonObject.get("active").getAsBoolean(),
                         type.get(),
                         jsonObject.get("value").getAsInt(),
