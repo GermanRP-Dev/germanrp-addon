@@ -39,8 +39,4 @@ public class VehicleHotkeyConfig extends Config {
     @KeybindWidget.KeyBindSetting
     private final ConfigProperty<Key> toggleEmergencySignalSound = new ConfigProperty<>(Key.NONE);
 
-    @Override
-    public int getConfigVersion() {
-        return 2;
-    }
 }
