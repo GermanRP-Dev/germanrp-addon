@@ -1,20 +1,11 @@
 package eu.germanrp.addon.core.widget;
 
-import eu.germanrp.addon.api.events.plant.PlantCreateEvent;
-import eu.germanrp.addon.api.events.plant.PlantDestroyEvent;
-import eu.germanrp.addon.api.events.plant.PlantNeedsFertilizerEvent;
-import eu.germanrp.addon.api.events.plant.PlantNeedsWaterEvent;
-import eu.germanrp.addon.api.events.plant.PlantPacketReceiveEvent;
-import eu.germanrp.addon.api.events.plant.PlantReadyToHarvestEvent;
-import eu.germanrp.addon.api.models.Plant;
-import eu.germanrp.addon.api.models.PlantHeilkraut;
-import eu.germanrp.addon.api.models.PlantRose;
-import eu.germanrp.addon.api.models.PlantStoff;
-import eu.germanrp.addon.api.models.PlantType;
+import eu.germanrp.addon.api.events.plant.*;
+import eu.germanrp.addon.api.models.*;
+import eu.germanrp.addon.api.network.PlantPacket;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent;
 import eu.germanrp.addon.core.executor.PlaySoundExecutor;
-import lombok.val;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.TextColor;
 import net.labymod.api.client.gui.hud.binding.category.HudWidgetCategory;
@@ -126,7 +117,7 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
     @Subscribe
     @SuppressWarnings("unused")
     public void onPlantPacketReceiveEvent(final PlantPacketReceiveEvent event) {
-        val packet = event.getPlantPacket();
+        final PlantPacket packet = event.getPlantPacket();
 
         if (event.getPlantPacket().getType() != getPlantType()) {
             return;
