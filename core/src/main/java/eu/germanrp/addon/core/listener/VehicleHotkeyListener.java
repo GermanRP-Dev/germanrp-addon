@@ -9,6 +9,7 @@ import net.labymod.api.configuration.loader.property.ConfigProperty;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import net.labymod.api.event.client.input.KeyEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +19,10 @@ public class VehicleHotkeyListener {
 
     private final GermanRPAddon addon;
     private final VehicleService vehicleService;
-    private final List<Map.Entry<ConfigProperty<Key>, Runnable>> keyActionList;
 
     public VehicleHotkeyListener(GermanRPAddon addon) {
         this.addon = addon;
         this.vehicleService = addon.getVehicleService();
-        this.keyActionList = initializeKeyActionList();
     }
 
     @Subscribe
@@ -52,23 +51,25 @@ public class VehicleHotkeyListener {
         pressedKey(event.key());
     }
 
-    private void pressedKey(final Key key) {
-        keyActionList.stream()
-                .filter(entry -> entry.getKey().get().equals(key))
-                .forEach(entry -> entry.getValue().run());
-    }
+    private void pressedKey(final @NotNull Key key) {
+        VehicleHotkeyConfig config = addon.configuration().vehicleHotkeyConfig();
 
-    private List<Map.Entry<ConfigProperty<Key>, Runnable>> initializeKeyActionList() {
-        final VehicleHotkeyConfig config = addon.configuration().vehicleHotkeyConfig();
-        final List<Map.Entry<ConfigProperty<Key>, Runnable>> actionList = new ArrayList<>();
-        actionList.add(Map.entry(config.toggleEngine(), vehicleService::toggleEngine));
-        actionList.add(Map.entry(config.toggleTurnSignalLeft(), vehicleService::toggleSignalLeft));
-        actionList.add(Map.entry(config.toggleTurnSignalRight(), vehicleService::toggleSignalRight));
-        actionList.add(Map.entry(config.toggleHazardWarnSignal(), vehicleService::toggleHazardWarnSignal));
-        actionList.add(Map.entry(config.toggleEmergencySignal(), vehicleService::toggleEmergencySignal));
-        actionList.add(Map.entry(config.toggleEmergencySignalSound(), vehicleService::toggleEmergencySignalSound));
-        actionList.add(Map.entry(config.increaseCruiseControlSpeed(), vehicleService::increaseCruiseControlSpeed));
-        actionList.add(Map.entry(config.decreaseCruiseControlSpeed(), vehicleService::decreaseCruiseControlSpeed));
-        return actionList;
+        if (key.equals(config.toggleEngine().get())) {
+            this.addon.getVehicleService().toggleEngine();
+        } else if (key.equals(config.toggleTurnSignalLeft().get())) {
+            this.addon.getVehicleService().toggleSignalLeft();
+        } else if (key.equals(config.toggleTurnSignalRight().get())) {
+            this.addon.getVehicleService().toggleSignalRight();
+        } else if (key.equals(config.toggleHazardWarnSignal().get())) {
+            this.addon.getVehicleService().toggleHazardWarnSignal();
+        } else if (key.equals(config.toggleEmergencySignal().get())) {
+            this.addon.getVehicleService().toggleEmergencySignal();
+        } else if (key.equals(config.toggleEmergencySignalSound().get())) {
+            this.addon.getVehicleService().toggleEmergencySignalSound();
+        } else if (key.equals(config.increaseCruiseControlSpeed().get())) {
+            this.addon.getVehicleService().increaseCruiseControlSpeed();
+        } else if (key.equals(config.decreaseCruiseControlSpeed().get())) {
+            this.addon.getVehicleService().decreaseCruiseControlSpeed();
+        }
     }
 }
