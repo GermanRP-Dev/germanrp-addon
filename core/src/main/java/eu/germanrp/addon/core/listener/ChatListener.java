@@ -39,7 +39,6 @@ public class ChatListener {
 
     private final GermanRPAddon addon;
     private final MajorEventWidget majorEventWidget;
-    private final AddonPlayer player;
     private boolean playerStats;
     private boolean justJoined;
     private boolean faction;
@@ -53,7 +52,6 @@ public class ChatListener {
     public ChatListener(GermanRPAddon addon) {
         this.addon = addon;
         this.majorEventWidget = this.addon.getMajorEventWidget();
-        this.player = this.addon.getPlayer();
     }
 
     @Subscribe
@@ -114,8 +112,8 @@ public class ChatListener {
             event.setCancelled(true);
             Matcher matcher = XP_READER_STATS.getPattern().matcher(message);
             if (matcher.find()) {
-                this.player.setPlayerNeededXP(Integer.parseInt(matcher.group(2)));
-                this.player.setPlayerXP(Integer.parseInt(matcher.group(1)));
+                this.addon.getPlayer().setPlayerNeededXP(Integer.parseInt(matcher.group(2)));
+                this.addon.getPlayer().setPlayerXP(Integer.parseInt(matcher.group(1)));
             }
             matcher = FRAKTION_NAME_STATS.getPattern().matcher(message);
             if (matcher.find()) {
@@ -124,20 +122,20 @@ public class ChatListener {
                         if(this.wasAFK){
                             Laby.references().chatExecutor().chat("/afk");
                         }
-                        this.player.setPlayerFactionName(FactionName.NONE);
+                        this.addon.getPlayer().setPlayerFactionName(FactionName.NONE);
                     }
-                    case "Rousseau Familie" -> this.player.setPlayerFactionName(FactionName.ROUSSEAU);
-                    case "Polizei" -> this.player.setPlayerFactionName(FactionName.POLIZEI);
-                    case "Camorra" -> this.player.setPlayerFactionName(FactionName.CAMORRA);
-                    case "The Establishment" -> this.player.setPlayerFactionName(FactionName.ESTABLISHMENT);
-                    case "MT-Fashion" -> this.player.setPlayerFactionName(FactionName.MTFASHION);
-                    case "Presseagentur" -> this.player.setPlayerFactionName(FactionName.PRESSE);
-                    case "Sinaloa Kartell" -> this.player.setPlayerFactionName(FactionName.SINALOAKARTELL);
-                    case "Medellín Kartell" -> this.player.setPlayerFactionName(FactionName.KARTELL);
+                    case "Rousseau Familie" -> this.addon.getPlayer().setPlayerFactionName(FactionName.ROUSSEAU);
+                    case "Polizei" -> this.addon.getPlayer().setPlayerFactionName(FactionName.POLIZEI);
+                    case "Camorra" -> this.addon.getPlayer().setPlayerFactionName(FactionName.CAMORRA);
+                    case "The Establishment" -> this.addon.getPlayer().setPlayerFactionName(FactionName.ESTABLISHMENT);
+                    case "MT-Fashion" -> this.addon.getPlayer().setPlayerFactionName(FactionName.MTFASHION);
+                    case "Presseagentur" -> this.addon.getPlayer().setPlayerFactionName(FactionName.PRESSE);
+                    case "Sinaloa Kartell" -> this.addon.getPlayer().setPlayerFactionName(FactionName.SINALOAKARTELL);
+                    case "Medellín Kartell" -> this.addon.getPlayer().setPlayerFactionName(FactionName.KARTELL);
                     default -> {
-                        this.player.setPlayerFactionName(FactionName.NONE);
-                        this.player.sendErrorMessage("Deine Fraktion wurde nicht gefunden... Bitte hier reporten:");
-                        this.player.sendErrorMessage("""
+                        this.addon.getPlayer().setPlayerFactionName(FactionName.NONE);
+                        this.addon.getPlayer().sendErrorMessage("Deine Fraktion wurde nicht gefunden... Bitte hier reporten:");
+                        this.addon.getPlayer().sendErrorMessage("""
                                 https://germanrp.eu/forum/index.php?thread/25432-germanrp-addon-labymod-4-addon/""");
                     }
                 }
@@ -163,7 +161,7 @@ public class ChatListener {
                 }
             }
         }
-        FactionName factionName = this.player.getPlayerFactionName();
+        FactionName factionName = this.addon.getPlayer().getPlayerFactionName();
         if (factionName == null) {
             return;
         }
@@ -255,7 +253,7 @@ public class ChatListener {
     @Subscribe
     public void onChatReceiveListsChange(ChatReceiveEvent event) {
 
-        FactionName factionName = this.player.getPlayerFactionName();
+        FactionName factionName = this.addon.getPlayer().getPlayerFactionName();
         if (factionName == null) {
             return;
         }
@@ -314,7 +312,7 @@ public class ChatListener {
             } else if (x.contains("3")) {
                 i = 3;
             }
-            player.addPlayerXP(Integer.parseInt(matcher.group(1)) * i);
+            this.addon.getPlayer().addPlayerXP(Integer.parseInt(matcher.group(1)) * i);
         }
     }
 }
