@@ -3,8 +3,6 @@ package eu.germanrp.addon.core;
 import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
 import eu.germanrp.addon.core.common.AddonPlayer;
 import eu.germanrp.addon.core.common.DefaultAddonPlayer;
-import eu.germanrp.addon.core.executor.HitResultExecutor;
-import eu.germanrp.addon.core.generated.DefaultReferenceStorage;
 import eu.germanrp.addon.core.listener.*;
 import eu.germanrp.addon.core.services.NameTagService;
 import eu.germanrp.addon.core.services.NavigationService;
@@ -67,7 +65,6 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     protected void enable() {
         this.registerSettingCategory();
 
-        registerVersionDependantExecutors();
         registerWidgets();
         registerListener();
         registerCommands();
