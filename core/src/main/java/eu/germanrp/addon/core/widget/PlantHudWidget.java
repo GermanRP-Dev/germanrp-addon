@@ -5,15 +5,14 @@ import eu.germanrp.addon.api.models.*;
 import eu.germanrp.addon.api.network.PlantPacket;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent;
-import eu.germanrp.addon.core.executor.PlaySoundExecutor;
 import net.labymod.api.client.component.Component;
-import net.labymod.api.client.component.format.TextColor;
 import net.labymod.api.client.gui.hud.binding.category.HudWidgetCategory;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidget;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidgetConfig;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextLine;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State;
 import net.labymod.api.client.gui.icon.Icon;
+import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.util.I18n;
 import org.jetbrains.annotations.NotNull;
@@ -30,9 +29,7 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
     private static final String PLANT_HARVEST_MESSAGE = "germanrpaddon.message.plant.harvest";
     private static final String PLANT_FERTILIZE_MESSAGE = "germanrpaddon.message.plant.fertilize";
     private static final String PLANT_WATER_MESSAGE = "germanrpaddon.message.plant.water";
-    private static final TextColor NOTIFICATION_COLOR = TextColor.color(0xFF75151E);
 
-    private final PlaySoundExecutor playSoundExecutor;
     private final GermanRPAddon addon;
 
     private TextLine progressLine;
@@ -44,12 +41,10 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
     protected PlantHudWidget(final String id,
                              final HudWidgetCategory category,
                              final Icon icon,
-                             final PlaySoundExecutor playSoundExecutor,
                              GermanRPAddon addon) {
         super(id);
         this.bindCategory(category);
         this.setIcon(icon);
-        this.playSoundExecutor = playSoundExecutor;
         this.addon = addon;
     }
 
@@ -145,7 +140,7 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
             return;
         }
 
-        playSoundExecutor.playNotificationSound();
+        this.addon.getPlayer().playSound(ResourceLocation.parse("germanrp:chat.notify.info"), 1, 1);
 
         this.addon.getPlayer().sendInfoMessage(Component.translatable(
                 PLANT_HARVEST_MESSAGE,
@@ -159,7 +154,8 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
             return;
         }
 
-        playSoundExecutor.playNotificationSound();
+        this.addon.getPlayer().playSound(ResourceLocation.parse("germanrp:chat.notify.info"), 1, 1);
+
         this.addon.getPlayer().sendInfoMessage(
                 Component.translatable(
                         PLANT_FERTILIZE_MESSAGE,
@@ -174,7 +170,8 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
             return;
         }
 
-        playSoundExecutor.playNotificationSound();
+        this.addon.getPlayer().playSound(ResourceLocation.parse("germanrp:chat.notify.info"), 1, 1);
+
         this.addon.getPlayer().sendInfoMessage(
                 Component.translatable(
                         PLANT_WATER_MESSAGE,

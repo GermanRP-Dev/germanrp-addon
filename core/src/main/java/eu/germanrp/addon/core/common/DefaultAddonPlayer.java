@@ -6,6 +6,7 @@ import eu.germanrp.addon.core.common.events.ExperienceUpdateEvent;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.entity.player.ClientPlayer;
+import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.client.scoreboard.Scoreboard;
 import net.labymod.api.client.world.ClientWorld;
 import net.labymod.api.util.math.position.Position;
@@ -243,6 +244,11 @@ public class DefaultAddonPlayer implements AddonPlayer {
     @Override
     public FactionName getPlayerFactionName() {
         return this.playerFactionName;
+    }
+
+    @Override
+    public void playSound(ResourceLocation location, float volume, float pitch) {
+        this.addon.labyAPI().minecraft().sounds().playSound(location, volume, pitch);
     }
 
     @Override
