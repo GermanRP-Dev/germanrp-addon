@@ -12,7 +12,7 @@ concurrency:
 jobs:
   retrieve_version:
 
-    name: 🚀 Publish release
+    name: 📑 Retrieve version
     runs-on: ubuntu-latest
 
     outputs:
