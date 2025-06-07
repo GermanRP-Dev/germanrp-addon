@@ -22,8 +22,16 @@ jobs:
       id: retrieve_version
       run: |
         tag=$(git tag --sort=-creatordate | grep -v nightly | head -n1)
-        echo "Found tag: $tag"
+        sha=$(git rev-list -n 1 "$tag")
         echo "version=$tag" >> "$GITHUB_OUTPUT"
+        echo "tag_sha=$sha" >> "$GITHUB_OUTPUT"
+        echo "Retrieved version: $tag"
+        echo "Tag SHA: $sha"
+
+    - name: Checkout tag commit
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ steps.retrieve_version.outputs.tag_sha }}
 
     - name: Build with latest non-nightly tag
       uses: ./.github/workflows/build.yml
