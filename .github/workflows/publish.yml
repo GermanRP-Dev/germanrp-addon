@@ -17,12 +17,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
     - name: Get latest non-nightly tag
       id: retrieve_version
       run: |
         tag=$(git tag --sort=-creatordate | grep -v nightly | head -n1)
         echo "Retrieved version: $tag"
+
+        if [ -z "$tag" ]; then
+          echo "No non-nightly tags found. Exiting."
+          exit 1
+        fi
 
         sha=$(git rev-list -n 1 "$tag")
         echo "Tag SHA: $sha"
