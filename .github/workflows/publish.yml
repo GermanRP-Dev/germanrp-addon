@@ -10,10 +10,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  retrieve-version:
+  retrieve_version:
 
     name: 🚀 Publish release
     runs-on: ubuntu-latest
+
+    outputs:
+      version: ${{ steps.retrieve_version.outputs.version }}
+      tag_sha: ${{ steps.retrieve_version.outputs.tag_sha }}
 
     steps:
     - uses: actions/checkout@v4
@@ -42,8 +46,12 @@ jobs:
       with:
         ref: ${{ steps.retrieve_version.outputs.tag_sha }}
 
-    - name: Build with latest non-nightly tag
-      uses: ./.github/workflows/build.yml
-      with:
-        version: ${{ steps.retrieve_version.outputs.version }}
-        upload_artifacts: true
+  build:
+
+    name: 🏗️ Build with latest non-nightly tag
+    needs: retrieve_version
+    uses: ./.github/workflows/build.yml
+    with:
+      version: ${{ needs.retrieve_version.outputs.version }}
+      upload_artifacts: true
+      overwrite_sha: ${{ needs.retrieve_version.outputs.tag_sha }}
