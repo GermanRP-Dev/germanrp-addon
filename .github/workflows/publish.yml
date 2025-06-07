@@ -1,0 +1,49 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+
+run-name: Build+${{ github.run_number }} publish/${{ github.sha }}
+
+concurrency:
+  group: publish-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  retrieve-version:
+
+    name: 🚀 Publish release
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Get latest non-nightly tag
+      id: retrieve_version
+      run: |
+        tag=$(git tag --sort=-creatordate | grep -v nightly | head -n1)
+        echo "Retrieved version: $tag"
+
+        if [ -z "$tag" ]; then
+          echo "No non-nightly tags found. Exiting."
+          exit 1
+        fi
+
+        sha=$(git rev-list -n 1 "$tag")
+        echo "Tag SHA: $sha"
+
+        echo "version=$tag" >> "$GITHUB_OUTPUT"
+        echo "tag_sha=$sha" >> "$GITHUB_OUTPUT"
+
+    - name: Checkout tag commit
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ steps.retrieve_version.outputs.tag_sha }}
+
+    - name: Build with latest non-nightly tag
+      uses: ./.github/workflows/build.yml
+      with:
+        version: ${{ steps.retrieve_version.outputs.version }}
+        upload_artifacts: true
