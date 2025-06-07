@@ -48,6 +48,10 @@ public class MajorEventWidget extends TextHudWidget<TextHudWidgetConfig> {
         this.majorEvent = true;
 
         final TimerPacket timerPacket = event.getTimerPacket();
+        if (!timerPacket.active()) {
+            reset();
+            return;
+        }
         MajorEvent.fromName(timerPacket.name()).ifPresent(type -> {
                     switch (type) {
                         case ROB, BOMB, PHARMACY_ROB, HACKER, JEWELLERY_ROB, MUSEUM_ROB, ROB_ABOUT_TO_END -> {
