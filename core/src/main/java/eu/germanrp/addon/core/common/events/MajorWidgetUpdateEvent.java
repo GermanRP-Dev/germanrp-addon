@@ -8,5 +8,4 @@ import net.labymod.api.event.Event;
 public class MajorWidgetUpdateEvent implements Event {
 
     private final TimerPacket timerPacket;
-
 }
