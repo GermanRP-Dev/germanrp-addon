@@ -254,7 +254,7 @@ public class DefaultAddonPlayer implements AddonPlayer {
     }
 
     @Override
-    public Faction getPlayerFactionName() {
+    public Faction getPlayerFaction() {
         return this.playerFaction;
     }
 
@@ -264,7 +264,7 @@ public class DefaultAddonPlayer implements AddonPlayer {
     }
 
     @Override
-    public void setPlayerFactionName(Faction playerFaction) {
+    public void setPlayerFaction(Faction playerFaction) {
         this.playerFaction = playerFaction;
     }
 

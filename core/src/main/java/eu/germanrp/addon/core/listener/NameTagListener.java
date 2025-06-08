@@ -36,7 +36,7 @@ public class NameTagListener {
             return;
         }
 
-        final Faction faction = this.addon.getPlayer().getPlayerFactionName();
+        final Faction faction = this.addon.getPlayer().getPlayerFaction();
         final NetworkPlayerInfo playerInfo = event.getPlayerInfo();
 
         if (playerInfo == null || faction == null || faction.getType() == FactionType.NEUTRAL) {

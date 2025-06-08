@@ -24,14 +24,14 @@ public class ServerJoinListener {
             return;
         }
         this.addon.getChatListener().setEmptyMessages(0);
-        this.addon.getPlayer().setPlayerFactionName(null);
+        this.addon.getPlayer().setPlayerFaction(null);
         fireEvent(new JustJoinedEvent(true));
 
         this.addon.getPlayer().sendServerMessage("/stats");
     }
 
     public void onFactionNameGet() {
-        Faction faction = this.addon.getPlayer().getPlayerFactionName();
+        final Faction faction = this.addon.getPlayer().getPlayerFaction();
         if (faction.equals(Faction.NONE)) {
             return;
         }

@@ -92,9 +92,9 @@ public interface AddonPlayer {
 
     boolean isPlayerGR();
 
-    void setPlayerFactionName(Faction faction);
+    void setPlayerFaction(Faction faction);
 
-    Faction getPlayerFactionName();
+    Faction getPlayerFaction();
 
     void playSound(ResourceLocation location, float volume, float pitch);
 }
