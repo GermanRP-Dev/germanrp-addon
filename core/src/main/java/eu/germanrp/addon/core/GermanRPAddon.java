@@ -1,7 +1,6 @@
 package eu.germanrp.addon.core;
 
 import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
-import eu.germanrp.addon.core.commands.test.TestCommand;
 import eu.germanrp.addon.core.common.AddonPlayer;
 import eu.germanrp.addon.core.common.DefaultAddonPlayer;
 import eu.germanrp.addon.core.listener.ChatListener;
@@ -91,7 +90,6 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
     private void registerCommands() {
         registerCommand(new GraffitiCommand(this, graffitiHudWidget.getConfig()));
-        registerCommand(new TestCommand(this));
     }
 
     private void registerWidgets() {
