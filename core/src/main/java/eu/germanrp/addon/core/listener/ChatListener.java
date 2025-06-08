@@ -29,7 +29,7 @@ public class ChatListener {
 
     private final GermanRPAddon addon;
     private boolean justJoined;
-    private boolean faction;
+    private boolean chatShowsMemberInfo;
     private boolean wanted;
     private boolean bounty;
     private boolean wasAFK;
@@ -118,18 +118,18 @@ public class ChatListener {
         }
         if (TITLE_FACTION_MEMBER_LIST.getPattern().matcher(message).find()) {
             event.setCancelled(true);
-            this.faction = true;
+            this.chatShowsMemberInfo = true;
             return;
         }
 
-        if (this.faction) {
+        if (this.chatShowsMemberInfo) {
             event.setCancelled(true);
             final Matcher matcher = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
             if (!matcher.find()) {
                 if (!message.startsWith("        (Insgesamt ") || !message.endsWith(" verfügbar)")) {
                     return;
                 }
-                this.faction = false;
+                this.chatShowsMemberInfo = false;
                 return;
             }
             this.addon.getNameTagService().getMembers().add(matcher.group(1).replace("[GR]", ""));
