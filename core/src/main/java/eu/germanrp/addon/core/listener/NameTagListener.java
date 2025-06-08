@@ -50,7 +50,7 @@ public class NameTagListener {
         }
 
         final String prefix = team.getPrefix().toString();
-        if(isIgnoredPrefix(prefix)) {
+        if (isIgnoredPrefix(prefix)) {
             return;
         }
 
@@ -79,20 +79,24 @@ public class NameTagListener {
             }
 
             if (Boolean.TRUE.equals(nameTagSubConfig.darklistColorEnabled().get())
-                    && nameTagService.getBounties().contains(playerName)) {
+                    && nameTagService.getDarklist().contains(playerName)) {
                 final TextColor color = TextColor.color(nameTagSubConfig.darklistColor().get().get());
                 renderNameTag(event, isAFK, color);
             }
 
         } else if (faction.getType() == FactionType.STAAT
                 && Boolean.TRUE.equals(nameTagSubConfig.wantedColorEnabled().get())
-                && nameTagService.getBounties().contains(playerName)) {
+                && nameTagService.getWantedPlayers().contains(playerName)) {
             final TextColor color = TextColor.color(nameTagSubConfig.wantedColor().get().get());
             renderNameTag(event, isAFK, color);
         }
     }
 
-    private static void renderNameTag(final PlayerNameTagRenderEvent event, final boolean isAFK, final TextColor color) {
+    private static void renderNameTag(
+            final PlayerNameTagRenderEvent event,
+            final boolean isAFK,
+            final TextColor color
+    ) {
         final Component component = event.nameTag();
 
         component.color(color);
