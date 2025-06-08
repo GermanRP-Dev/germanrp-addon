@@ -1,6 +1,6 @@
 package eu.germanrp.addon.core.listener;
 
-import eu.germanrp.addon.api.models.FactionName;
+import eu.germanrp.addon.api.models.Faction;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.JustJoinedEvent;
 import net.labymod.api.Laby;
@@ -24,22 +24,22 @@ public class ServerJoinListener {
             return;
         }
         this.addon.getChatListener().setEmptyMessages(0);
-        this.addon.getPlayer().setPlayerFactionName(FactionName.NONE);
+        this.addon.getPlayer().setPlayerFactionName(null);
         fireEvent(new JustJoinedEvent(true));
 
         this.addon.getPlayer().sendServerMessage("/stats");
     }
 
     public void onFactionNameGet() {
-        FactionName factionName = this.addon.getPlayer().getPlayerFactionName();
-        if (factionName.equals(FactionName.NONE)) {
+        Faction faction = this.addon.getPlayer().getPlayerFactionName();
+        if (faction.equals(Faction.NONE)) {
             return;
         }
 
         this.addon.getNameTagService().getMembers().clear();
-        this.addon.getPlayer().sendServerMessage(String.format("/memberinfo %s", factionName.getMemberInfoCommandArg()));
+        this.addon.getPlayer().sendServerMessage(String.format("/memberinfo %s", faction.getMemberInfoCommandArg()));
 
-        switch (factionName.getType()) {
+        switch (faction.getType()) {
             case BADFRAK -> {
                 this.addon.getNameTagService().getDarklist().clear();
                 this.addon.getNameTagService().getBounties().clear();

@@ -1,6 +1,6 @@
 package eu.germanrp.addon.core.common;
 
-import eu.germanrp.addon.api.models.FactionName;
+import eu.germanrp.addon.api.models.Faction;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.client.resources.ResourceLocation;
@@ -8,7 +8,6 @@ import net.labymod.api.client.scoreboard.Scoreboard;
 import net.labymod.api.client.world.ClientWorld;
 import net.labymod.api.util.math.position.Position;
 import net.labymod.api.util.math.vector.FloatVector3;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -93,9 +92,9 @@ public interface AddonPlayer {
 
     boolean isPlayerGR();
 
-    void setPlayerFactionName(@NotNull FactionName factionName);
+    void setPlayerFactionName(Faction faction);
 
-    FactionName getPlayerFactionName();
+    Faction getPlayerFactionName();
 
     void playSound(ResourceLocation location, float volume, float pitch);
 }

@@ -1,6 +1,6 @@
 package eu.germanrp.addon.core.listener;
 
-import eu.germanrp.addon.api.models.FactionName;
+import eu.germanrp.addon.api.models.Faction;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.JustJoinedEvent;
 import lombok.Setter;
@@ -67,24 +67,20 @@ public class ChatListener {
                         if (this.wasAFK) {
                             Laby.references().chatExecutor().chat("/afk");
                         }
-                        this.addon.getPlayer().setPlayerFactionName(FactionName.NONE);
+                        this.addon.getPlayer().setPlayerFactionName(Faction.NONE);
                     }
-                    case "Rousseau Familie" -> this.addon.getPlayer().setPlayerFactionName(FactionName.ROUSSEAU);
-                    case "Polizei" -> this.addon.getPlayer().setPlayerFactionName(FactionName.POLIZEI);
-                    case "Camorra" -> {
-                        this.addon.getPlayer().sendDebugMessage("Camorra");
-                        this.addon.getPlayer().setPlayerFactionName(FactionName.CAMORRA);
-                    }
-                    case "The Establishment" -> this.addon.getPlayer().setPlayerFactionName(FactionName.ESTABLISHMENT);
-                    case "MT-Fashion" -> this.addon.getPlayer().setPlayerFactionName(FactionName.MTFASHION);
-                    case "Presseagentur" -> this.addon.getPlayer().setPlayerFactionName(FactionName.PRESSE);
-                    case "Sinaloa Kartell" -> this.addon.getPlayer().setPlayerFactionName(FactionName.SINALOAKARTELL);
-                    case "Medellín Kartell" -> this.addon.getPlayer().setPlayerFactionName(FactionName.KARTELL);
+                    case "Rousseau Familie" -> this.addon.getPlayer().setPlayerFactionName(Faction.ROUSSEAU);
+                    case "Polizei" -> this.addon.getPlayer().setPlayerFactionName(Faction.POLIZEI);
+                    case "Camorra" -> this.addon.getPlayer().setPlayerFactionName(Faction.CAMORRA);
+                    case "The Establishment" -> this.addon.getPlayer().setPlayerFactionName(Faction.ESTABLISHMENT);
+                    case "MT-Fashion" -> this.addon.getPlayer().setPlayerFactionName(Faction.MTFASHION);
+                    case "Presseagentur" -> this.addon.getPlayer().setPlayerFactionName(Faction.PRESSE);
+                    case "Sinaloa Kartell" -> this.addon.getPlayer().setPlayerFactionName(Faction.SINALOAKARTELL);
+                    case "Medellín Kartell" -> this.addon.getPlayer().setPlayerFactionName(Faction.KARTELL);
                     default -> {
-                        this.addon.getPlayer().setPlayerFactionName(FactionName.NONE);
+                        this.addon.getPlayer().setPlayerFactionName(Faction.NONE);
                         this.addon.getPlayer().sendErrorMessage("Deine Fraktion wurde nicht gefunden... Bitte hier reporten:");
-                        this.addon.getPlayer().sendErrorMessage("""
-                                https://germanrp.eu/forum/index.php?thread/25432-germanrp-addon-labymod-4-addon/""");
+                        this.addon.getPlayer().sendErrorMessage("https://germanrp.eu/forum/index.php?thread/25432-germanrp-addon-labymod-4-addon/");
                     }
                 }
                 this.addon.getServerJoinListener().onFactionNameGet();
@@ -109,11 +105,11 @@ public class ChatListener {
                 }
             }
         }
-        FactionName factionName = this.addon.getPlayer().getPlayerFactionName();
-        if (factionName == null) {
+        Faction faction = this.addon.getPlayer().getPlayerFactionName();
+        if (faction == null) {
             return;
         }
-        if (factionName.equals(FactionName.NONE)) {
+        if (faction.equals(Faction.NONE)) {
             if (!wasAFK) {
                 this.justJoined = false;
                 return;
@@ -138,7 +134,7 @@ public class ChatListener {
             }
             this.addon.getNameTagService().getMembers().add(matcher.group(1).replace("[GR]", ""));
         }
-        switch (factionName.getType()) {
+        switch (faction.getType()) {
             case BADFRAK -> {
                 if (message.startsWith("► [Darklist] ")) {
                     event.setCancelled(true);
@@ -199,12 +195,12 @@ public class ChatListener {
     @Subscribe
     public void onChatReceiveListsChange(ChatReceiveEvent event) {
 
-        FactionName factionName = this.addon.getPlayer().getPlayerFactionName();
-        if (factionName == null) {
+        Faction faction = this.addon.getPlayer().getPlayerFactionName();
+        if (faction == null) {
             return;
         }
         String message = event.chatMessage().getPlainText();
-        switch (factionName.getType()) {
+        switch (faction.getType()) {
             case BADFRAK -> {
                 final Matcher nametagDarkListAddMatcher = DARK_LIST_ADD.getPattern().matcher(message);
 

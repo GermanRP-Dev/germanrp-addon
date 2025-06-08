@@ -1,6 +1,6 @@
 package eu.germanrp.addon.core.common;
 
-import eu.germanrp.addon.api.models.FactionName;
+import eu.germanrp.addon.api.models.Faction;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.ExperienceUpdateEvent;
 import net.labymod.api.Laby;
@@ -41,7 +41,7 @@ public class DefaultAddonPlayer implements AddonPlayer {
     private int playerTBonusTime;
     private int playerNeededXP;
     private int playerPayDayTime;
-    private FactionName playerFactionName;
+    private Faction playerFaction;
 
     public DefaultAddonPlayer(GermanRPAddon addon) {
         this.addon = addon;
@@ -254,8 +254,8 @@ public class DefaultAddonPlayer implements AddonPlayer {
     }
 
     @Override
-    public FactionName getPlayerFactionName() {
-        return this.playerFactionName;
+    public Faction getPlayerFactionName() {
+        return this.playerFaction;
     }
 
     @Override
@@ -264,8 +264,8 @@ public class DefaultAddonPlayer implements AddonPlayer {
     }
 
     @Override
-    public void setPlayerFactionName(@NotNull FactionName playerFactionName) {
-        this.playerFactionName = playerFactionName;
+    public void setPlayerFactionName(Faction playerFaction) {
+        this.playerFaction = playerFaction;
     }
 
     private Component prefix() {

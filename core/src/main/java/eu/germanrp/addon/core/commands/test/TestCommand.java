@@ -1,6 +1,6 @@
 package eu.germanrp.addon.core.commands.test;
 
-import eu.germanrp.addon.api.models.FactionName;
+import eu.germanrp.addon.api.models.Faction;
 import eu.germanrp.addon.core.GermanRPAddon;
 import net.labymod.api.client.chat.command.Command;
 
@@ -17,8 +17,8 @@ public class TestCommand extends Command {
 
     @Override
     public boolean execute(String prefix, String[] arguments) {
-        final FactionName playerFactionName = this.addon.getPlayer().getPlayerFactionName();
-        this.addon.getPlayer().sendDebugMessage(playerFactionName.name());
+        final Faction playerFaction = this.addon.getPlayer().getPlayerFactionName();
+        this.addon.getPlayer().sendDebugMessage(playerFaction.name());
         this.addon.getPlayer().sendDebugMessage(Arrays.toString(this.addon.getNameTagService().getMembers().toArray()));
         return true;
     }

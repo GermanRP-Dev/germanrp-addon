@@ -3,7 +3,7 @@ package eu.germanrp.addon.api.models;
 import lombok.Getter;
 
 @Getter
-public enum FactionName {
+public enum Faction {
 
     NONE(null, FactionType.NEUTRAL),
     POLIZEI("Polizei", FactionType.STAAT),
@@ -19,7 +19,7 @@ public enum FactionName {
     private final String memberInfoCommandArg;
     private final FactionType type;
 
-    FactionName(String memberInfoCommandArg, FactionType type) {
+    Faction(String memberInfoCommandArg, FactionType type) {
         this.memberInfoCommandArg = memberInfoCommandArg;
         this.type = type;
     }
