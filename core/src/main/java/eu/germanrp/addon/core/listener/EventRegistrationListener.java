@@ -14,7 +14,6 @@ import eu.germanrp.addon.core.common.events.GraffitiUpdateEvent;
 import eu.germanrp.addon.core.common.events.LegacyGermanRPUtilsPayloadEvent;
 import eu.germanrp.addon.core.common.events.MajorWidgetUpdateEvent;
 import eu.germanrp.addon.core.common.events.PayDayPacketRecieveEvent;
-import net.labymod.api.Laby;
 import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
@@ -82,14 +81,13 @@ public class EventRegistrationListener {
             final long minutes = ofNullable(graffitiTimeMatcher.group("minutes")).map(Long::parseLong).orElse(0L);
             final long seconds = ofNullable(graffitiTimeMatcher.group("seconds")).map(Long::parseLong).orElse(0L);
 
-            final ClientPlayer clientPlayer = this.addon.labyAPI().minecraft().getClientPlayer();
+            final ClientPlayer clientPlayer = labyAPI().minecraft().getClientPlayer();
 
             if (clientPlayer == null) {
                 return;
             }
 
-            final Optional<Graffiti> nearestGraffitiCandidate =
-                    addon.getNavigationService().getNearest(clientPlayer.position(), List.of(Graffiti.values()));
+            final Optional<Graffiti> nearestGraffitiCandidate = this.addon.getNavigationService().getNearest(clientPlayer.position(), List.of(Graffiti.values()));
 
             if (nearestGraffitiCandidate.isEmpty()) {
                 return;
@@ -212,7 +210,7 @@ public class EventRegistrationListener {
             }
             case "GRAddon-PayDay" -> {
                 final JsonObject payloadContent = event.getPayloadContent();
-                Laby.fireEvent(new PayDayPacketRecieveEvent(
+                fireEvent(new PayDayPacketRecieveEvent(
                         payloadContent.get("time").getAsInt(),
                         payloadContent.get("salary").getAsJsonObject().get("faction").getAsFloat(),
                         payloadContent.get("salary").getAsJsonObject().get("job").getAsFloat()));
@@ -231,7 +229,7 @@ public class EventRegistrationListener {
 
     @Subscribe
     public void onGameTick(GameTickEvent event) {
-        if (event.phase().equals(POST)) {
+        if (event.phase() == POST) {
             this.currentTick++;
 
             labyAPI().eventBus().fire(new GermanRPAddonTickEvent(TICK));

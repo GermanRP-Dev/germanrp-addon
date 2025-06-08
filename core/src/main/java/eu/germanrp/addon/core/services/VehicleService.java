@@ -14,6 +14,7 @@ import static eu.germanrp.addon.core.services.VehicleService.VehicleCommand.TOGG
 import static eu.germanrp.addon.core.services.VehicleService.VehicleCommand.TOGGLE_SIGNAL_RIGHT;
 import static eu.germanrp.addon.core.services.VehicleService.VehicleCommand.TOGGLE_SOSI;
 import static eu.germanrp.addon.core.services.VehicleService.VehicleCommand.TOGGLE_SOSI_MUTE;
+import static net.labymod.api.Laby.labyAPI;
 
 @Getter
 @Setter
@@ -33,7 +34,7 @@ public class VehicleService {
     }
 
     private void applyCruiseControlSpeed() {
-        this.addon.getPlayer().sendServerMessage("/tempomat " + cruiseControlSpeed);
+        this.addon.getPlayer().sendServerMessage("/tempomat " + this.cruiseControlSpeed);
     }
 
     public void toggleSignalLeft() {
@@ -49,16 +50,16 @@ public class VehicleService {
     }
 
     public void increaseCruiseControlSpeed() {
-        cruiseControlSpeed += 5;
+        this.cruiseControlSpeed += 5;
         applyCruiseControlSpeed();
     }
 
     public void decreaseCruiseControlSpeed() {
-        if (cruiseControlSpeed <= 0) {
+        if (this.cruiseControlSpeed <= 0) {
             return;
         }
 
-        cruiseControlSpeed -= 5;
+        this.cruiseControlSpeed -= 5;
         applyCruiseControlSpeed();
     }
 
@@ -93,7 +94,6 @@ public class VehicleService {
         payloadWriter.writeString(command.getCommand());
         payloadWriter.writeString(optionsObject.toString());
 
-        this.addon.labyAPI().serverController()
-                .sendPayload(ResourceLocation.create("labymod3", "main"), payloadWriter.toByteArray());
+        labyAPI().serverController().sendPayload(ResourceLocation.create("labymod3", "main"), payloadWriter.toByteArray());
     }
 }

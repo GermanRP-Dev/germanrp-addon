@@ -17,11 +17,7 @@ public class GraffitiCommand extends Command {
 
     @Override
     public boolean execute(String prefix, String[] arguments) {
-
-        getSubCommands().forEach(subCommand ->
-                addon.getPlayer().sendInfoMessage(Component.text("/" + this.prefix + " " + subCommand.getPrefix()))
-        );
-
+        getSubCommands().forEach(subCommand -> this.addon.getPlayer().sendInfoMessage(Component.text("/" + this.prefix + " " + subCommand.getPrefix())));
         return true;
     }
 }

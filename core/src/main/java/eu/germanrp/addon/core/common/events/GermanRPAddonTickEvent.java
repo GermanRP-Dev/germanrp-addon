@@ -14,7 +14,7 @@ public class GermanRPAddonTickEvent implements Event {
     }
 
     public boolean isPhase(Phase phase) {
-        return this.phase.equals(phase);
+        return this.phase == phase;
     }
 
     public enum Phase {

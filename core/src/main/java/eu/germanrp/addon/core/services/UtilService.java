@@ -4,15 +4,11 @@ import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.services.util.UtilTextService;
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import net.labymod.api.client.component.Component;
 import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.client.network.server.ServerData;
 import net.labymod.api.client.resources.ResourceLocation;
 
 import static net.labymod.api.Laby.labyAPI;
-import static net.labymod.api.client.component.Component.empty;
-import static net.labymod.api.client.component.format.NamedTextColor.DARK_GRAY;
-import static net.labymod.api.client.component.format.NamedTextColor.GOLD;
 import static net.labymod.api.client.gui.icon.Icon.texture;
 
 /**
@@ -50,17 +46,5 @@ public class UtilService {
     public boolean isLegacyAddonPacket(ResourceLocation eventIdentifier) {
         return eventIdentifier.getNamespace().equals("labymod3")
                 && eventIdentifier.getPath().equals("main");
-    }
-
-    public void debug(String debugMessage) {
-        if (this.addon.configuration().debug().get()) {
-            Component component = empty()
-                    .append(Component.text("[", DARK_GRAY))
-                    .append(Component.text("DEBUG", GOLD))
-                    .append(Component.text("] ", DARK_GRAY))
-                    .append(Component.text(debugMessage));
-
-            this.addon.getPlayer().sendMessage(component);
-        }
     }
 }

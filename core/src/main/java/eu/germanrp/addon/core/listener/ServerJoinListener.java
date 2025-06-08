@@ -1,9 +1,8 @@
 package eu.germanrp.addon.core.listener;
 
-import eu.germanrp.addon.api.models.FactionName;
+import eu.germanrp.addon.api.models.Faction;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.JustJoinedEvent;
-import net.labymod.api.Laby;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.network.server.ServerJoinEvent;
 
@@ -20,36 +19,34 @@ public class ServerJoinListener {
     @Subscribe
     public void onServerJoin(ServerJoinEvent event) {
         if (!this.addon.getUtilService().isGermanRP()) {
-            Laby.fireEvent(new JustJoinedEvent(false));
+            fireEvent(new JustJoinedEvent(false));
             return;
         }
         this.addon.getChatListener().setEmptyMessages(0);
-        this.addon.getPlayer().setPlayerFactionName(null);
+        this.addon.getPlayer().setPlayerFaction(null);
         fireEvent(new JustJoinedEvent(true));
 
         this.addon.getPlayer().sendServerMessage("/stats");
     }
 
     public void onFactionNameGet() {
-        FactionName factionName = this.addon.getPlayer().getPlayerFactionName();
-        if (factionName.equals(FactionName.NONE)) {
+        final Faction faction = this.addon.getPlayer().getPlayerFaction();
+        if (faction == Faction.NONE) {
             return;
         }
 
         this.addon.getNameTagService().getMembers().clear();
-        this.addon.getPlayer().sendServerMessage(String.format("/memberinfo %s", factionName.getMemberInfoCommandArg()));
+        this.addon.getPlayer().sendServerMessage(String.format("/memberinfo %s", faction.getMemberInfoCommandArg()));
 
-        switch (factionName.getType()) {
-            case BADFRAK -> {
-                this.addon.getNameTagService().getDarklist().clear();
-                this.addon.getNameTagService().getBounties().clear();
-                this.addon.getPlayer().sendServerMessage("/darklist");
-                this.addon.getPlayer().sendServerMessage("/kopfgelder");
-            }
-            case STAAT -> {
-                this.addon.getNameTagService().getWantedPlayers().clear();
-                this.addon.getPlayer().sendServerMessage("/wanteds");
-            }
+        final Faction.Type type = faction.getType();
+        if (type == Faction.Type.CRIME) {
+            this.addon.getNameTagService().getDarklist().clear();
+            this.addon.getNameTagService().getBounties().clear();
+            this.addon.getPlayer().sendServerMessage("/darklist");
+            this.addon.getPlayer().sendServerMessage("/kopfgelder");
+        } else if (type == Faction.Type.STAAT) {
+            this.addon.getNameTagService().getWantedPlayers().clear();
+            this.addon.getPlayer().sendServerMessage("/wanteds");
         }
     }
 }

@@ -1,6 +1,6 @@
 package eu.germanrp.addon.core.common;
 
-import eu.germanrp.addon.api.models.FactionName;
+import eu.germanrp.addon.api.models.Faction;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.client.resources.ResourceLocation;
@@ -32,17 +32,15 @@ public interface AddonPlayer {
 
     void sendEmptyMessage();
 
-    void sendErrorMessage(Component component);
-
     void sendErrorMessage(String message);
 
     void sendInfoMessage(Component component);
 
     void sendInfoMessage(String string);
 
-    void sendSyntaxMessage(Component component);
-
     void sendSyntaxMessage(String message);
+
+    void sendDebugMessage(String message);
 
     void sendServerMessage(String message);
 
@@ -88,9 +86,9 @@ public interface AddonPlayer {
 
     boolean isPlayerGR();
 
-    void setPlayerFactionName(FactionName factionName);
+    void setPlayerFaction(Faction faction);
 
-    FactionName getPlayerFactionName();
+    Faction getPlayerFaction();
 
     void playSound(ResourceLocation location, float volume, float pitch);
 }
