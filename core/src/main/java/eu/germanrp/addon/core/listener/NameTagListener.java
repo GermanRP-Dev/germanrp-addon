@@ -16,7 +16,7 @@ import net.labymod.api.event.client.render.PlayerNameTagRenderEvent;
 import java.util.Arrays;
 
 public class NameTagListener {
-    private static final String[] IGNORED_PREFIXS = {
+    private static final String[] IGNORED_PREFIXES = {
             "red", "dark_red", "dark_aqua", "✝"
     };
 
@@ -106,7 +106,7 @@ public class NameTagListener {
     }
 
     private boolean isIgnoredPrefix(final String prefix) {
-        return Arrays.stream(IGNORED_PREFIXS).anyMatch(prefix::contains);
+        return Arrays.stream(IGNORED_PREFIXES).anyMatch(prefix::contains);
     }
 
 }
