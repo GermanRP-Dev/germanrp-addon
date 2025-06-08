@@ -25,10 +25,10 @@ public enum Faction {
     }
 
     public enum Type {
-
         STAAT,
         MEDIC,
         CRIME,
         NEUTRAL
     }
+
 }
