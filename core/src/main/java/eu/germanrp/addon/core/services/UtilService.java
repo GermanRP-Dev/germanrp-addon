@@ -47,5 +47,4 @@ public class UtilService {
         return eventIdentifier.getNamespace().equals("labymod3")
                 && eventIdentifier.getPath().equals("main");
     }
-
 }

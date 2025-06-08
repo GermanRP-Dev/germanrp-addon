@@ -100,8 +100,8 @@ public class ChatListener {
                 this.wasAFK = true;
             }
             case "" -> {
-                emptyMessages++;
-                if (emptyMessages > 2) {
+                this.emptyMessages++;
+                if (this.emptyMessages > 2) {
                     event.setCancelled(true);
                 }
             }
@@ -110,8 +110,8 @@ public class ChatListener {
         if (faction == null) {
             return;
         }
-        if (faction.equals(Faction.NONE)) {
-            if (!wasAFK) {
+        if (faction == Faction.NONE) {
+            if (!this.wasAFK) {
                 this.justJoined = false;
                 return;
             }

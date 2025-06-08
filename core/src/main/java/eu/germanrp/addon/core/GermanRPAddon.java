@@ -89,11 +89,11 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     }
 
     private void registerCommands() {
-        registerCommand(new GraffitiCommand(this, graffitiHudWidget.getConfig()));
+        registerCommand(new GraffitiCommand(this, this.graffitiHudWidget.getConfig()));
     }
 
     private void registerWidgets() {
-        final HudWidgetRegistry widgetRegistry = this.labyAPI().hudWidgetRegistry();
+        final HudWidgetRegistry widgetRegistry = labyAPI().hudWidgetRegistry();
         final HudWidgetCategory widgetCategory = new GermanRPAddonWidgetCategory();
 
         this.heilkrautpflanzeHudWidget = new HeilkrautpflanzeHudWidget(
@@ -139,25 +139,25 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         );
 
         widgetRegistry.categoryRegistry().register(widgetCategory);
-        widgetRegistry.register(heilkrautpflanzeHudWidget);
-        widgetRegistry.register(roseHudWidget);
-        widgetRegistry.register(stoffHudWidget);
-        widgetRegistry.register(graffitiHudWidget);
-        widgetRegistry.register(majorEventWidget);
-        widgetRegistry.register(playerExperienceWidget);
-        widgetRegistry.register(blackMarketWidget);
-        widgetRegistry.register(hydrationWidget);
-        widgetRegistry.register(paydayWidget);
+        widgetRegistry.register(this.heilkrautpflanzeHudWidget);
+        widgetRegistry.register(this.roseHudWidget);
+        widgetRegistry.register(this.stoffHudWidget);
+        widgetRegistry.register(this.graffitiHudWidget);
+        widgetRegistry.register(this.majorEventWidget);
+        widgetRegistry.register(this.playerExperienceWidget);
+        widgetRegistry.register(this.blackMarketWidget);
+        widgetRegistry.register(this.hydrationWidget);
+        widgetRegistry.register(this.paydayWidget);
     }
 
     private void registerListener() {
         this.serverJoinListener = new ServerJoinListener(this);
         this.chatListener = new ChatListener(this);
 
-        registerListener(serverJoinListener);
+        registerListener(this.serverJoinListener);
         registerListener(new EventRegistrationListener(this));
         registerListener(new NameTagListener(this));
-        registerListener(chatListener);
+        registerListener(this.chatListener);
         registerListener(new VehicleHotkeyListener(this));
     }
 }

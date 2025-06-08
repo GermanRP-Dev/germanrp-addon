@@ -32,21 +32,15 @@ public interface AddonPlayer {
 
     void sendEmptyMessage();
 
-    void sendErrorMessage(Component component);
-
     void sendErrorMessage(String message);
 
     void sendInfoMessage(Component component);
 
     void sendInfoMessage(String string);
 
-    void sendSyntaxMessage(Component component);
-
     void sendSyntaxMessage(String message);
 
     void sendDebugMessage(String message);
-
-    void sendDebugMessage(Component component);
 
     void sendServerMessage(String message);
 

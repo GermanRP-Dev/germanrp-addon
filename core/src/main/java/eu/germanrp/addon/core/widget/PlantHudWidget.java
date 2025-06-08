@@ -83,7 +83,7 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
             return;
         }
 
-        if (!hudNeedsUpdate) {
+        if (!this.hudNeedsUpdate) {
             return;
         }
 
@@ -104,7 +104,7 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
 
     @Subscribe
     public void onPlantCreateEvent(final PlantCreateEvent event) {
-        if (!event.getType().equals(getPlantType())) {
+        if (event.getType() != getPlantType()) {
             return;
         }
 
@@ -137,7 +137,7 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
 
     @Subscribe
     public void onPlantDestroyEvent(final PlantDestroyEvent event) {
-        if (!event.getType().equals(getPlantType())) {
+        if (event.getType() != getPlantType()) {
             return;
         }
 
@@ -148,7 +148,7 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
 
     @Subscribe
     public void onPlantReadyToHarvestEvent(final PlantReadyToHarvestEvent event) {
-        if (!event.getPlant().getType().equals(getPlantType())) {
+        if (event.getPlant().getType() != getPlantType()) {
             return;
         }
 
@@ -162,7 +162,7 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
 
     @Subscribe
     public void onPlantNeedsFertilizerEvent(final PlantNeedsFertilizerEvent event) {
-        if (!event.getPlant().getType().equals(getPlantType())) {
+        if (event.getPlant().getType() != getPlantType()) {
             return;
         }
 
@@ -175,7 +175,7 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
 
     @Subscribe
     public void onPlantNeedsWaterEvent(final PlantNeedsWaterEvent event) {
-        if (!event.getPlant().getType().equals(getPlantType())) {
+        if (event.getPlant().getType() != getPlantType()) {
             return;
         }
 

@@ -10,6 +10,8 @@ import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import net.labymod.api.event.client.input.KeyEvent;
 import org.jetbrains.annotations.NotNull;
 
+import static net.labymod.api.Laby.labyAPI;
+
 public class VehicleHotkeyListener {
 
     private final GermanRPAddon addon;
@@ -25,11 +27,11 @@ public class VehicleHotkeyListener {
         final String plainText = event.chatMessage().getPlainText();
 
         if (plainText.equals("► Du sitzt in keinem Fahrzeug.") || plainText.equals("► Tempomat wurde deaktiviert.")) {
-            vehicleService.setCruiseControlEnabled(false);
+            this.vehicleService.setCruiseControlEnabled(false);
         }
 
         if (GlobalRegexRegistry.CRUISE_CONTROL_START.getPattern().matcher(plainText).matches()) {
-            vehicleService.setCruiseControlEnabled(true);
+            this.vehicleService.setCruiseControlEnabled(true);
         }
     }
 
@@ -39,7 +41,7 @@ public class VehicleHotkeyListener {
             return;
         }
 
-        if (this.addon.labyAPI().minecraft().minecraftWindow().isScreenOpened()) {
+        if (labyAPI().minecraft().minecraftWindow().isScreenOpened()) {
             return;
         }
 
@@ -47,7 +49,7 @@ public class VehicleHotkeyListener {
     }
 
     private void pressedKey(final @NotNull Key key) {
-        VehicleHotkeyConfig config = addon.configuration().vehicleHotkeyConfig();
+        VehicleHotkeyConfig config = this.addon.configuration().vehicleHotkeyConfig();
 
         if (key.equals(config.toggleEngine().get())) {
             this.addon.getVehicleService().toggleEngine();

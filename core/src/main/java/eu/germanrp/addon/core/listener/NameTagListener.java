@@ -27,7 +27,7 @@ public class NameTagListener {
 
     public NameTagListener(GermanRPAddon germanRPAddon) {
         this.addon = germanRPAddon;
-        this.nameTagSubConfig = addon.configuration().nameTagSubConfig();
+        this.nameTagSubConfig = this.addon.configuration().nameTagSubConfig();
     }
 
     @Subscribe
@@ -62,33 +62,25 @@ public class NameTagListener {
         final NameTagService nameTagService = this.addon.getNameTagService();
         final boolean isAFK = event.nameTag().toString().contains("italic");
 
-        if (Boolean.TRUE.equals(nameTagSubConfig.factionColorEnabled().get())
-                && nameTagService.getMembers().contains(playerName)
-        ) {
-            final TextColor color = TextColor.color(nameTagSubConfig.factionColor().get().get());
+        if (this.nameTagSubConfig.factionColorEnabled().get() && nameTagService.getMembers().contains(playerName)) {
+            final TextColor color = TextColor.color(this.nameTagSubConfig.factionColor().get().get());
             renderNameTag(event, isAFK, color);
             return;
         }
 
         if (faction.getType() == Type.CRIME) {
-
-            if (Boolean.TRUE.equals(nameTagSubConfig.bountyColorEnabled().get())
-                    && nameTagService.getBounties().contains(playerName)) {
-                final TextColor color = TextColor.color(nameTagSubConfig.bountyColor().get().get());
+            if (this.nameTagSubConfig.bountyColorEnabled().get() && nameTagService.getBounties().contains(playerName)) {
+                final TextColor color = TextColor.color(this.nameTagSubConfig.bountyColor().get().get());
                 renderNameTag(event, isAFK, color);
                 return;
             }
 
-            if (Boolean.TRUE.equals(nameTagSubConfig.darklistColorEnabled().get())
-                    && nameTagService.getDarklist().contains(playerName)) {
-                final TextColor color = TextColor.color(nameTagSubConfig.darklistColor().get().get());
+            if (this.nameTagSubConfig.darklistColorEnabled().get() && nameTagService.getDarklist().contains(playerName)) {
+                final TextColor color = TextColor.color(this.nameTagSubConfig.darklistColor().get().get());
                 renderNameTag(event, isAFK, color);
             }
-
-        } else if (faction.getType() == Type.STAAT
-                && Boolean.TRUE.equals(nameTagSubConfig.wantedColorEnabled().get())
-                && nameTagService.getWantedPlayers().contains(playerName)) {
-            final TextColor color = TextColor.color(nameTagSubConfig.wantedColor().get().get());
+        } else if (faction.getType() == Type.STAAT && this.nameTagSubConfig.wantedColorEnabled().get() && nameTagService.getWantedPlayers().contains(playerName)) {
+            final TextColor color = TextColor.color(this.nameTagSubConfig.wantedColor().get().get());
             renderNameTag(event, isAFK, color);
         }
     }
@@ -113,5 +105,4 @@ public class NameTagListener {
     private static boolean isIgnoredPrefix(final String prefix) {
         return Arrays.stream(IGNORED_PREFIXES).anyMatch(prefix::contains);
     }
-
 }

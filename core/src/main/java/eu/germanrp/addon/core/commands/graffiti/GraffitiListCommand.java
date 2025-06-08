@@ -36,14 +36,17 @@ public class GraffitiListCommand extends SubCommand {
 
     @Override
     public boolean execute(String prefix, String[] arguments) {
-        final Color labelColor =
-                config.labelColor().get().isChroma() ? config.labelColor().defaultValue() : config.labelColor()
-                        .get();
-        final Color bracketColor = config.bracketColor().get().isChroma() ? config.bracketColor()
-                .defaultValue() : config.bracketColor().get();
-        final Color valueColor =
-                config.valueColor().get().isChroma() ? config.valueColor().defaultValue() : config.valueColor()
-                        .get();
+        final Color labelColor = this.config.labelColor().get().isChroma()
+                ? this.config.labelColor().defaultValue()
+                : this.config.labelColor().get();
+
+        final Color bracketColor = this.config.bracketColor().get().isChroma()
+                ? this.config.bracketColor().defaultValue()
+                : this.config.bracketColor().get();
+
+        final Color valueColor = this.config.valueColor().get().isChroma()
+                ? this.config.valueColor().defaultValue()
+                : this.config.valueColor().get();
 
         stream(Graffiti.values()).forEach(graffiti -> {
             final Position position = graffiti.getPosition();
@@ -52,23 +55,16 @@ public class GraffitiListCommand extends SubCommand {
             final String naviCommand = "/navi " + position.getX() + " " + position.getY() + " " + position.getZ();
 
             final TextComponent key = text(graffiti.getName()).color(TextColor.color(labelColor.get()));
-            final TextComponent value = text(
-                    remainingTime != ZERO ? addon.getUtilService().text()
-                            .parseTimer(remainingTime.toSeconds()) : "Cooldown abgelaufen",
-                    TextColor.color(valueColor.get())
-            );
+            final TextComponent value = text(remainingTime != ZERO
+                    ? this.addon.getUtilService().text().parseTimer(remainingTime.toSeconds())
+                    : "Cooldown abgelaufen", TextColor.color(valueColor.get()));
 
-            final Formatting formatting = config.formatting().get();
-            final Component textMessage = formatting.build(
-                            key,
-                            value,
-                            true,
-                            bracketColor.get()
-                    )
+            final Formatting formatting = this.config.formatting().get();
+            final Component textMessage = formatting.build(key, value, true, bracketColor.get())
                     .hoverEvent(showText(text(naviCommand)))
                     .clickEvent(runCommand(naviCommand));
 
-            player.sendMessage(textMessage);
+            this.player.sendMessage(textMessage);
         });
 
         return true;

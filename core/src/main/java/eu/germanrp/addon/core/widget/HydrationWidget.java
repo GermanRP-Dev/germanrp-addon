@@ -11,6 +11,7 @@ import net.labymod.api.client.gui.hud.hudwidget.text.TextLine;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 
+import static net.labymod.api.Laby.labyAPI;
 import static net.labymod.api.client.component.Component.translatable;
 import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.HIDDEN;
 import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.VISIBLE;
@@ -55,17 +56,17 @@ public class HydrationWidget extends TextHudWidget<TextHudWidgetConfig> {
             return;
         }
 
-        if (addon.configuration().hydrationConfig().hideHydrationChatMessage().get().equals(Boolean.TRUE)) {
+        if (this.addon.configuration().hydrationConfig().hideHydrationChatMessage().get().equals(Boolean.TRUE)) {
             event.setCancelled(true);
             return;
         }
 
-        if (addon.configuration().hydrationConfig().displayHydrationMessageInActionBar().get()
+        if (this.addon.configuration().hydrationConfig().displayHydrationMessageInActionBar().get()
                 .equals(Boolean.FALSE)) {
             return; // If we end up here, the message will just go through to the client
         }
 
-        addon.labyAPI().minecraft().chatExecutor().displayActionBar(event.chatMessage().component());
+        labyAPI().minecraft().chatExecutor().displayActionBar(event.chatMessage().component());
         event.setCancelled(true);
     }
 
