@@ -69,6 +69,7 @@ public class ChatListener {
                         }
                         this.addon.getPlayer().setPlayerFaction(Faction.NONE);
                     }
+                    case "Rettungsdienst" -> this.addon.getPlayer().setPlayerFaction(Faction.RETTUNGSDIENST);
                     case "Rousseau Familie" -> this.addon.getPlayer().setPlayerFaction(Faction.ROUSSEAU);
                     case "Polizei" -> this.addon.getPlayer().setPlayerFaction(Faction.POLIZEI);
                     case "Camorra" -> this.addon.getPlayer().setPlayerFaction(Faction.CAMORRA);
