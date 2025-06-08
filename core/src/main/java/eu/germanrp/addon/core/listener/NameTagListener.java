@@ -57,7 +57,6 @@ public class NameTagListener {
         }
 
         if(factionName == null || factionName.getType() == FactionType.NEUTRAL) {
-            this.addon.getPlayer().sendErrorMessage("FactionName is null or NEUTRAL");
             return;
         }
 
