@@ -39,17 +39,15 @@ public class ServerJoinListener {
         this.addon.getNameTagService().getMembers().clear();
         this.addon.getPlayer().sendServerMessage(String.format("/memberinfo %s", faction.getMemberInfoCommandArg()));
 
-        switch (faction.getType()) {
-            case BADFRAK -> {
-                this.addon.getNameTagService().getDarklist().clear();
-                this.addon.getNameTagService().getBounties().clear();
-                this.addon.getPlayer().sendServerMessage("/darklist");
-                this.addon.getPlayer().sendServerMessage("/kopfgelder");
-            }
-            case STAAT -> {
-                this.addon.getNameTagService().getWantedPlayers().clear();
-                this.addon.getPlayer().sendServerMessage("/wanteds");
-            }
+        final Faction.Type type = faction.getType();
+        if (type == Faction.Type.CRIME) {
+            this.addon.getNameTagService().getDarklist().clear();
+            this.addon.getNameTagService().getBounties().clear();
+            this.addon.getPlayer().sendServerMessage("/darklist");
+            this.addon.getPlayer().sendServerMessage("/kopfgelder");
+        } else if (type == Faction.Type.STAAT) {
+            this.addon.getNameTagService().getWantedPlayers().clear();
+            this.addon.getPlayer().sendServerMessage("/wanteds");
         }
     }
 }

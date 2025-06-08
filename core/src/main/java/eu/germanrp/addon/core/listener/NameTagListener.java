@@ -1,7 +1,7 @@
 package eu.germanrp.addon.core.listener;
 
 import eu.germanrp.addon.api.models.Faction;
-import eu.germanrp.addon.api.models.Faction.FactionType;
+import eu.germanrp.addon.api.models.Faction.Type;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.NameTagSubConfig;
 import eu.germanrp.addon.core.services.NameTagService;
@@ -39,7 +39,7 @@ public class NameTagListener {
         final Faction faction = this.addon.getPlayer().getPlayerFaction();
         final NetworkPlayerInfo playerInfo = event.getPlayerInfo();
 
-        if (playerInfo == null || faction == null || faction.getType() == FactionType.NEUTRAL) {
+        if (playerInfo == null || faction == null || faction.getType() == Type.NEUTRAL) {
             return;
         }
 
@@ -70,7 +70,7 @@ public class NameTagListener {
             return;
         }
 
-        if (faction.getType() == FactionType.BADFRAK) {
+        if (faction.getType() == Type.CRIME) {
 
             if (Boolean.TRUE.equals(nameTagSubConfig.bountyColorEnabled().get())
                     && nameTagService.getBounties().contains(playerName)) {
@@ -85,7 +85,7 @@ public class NameTagListener {
                 renderNameTag(event, isAFK, color);
             }
 
-        } else if (faction.getType() == FactionType.STAAT
+        } else if (faction.getType() == Type.STAAT
                 && Boolean.TRUE.equals(nameTagSubConfig.wantedColorEnabled().get())
                 && nameTagService.getWantedPlayers().contains(playerName)) {
             final TextColor color = TextColor.color(nameTagSubConfig.wantedColor().get().get());

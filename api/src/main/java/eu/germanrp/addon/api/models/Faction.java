@@ -5,30 +5,30 @@ import lombok.Getter;
 @Getter
 public enum Faction {
 
-    NONE(null, FactionType.NEUTRAL),
-    POLIZEI("Polizei", FactionType.STAAT),
-    RETTUNGSDIENST("Rettungsdienst", FactionType.MEDIC),
-    SINALOAKARTELL("CDS", FactionType.BADFRAK),
-    CAMORRA("Camorra", FactionType.BADFRAK),
-    ROUSSEAU("Rousseau", FactionType.BADFRAK),
-    PRESSE("Presseagentur", FactionType.BADFRAK),
-    MTFASHION("MT-Fashion", FactionType.BADFRAK),
-    ESTABLISHMENT("Establishment", FactionType.BADFRAK),
-    KARTELL("Kartell", FactionType.BADFRAK);
+    NONE(null, Type.NEUTRAL),
+    POLIZEI("Polizei", Type.STAAT),
+    RETTUNGSDIENST("Rettungsdienst", Type.MEDIC),
+    SINALOAKARTELL("CDS", Type.CRIME),
+    CAMORRA("Camorra", Type.CRIME),
+    ROUSSEAU("Rousseau", Type.CRIME),
+    PRESSE("Presseagentur", Type.CRIME),
+    MTFASHION("MT-Fashion", Type.CRIME),
+    ESTABLISHMENT("Establishment", Type.CRIME),
+    KARTELL("Kartell", Type.CRIME);
 
     private final String memberInfoCommandArg;
-    private final FactionType type;
+    private final Type type;
 
-    Faction(String memberInfoCommandArg, FactionType type) {
+    Faction(String memberInfoCommandArg, Type type) {
         this.memberInfoCommandArg = memberInfoCommandArg;
         this.type = type;
     }
 
-    public enum FactionType {
+    public enum Type {
 
         STAAT,
         MEDIC,
-        BADFRAK,
+        CRIME,
         NEUTRAL
     }
 }

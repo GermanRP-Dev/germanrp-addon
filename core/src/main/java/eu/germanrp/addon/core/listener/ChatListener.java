@@ -135,7 +135,7 @@ public class ChatListener {
             this.addon.getNameTagService().getMembers().add(matcher.group(1).replace("[GR]", ""));
         }
         switch (faction.getType()) {
-            case BADFRAK -> {
+            case CRIME -> {
                 if (message.startsWith("► [Darklist] ")) {
                     event.setCancelled(true);
                     final Matcher matcher = DARK_LIST_ENTRY.getPattern().matcher(message);
@@ -201,7 +201,7 @@ public class ChatListener {
         }
         String message = event.chatMessage().getPlainText();
         switch (faction.getType()) {
-            case BADFRAK -> {
+            case CRIME -> {
                 final Matcher nametagDarkListAddMatcher = DARK_LIST_ADD.getPattern().matcher(message);
 
                 if (nametagDarkListAddMatcher.find()) {
