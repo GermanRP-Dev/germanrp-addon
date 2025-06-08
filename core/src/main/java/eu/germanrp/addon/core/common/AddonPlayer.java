@@ -44,6 +44,10 @@ public interface AddonPlayer {
 
     void sendSyntaxMessage(String message);
 
+    void sendDebugMessage(String message);
+
+    void sendDebugMessage(Component component);
+
     void sendServerMessage(String message);
 
     ClientWorld getWorld();
