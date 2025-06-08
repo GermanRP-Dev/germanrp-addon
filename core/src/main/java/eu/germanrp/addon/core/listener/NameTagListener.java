@@ -1,9 +1,10 @@
 package eu.germanrp.addon.core.listener;
 
-import eu.germanrp.addon.api.models.FactionName;
-import eu.germanrp.addon.api.models.FactionName.FactionType;
+import eu.germanrp.addon.api.models.Faction;
+import eu.germanrp.addon.api.models.Faction.FactionType;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.NameTagSubConfig;
+import eu.germanrp.addon.core.services.NameTagService;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.TextColor;
 import net.labymod.api.client.component.format.TextDecoration;
@@ -11,12 +12,13 @@ import net.labymod.api.client.network.NetworkPlayerInfo;
 import net.labymod.api.client.scoreboard.ScoreboardTeam;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.render.PlayerNameTagRenderEvent;
-import net.labymod.api.util.Color;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.Arrays;
 
 public class NameTagListener {
+    private static final String[] IGNORED_PREFIXS = {
+            "red", "dark_red", "dark_aqua", "✝"
+    };
 
     private final GermanRPAddon addon;
 
@@ -30,142 +32,81 @@ public class NameTagListener {
     @Subscribe
     public void onNameTag(PlayerNameTagRenderEvent event) {
         if (!this.addon.getUtilService().isGermanRP()) {
-            this.addon.getPlayer().sendErrorMessage("du bist nicht auf GR");
             return;
         }
 
-        FactionName factionName = this.addon.getPlayer().getPlayerFactionName();
+        final Faction faction = this.addon.getPlayer().getPlayerFactionName();
+        final NetworkPlayerInfo playerInfo = event.getPlayerInfo();
 
-        NetworkPlayerInfo playerInfo = event.getPlayerInfo();
-
-        if (playerInfo == null) {
-            this.addon.getPlayer().sendErrorMessage("playerInfo is null");
+        if (playerInfo == null || faction == null || faction.getType() == FactionType.NEUTRAL) {
             return;
         }
 
-        if (Boolean.TRUE.equals(this.addon.configuration().debug().get())) {
-            this.addon.getPlayer().sendDebugMessage("Display Name: " + playerInfo.displayName().toString());
-            final ScoreboardTeam team = playerInfo.getTeam();
-
-            if (team == null) {
-                return;
-            }
-
-            this.addon.getPlayer().sendDebugMessage("Prefix: " + team.getPrefix());
-            this.addon.getPlayer().sendDebugMessage("Suffix: " + team.getSuffix());
-        }
-
-        if (factionName == null || factionName.getType() == FactionType.NEUTRAL) {
-            return;
-        }
-
-        String playerName = playerInfo.profile().getUsername();
-        ScoreboardTeam team = playerInfo.getTeam();
+        final String playerName = playerInfo.profile().getUsername();
+        final ScoreboardTeam team = playerInfo.getTeam();
 
         if (team == null) {
             return;
         }
 
-        Component prefix = team.getPrefix().copy();
-
-        if (prefix.toString().contains("red") || prefix.toString().contains("dark_red") || prefix.toString()
-                .contains("dark_aqua") || prefix.toString().contains("✝")) {
+        final String prefix = team.getPrefix().toString();
+        if(isIgnoredPrefix(prefix)) {
             return;
         }
 
-        boolean isAFK = event.nameTag().toString().contains("italic");
+        renderNameTag(event, playerName, faction);
+    }
 
-        if (this.addon.getNameTagService().getMembers() != null) {
-            List<String> memberlist = this.addon.getNameTagService().getMembers();
-            Color factionTag = nameTagSubConfig.factionColor().get();
-            boolean colorEnabled = nameTagSubConfig.factionColorEnabled().get();
+    private void renderNameTag(PlayerNameTagRenderEvent event, String playerName, Faction faction) {
+        final NameTagService nameTagService = this.addon.getNameTagService();
+        final boolean isAFK = event.nameTag().toString().contains("italic");
 
-            final Optional<Component> component =
-                    changeNameTag(playerName, team, prefix, isAFK, memberlist, factionTag, colorEnabled);
-            this.addon.getPlayer().sendErrorMessage(component.toString());
-            if (component.isPresent()) {
-                event.setNameTag(component.get());
+        if (Boolean.TRUE.equals(nameTagSubConfig.factionColorEnabled().get())
+                && nameTagService.getMembers().contains(playerName)
+        ) {
+            final TextColor color = TextColor.color(nameTagSubConfig.factionColor().get().get());
+            renderNameTag(event, isAFK, color);
+            return;
+        }
+
+        if (faction.getType() == FactionType.BADFRAK) {
+
+            if (Boolean.TRUE.equals(nameTagSubConfig.bountyColorEnabled().get())
+                    && nameTagService.getBounties().contains(playerName)) {
+                final TextColor color = TextColor.color(nameTagSubConfig.bountyColor().get().get());
+                renderNameTag(event, isAFK, color);
                 return;
             }
-        }
 
-        switch (factionName.getType()) {
-            case BADFRAK -> {
-                if (this.addon.getNameTagService().getBounties() != null) {
-                    List<String> bountylist = this.addon.getNameTagService().getBounties();
-                    Color bountyTag = nameTagSubConfig.bountyColor().get();
-                    boolean colorEnabled = nameTagSubConfig.bountyColorEnabled().get();
-
-                    final Optional<Component> component =
-                            changeNameTag(playerName, team, prefix, isAFK, bountylist, bountyTag, colorEnabled);
-                    if (component.isPresent()) {
-                        event.setNameTag(component.get());
-                        return;
-                    }
-                }
-
-                if (this.addon.getNameTagService().getDarklist() != null) {
-                    List<String> darklist = this.addon.getNameTagService().getDarklist();
-                    Color darklistTag = nameTagSubConfig.darklistColor().get();
-                    boolean colorEnabled = nameTagSubConfig.darklistColorEnabled().get();
-
-                    changeNameTag(
-                            playerName,
-                            team,
-                            prefix,
-                            isAFK,
-                            darklist,
-                            darklistTag,
-                            colorEnabled
-                    ).ifPresent(event::setNameTag);
-                }
+            if (Boolean.TRUE.equals(nameTagSubConfig.darklistColorEnabled().get())
+                    && nameTagService.getBounties().contains(playerName)) {
+                final TextColor color = TextColor.color(nameTagSubConfig.darklistColor().get().get());
+                renderNameTag(event, isAFK, color);
             }
 
-            case STAAT -> {
-                if (this.addon.getNameTagService().getWantedPlayers() == null) {
-                    return;
-                }
-
-                List<String> wantedList = this.addon.getNameTagService().getWantedPlayers();
-                Color wantedColor = nameTagSubConfig.wantedColor().get();
-                boolean colorEnabled = nameTagSubConfig.wantedColorEnabled().get();
-
-                changeNameTag(
-                        playerName,
-                        team,
-                        prefix,
-                        isAFK,
-                        wantedList,
-                        wantedColor,
-                        colorEnabled
-                ).ifPresent(event::setNameTag);
-            }
-
-            default -> {
-                // Don't do anything for the other types
-            }
+        } else if (faction.getType() == FactionType.STAAT
+                && Boolean.TRUE.equals(nameTagSubConfig.wantedColorEnabled().get())
+                && nameTagService.getBounties().contains(playerName)) {
+            final TextColor color = TextColor.color(nameTagSubConfig.wantedColor().get().get());
+            renderNameTag(event, isAFK, color);
         }
     }
 
-    private Optional<Component> changeNameTag(
-            String playerName,
-            ScoreboardTeam team,
-            Component prefix,
-            boolean isAFK,
-            List<String> list,
-            Color color,
-            boolean colorEnabled
-    ) {
-        if (!list.contains(playerName) || !colorEnabled) {
-            return Optional.empty();
-        }
+    private void renderNameTag(final PlayerNameTagRenderEvent event, final boolean isAFK, final TextColor color) {
+        final Component component = event.nameTag();
 
-        Component nameTag =
-                prefix.append(Component.text(playerName)).append(team.getSuffix()).color(TextColor.color(color.get()));
+        component.color(color);
+        component.getChildren().forEach(child -> child.color(color));
+
         if (isAFK) {
-            nameTag = nameTag.decorate(TextDecoration.ITALIC);
+            component.decorate(TextDecoration.ITALIC);
         }
 
-        return Optional.of(nameTag);
+        event.setNameTag(component);
     }
+
+    private boolean isIgnoredPrefix(final String prefix) {
+        return Arrays.stream(IGNORED_PREFIXS).anyMatch(prefix::contains);
+    }
+
 }
