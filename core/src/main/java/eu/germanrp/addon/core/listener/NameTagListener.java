@@ -37,7 +37,17 @@ public class NameTagListener {
 
         NetworkPlayerInfo playerInfo = event.getPlayerInfo();
 
-        if (playerInfo == null || factionName == null || factionName.getType() == FactionType.NEUTRAL) {
+        if (playerInfo == null) {
+            return;
+        }
+
+        if(Boolean.TRUE.equals(this.addon.configuration().debug().get())) {
+            this.addon.getPlayer().sendDebugMessage("Display Name: " + playerInfo.displayName().toString());
+            this.addon.getPlayer().sendDebugMessage("Prefix: " + playerInfo.getTeam().getPrefix());
+            this.addon.getPlayer().sendDebugMessage("Suffix: " + playerInfo.getTeam().getSuffix());
+        }
+
+        if(factionName == null || factionName.getType() == FactionType.NEUTRAL) {
             return;
         }
 
