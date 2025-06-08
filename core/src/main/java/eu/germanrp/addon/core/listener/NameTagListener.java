@@ -4,6 +4,7 @@ import eu.germanrp.addon.api.models.FactionName;
 import eu.germanrp.addon.api.models.FactionName.FactionType;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.NameTagSubConfig;
+import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.TextColor;
 import net.labymod.api.client.component.format.TextDecoration;
@@ -43,8 +44,14 @@ public class NameTagListener {
 
         if(Boolean.TRUE.equals(this.addon.configuration().debug().get())) {
             this.addon.getPlayer().sendDebugMessage("Display Name: " + playerInfo.displayName().toString());
-            this.addon.getPlayer().sendDebugMessage("Prefix: " + playerInfo.getTeam().getPrefix());
-            this.addon.getPlayer().sendDebugMessage("Suffix: " + playerInfo.getTeam().getSuffix());
+            final ScoreboardTeam team = playerInfo.getTeam();
+
+            if(team == null) {
+                return;
+            }
+
+            this.addon.getPlayer().sendDebugMessage("Prefix: " + team.getPrefix());
+            this.addon.getPlayer().sendDebugMessage("Suffix: " + team.getSuffix());
         }
 
         if(factionName == null || factionName.getType() == FactionType.NEUTRAL) {

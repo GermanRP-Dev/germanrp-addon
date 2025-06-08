@@ -24,7 +24,7 @@ public class ServerJoinListener {
             return;
         }
         this.addon.getChatListener().setEmptyMessages(0);
-        this.addon.getPlayer().setPlayerFactionName(null);
+        this.addon.getPlayer().setPlayerFactionName(FactionName.NONE);
         fireEvent(new JustJoinedEvent(true));
 
         this.addon.getPlayer().sendServerMessage("/stats");

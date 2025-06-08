@@ -260,7 +260,7 @@ public class DefaultAddonPlayer implements AddonPlayer {
     }
 
     @Override
-    public void setPlayerFactionName(FactionName playerFactionName) {
+    public void setPlayerFactionName(@NotNull FactionName playerFactionName) {
         this.playerFactionName = playerFactionName;
     }
 

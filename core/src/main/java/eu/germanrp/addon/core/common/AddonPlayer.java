@@ -8,6 +8,7 @@ import net.labymod.api.client.scoreboard.Scoreboard;
 import net.labymod.api.client.world.ClientWorld;
 import net.labymod.api.util.math.position.Position;
 import net.labymod.api.util.math.vector.FloatVector3;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -92,7 +93,7 @@ public interface AddonPlayer {
 
     boolean isPlayerGR();
 
-    void setPlayerFactionName(FactionName factionName);
+    void setPlayerFactionName(@NotNull FactionName factionName);
 
     FactionName getPlayerFactionName();
 
