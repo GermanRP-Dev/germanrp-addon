@@ -16,8 +16,9 @@ import net.labymod.api.event.client.render.PlayerNameTagRenderEvent;
 import java.util.Arrays;
 
 public class NameTagListener {
+
     private static final String[] IGNORED_PREFIXES = {
-            "red", "dark_red", "dark_aqua", "✝"
+            "red", "✝"
     };
 
     private final GermanRPAddon addon;
