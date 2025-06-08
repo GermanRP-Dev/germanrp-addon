@@ -54,10 +54,10 @@ public class NameTagListener {
             return;
         }
 
-        renderNameTag(event, playerName, faction);
+        processNameTagRendering(event, playerName, faction);
     }
 
-    private void renderNameTag(PlayerNameTagRenderEvent event, String playerName, Faction faction) {
+    private void processNameTagRendering(PlayerNameTagRenderEvent event, String playerName, Faction faction) {
         final NameTagService nameTagService = this.addon.getNameTagService();
         final boolean isAFK = event.nameTag().toString().contains("italic");
 
@@ -92,7 +92,7 @@ public class NameTagListener {
         }
     }
 
-    private void renderNameTag(final PlayerNameTagRenderEvent event, final boolean isAFK, final TextColor color) {
+    private static void renderNameTag(final PlayerNameTagRenderEvent event, final boolean isAFK, final TextColor color) {
         final Component component = event.nameTag();
 
         component.color(color);
@@ -105,7 +105,7 @@ public class NameTagListener {
         event.setNameTag(component);
     }
 
-    private boolean isIgnoredPrefix(final String prefix) {
+    private static boolean isIgnoredPrefix(final String prefix) {
         return Arrays.stream(IGNORED_PREFIXES).anyMatch(prefix::contains);
     }
 
