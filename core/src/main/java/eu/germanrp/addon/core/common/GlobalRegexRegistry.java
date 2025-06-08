@@ -1,4 +1,4 @@
-    package eu.germanrp.addon.core.common;
+package eu.germanrp.addon.core.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

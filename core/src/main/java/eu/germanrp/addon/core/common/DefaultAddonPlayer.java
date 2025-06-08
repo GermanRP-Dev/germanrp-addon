@@ -18,7 +18,11 @@ import java.util.UUID;
 import static net.labymod.api.Laby.labyAPI;
 import static net.labymod.api.client.component.Component.text;
 import static net.labymod.api.client.component.event.HoverEvent.showText;
-import static net.labymod.api.client.component.format.NamedTextColor.*;
+import static net.labymod.api.client.component.format.NamedTextColor.AQUA;
+import static net.labymod.api.client.component.format.NamedTextColor.DARK_AQUA;
+import static net.labymod.api.client.component.format.NamedTextColor.DARK_RED;
+import static net.labymod.api.client.component.format.NamedTextColor.RED;
+import static net.labymod.api.client.component.format.NamedTextColor.WHITE;
 import static net.labymod.api.client.component.format.TextDecoration.BOLD;
 
 /**
@@ -265,9 +269,6 @@ public class DefaultAddonPlayer implements AddonPlayer {
     }
 
     private Component prefix() {
-        return text(ADDON_PREFIX_SYMBOL, DARK_AQUA, BOLD).hoverEvent(showText(text(
-                "Nachricht vom GermanRP-Addon",
-                DARK_AQUA
-        )));
+        return text(ADDON_PREFIX_SYMBOL, DARK_AQUA, BOLD).hoverEvent(showText(text("Nachricht vom GermanRP-Addon", DARK_AQUA)));
     }
 }

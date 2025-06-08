@@ -22,5 +22,4 @@ public class TestCommand extends Command {
         this.addon.getPlayer().sendDebugMessage(Arrays.toString(this.addon.getNameTagService().getMembers().toArray()));
         return true;
     }
-
 }
