@@ -17,6 +17,7 @@ public class TestCommand extends Command {
     public boolean execute(String prefix, String[] arguments) {
         final FactionName playerFactionName = this.addon.getPlayer().getPlayerFactionName();
         this.addon.getPlayer().sendDebugMessage(playerFactionName.name());
+        this.addon.getPlayer().sendDebugMessage(this.addon.getNameTagService().getMembers().toString());
         return true;
     }
 

@@ -71,7 +71,10 @@ public class ChatListener {
                     }
                     case "Rousseau Familie" -> this.addon.getPlayer().setPlayerFactionName(FactionName.ROUSSEAU);
                     case "Polizei" -> this.addon.getPlayer().setPlayerFactionName(FactionName.POLIZEI);
-                    case "Camorra" -> this.addon.getPlayer().setPlayerFactionName(FactionName.CAMORRA);
+                    case "Camorra" -> {
+                        this.addon.getPlayer().sendDebugMessage("Camorra");
+                        this.addon.getPlayer().setPlayerFactionName(FactionName.CAMORRA);
+                    }
                     case "The Establishment" -> this.addon.getPlayer().setPlayerFactionName(FactionName.ESTABLISHMENT);
                     case "MT-Fashion" -> this.addon.getPlayer().setPlayerFactionName(FactionName.MTFASHION);
                     case "Presseagentur" -> this.addon.getPlayer().setPlayerFactionName(FactionName.PRESSE);

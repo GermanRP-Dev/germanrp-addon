@@ -31,6 +31,7 @@ public class NameTagListener {
     @Subscribe
     public void onNameTag(PlayerNameTagRenderEvent event) {
         if (!this.addon.getUtilService().isGermanRP()) {
+            this.addon.getPlayer().sendErrorMessage("du bist nicht auf GR");
             return;
         }
 
@@ -39,6 +40,7 @@ public class NameTagListener {
         NetworkPlayerInfo playerInfo = event.getPlayerInfo();
 
         if (playerInfo == null) {
+            this.addon.getPlayer().sendErrorMessage("playerInfo is null");
             return;
         }
 
@@ -55,6 +57,7 @@ public class NameTagListener {
         }
 
         if(factionName == null || factionName.getType() == FactionType.NEUTRAL) {
+            this.addon.getPlayer().sendErrorMessage("FactionName is null or NEUTRAL");
             return;
         }
 
@@ -81,6 +84,7 @@ public class NameTagListener {
 
             final Optional<Component> component =
                     changeNameTag(playerName, team, prefix, isAFK, memberlist, factionTag, colorEnabled);
+            this.addon.getPlayer().sendErrorMessage(component.toString());
             if (component.isPresent()) {
                 event.setNameTag(component.get());
                 return;
