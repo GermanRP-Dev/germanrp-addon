@@ -134,6 +134,7 @@ public class ChatListener {
                 return;
             }
             this.addon.getNameTagService().getMembers().add(matcher.group(1).replace("[GR]", ""));
+            return;
         }
         switch (faction.getType()) {
             case CRIME -> {
