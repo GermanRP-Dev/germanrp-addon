@@ -134,6 +134,7 @@ public class ChatListener {
                 return;
             }
             this.addon.getNameTagService().getMembers().add(matcher.group(1).replace("[GR]", ""));
+            return;
         }
         switch (faction.getType()) {
             case CRIME -> {
@@ -189,6 +190,14 @@ public class ChatListener {
                     }
                     this.addon.getNameTagService().getWantedPlayers().add(matcher.group(1).replace("[GR]", ""));
                 }
+            }
+            case NEUTRAL -> {
+                if (this.wasAFK) {
+                    this.addon.getPlayer().sendServerMessage("/afk");
+                    this.wasAFK = false;
+                    return;
+                }
+                this.justJoined = false;
             }
         }
     }

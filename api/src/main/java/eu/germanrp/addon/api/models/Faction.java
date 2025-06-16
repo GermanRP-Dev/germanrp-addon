@@ -11,8 +11,8 @@ public enum Faction {
     SINALOAKARTELL("CDS", Type.CRIME),
     CAMORRA("Camorra", Type.CRIME),
     ROUSSEAU("Rousseau", Type.CRIME),
-    PRESSE("Presseagentur", Type.CRIME),
-    MTFASHION("MT-Fashion", Type.CRIME),
+    PRESSE("Presseagentur", Type.NEUTRAL),
+    MTFASHION("MT-Fashion", Type.NEUTRAL),
     ESTABLISHMENT("Establishment", Type.CRIME),
     KARTELL("Kartell", Type.CRIME);
 
