@@ -127,7 +127,7 @@ public class ChatListener {
             event.setCancelled(true);
             final Matcher matcher = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
             if (!matcher.find()) {
-                if (!message.startsWith("        (Insgesamt ") || !message.endsWith(" verfügbar)")) {
+                if (!message.startsWith("        (Insgesamt: ") || !message.endsWith(" verfügbar)")) {
                     return;
                 }
                 this.chatShowsMemberInfo = false;
