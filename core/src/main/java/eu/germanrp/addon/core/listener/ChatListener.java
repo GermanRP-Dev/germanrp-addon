@@ -191,7 +191,7 @@ public class ChatListener {
                     this.addon.getNameTagService().getWantedPlayers().add(matcher.group(1).replace("[GR]", ""));
                 }
             }
-            case NEUTRAL -> {
+            case NEUTRAL,MEDIC -> {
                 if (this.wasAFK) {
                     this.addon.getPlayer().sendServerMessage("/afk");
                     this.wasAFK = false;
