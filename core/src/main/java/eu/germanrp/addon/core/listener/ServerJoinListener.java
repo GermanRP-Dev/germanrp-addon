@@ -3,6 +3,9 @@ package eu.germanrp.addon.core.listener;
 import eu.germanrp.addon.api.models.Faction;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.JustJoinedEvent;
+import eu.germanrp.addon.core.services.util.UpdateService;
+import net.labymod.api.client.component.Component;
+import net.labymod.api.client.component.event.ClickEvent;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.network.server.ServerJoinEvent;
 
@@ -12,8 +15,11 @@ public class ServerJoinListener {
 
     private final GermanRPAddon addon;
 
+    private final UpdateService updateService;
+
     public ServerJoinListener(GermanRPAddon addon) {
         this.addon = addon;
+        this.updateService = addon.getUpdateService();
     }
 
     @Subscribe
@@ -24,6 +30,17 @@ public class ServerJoinListener {
         }
         this.addon.getChatListener().setEmptyMessages(0);
         this.addon.getPlayer().setPlayerFaction(null);
+
+        if (this.addon.configuration().notifyNewNightly().getOrDefault(false) && this.updateService.isUpdateAvailable()) {
+            this.addon.getPlayer().sendInfoMessage(
+                    Component.translatable("germanrpaddon.message.newUpdateAvailable")
+                            .append(Component.text(" "))
+                            .append(Component.translatable("germanrpaddon.message.newUpdateAvailable.clickHere")
+                                    .clickEvent(ClickEvent.openUrl("https://github.com/GermanRP-Dev/germanrp-addon/releases"))
+                            )
+            );
+        }
+
         fireEvent(new JustJoinedEvent(true));
 
         this.addon.getPlayer().sendServerMessage("/stats");
