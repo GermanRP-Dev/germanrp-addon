@@ -10,12 +10,13 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static java.util.Objects.requireNonNull;
 
 public final class UpdateService {
 
-    public static final int HASH_LENGTH = 40;
     private final GermanRPAddon addon;
 
     public UpdateService(final GermanRPAddon addon) {
@@ -43,17 +44,15 @@ public final class UpdateService {
     }
 
     private Optional<String> getCurrentAddonHash() {
-        // nightly release version form: nightly/ffac537e6cbbf934b08745a378932722df287a53
         final String currentAddonVersion = this.addon.addonInfo().getVersion();
 
-        if(!(currentAddonVersion.startsWith("nightly/") && currentAddonVersion.length() == "nightly/".length() + HASH_LENGTH)) {
+        final Matcher matcher = Pattern.compile("^nightly/(\\S{40})$").matcher(currentAddonVersion);
+
+        if (!matcher.matches()) {
             return Optional.empty();
         }
 
-        return Optional.of(currentAddonVersion.substring(
-                currentAddonVersion.length() - HASH_LENGTH,
-                currentAddonVersion.length() - 1
-        ));
+        return Optional.of(matcher.group(1));
     }
 
     private static Optional<String> getLatestTagHash() {
