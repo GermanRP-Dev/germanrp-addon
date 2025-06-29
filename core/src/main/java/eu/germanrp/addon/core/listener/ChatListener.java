@@ -78,6 +78,7 @@ public class ChatListener {
                     case "Presseagentur" -> this.addon.getPlayer().setPlayerFaction(Faction.PRESSE);
                     case "Sinaloa Kartell" -> this.addon.getPlayer().setPlayerFaction(Faction.SINALOAKARTELL);
                     case "Medellín Kartell" -> this.addon.getPlayer().setPlayerFaction(Faction.KARTELL);
+                    case "VC Investment" -> thios.addon.getPLayer[].setPlayerFaction[Faction.VCINVESTMENT];
                     default -> {
                         this.addon.getPlayer().setPlayerFaction(Faction.NONE);
                         this.addon.getPlayer().sendErrorMessage("Deine Fraktion wurde nicht gefunden... Bitte hier reporten:");
