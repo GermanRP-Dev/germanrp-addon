@@ -15,7 +15,7 @@ public enum Faction {
     MTFASHION("MT-Fashion", Type.NEUTRAL),
     ESTABLISHMENT("Establishment", Type.CRIME),
     KARTELL("Kartell", Type.CRIME);
-    VCI("VC Investment", Type.NEUTRAL),
+    VCI("VCI", Type.NEUTRAL),
 
     private final String memberInfoCommandArg;
     private final Type type;
