@@ -79,6 +79,7 @@ public class ChatListener {
                     case "Sinaloa Kartell" -> this.addon.getPlayer().setPlayerFaction(Faction.SINALOAKARTELL);
                     case "Medellín Kartell" -> this.addon.getPlayer().setPlayerFaction(Faction.KARTELL);
                     case "VanceCity Investment" -> this.addon.getPlayer().setPlayerFaction(Faction.VCI);
+                    case "Cartel de Cayo Perico" -> this.addon.getPlayer().setPlayerFaction(Faction.KARTELLCAYOPERICO);
                     default -> {
                         this.addon.getPlayer().setPlayerFaction(Faction.NONE);
                         this.addon.getPlayer().sendErrorMessage("Deine Fraktion wurde nicht gefunden... Bitte hier reporten:");
