@@ -14,6 +14,7 @@ public enum Faction {
     PRESSE("Presseagentur", Type.NEUTRAL),
     MTFASHION("MT-Fashion", Type.NEUTRAL),
     ESTABLISHMENT("Establishment", Type.CRIME),
+    KARTELLCAYOPERICO("CDCP", Type.CRIME),
     KARTELL("Kartell", Type.CRIME);
 
     private final String memberInfoCommandArg;
