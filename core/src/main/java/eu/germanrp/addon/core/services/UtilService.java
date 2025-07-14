@@ -38,7 +38,13 @@ public class UtilService {
     public boolean isGermanRP() {
         if (labyAPI().minecraft().isIngame()) {
             ServerData serverData = labyAPI().serverController().getCurrentServerData();
-            return serverData != null && serverData.address().matches("germanrp.eu", 25565, true);
+            boolean isGermanRP = serverData.address().matches("germanrp.eu", 25565, true);
+            if (serverData.address().matches("germanrp.de",25565,true)
+            ||serverData.address().matches("germanrp.eu", 25565, true)
+            ||serverData.address().matches("91.218.66.124", 25565, true)){
+                return true;
+            }
+
         }
         return false;
     }

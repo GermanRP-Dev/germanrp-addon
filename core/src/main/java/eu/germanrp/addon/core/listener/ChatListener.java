@@ -78,6 +78,8 @@ public class ChatListener {
                     case "Presseagentur" -> this.addon.getPlayer().setPlayerFaction(Faction.PRESSE);
                     case "Sinaloa Kartell" -> this.addon.getPlayer().setPlayerFaction(Faction.SINALOAKARTELL);
                     case "Medellín Kartell" -> this.addon.getPlayer().setPlayerFaction(Faction.KARTELL);
+                    case "VanceCity Investment" -> this.addon.getPlayer().setPlayerFaction(Faction.VCI);
+                    case "Cartel de Cayo Perico" -> this.addon.getPlayer().setPlayerFaction(Faction.KARTELLCAYOPERICO);
                     default -> {
                         this.addon.getPlayer().setPlayerFaction(Faction.NONE);
                         this.addon.getPlayer().sendErrorMessage("Deine Fraktion wurde nicht gefunden... Bitte hier reporten:");
@@ -127,7 +129,7 @@ public class ChatListener {
             event.setCancelled(true);
             final Matcher matcher = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
             if (!matcher.find()) {
-                if (!message.startsWith("        (Insgesamt ") || !message.endsWith(" verfügbar)")) {
+                if (!message.startsWith("        (Insgesamt: ") || !message.endsWith(" verfügbar)")) {
                     return;
                 }
                 this.chatShowsMemberInfo = false;
@@ -191,7 +193,7 @@ public class ChatListener {
                     this.addon.getNameTagService().getWantedPlayers().add(matcher.group(1).replace("[GR]", ""));
                 }
             }
-            case NEUTRAL -> {
+            case NEUTRAL,MEDIC -> {
                 if (this.wasAFK) {
                     this.addon.getPlayer().sendServerMessage("/afk");
                     this.wasAFK = false;

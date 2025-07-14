@@ -12,6 +12,7 @@ import eu.germanrp.addon.core.services.NameTagService;
 import eu.germanrp.addon.core.services.NavigationService;
 import eu.germanrp.addon.core.services.UtilService;
 import eu.germanrp.addon.core.services.VehicleService;
+import eu.germanrp.addon.core.services.util.UpdateService;
 import eu.germanrp.addon.core.widget.BlackMarketWidget;
 import eu.germanrp.addon.core.widget.GraffitiHudWidget;
 import eu.germanrp.addon.core.widget.HeilkrautpflanzeHudWidget;
@@ -43,6 +44,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private NavigationService navigationService;
     private UtilService utilService;
     private VehicleService vehicleService;
+    private UpdateService updateService;
 
     private AddonPlayer player;
 
@@ -64,10 +66,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         instance = this;
         this.player = new DefaultAddonPlayer(this);
 
-        this.nameTagService = new NameTagService();
-        this.navigationService = new NavigationService();
-        this.utilService = new UtilService(this);
-        this.vehicleService = new VehicleService(this);
+        instantiateServices();
 
         this.logger().info("Loaded germanrpaddon");
     }
@@ -86,6 +85,14 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     @Override
     protected Class<GermanRPAddonConfiguration> configurationClass() {
         return GermanRPAddonConfiguration.class;
+    }
+
+    private void instantiateServices() {
+        this.nameTagService = new NameTagService();
+        this.navigationService = new NavigationService();
+        this.utilService = new UtilService(this);
+        this.vehicleService = new VehicleService(this);
+        this.updateService = new UpdateService(this);
     }
 
     private void registerCommands() {
