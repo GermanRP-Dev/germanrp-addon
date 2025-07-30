@@ -7,6 +7,7 @@ import eu.germanrp.addon.core.listener.ChatListener;
 import eu.germanrp.addon.core.listener.EventRegistrationListener;
 import eu.germanrp.addon.core.listener.NameTagListener;
 import eu.germanrp.addon.core.listener.ServerJoinListener;
+import eu.germanrp.addon.core.listener.SkillXPListener;
 import eu.germanrp.addon.core.listener.VehicleHotkeyListener;
 import eu.germanrp.addon.core.services.NameTagService;
 import eu.germanrp.addon.core.services.NavigationService;
@@ -166,5 +167,6 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerListener(new NameTagListener(this));
         registerListener(this.chatListener);
         registerListener(new VehicleHotkeyListener(this));
+        registerListener(new SkillXPListener());
     }
 }
