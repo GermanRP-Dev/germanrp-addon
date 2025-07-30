@@ -7,11 +7,13 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 import net.labymod.api.addon.AddonConfig;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.SwitchSetting;
-import net.labymod.api.client.gui.screen.widget.widgets.input.dropdown.DropdownWidget;
+import net.labymod.api.client.gui.screen.widget.widgets.input.dropdown.DropdownWidget.DropdownSetting;
 import net.labymod.api.configuration.loader.annotation.ConfigName;
 import net.labymod.api.configuration.loader.annotation.SpriteTexture;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
 import net.labymod.api.configuration.settings.annotation.SettingSection;
+
+import static eu.germanrp.addon.api.models.SkillXP.NORMAL;
 
 @Getter
 @Accessors(fluent = true)
@@ -33,8 +35,9 @@ public class GermanRPAddonConfiguration extends AddonConfig {
 
     @SwitchSetting
     private final ConfigProperty<Boolean> silentATM = new ConfigProperty<>(true);
-    @DropdownWidget.DropdownSetting
-    private final ConfigProperty<SkillXP> skillXP = new ConfigProperty<>(SkillXP.NORMAL);
+
+    @DropdownSetting
+    private final ConfigProperty<SkillXP> skillXP = new ConfigProperty<>(NORMAL);
 
     @SettingSection("debug")
     @SwitchSetting
