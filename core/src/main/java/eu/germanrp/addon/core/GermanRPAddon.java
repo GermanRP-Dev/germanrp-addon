@@ -3,11 +3,7 @@ package eu.germanrp.addon.core;
 import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
 import eu.germanrp.addon.core.common.AddonPlayer;
 import eu.germanrp.addon.core.common.DefaultAddonPlayer;
-import eu.germanrp.addon.core.listener.ChatListener;
-import eu.germanrp.addon.core.listener.EventRegistrationListener;
-import eu.germanrp.addon.core.listener.NameTagListener;
-import eu.germanrp.addon.core.listener.ServerJoinListener;
-import eu.germanrp.addon.core.listener.VehicleHotkeyListener;
+import eu.germanrp.addon.core.listener.*;
 import eu.germanrp.addon.core.services.NameTagService;
 import eu.germanrp.addon.core.services.NavigationService;
 import eu.germanrp.addon.core.services.UtilService;
@@ -166,5 +162,6 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerListener(new NameTagListener(this));
         registerListener(this.chatListener);
         registerListener(new VehicleHotkeyListener(this));
+        registerListener(new SkillXPListener());
     }
 }

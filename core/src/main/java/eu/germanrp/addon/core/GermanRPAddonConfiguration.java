@@ -1,11 +1,13 @@
 package eu.germanrp.addon.core;
 
+import eu.germanrp.addon.api.models.SkillXP;
 import eu.germanrp.addon.core.config.HydrationConfig;
 import eu.germanrp.addon.core.config.VehicleHotkeyConfig;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import net.labymod.api.addon.AddonConfig;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.SwitchSetting;
+import net.labymod.api.client.gui.screen.widget.widgets.input.dropdown.DropdownWidget;
 import net.labymod.api.configuration.loader.annotation.ConfigName;
 import net.labymod.api.configuration.loader.annotation.SpriteTexture;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
@@ -31,6 +33,8 @@ public class GermanRPAddonConfiguration extends AddonConfig {
 
     @SwitchSetting
     private final ConfigProperty<Boolean> silentATM = new ConfigProperty<>(true);
+    @DropdownWidget.DropdownSetting
+    private final ConfigProperty<SkillXP> skillXP = new ConfigProperty<>(SkillXP.NORMAL);
 
     @SettingSection("debug")
     @SwitchSetting

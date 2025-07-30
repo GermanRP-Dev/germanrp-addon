@@ -46,6 +46,13 @@
             },
             "silentATM": {
                 "name": "ATM Aufbruch stummschalten"
+            },
+            "skillXP": {
+                "name": "Zeige SkillXP  in",
+                "entries": {
+                    "percent" : "Prozent an",
+                    "normal": "Nummern an"
+                }
             }
         },
         "message": {
