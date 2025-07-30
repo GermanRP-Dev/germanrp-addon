@@ -11,6 +11,8 @@ import net.labymod.api.client.gui.hud.hudwidget.text.TextLine;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 
+import java.util.List;
+
 import static net.labymod.api.Laby.labyAPI;
 import static net.labymod.api.client.component.Component.translatable;
 import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.HIDDEN;
@@ -23,6 +25,7 @@ public class HydrationWidget extends TextHudWidget<TextHudWidgetConfig> {
     private final GermanRPAddon addon;
 
     private TextLine textLine;
+    private final List<String> hydrationMessages = List.of("► Du bist stark dehydriert und fühlst dich schwach.","► Du bist durstig.","► Du bist sehr durstig.","► Du bist sehr durstig. (Trinke etwas, um nicht zu dehydrieren!)");
 
     public HydrationWidget(GermanRPAddon addon, HudWidgetCategory widgetCategory) {
         super("hydration");
@@ -51,8 +54,7 @@ public class HydrationWidget extends TextHudWidget<TextHudWidgetConfig> {
         final String plainText = event.chatMessage().getPlainText();
 
         // Ignore unknown messages
-        if (!plainText.equals("► Du bist durstig.") && !plainText.equals("► Du bist sehr durstig.") && !plainText.equals(
-                "► Du bist sehr durstig. (Trinke etwas, um nicht zu dehydrieren!)")) {
+        if (!hydrationMessages.contains(plainText)) {
             return;
         }
 
