@@ -23,7 +23,7 @@ public class HydrationWidget extends TextHudWidget<TextHudWidgetConfig> {
     private static final Component hydrationKey = translatable("germanrpaddon.widget.hydration.key");
 
     private final GermanRPAddon addon;
-    private final List<String> hydrationMessages = List.of("► Du bist durstig.","► Du bist sehr durstig. (Trinke etwas, um nicht zu dehydrieren!)","► Du bist sehr durstig.");
+    private final List<String> hydrationMessages = List.of("► Du bist durstig.","► Du bist sehr durstig. (Trinke etwas, um nicht zu dehydrieren!)","► Du bist sehr durstig.","► Du bist stark dehydriert und fühlst dich schwach.");
 
     private TextLine textLine;
 
