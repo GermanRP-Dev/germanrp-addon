@@ -8,6 +8,7 @@ import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ActionBarReceiveEvent;
 
 import java.text.DecimalFormat;
+import java.util.Objects;
 import java.util.regex.Matcher;
 
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.SKILL_EXPERIENCE;
@@ -36,7 +37,8 @@ public class SkillXPListener {
         double gainedXP = Double.parseDouble(matcher.group(2));
         DecimalFormat df = new DecimalFormat("#.##");
         String prefix = matcher.group(1);
-
-        e.setMessage(Component.text(prefix + df.format(gainedXP / maxSkillXP * 100) + "% Skill XP (" + df.format(curenXP / maxSkillXP * 100) + "%/100%)"));
+        String percentGained = df.format(gainedXP / maxSkillXP * 100);
+        if(Objects.equals(percentGained, "0")) percentGained = new  DecimalFormat("#.###").format(gainedXP / maxSkillXP * 100);
+        e.setMessage(Component.text(prefix +  percentGained + "% Skill XP (" + df.format(curenXP / maxSkillXP * 100) + "%/100%)"));
     }
 }

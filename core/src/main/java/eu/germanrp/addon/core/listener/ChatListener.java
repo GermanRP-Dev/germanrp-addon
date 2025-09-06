@@ -242,12 +242,12 @@ public class ChatListener {
                 final Matcher nametagWantedRemoveMatcher = WANTED_REMOVE.getPattern().matcher(message);
                 final Matcher nametagWantedAddMatcher = WANTED_ADD.getPattern().matcher(message);
 
-                if (nametagWantedRemoveMatcher.matches()) {
+                if (nametagWantedRemoveMatcher.find()) {
                     this.addon.getNameTagService().getWantedPlayers().remove(nametagWantedRemoveMatcher.group(2).replace("[GR]", ""));
                     return;
                 }
 
-                if (nametagWantedAddMatcher.matches()) {
+                if (nametagWantedAddMatcher.find()) {
                     this.addon.getNameTagService().getWantedPlayers().add(nametagWantedAddMatcher.group(1).replace("[GR]", ""));
                 }
             }

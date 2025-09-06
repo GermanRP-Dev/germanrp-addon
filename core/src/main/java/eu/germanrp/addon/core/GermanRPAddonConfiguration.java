@@ -2,7 +2,9 @@ package eu.germanrp.addon.core;
 
 import eu.germanrp.addon.api.models.SkillXP;
 import eu.germanrp.addon.core.config.HydrationConfig;
+import eu.germanrp.addon.core.config.MohnWidgetSubConfig;
 import eu.germanrp.addon.core.config.VehicleHotkeyConfig;
+
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import net.labymod.api.addon.AddonConfig;
@@ -25,6 +27,8 @@ public class GermanRPAddonConfiguration extends AddonConfig {
     private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);
 
     private final NameTagSubConfig nameTagSubConfig = new NameTagSubConfig();
+
+    private final MohnWidgetSubConfig mohnWidgetSubConfig =  new MohnWidgetSubConfig();
 
     private final VehicleHotkeyConfig vehicleHotkeyConfig = new VehicleHotkeyConfig();
 

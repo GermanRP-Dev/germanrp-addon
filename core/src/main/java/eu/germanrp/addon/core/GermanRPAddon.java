@@ -9,20 +9,13 @@ import eu.germanrp.addon.core.listener.NameTagListener;
 import eu.germanrp.addon.core.listener.ServerJoinListener;
 import eu.germanrp.addon.core.listener.SkillXPListener;
 import eu.germanrp.addon.core.listener.VehicleHotkeyListener;
+import eu.germanrp.addon.core.roseWidget.MohnWidget;
 import eu.germanrp.addon.core.services.NameTagService;
 import eu.germanrp.addon.core.services.NavigationService;
 import eu.germanrp.addon.core.services.UtilService;
 import eu.germanrp.addon.core.services.VehicleService;
 import eu.germanrp.addon.core.services.util.UpdateService;
-import eu.germanrp.addon.core.widget.BlackMarketWidget;
-import eu.germanrp.addon.core.widget.GraffitiHudWidget;
-import eu.germanrp.addon.core.widget.HeilkrautpflanzeHudWidget;
-import eu.germanrp.addon.core.widget.HydrationWidget;
-import eu.germanrp.addon.core.widget.MajorEventWidget;
-import eu.germanrp.addon.core.widget.PayDayWidget;
-import eu.germanrp.addon.core.widget.PlayerExperienceWidget;
-import eu.germanrp.addon.core.widget.RoseHudWidget;
-import eu.germanrp.addon.core.widget.StoffHudWidget;
+import eu.germanrp.addon.core.widget.*;
 import eu.germanrp.addon.core.widget.category.GermanRPAddonWidgetCategory;
 import lombok.Getter;
 import net.labymod.api.addon.LabyAddon;
@@ -61,6 +54,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private HydrationWidget hydrationWidget;
     private PayDayWidget paydayWidget;
     private ChatListener chatListener;
+    private MohnWidget mohnWidget;
 
     @Override
     protected void load() {
@@ -145,6 +139,9 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
                 this,
                 widgetCategory
         );
+        this.mohnWidget = new MohnWidget(
+                widgetCategory
+        );
 
         widgetRegistry.categoryRegistry().register(widgetCategory);
         widgetRegistry.register(this.heilkrautpflanzeHudWidget);
@@ -156,6 +153,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         widgetRegistry.register(this.blackMarketWidget);
         widgetRegistry.register(this.hydrationWidget);
         widgetRegistry.register(this.paydayWidget);
+        widgetRegistry.register(this.mohnWidget);
     }
 
     private void registerListener() {
@@ -168,5 +166,6 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerListener(this.chatListener);
         registerListener(new VehicleHotkeyListener(this));
         registerListener(new SkillXPListener());
+        registerListener(this.mohnWidget);
     }
 }
