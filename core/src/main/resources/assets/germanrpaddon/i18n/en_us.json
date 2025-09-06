@@ -49,6 +49,13 @@
             },
             "notifyNewNightly": {
                 "name": "Nach neuen nightly Updates suchen."
+            },
+            "skillXP": {
+                "name": "Zeige SkillXP  in",
+                "entries": {
+                    "percent" : "Prozent an",
+                    "normal": "Nummern an"
+                }
             }
         },
         "message": {
