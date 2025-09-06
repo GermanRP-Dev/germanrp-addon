@@ -5,10 +5,12 @@ import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
 import eu.germanrp.addon.core.common.AddonPlayer;
 import eu.germanrp.addon.core.common.DefaultAddonPlayer;
 import eu.germanrp.addon.core.listener.*;
+import eu.germanrp.addon.core.roseWidget.MohnWidget;
 import eu.germanrp.addon.core.services.NameTagService;
 import eu.germanrp.addon.core.services.NavigationService;
 import eu.germanrp.addon.core.services.UtilService;
 import eu.germanrp.addon.core.services.VehicleService;
+import eu.germanrp.addon.core.widget.*;
 import eu.germanrp.addon.core.workflow.JoinWorkflowManager;
 import eu.germanrp.addon.core.widget.*;
 import eu.germanrp.addon.core.widget.category.GermanRPAddonWidgetCategory;
@@ -49,6 +51,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private HydrationWidget hydrationWidget;
     private PayDayWidget paydayWidget;
     private ChatListener chatListener;
+    private MohnWidget mohnWidget;
 
     @Override
     protected void load() {
@@ -134,6 +137,9 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
                 this,
                 widgetCategory
         );
+        this.mohnWidget = new MohnWidget(
+                widgetCategory
+        );
 
         widgetRegistry.categoryRegistry().register(widgetCategory);
         widgetRegistry.register(this.heilkrautpflanzeHudWidget);
@@ -145,6 +151,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         widgetRegistry.register(this.blackMarketWidget);
         widgetRegistry.register(this.hydrationWidget);
         widgetRegistry.register(this.paydayWidget);
+        widgetRegistry.register(this.mohnWidget);
     }
 
     private void registerListener() {
@@ -162,5 +169,6 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerListener(new BountyEventListener(this));
         registerListener(new WantedEventListener(this));
         registerListener(new MemberInfoEventListener(this));
+        registerListener(this.mohnWidget);
     }
 }

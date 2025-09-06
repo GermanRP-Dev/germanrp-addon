@@ -2,6 +2,7 @@ package eu.germanrp.addon.core;
 
 import eu.germanrp.addon.api.models.SkillXP;
 import eu.germanrp.addon.core.config.HydrationConfig;
+import eu.germanrp.addon.core.config.MohnWidgetSubConfig;
 import eu.germanrp.addon.core.config.NameTagSubConfig;
 import eu.germanrp.addon.core.config.VehicleHotkeyConfig;
 import lombok.Getter;
@@ -27,6 +28,8 @@ public class GermanRPAddonConfiguration extends AddonConfig {
 
     private final NameTagSubConfig nameTagSubConfig = new NameTagSubConfig();
 
+    private final MohnWidgetSubConfig mohnWidgetSubConfig =  new MohnWidgetSubConfig();
+
     private final VehicleHotkeyConfig vehicleHotkeyConfig = new VehicleHotkeyConfig();
 
     private final HydrationConfig hydrationConfig = new HydrationConfig();
@@ -40,6 +43,5 @@ public class GermanRPAddonConfiguration extends AddonConfig {
     @SettingSection("debug")
     @SwitchSetting
     private final ConfigProperty<Boolean> debug = new ConfigProperty<>(false);
-
 
 }
