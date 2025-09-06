@@ -11,8 +11,8 @@ import java.util.concurrent.TimeUnit;
 public class UtilTextService {
 
     /**
-     * Converts a given time in seconds to an easy readable time in <code>HH:mm:ss</code> format or <code>mm:ss</code> if duration is
-     * less than an hour
+     * Converts a given time in seconds to an easy readable time in {@code HH:mm:ss} format or {@code mm:ss} if duration is less than
+     * an hour
      *
      * @param seconds time in seconds
      *
@@ -23,7 +23,7 @@ public class UtilTextService {
     }
 
     /**
-     * Converts a given time in milliseconds to an easy readable time in <code>XXd XXh XXm XXs</code> format
+     * Converts a given time in milliseconds to an easy readable time in {@code XXd XXh XXm XXs} format
      *
      * @param milliseconds time in milliseconds
      *
@@ -38,7 +38,7 @@ public class UtilTextService {
     }
 
     /**
-     * Converts a given <code>Long</code> with specific <code>TimeUnit</code> to an easy readable time <code>String</code>
+     * Converts a given {@code Long} with specific {@code TimeUnit} to an easy readable time {@code String}
      *
      * @param timeUnit TimeUnit, in which the given value is provided
      * @param time     Long of the time to be converted

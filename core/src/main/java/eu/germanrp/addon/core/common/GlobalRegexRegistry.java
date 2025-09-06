@@ -24,16 +24,13 @@ public enum GlobalRegexRegistry {
     PLANT_HARVEST(compile("^► Du hast \\S* (\\S+) mit \\d+(?: Stück|x|g)? Erlös geerntet\\.$")),
     WANTED_ADD(compile("► \\[✦] Neue Fahndung: (\\w{3,16}|\\[GR]\\w{3,16})")),
     WANTED_REMOVE(compile("► \\[✦] (\\w{3,16}|\\[GR]\\w{3,16}) hat die Fahndung von (\\w{3,16}|\\[GR]\\w{3,16}) gelöscht")),
-    BOMBE_START(compile("^► \\[✦] Es wurde ein Sprengsatz in der Nähe von .+? gefunden!$")),
-    SHOP_RAUB(compile("TO-BE-FIXED")),
-    APOTHEKEN_RAUB(compile("^► Die Fraktion .+? hat den Apothekenraub gestartet!$")),
     CRUISE_CONTROL_START(compile("^► Tempomat auf \\d+ km/h eingestellt\\.$")),
-    JUWELEN_RAUB(compile("TO-BE-FIXED")),
     XP_READER_STATS(compile("^► \\[System] - XP: (\\d+)/(\\d+)$")),
     FRAKTION_NAME_STATS(compile("^► \\[System] - Fraktion: (.+?)$")),
     HACKANGRIFF_START(compile("^\\[⚠] Die Gangzone (.+?) wird von Hackern angegriffen! Zerstöre den Datenkoffer, bevor sie ihren Angriff vollenden können!$")),
     XP_ADD_CHAT(compile("^ \\+(\\d+) Erfahrungspunkte(| \\(x2\\)| \\(x3 Gameboost\\))$")),
     SKILL_EXPERIENCE(compile("^(§\\d\\+§\\d)(\\d{0,3}\\.\\d{0,2}) Skill XP \\((\\d{0,6}\\.\\d{0,2})\\/(\\d{0,6})\\)$"));
+
 
     private final Pattern pattern;
 }

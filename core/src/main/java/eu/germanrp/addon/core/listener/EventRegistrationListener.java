@@ -8,6 +8,7 @@ import eu.germanrp.addon.api.events.plant.PlantPacketReceiveEvent;
 import eu.germanrp.addon.api.models.Graffiti;
 import eu.germanrp.addon.api.models.PlantType;
 import eu.germanrp.addon.api.network.PlantPacket;
+import eu.germanrp.addon.api.network.TimerPacket;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent;
 import eu.germanrp.addon.core.common.events.GraffitiUpdateEvent;
@@ -30,14 +31,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.APOTHEKEN_RAUB;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.BOMBE_START;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.GRAFFITI_ADD;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.GRAFFITI_TIME;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.HACKANGRIFF_START;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.JUWELEN_RAUB;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.PLANT_HARVEST;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.SHOP_RAUB;
 import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.MINUTE;
 import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.SECOND;
 import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.SECOND_3;
@@ -104,41 +100,6 @@ public class EventRegistrationListener {
 
             final Duration remainingTime = ofSeconds(minutes * 60 + seconds);
             fireEvent(new GraffitiUpdateEvent(nearestGraffiti, remainingTime));
-        }
-
-        Matcher apothekenRaubMatcher = APOTHEKEN_RAUB.getPattern().matcher(plainText);
-        if (apothekenRaubMatcher.find()) {
-            fireEvent(new MajorWidgetUpdateEvent("Apothekenraub", 8));
-            return;
-        }
-
-        Matcher shopRaubMatcher = SHOP_RAUB.getPattern().matcher(plainText);
-        if (shopRaubMatcher.find()) {
-            fireEvent(new MajorWidgetUpdateEvent("Shopraub", 3));
-            return;
-        }
-
-        Matcher bombeStartMatcher = BOMBE_START.getPattern().matcher(plainText);
-        if (bombeStartMatcher.find()) {
-            fireEvent(new MajorWidgetUpdateEvent("Bombe", 10));
-            return;
-        }
-
-        Matcher juwelenRaubMatcher = JUWELEN_RAUB.getPattern().matcher(plainText);
-        if (juwelenRaubMatcher.find()) {
-            fireEvent(new MajorWidgetUpdateEvent("Juwelenraub", 3));
-            return;
-        }
-
-        Matcher hackangriffStartMatcher = HACKANGRIFF_START.getPattern().matcher(plainText);
-        if (hackangriffStartMatcher.find()) {
-            fireEvent(new MajorWidgetUpdateEvent(hackangriffStartMatcher.group(1), 8));
-            return;
-        }
-
-        if (plainText.equals("► Du nimmst am Hackangriff deiner Fraktion teil.")) {
-            fireEvent(new MajorWidgetUpdateEvent("Hackangriff", 8));
-            return;
         }
 
         Matcher plantHarvestMatcher = PLANT_HARVEST.getPattern().matcher(plainText);
@@ -215,7 +176,17 @@ public class EventRegistrationListener {
                         payloadContent.get("salary").getAsJsonObject().get("faction").getAsFloat(),
                         payloadContent.get("salary").getAsJsonObject().get("job").getAsFloat()));
             }
+            case "GRAddon-Timer" -> {
+                final JsonObject payloadContent = event.getPayloadContent();
 
+                final TimerPacket timerPacket = new TimerPacket(
+                        payloadContent.get("active").getAsBoolean(),
+                        payloadContent.get("name").getAsString(),
+                        payloadContent.get("start").getAsLong()
+                );
+
+                fireEvent(new MajorWidgetUpdateEvent(timerPacket));
+            }
             default -> {
                 // Ignore unknown pakets
             }

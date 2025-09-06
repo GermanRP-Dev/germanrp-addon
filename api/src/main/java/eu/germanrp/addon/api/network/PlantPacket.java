@@ -4,7 +4,7 @@ import eu.germanrp.addon.api.models.PlantType;
 import lombok.Data;
 
 @Data
-public class PlantPacket implements GRPaket {
+public class PlantPacket implements GRPacket {
 
     private final boolean active;
     private final PlantType type;

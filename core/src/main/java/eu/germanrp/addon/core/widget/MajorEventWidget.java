@@ -1,5 +1,7 @@
 package eu.germanrp.addon.core.widget;
 
+import eu.germanrp.addon.api.models.MajorEvent;
+import eu.germanrp.addon.api.network.TimerPacket;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent;
 import eu.germanrp.addon.core.common.events.MajorWidgetUpdateEvent;
@@ -44,8 +46,22 @@ public class MajorEventWidget extends TextHudWidget<TextHudWidgetConfig> {
     @Subscribe
     public void majorWidgetUpdate(MajorWidgetUpdateEvent event) {
         this.majorEvent = true;
-        this.eventNameLine.updateAndFlush(event.getMajorEventName());
-        this.countdownTarget = ZonedDateTime.now().plusMinutes(event.getCountDownTime());
+
+        final TimerPacket timerPacket = event.getTimerPacket();
+        if (!timerPacket.active()) {
+            reset();
+            return;
+        }
+        MajorEvent.fromName(timerPacket.name()).ifPresent(type -> {
+                    switch (type) {
+                        case ROB, BOMB, PHARMACY_ROB, HACKER, JEWELLERY_ROB, MUSEUM_ROB, ROB_ABOUT_TO_END -> {
+                            this.eventNameLine.updateAndFlush(type.getName());
+                            this.countdownTarget = ZonedDateTime.now().plusSeconds(type.getSeconds());
+                        }
+                        case NONE, CLEAR -> this.reset();
+                    }
+                }
+        );
         this.eventNameLine.setState(VISIBLE);
         this.countDownLine.setState(VISIBLE);
     }
