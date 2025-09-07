@@ -52,7 +52,7 @@ public class NameTagListener {
         }
 
         final String prefix = team.getPrefix().toString();
-            if (isIgnoredPrefix(prefix)) {
+        if (isIgnoredPrefix(prefix)) {
             return;
         }
 
