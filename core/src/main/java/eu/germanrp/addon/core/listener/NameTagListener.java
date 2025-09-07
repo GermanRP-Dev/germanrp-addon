@@ -19,7 +19,7 @@ import java.util.Arrays;
 public class NameTagListener {
 
     private static final String[] IGNORED_PREFIXES = {
-            "red", "✝","AAAAAA"
+            "red", "✝","AAAAAA","dark_aqua"
     };
 
     private final GermanRPAddon addon;
@@ -52,7 +52,7 @@ public class NameTagListener {
         }
 
         final String prefix = team.getPrefix().toString();
-        if (isIgnoredPrefix(prefix)) {
+            if (isIgnoredPrefix(prefix)) {
             return;
         }
 
@@ -86,7 +86,9 @@ public class NameTagListener {
             renderNameTag(event, isAFK, color);
             return;
         }
-        renderNameTag(event, isAFK, TextColor.color(170,170,170));
+        if(event.getPlayerInfo().getTeam().getPrefix().toString().contains("GR")) {
+            renderNameTag(event, isAFK, TextColor.color(170, 170, 170));
+        }
     }
 
     private static void renderNameTag(
