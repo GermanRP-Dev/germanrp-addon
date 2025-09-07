@@ -11,19 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Matcher;
 
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.BOUNTY_ADD;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.BOUNTY_MEMBER_WANTED_LIST_ENTRY;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.BOUNTY_REMOVE;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.DARK_LIST_ADD;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.DARK_LIST_ENTRY;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.DARK_LIST_REMOVE;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.FRAKTION_NAME_STATS;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.TITLE_FACTION_MEMBER_LIST;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.TITLE_WANTED_LIST;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.WANTED_ADD;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.WANTED_REMOVE;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.XP_ADD_CHAT;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.XP_READER_STATS;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.*;
 
 public class ChatListener {
 
@@ -241,13 +229,17 @@ public class ChatListener {
             case STAAT -> {
                 final Matcher nametagWantedRemoveMatcher = WANTED_REMOVE.getPattern().matcher(message);
                 final Matcher nametagWantedAddMatcher = WANTED_ADD.getPattern().matcher(message);
+                final Matcher nametagWandedInJailedMatcher = WANTED_INJAILED.getPattern().matcher(message);
 
-                if (nametagWantedRemoveMatcher.matches()) {
+                if (nametagWantedRemoveMatcher.find()) {
                     this.addon.getNameTagService().getWantedPlayers().remove(nametagWantedRemoveMatcher.group(2).replace("[GR]", ""));
                     return;
                 }
 
-                if (nametagWantedAddMatcher.matches()) {
+                if (nametagWantedAddMatcher.find()) {
+                    this.addon.getNameTagService().getWantedPlayers().add(nametagWantedAddMatcher.group(1).replace("[GR]", ""));
+                }
+                if (nametagWandedInJailedMatcher.find()) {
                     this.addon.getNameTagService().getWantedPlayers().add(nametagWantedAddMatcher.group(1).replace("[GR]", ""));
                 }
             }
