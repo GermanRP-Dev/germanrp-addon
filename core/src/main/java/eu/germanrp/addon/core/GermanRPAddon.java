@@ -3,26 +3,12 @@ package eu.germanrp.addon.core;
 import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
 import eu.germanrp.addon.core.common.AddonPlayer;
 import eu.germanrp.addon.core.common.DefaultAddonPlayer;
-import eu.germanrp.addon.core.listener.ChatListener;
-import eu.germanrp.addon.core.listener.EventRegistrationListener;
-import eu.germanrp.addon.core.listener.NameTagListener;
-import eu.germanrp.addon.core.listener.ServerJoinListener;
-import eu.germanrp.addon.core.listener.SkillXPListener;
-import eu.germanrp.addon.core.listener.VehicleHotkeyListener;
+import eu.germanrp.addon.core.listener.*;
 import eu.germanrp.addon.core.services.NameTagService;
 import eu.germanrp.addon.core.services.NavigationService;
 import eu.germanrp.addon.core.services.UtilService;
 import eu.germanrp.addon.core.services.VehicleService;
-import eu.germanrp.addon.core.services.util.UpdateService;
-import eu.germanrp.addon.core.widget.BlackMarketWidget;
-import eu.germanrp.addon.core.widget.GraffitiHudWidget;
-import eu.germanrp.addon.core.widget.HeilkrautpflanzeHudWidget;
-import eu.germanrp.addon.core.widget.HydrationWidget;
-import eu.germanrp.addon.core.widget.MajorEventWidget;
-import eu.germanrp.addon.core.widget.PayDayWidget;
-import eu.germanrp.addon.core.widget.PlayerExperienceWidget;
-import eu.germanrp.addon.core.widget.RoseHudWidget;
-import eu.germanrp.addon.core.widget.StoffHudWidget;
+import eu.germanrp.addon.core.widget.*;
 import eu.germanrp.addon.core.widget.category.GermanRPAddonWidgetCategory;
 import lombok.Getter;
 import net.labymod.api.addon.LabyAddon;
@@ -45,7 +31,6 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private NavigationService navigationService;
     private UtilService utilService;
     private VehicleService vehicleService;
-    private UpdateService updateService;
 
     private AddonPlayer player;
 
@@ -93,7 +78,6 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         this.navigationService = new NavigationService();
         this.utilService = new UtilService(this);
         this.vehicleService = new VehicleService(this);
-        this.updateService = new UpdateService(this);
     }
 
     private void registerCommands() {

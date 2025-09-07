@@ -31,9 +31,6 @@ public class GermanRPAddonConfiguration extends AddonConfig {
     private final HydrationConfig hydrationConfig = new HydrationConfig();
 
     @SwitchSetting
-    private final ConfigProperty<Boolean> notifyNewNightly = new ConfigProperty<>(true);
-
-    @SwitchSetting
     private final ConfigProperty<Boolean> silentATM = new ConfigProperty<>(true);
 
     @DropdownSetting

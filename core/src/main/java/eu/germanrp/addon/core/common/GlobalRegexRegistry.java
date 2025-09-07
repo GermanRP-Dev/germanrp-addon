@@ -28,7 +28,6 @@ public enum GlobalRegexRegistry {
     CRUISE_CONTROL_START(compile("^► Tempomat auf \\d+ km/h eingestellt\\.$")),
     XP_READER_STATS(compile("^► \\[System] - XP: (\\d+)/(\\d+)$")),
     FRAKTION_NAME_STATS(compile("^► \\[System] - Fraktion: (.+?)$")),
-    HACKANGRIFF_START(compile("^\\[⚠] Die Gangzone (.+?) wird von Hackern angegriffen! Zerstöre den Datenkoffer, bevor sie ihren Angriff vollenden können!$")),
     XP_ADD_CHAT(compile("^ \\+(\\d+) Erfahrungspunkte(| \\(x2\\)| \\(x3 Gameboost\\))$")),
     SKILL_EXPERIENCE(compile("^(§.\\+§.)(\\d{0,3}\\.\\d{0,2}) Skill XP \\((\\d{0,6}\\.\\d{0,2})\\/(\\d{0,6})\\)$"));
 
