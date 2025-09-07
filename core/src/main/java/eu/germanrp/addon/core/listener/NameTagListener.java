@@ -12,13 +12,14 @@ import net.labymod.api.client.network.NetworkPlayerInfo;
 import net.labymod.api.client.scoreboard.ScoreboardTeam;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.render.PlayerNameTagRenderEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
 public class NameTagListener {
 
     private static final String[] IGNORED_PREFIXES = {
-            "red", "✝"
+            "red", "✝","AAAAAA"
     };
 
     private final GermanRPAddon addon;
@@ -78,11 +79,14 @@ public class NameTagListener {
             if (this.nameTagSubConfig.darklistColorEnabled().get() && nameTagService.getDarklist().contains(playerName)) {
                 final TextColor color = TextColor.color(this.nameTagSubConfig.darklistColor().get().get());
                 renderNameTag(event, isAFK, color);
+                return;
             }
         } else if (faction.getType() == Type.STAAT && this.nameTagSubConfig.wantedColorEnabled().get() && nameTagService.getWantedPlayers().contains(playerName)) {
             final TextColor color = TextColor.color(this.nameTagSubConfig.wantedColor().get().get());
             renderNameTag(event, isAFK, color);
+            return;
         }
+        renderNameTag(event, isAFK, TextColor.color(170,170,170));
     }
 
     private static void renderNameTag(
@@ -97,12 +101,16 @@ public class NameTagListener {
 
         if (isAFK) {
             component.decorate(TextDecoration.ITALIC);
+
         }
 
         event.setNameTag(component);
     }
 
     private static boolean isIgnoredPrefix(final String prefix) {
-        return Arrays.stream(IGNORED_PREFIXES).anyMatch(prefix::contains);
+        for(String string : IGNORED_PREFIXES){
+            if (prefix.contains(string)) return true;
+        }
+        return false;
     }
 }
