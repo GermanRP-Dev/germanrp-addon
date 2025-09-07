@@ -36,7 +36,8 @@ public class SkillXPListener {
         double gainedXP = Double.parseDouble(matcher.group(2));
         DecimalFormat df = new DecimalFormat("#.##");
         String prefix = matcher.group(1);
-
-        e.setMessage(Component.text(prefix + df.format(gainedXP / maxSkillXP * 100) + "% Skill XP (" + df.format(curenXP / maxSkillXP * 100) + "%/100%)"));
+        String gainedPercent = df.format(gainedXP / maxSkillXP * 100);
+        if(gainedPercent.equals("0")) gainedPercent = new DecimalFormat("#.###").format(gainedXP / maxSkillXP * 100);
+        e.setMessage(Component.text(prefix + gainedPercent + "% Skill XP (" + df.format(curenXP / maxSkillXP * 100) + "%/100%)"));
     }
 }
