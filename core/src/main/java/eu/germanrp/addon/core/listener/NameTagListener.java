@@ -12,9 +12,6 @@ import net.labymod.api.client.network.NetworkPlayerInfo;
 import net.labymod.api.client.scoreboard.ScoreboardTeam;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.render.PlayerNameTagRenderEvent;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Arrays;
 
 public class NameTagListener {
 
