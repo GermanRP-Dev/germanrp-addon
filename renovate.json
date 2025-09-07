@@ -1,0 +1,25 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+        "config:recommended",
+        ":disableDependencyDashboard",
+        ":semanticCommitsDisabled"
+    ],
+    "prHourlyLimit": 0,
+    "customManagers": [
+        {
+            "customType": "regex",
+            "datasourceTemplate": "maven",
+            "managerFilePatterns": [
+                "/^settings\\.gradle\\.kts$/"
+            ],
+            "matchStrings": [
+                "val labyGradlePluginVersion = \"(?<currentValue>.*?)\""
+            ],
+            "matchStringsStrategy": "combination",
+            "registryUrlTemplate": "https://dist.labymod.net/api/v1/maven/release",
+            "depNameTemplate": "laby-gradle",
+            "packageNameTemplate": "net.labymod.gradle:core"
+        }
+    ]
+}

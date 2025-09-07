@@ -1,0 +1,136 @@
+{
+    "germanrpaddon": {
+        "settings": {
+            "header": {
+                "debug": {
+                    "name": "Debug"
+                }
+            },
+            "enabled": {
+                "name": "Enabled"
+            },
+            "nameTagSubConfig": {
+                "name": "Faction",
+                "factionColorEnabled.name": "Member color on/off",
+                "factionColor.name": "Member color",
+                "bountyColorEnabled.name": "Bounty color on/off",
+                "bountyColor.name": "Bounty color",
+                "darklistColorEnabled.name": "Darklist color on/off",
+                "darklistColor.name": "Darklist color",
+                "wantedColorEnabled.name": "Wanted color on/off",
+                "wantedColor.name": "Wanted color"
+            },
+            "vehicleHotkeyConfig": {
+                "name": "Vehicle hotkeys",
+                "header": {
+                    "car.name": "Vehicle",
+                    "cruiseControl.name": "Cruise control",
+                    "emergencySignal.name": "Blue light"
+                },
+                "toggleEngine.name": "Engine on/off",
+                "toggleTurnSignalLeft.name": "Turn signal left on/off",
+                "toggleTurnSignalRight.name": "Turn signal right on/off",
+                "toggleHazardWarnSignal.name": "Hazard warn signal on/off",
+                "increaseCruiseControlSpeed.name": "Cruise control increase",
+                "decreaseCruiseControlSpeed.name": "Cruise control decrease",
+                "toggleEmergencySignal.name": "Emergency signal on/off",
+                "toggleEmergencySignalSound.name": "Emergency signal mute"
+            },
+            "hydrationConfig": {
+                "name": "Hydration",
+                "hideHydrationChatMessage.name": "Hyde hydration message",
+                "displayHydrationMessageInActionBar.name": "Hydration message in actionbar"
+            },
+            "debug": {
+                "name": "Debug"
+            },
+            "silentATM": {
+                "name": "Mute ATM break sound"
+            }
+        },
+        "message": {
+            "plant": {
+                "harvest": "%s can be harvested.",
+                "fertilize": "%s can be fertilized.",
+                "water": "%s have to be watered."
+            }
+        },
+        "hudWidget": {
+            "heilkrautpflanze": {
+                "name": "medicinal\nherb plant",
+                "showTimer.name": "Timer",
+                "showYield.name": "Yield"
+            },
+            "rose": {
+                "name": "Rose plant",
+                "showTimer.name": "Timer",
+                "showYield.name": "Yield"
+            },
+            "stoff": {
+                "name": "Stoff plant",
+                "showTimer.name": "Timer",
+                "showYield.name": "Yield"
+            },
+            "graffiti": {
+                "name": "Graffiti"
+            },
+            "majorEvent": {
+                "name": "Major event",
+                "countdown": "Countdown"
+            },
+            "playerExperience": {
+                "name": "Level",
+                "name2": "XP until level-up"
+            },
+            "blackMarketWidget": {
+                "name": "Blackmarket",
+                "countdown": "30:45"
+            },
+            "hydration": {
+                "name": "Hydration"
+            },
+            "payDay": {
+                "name": "PayDay"
+            }
+        },
+        "widget": {
+            "category": {
+                "title": "GermanRP",
+                "description": "Shows informations about GermanRP."
+            },
+            "plant": {
+                "progressKey": "Progress",
+                "progressValue": "%s/%smin",
+                "yieldKey": "Yield",
+                "yieldValue": "%s%s %s"
+            },
+            "majorEvent": {
+                "eventKey": "Major event",
+                "eventValue": "Pharmacy rob",
+                "countdownKey": "Countdown",
+                "countdownValue": "0:00"
+            },
+            "playerExperience": {
+                "playerXPKey": "Level",
+                "playerXPValue": "0/10",
+                "xpLeftKey": "XP until level-up",
+                "xpLeftValue": "10"
+            },
+            "blackMarketWidget": {
+                "eventKey": "Blackmarket",
+                "eventValue": "30:45"
+            },
+            "hydration": {
+                "key": "Hydration"
+            },
+            "payDay": {
+                "fgehaltKey": "Faction",
+                "jgehaltKey": "Jobs",
+                "paydayKey": "Time to PD",
+                "fGehaltValue": "loading",
+                "jGehaltValue": "loading",
+                "paydayValue": "loading"
+            }
+        }
+    }
+}

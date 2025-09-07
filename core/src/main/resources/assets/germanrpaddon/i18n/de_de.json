@@ -1,0 +1,143 @@
+{
+    "germanrpaddon": {
+        "settings": {
+            "header": {
+                "debug": {
+                    "name": "Debug"
+                }
+            },
+            "enabled": {
+                "name": "Aktiv"
+            },
+            "nameTagSubConfig": {
+                "name": "Fraktion",
+                "factionColorEnabled.name": "Mitgliederfarbe an/aus",
+                "factionColor.name": "Mitgliederfarbe",
+                "bountyColorEnabled.name": "Kopfgeldfarbe an/aus",
+                "bountyColor.name": "Kopfgeldfarbe",
+                "darklistColorEnabled.name": "Darklistfarbe an/aus",
+                "darklistColor.name": "Darklistfarbe",
+                "wantedColorEnabled.name": "Fahndungsfarbe an/aus",
+                "wantedColor.name": "Fahndungsfarbe"
+            },
+            "vehicleHotkeyConfig": {
+                "name": "Fahrzeug Hotkeys",
+                "header": {
+                    "car.name": "Fahrzeug",
+                    "cruiseControl.name": "Tempomat",
+                    "emergencySignal.name": "Sondersignal"
+                },
+                "toggleEngine.name": "Motor an/aus",
+                "toggleTurnSignalLeft.name": "Blinker Links an/aus",
+                "toggleTurnSignalRight.name": "Blinker Rechts an/aus",
+                "toggleHazardWarnSignal.name": "Warnblinkanlage an/aus",
+                "increaseCruiseControlSpeed.name": "Tempomat Geschwindigkeit erhöhen",
+                "decreaseCruiseControlSpeed.name": "Tempomat Geschwindigkeit verringern",
+                "toggleEmergencySignal.name": "Sondersignal an/aus",
+                "toggleEmergencySignalSound.name": "Sondersignal laut/stumm"
+            },
+            "hydrationConfig": {
+                "name": "Hydrierung",
+                "hideHydrationChatMessage.name": "Hydrierungsnachricht verstecken",
+                "displayHydrationMessageInActionBar.name": "Hydrierungsnachricht in Action-Bar anzeigen"
+            },
+            "debug": {
+                "name": "Debug"
+            },
+            "silentATM": {
+                "name": "ATM Aufbruch stummschalten"
+            },
+            "skillXP": {
+                "name": "Zeige SkillXP  in",
+                "entries": {
+                    "percent" : "Prozent an",
+                    "normal": "Nummern an"
+                }
+            }
+        },
+        "message": {
+            "plant": {
+                "harvest": "%s kann geerntet werden.",
+                "fertilize": "%s muss jetzt gedüngt werden.",
+                "water": "%s muss jetzt bewässert werden."
+            }
+        },
+        "hudWidget": {
+            "heilkrautpflanze": {
+                "name": "Heilkraut-\npflanze",
+                "showTimer.name": "Zeit",
+                "showYield.name": "Erlös"
+            },
+            "rose": {
+                "name": "Rose",
+                "showTimer.name": "Zeit",
+                "showYield.name": "Erlös"
+            },
+            "stoff": {
+                "name": "Stoffpflanze",
+                "showTimer.name": "Zeit",
+                "showYield.name": "Erlös"
+            },
+            "graffiti": {
+                "name": "Graffiti"
+            },
+            "majorEvent": {
+                "name": "Großakti",
+                "countdown": "Countdown"
+            },
+            "playerExperience": {
+                "name": "Level",
+                "name2": "XP bis Levelup"
+            },
+            "blackMarketWidget": {
+                "name": "Schwarzmarkt",
+                "countdown": "30:45"
+            },
+            "hydration": {
+                "name": "Hydrierung"
+            },
+            "payDay": {
+                "name": "PayDay"
+            }
+        },
+        "widget": {
+            "category": {
+                "title": "GermanRP",
+                "description": "Zeigt dir Informationen über Dinge auf GermanRP an."
+            },
+            "plant": {
+                "progressKey": "Fortschritt",
+                "progressValue": "%s/%smin",
+                "yieldKey": "Erlös",
+                "yieldValue": "%s%s %s"
+            },
+            "majorEvent": {
+                "eventKey": "Großakti",
+                "eventValue": "Apothekenraub",
+                "countdownKey": "Countdown",
+                "countdownValue": "0:00"
+            },
+            "playerExperience": {
+                "playerXPKey": "Level",
+                "playerXPValue": "0/10",
+                "xpLeftKey": "XP bis Levelup",
+                "xpLeftValue": "10"
+            },
+            "blackMarketWidget": {
+                "eventKey": "Schwarzmarkt",
+                "eventValue": "30:45"
+            },
+            "hydration": {
+                "key": "Hydrierung"
+            },
+            "payDay": {
+                "fgehaltKey": "Frak",
+                "jgehaltKey": "Jobs",
+                "paydayKey": "Zeit bis PD",
+                "fGehaltValue": "lädt",
+                "jGehaltValue": "lädt",
+                "paydayValue": "lädt"
+            }
+        }
+    }
+}

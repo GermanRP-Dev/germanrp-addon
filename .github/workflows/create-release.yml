@@ -1,0 +1,63 @@
+name: Create release
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+      nightly:
+        required: true
+        type: boolean
+
+jobs:
+  create-release-notes:
+
+    name: 📑 Create release notes
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v5
+      with:
+        fetch-depth: 1
+
+    - name: Download artifact
+      uses: actions/download-artifact@v5
+      with:
+        name: Artifacts
+        path: artifacts/
+
+    - if: inputs.nightly == true
+      name: Delete existing nightly release
+      run: |
+        gh release delete nightly --yes || true
+        git push origin :refs/tags/nightly || true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - if: inputs.nightly == true
+      name: Create release notes nightly
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        tag: 'nightly'
+      run: |
+        RELEASE_NOTES="Dies ist ein automatisch erstellter Nightly-Build. Er kann neue Features oder Änderungen enthalten, die noch nicht fertiggestellt sind. Dieser Build ist nur für Tests gedacht. Es kann passieren, dass er Fehler hat oder nicht richtig funktioniert."
+        gh release create "$tag" \
+          --title "$tag" \
+          --notes "$RELEASE_NOTES" \
+          --prerelease \
+          --target develop \
+          artifacts/*-release.jar
+
+    - if: inputs.nightly == false
+      name: Create release notes
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        tag: ${{ inputs.version }}
+      run: |
+        gh release create "$tag" \
+          --title "$tag" \
+          --target main \
+          --generate-notes \
+          artifacts/*-release.jar

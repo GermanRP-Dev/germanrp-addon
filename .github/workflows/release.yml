@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'The version of the release (e.g. 1.0.0)'
+        required: true
+        type: string
+
+run-name: Build+${{ github.run_number }} release/${{ github.sha }}
+
+concurrency:
+  group: release-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+
+    name: 🚀 Build release
+    uses: ./.github/workflows/build.yml
+    with:
+      version: ${{ inputs.version }}
+      upload_artifacts: true
+
+  release:
+
+    name: 🎉 Create release
+    needs: build
+    uses: ./.github/workflows/create-release.yml
+    with:
+      nightly: false
+      version: ${{ inputs.version }}

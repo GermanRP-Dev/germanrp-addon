@@ -1,0 +1,66 @@
+name: Release (Nightly)
+
+on:
+  schedule:
+  - cron: '55 1 * * *' # 5 Minutes before Server restart
+  workflow_dispatch:
+
+run-name: Build+${{ github.run_number }} nightly/${{ github.sha }}
+
+concurrency:
+  group: nightly-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  new_commits_check:
+
+    name: ⚙️ New commits check
+    uses: ./.github/workflows/new-commits-check.yml
+
+  retrieve_version:
+
+    name: 📑 Retrieve version
+    needs: new_commits_check
+    runs-on: ubuntu-latest
+
+    if: needs.new_commits_check.outputs.HAS_NEW_COMMITS == 'true'
+
+    outputs:
+      version: ${{ steps.set_build_version.outputs.version }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v5
+      with:
+        ref: develop
+        fetch-depth: 0
+
+    - name: Set build version
+      id: set_build_version
+      run: |
+        VERSION=nightly/${{ github.sha }}
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+    - name: Output result
+      run: |
+        echo "Version: ${{ steps.set_build_version.outputs.version }}"
+
+  build:
+
+    name: 🌙 Build nightly release
+    needs: retrieve_version
+    uses: ./.github/workflows/build.yml
+    with:
+      version: ${{ needs.retrieve_version.outputs.version }}
+      upload_artifacts: true
+
+  release:
+
+    name: 🎉 Create release
+    needs:
+      - build
+      - retrieve_version
+    uses: ./.github/workflows/create-release.yml
+    with:
+      nightly: true
+      version: ${{ needs.retrieve_version.outputs.version }}
