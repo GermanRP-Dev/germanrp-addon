@@ -24,6 +24,7 @@ public class ChatListener {
 
     @Setter
     private int emptyMessages;
+    private boolean memberInfoWasShown;
 
     public ChatListener(GermanRPAddon addon) {
         this.addon = addon;
@@ -55,6 +56,7 @@ public class ChatListener {
                         if (this.wasAFK) {
                             Laby.references().chatExecutor().chat("/afk");
                         }
+                        this.memberInfoWasShown = true;
                         this.addon.getPlayer().setPlayerFaction(Faction.NONE);
                     }
                     case "Rettungsdienst" -> this.addon.getPlayer().setPlayerFaction(Faction.RETTUNGSDIENST);
@@ -63,7 +65,7 @@ public class ChatListener {
                     case "Camorra" -> this.addon.getPlayer().setPlayerFaction(Faction.CAMORRA);
                     case "The Establishment" -> this.addon.getPlayer().setPlayerFaction(Faction.ESTABLISHMENT);
                     case "MT-Fashion" -> this.addon.getPlayer().setPlayerFaction(Faction.MTFASHION);
-                    case "Presseagentur" -> this.addon.getPlayer().setPlayerFaction(Faction.PRESSE);
+                    case "Presseagentur" ->this.addon.getPlayer().setPlayerFaction(Faction.PRESSE);
                     case "Sinaloa Kartell" -> this.addon.getPlayer().setPlayerFaction(Faction.SINALOAKARTELL);
                     case "Medellín Kartell" -> this.addon.getPlayer().setPlayerFaction(Faction.KARTELL);
                     case "VanceCity Investment" -> this.addon.getPlayer().setPlayerFaction(Faction.VCI);
@@ -120,6 +122,7 @@ public class ChatListener {
                 if (!message.startsWith("        (Insgesamt: ") || !message.endsWith(" verfügbar)")) {
                     return;
                 }
+                this.memberInfoWasShown = true;
                 this.chatShowsMemberInfo = false;
                 return;
             }
@@ -182,11 +185,13 @@ public class ChatListener {
                 }
             }
             case NEUTRAL,MEDIC -> {
+                if (!this.memberInfoWasShown) return;
                 if (this.wasAFK) {
                     this.addon.getPlayer().sendServerMessage("/afk");
                     this.wasAFK = false;
                     return;
                 }
+                this.memberInfoWasShown = false;
                 this.justJoined = false;
             }
         }
