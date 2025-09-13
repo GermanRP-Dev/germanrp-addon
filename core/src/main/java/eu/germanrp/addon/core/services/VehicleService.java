@@ -8,12 +8,7 @@ import lombok.Setter;
 import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.serverapi.api.payload.io.PayloadWriter;
 
-import static eu.germanrp.addon.core.services.VehicleService.VehicleCommand.TOGGLE_ENGINE;
-import static eu.germanrp.addon.core.services.VehicleService.VehicleCommand.TOGGLE_SIGNAL_HAZARD_WARN;
-import static eu.germanrp.addon.core.services.VehicleService.VehicleCommand.TOGGLE_SIGNAL_LEFT;
-import static eu.germanrp.addon.core.services.VehicleService.VehicleCommand.TOGGLE_SIGNAL_RIGHT;
-import static eu.germanrp.addon.core.services.VehicleService.VehicleCommand.TOGGLE_SOSI;
-import static eu.germanrp.addon.core.services.VehicleService.VehicleCommand.TOGGLE_SOSI_MUTE;
+import static eu.germanrp.addon.core.services.VehicleService.VehicleCommand.*;
 import static net.labymod.api.Laby.labyAPI;
 
 @Getter
@@ -78,8 +73,6 @@ public class VehicleService {
         TOGGLE_SIGNAL_LEFT("TOGGLESIGNALLEFT"),
         TOGGLE_SIGNAL_RIGHT("TOGGLESIGNALRIGHT"),
         TOGGLE_SIGNAL_HAZARD_WARN("TOGGLEWARNSIGNAL"),
-        INCREASE_CRUISE_CONTROL("ADDCRUISECONTROL"),
-        DECREASE_CRUISE_CONTROL("REMOVECRUISECONTROL"),
         TOGGLE_SOSI("TOGGLESOSI"),
         TOGGLE_SOSI_MUTE("TOGGLESOSIMUTE");
 

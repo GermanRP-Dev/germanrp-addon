@@ -1,4 +1,4 @@
-package eu.germanrp.addon.core;
+package eu.germanrp.addon.core.config;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;

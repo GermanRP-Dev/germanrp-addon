@@ -19,13 +19,7 @@ import static net.labymod.api.Laby.labyAPI;
 import static net.labymod.api.client.component.Component.empty;
 import static net.labymod.api.client.component.Component.text;
 import static net.labymod.api.client.component.event.HoverEvent.showText;
-import static net.labymod.api.client.component.format.NamedTextColor.AQUA;
-import static net.labymod.api.client.component.format.NamedTextColor.DARK_AQUA;
-import static net.labymod.api.client.component.format.NamedTextColor.DARK_GRAY;
-import static net.labymod.api.client.component.format.NamedTextColor.DARK_RED;
-import static net.labymod.api.client.component.format.NamedTextColor.GOLD;
-import static net.labymod.api.client.component.format.NamedTextColor.RED;
-import static net.labymod.api.client.component.format.NamedTextColor.WHITE;
+import static net.labymod.api.client.component.format.NamedTextColor.*;
 import static net.labymod.api.client.component.format.TextDecoration.BOLD;
 
 /**
