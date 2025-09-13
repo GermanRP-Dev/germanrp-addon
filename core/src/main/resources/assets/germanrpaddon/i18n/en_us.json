@@ -47,8 +47,8 @@
             "silentATM": {
                 "name": "ATM Aufbruch stummschalten"
             },
-            "notifyNewNightly": {
-                "name": "Nach neuen nightly Updates suchen."
+            "panicRemind": {
+                "name": "Panic button sound"
             },
             "skillXP": {
                 "name": "Zeige SkillXP  in",
@@ -59,8 +59,6 @@
             }
         },
         "message": {
-            "newUpdateAvailable": "Es ist ein neues Update verfügbar.",
-            "newUpdateAvailable.clickHere": "Klicke hier für mehr Infos.",
             "plant": {
                 "harvest": "%s kann geerntet werden.",
                 "fertilize": "%s muss jetzt gedüngt werden.",
