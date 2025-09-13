@@ -13,6 +13,8 @@ import net.labymod.api.configuration.loader.annotation.SpriteTexture;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
 import net.labymod.api.configuration.settings.annotation.SettingSection;
 
+import java.util.List;
+
 import static eu.germanrp.addon.api.models.SkillXP.NORMAL;
 
 @Getter
@@ -36,10 +38,15 @@ public class GermanRPAddonConfiguration extends AddonConfig {
     @SwitchSetting
     private final ConfigProperty<Boolean> silentATM = new ConfigProperty<>(true);
 
+    @SwitchSetting
+    private final ConfigProperty<Boolean> panicRemind = new ConfigProperty<>(true);
+
     @DropdownSetting
     private final ConfigProperty<SkillXP> skillXP = new ConfigProperty<>(NORMAL);
 
     @SettingSection("debug")
     @SwitchSetting
     private final ConfigProperty<Boolean> debug = new ConfigProperty<>(false);
+
+
 }
