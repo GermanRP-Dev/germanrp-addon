@@ -8,12 +8,7 @@ import lombok.Setter;
 import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.serverapi.api.payload.io.PayloadWriter;
 
-import static eu.germanrp.addon.core.services.VehicleService.VehicleCommand.TOGGLE_ENGINE;
-import static eu.germanrp.addon.core.services.VehicleService.VehicleCommand.TOGGLE_SIGNAL_HAZARD_WARN;
-import static eu.germanrp.addon.core.services.VehicleService.VehicleCommand.TOGGLE_SIGNAL_LEFT;
-import static eu.germanrp.addon.core.services.VehicleService.VehicleCommand.TOGGLE_SIGNAL_RIGHT;
-import static eu.germanrp.addon.core.services.VehicleService.VehicleCommand.TOGGLE_SOSI;
-import static eu.germanrp.addon.core.services.VehicleService.VehicleCommand.TOGGLE_SOSI_MUTE;
+import static eu.germanrp.addon.core.services.VehicleService.VehicleCommand.*;
 import static net.labymod.api.Laby.labyAPI;
 
 @Getter
