@@ -6,6 +6,7 @@ import eu.germanrp.addon.core.common.events.JustJoinedEvent;
 import lombok.Setter;
 import net.labymod.api.Laby;
 import net.labymod.api.event.Subscribe;
+import net.labymod.api.event.client.chat.ChatMessageSendEvent;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -201,14 +202,25 @@ public class ChatListener {
     public void onChatReceiveListsChange(ChatReceiveEvent event) {
 
         Faction faction = this.addon.getPlayer().getPlayerFaction();
-        if (faction == null) {
+        if (faction == null || !justJoined) {
             return;
         }
         String message = event.chatMessage().getPlainText();
         switch (faction.getType()) {
             case CRIME -> {
                 final Matcher nametagDarkListAddMatcher = DARK_LIST_ADD.getPattern().matcher(message);
+                final Matcher nametagBountyUpdateList = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
 
+                if (message.contentEquals("            KOPFGELDER")) {
+                    this.bounty = true;
+                    return;
+                }
+                if (this.bounty) {
+                    if(nametagBountyUpdateList.matches()){
+                        this.addon.getNameTagService().getBounties().add(nametagBountyUpdateList.group(1).replace("[GR]",""));
+                    }
+
+                }
                 if (nametagDarkListAddMatcher.find()) {
                     this.addon.getNameTagService().getDarklist().add(nametagDarkListAddMatcher.group(1).replace("[GR]", ""));
                     return;
@@ -234,7 +246,10 @@ public class ChatListener {
             case STAAT -> {
                 final Matcher nametagWantedRemoveMatcher = WANTED_REMOVE.getPattern().matcher(message);
                 final Matcher nametagWantedAddMatcher = WANTED_ADD.getPattern().matcher(message);
-                final Matcher nametagWandedInJailedMatcher = WANTED_INJAILED.getPattern().matcher(message);
+                final Matcher nametagWantedInJailedMatcher = WANTED_INJAILED.getPattern().matcher(message);
+                final Matcher wantedListTitle = TITLE_WANTED_LIST.getPattern().matcher(message);
+                final Matcher wantedListUpdate = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
+
 
                 if (nametagWantedRemoveMatcher.find()) {
                     this.addon.getNameTagService().getWantedPlayers().remove(nametagWantedRemoveMatcher.group(2).replace("[GR]", ""));
@@ -243,9 +258,20 @@ public class ChatListener {
 
                 if (nametagWantedAddMatcher.find()) {
                     this.addon.getNameTagService().getWantedPlayers().add(nametagWantedAddMatcher.group(1).replace("[GR]", ""));
+                    return;
                 }
-                if (nametagWandedInJailedMatcher.find()) {
+                if (nametagWantedInJailedMatcher.find()) {
                     this.addon.getNameTagService().getWantedPlayers().add(nametagWantedAddMatcher.group(1).replace("[GR]", ""));
+                    return;
+                }
+                if (wantedListTitle.find()){
+                    this.wanted = true;
+                    return;
+                }
+                if (this.wanted){
+                    if (wantedListUpdate.matches()){
+                        this.addon.getNameTagService().getWantedPlayers().add(wantedListUpdate.group(1).replace("[GR]",""));
+                    }
                 }
             }
         }
@@ -267,6 +293,16 @@ public class ChatListener {
             if (this.addon.getPlayer().getPlayerXP() >= this.addon.getPlayer().getPlayerNeededXP()){
                 this.addon.getPlayer().setPlayerXP(this.addon.getPlayer().getPlayerXP()-this.addon.getPlayer().getPlayerNeededXP());
             }
+        }
+    }
+
+
+    @Subscribe
+    public void onCommandSend(ChatMessageSendEvent event){
+        if(event.isMessageCommand()){
+            String message = event.getMessage();
+            String[] messageStart = message.split(" ");
+            event.changeMessage(messageStart[0].toLowerCase() + message.replace(messageStart[0], ""));
         }
     }
 }
