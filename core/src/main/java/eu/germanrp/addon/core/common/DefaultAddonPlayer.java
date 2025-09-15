@@ -39,6 +39,7 @@ public class DefaultAddonPlayer implements AddonPlayer {
     private int playerNeededXP;
     private int playerPayDayTime;
     private Faction playerFaction;
+    private boolean playPanic = false;
 
     public DefaultAddonPlayer(GermanRPAddon addon) {
         this.addon = addon;
@@ -245,6 +246,16 @@ public class DefaultAddonPlayer implements AddonPlayer {
     @Override
     public void playSound(ResourceLocation location, float volume, float pitch) {
         labyAPI().minecraft().sounds().playSound(location, volume, pitch);
+    }
+
+    @Override
+    public boolean getPlayPanic() {
+        return playPanic;
+    }
+
+    @Override
+    public void setPlayPanic(boolean playPanic){
+        this.playPanic = playPanic;
     }
 
     @Override

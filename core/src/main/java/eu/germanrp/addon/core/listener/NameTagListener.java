@@ -3,7 +3,7 @@ package eu.germanrp.addon.core.listener;
 import eu.germanrp.addon.api.models.Faction;
 import eu.germanrp.addon.api.models.Faction.Type;
 import eu.germanrp.addon.core.GermanRPAddon;
-import eu.germanrp.addon.core.NameTagSubConfig;
+import eu.germanrp.addon.core.config.NameTagSubConfig;
 import eu.germanrp.addon.core.services.NameTagService;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.TextColor;
@@ -16,7 +16,7 @@ import net.labymod.api.event.client.render.PlayerNameTagRenderEvent;
 public class NameTagListener {
 
     private static final String[] IGNORED_PREFIXES = {
-            "red", "✝","AAAAAA","dark_aqua"
+            "red", "✝"
     };
 
     private final GermanRPAddon addon;
@@ -37,7 +37,7 @@ public class NameTagListener {
         final Faction faction = this.addon.getPlayer().getPlayerFaction();
         final NetworkPlayerInfo playerInfo = event.getPlayerInfo();
 
-        if (playerInfo == null || faction == null || faction.getType() == Type.NEUTRAL) {
+        if (playerInfo == null || faction == null) {
             return;
         }
 
@@ -48,8 +48,7 @@ public class NameTagListener {
             return;
         }
 
-        final String prefix = team.getPrefix().toString();
-        if (isIgnoredPrefix(prefix)) {
+        if (isIgnoredPrefix(event.nameTag().getChildren().getFirst().toString())) {
             return;
         }
 
@@ -83,9 +82,15 @@ public class NameTagListener {
             renderNameTag(event, isAFK, color);
             return;
         }
+
+        assert event.getPlayerInfo() != null;
         if(event.getPlayerInfo().getTeam().getPrefix().toString().contains("GR")) {
-            renderNameTag(event, isAFK, TextColor.color(170, 170, 170));
+
+            if (event.context().equals(PlayerNameTagRenderEvent.Context.PLAYER_RENDER)) {
+                renderNameTag(event, isAFK, event.nameTag().getColor());
+            }
         }
+
     }
 
     private static void renderNameTag(
@@ -102,6 +107,7 @@ public class NameTagListener {
             component.decorate(TextDecoration.ITALIC);
 
         }
+
 
         event.setNameTag(component);
     }

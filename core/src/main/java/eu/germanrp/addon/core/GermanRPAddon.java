@@ -1,5 +1,6 @@
 package eu.germanrp.addon.core;
 
+import eu.germanrp.addon.core.commands.TogglePanicCommand;
 import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
 import eu.germanrp.addon.core.common.AddonPlayer;
 import eu.germanrp.addon.core.common.DefaultAddonPlayer;
@@ -82,6 +83,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
     private void registerCommands() {
         registerCommand(new GraffitiCommand(this, this.graffitiHudWidget.getConfig()));
+        registerCommand(new TogglePanicCommand());
     }
 
     private void registerWidgets() {

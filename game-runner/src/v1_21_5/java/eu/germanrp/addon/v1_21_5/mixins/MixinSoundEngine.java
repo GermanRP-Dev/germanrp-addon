@@ -21,16 +21,50 @@ public class MixinSoundEngine {
 
     @Inject(method = "play", at = @At("HEAD"), cancellable = true)
     public void onPlay(SoundInstance si, CallbackInfo ci) {
-        if (!germanrpaddon$isSilentATMEnabled()) {
+        if (germanrpaddon$handleATM(si)){
+            ci.cancel();
             return;
+        }
+        if (germanrpaddon$handlePanicRemind(si)){
+            ci.cancel();
+            return;
+        }
+        
+    }
+
+    @Unique
+    private boolean germanrpaddon$handlePanicRemind(SoundInstance si) {
+        if (!germanrpaddon$isPanicRemindDissabled()) {
+            return false;
+        }
+        if (!germanrpaddon$isPanicRemind(si)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Unique
+    public boolean germanrpaddon$handleATM(SoundInstance si){
+        if (!germanrpaddon$isSilentATMEnabled()) {
+            return false;
         }
         if (!germanrpaddon$isATMBreakSound(si)) {
-            return;
+            return false;
         }
         if (!germanrpaddon$isLookingAtATM()) {
-            return;
+            return false;
         }
-        ci.cancel();
+        return true;
+    }
+    @Unique
+    private static boolean germanrpaddon$isPanicRemindDissabled() {
+        return !GermanRPAddon.getInstance().getPlayer().getPlayPanic();
+    }
+
+    @Unique
+    private static boolean germanrpaddon$isPanicRemind(SoundInstance si) {
+        final ResourceLocation location = si.getLocation();
+        return location.getNamespace().equals("germanrp") && location.getPath().equals("faction.panic.remind");
     }
 
     @Unique
