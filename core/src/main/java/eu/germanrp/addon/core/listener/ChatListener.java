@@ -264,6 +264,9 @@ public class ChatListener {
                 i = 3;
             }
             this.addon.getPlayer().addPlayerXP(Integer.parseInt(matcher.group(1)) * i);
+            if (this.addon.getPlayer().getPlayerXP() >= this.addon.getPlayer().getPlayerNeededXP()){
+                this.addon.getPlayer().setPlayerXP(this.addon.getPlayer().getPlayerXP()-this.addon.getPlayer().getPlayerNeededXP());
+            }
         }
     }
 }
