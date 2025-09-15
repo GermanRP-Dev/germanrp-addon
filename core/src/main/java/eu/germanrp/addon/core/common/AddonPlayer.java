@@ -86,6 +86,10 @@ public interface AddonPlayer {
 
     boolean isPlayerGR();
 
+    void setPlayPanic(boolean playPanic);
+
+    boolean getPlayPanic();
+
     void setPlayerFaction(Faction faction);
 
     Faction getPlayerFaction();
