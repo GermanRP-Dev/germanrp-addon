@@ -3,7 +3,7 @@ package eu.germanrp.addon.core.listener;
 import eu.germanrp.addon.api.models.Faction;
 import eu.germanrp.addon.api.models.Faction.Type;
 import eu.germanrp.addon.core.GermanRPAddon;
-import eu.germanrp.addon.core.NameTagSubConfig;
+import eu.germanrp.addon.core.config.NameTagSubConfig;
 import eu.germanrp.addon.core.services.NameTagService;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.TextColor;

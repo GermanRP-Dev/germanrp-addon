@@ -2,6 +2,7 @@ package eu.germanrp.addon.core;
 
 import eu.germanrp.addon.api.models.SkillXP;
 import eu.germanrp.addon.core.config.HydrationConfig;
+import eu.germanrp.addon.core.config.NameTagSubConfig;
 import eu.germanrp.addon.core.config.VehicleHotkeyConfig;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -31,9 +32,6 @@ public class GermanRPAddonConfiguration extends AddonConfig {
     private final VehicleHotkeyConfig vehicleHotkeyConfig = new VehicleHotkeyConfig();
 
     private final HydrationConfig hydrationConfig = new HydrationConfig();
-
-    @SwitchSetting
-    private final ConfigProperty<Boolean> notifyNewNightly = new ConfigProperty<>(true);
 
     @SwitchSetting
     private final ConfigProperty<Boolean> silentATM = new ConfigProperty<>(true);
