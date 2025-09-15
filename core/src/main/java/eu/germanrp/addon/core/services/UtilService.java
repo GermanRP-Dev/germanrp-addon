@@ -29,21 +29,13 @@ public class UtilService {
         this.text = new UtilTextService();
     }
 
-    @SuppressWarnings("SameReturnValue")
-    public String version() {
-        return "2.5.0";
-    }
-
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isGermanRP() {
         if (labyAPI().minecraft().isIngame()) {
             ServerData serverData = labyAPI().serverController().getCurrentServerData();
-            boolean isGermanRP = serverData.address().matches("germanrp.eu", 25565, true);
-            if (serverData.address().matches("germanrp.de",25565,true)
-            ||serverData.address().matches("germanrp.eu", 25565, true)
-            ||serverData.address().matches("91.218.66.124", 25565, true)){
-                return true;
-            }
+            return serverData.address().matches("germanrp.de", 25565, true)
+                    || serverData.address().matches("germanrp.eu", 25565, true)
+                    || serverData.address().matches("91.218.66.124", 25565, true);
 
         }
         return false;
