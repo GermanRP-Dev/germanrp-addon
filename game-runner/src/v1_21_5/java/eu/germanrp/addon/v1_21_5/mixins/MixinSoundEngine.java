@@ -58,7 +58,7 @@ public class MixinSoundEngine {
     }
     @Unique
     private static boolean germanrpaddon$isPanicRemindDissabled() {
-        return !GermanRPAddon.getInstance().configuration().panicRemind().get();
+        return !GermanRPAddon.getInstance().getPlayer().getPlayPanic();
     }
 
     @Unique

@@ -36,9 +36,6 @@ public class GermanRPAddonConfiguration extends AddonConfig {
     @SwitchSetting
     private final ConfigProperty<Boolean> silentATM = new ConfigProperty<>(true);
 
-    @SwitchSetting
-    private final ConfigProperty<Boolean> panicRemind = new ConfigProperty<>(true);
-
     @DropdownSetting
     private final ConfigProperty<SkillXP> skillXP = new ConfigProperty<>(NORMAL);
 
