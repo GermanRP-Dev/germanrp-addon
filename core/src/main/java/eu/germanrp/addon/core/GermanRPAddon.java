@@ -23,7 +23,7 @@ import net.labymod.api.models.addon.annotation.AddonMain;
 @AddonMain
 public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
-    public static final String NAMESPACE = "germanrpaddon";
+    public static final String NAMESPACE = "germanrpeuaddon";
 
     @Getter
     private static GermanRPAddon instance;
