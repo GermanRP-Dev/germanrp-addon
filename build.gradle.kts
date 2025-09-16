@@ -23,7 +23,7 @@ labyMod {
     }
 
     addonInfo {
-        namespace = "germanrpaddon"
+        namespace = "germanrpeuaddon"
         displayName = "GermanRP Addon"
         author = "GermanRP Developers"
         description = "Verbessert und erleichtert das Spielerlebnis auf GermanRP.eu"
