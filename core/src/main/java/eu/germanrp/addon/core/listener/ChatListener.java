@@ -296,13 +296,22 @@ public class ChatListener {
         }
     }
 
-
     @Subscribe
-    public void onCommandSend(ChatMessageSendEvent event){
+    public void onCommandSend(ChatMessageSendEvent event) {
         if(event.isMessageCommand()){
             String message = event.getMessage();
             String[] messageStart = message.split(" ");
             event.changeMessage(messageStart[0].toLowerCase() + message.replace(messageStart[0], ""));
         }
+    }
+
+    @Subscribe
+    public void onPanicDeactivate(ChatReceiveEvent event) {
+        String message  = event.chatMessage().getPlainText();
+        if(!GermanRPAddon.getInstance().getPlayer().getPlayerFaction().equals(Faction.POLIZEI)) return;
+        Matcher matcher = PANIC_DEACTIVATE.getPattern().matcher(message);
+         if(!matcher.find()) return;
+        GermanRPAddon.getInstance().getPlayer().setPlayPanic(false);
+
     }
 }
