@@ -17,7 +17,7 @@ import static net.labymod.api.client.gui.icon.Icon.texture;
 @Getter
 public class UtilService {
 
-    private final Icon icon = texture(ResourceLocation.create("germanrpaddon", "themes/vanilla/textures/icon.png")).resolution(64, 64);
+    private final Icon icon = texture(ResourceLocation.create(GermanRPAddon.NAMESPACE, "themes/vanilla/textures/icon.png")).resolution(64, 64);
 
     @Accessors(fluent = true)
     private final UtilTextService text;

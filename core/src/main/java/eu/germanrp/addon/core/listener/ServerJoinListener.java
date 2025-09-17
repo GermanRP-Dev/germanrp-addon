@@ -27,7 +27,7 @@ public class ServerJoinListener {
         this.addon.getPlayer().setPlayerFaction(null);
 
         fireEvent(new JustJoinedEvent(true));
-
+        GermanRPAddon.getInstance().getPlayer().setPlayPanic(false);
         this.addon.getPlayer().sendServerMessage("/stats");
     }
 
