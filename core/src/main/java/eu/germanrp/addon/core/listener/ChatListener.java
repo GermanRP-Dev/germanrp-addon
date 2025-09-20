@@ -307,6 +307,7 @@ public class ChatListener {
 
     @Subscribe
     public void onPanicDeactivate(ChatReceiveEvent event) {
+        if(justJoined) return;
         String message  = event.chatMessage().getPlainText();
         if(!GermanRPAddon.getInstance().getPlayer().getPlayerFaction().equals(Faction.POLIZEI)) return;
         Matcher matcher = PANIC_DEACTIVATE.getPattern().matcher(message);
