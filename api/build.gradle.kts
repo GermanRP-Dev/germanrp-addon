@@ -4,8 +4,8 @@ dependencies {
     labyProcessor()
     labyApi("api")
 
-    compileOnly("org.projectlombok:lombok:1.18.40")
-    annotationProcessor("org.projectlombok:lombok:1.18.40")
+    compileOnly("org.projectlombok:lombok:1.18.42")
+    annotationProcessor("org.projectlombok:lombok:1.18.42")
 }
 
 labyModAnnotationProcessor {
