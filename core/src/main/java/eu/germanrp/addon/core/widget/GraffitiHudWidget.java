@@ -19,7 +19,6 @@ import java.util.Map;
 import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.SECOND;
 import static eu.germanrp.addon.core.widget.GraffitiHudWidget.GraffitiHudWidgetConfig;
 import static java.time.Duration.ZERO;
-import static java.util.Arrays.stream;
 import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.HIDDEN;
 import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.VISIBLE;
 
@@ -40,11 +39,10 @@ public class GraffitiHudWidget extends TextHudWidget<GraffitiHudWidgetConfig> {
     public void load(GraffitiHudWidgetConfig config) {
         super.load(config);
 
-        stream(Graffiti.values())
-                .forEach(graffiti -> {
-                    TextLine textLine = createLine(graffiti.getName(), ZERO);
-                    textLine.setState(HIDDEN);
-                });
+        for(Graffiti graffiti : Graffiti.values()){
+            TextLine textLine = createLine(graffiti.getName(), ZERO);
+            textLine.setState(HIDDEN);
+        }
     }
 
     @Subscribe
