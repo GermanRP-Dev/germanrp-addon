@@ -6,8 +6,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-import static java.util.Arrays.stream;
-
 @Getter
 @AllArgsConstructor
 public enum PlantType {
@@ -33,9 +31,12 @@ public enum PlantType {
      * @return the associated {@link PlantType}
      */
     public static @NotNull Optional<PlantType> fromDisplayName(final String displayName) {
-        return stream(PlantType.values())
-                .filter(plantType -> plantType.getDisplayName().equals(displayName))
-                .findFirst();
+        for (PlantType plantType : PlantType.values()) {
+            if (plantType.getDisplayName().equals(displayName)) {
+                return Optional.of(plantType);
+            }
+        }
+        return Optional.empty();
     }
 
     /**
@@ -46,14 +47,21 @@ public enum PlantType {
      * @return the associated {@link PlantType}
      */
     public static @NotNull Optional<PlantType> fromPaketType(final String type) {
-        return stream(PlantType.values())
-                .filter(plantType -> plantType.getPaketType().equals(type))
-                .findFirst();
+        for (PlantType plantType : PlantType.values()) {
+            if (plantType.getPaketType().equals(type)) {
+                return Optional.of(plantType);
+            }
+        }
+        return Optional.empty();
     }
 
+
     public static @NotNull Optional<PlantType> fromSowMessage(final String message) {
-        return stream(PlantType.values())
-                .filter(plantType -> plantType.getSowMessage().equals(message))
-                .findFirst();
+        for (PlantType plantType : PlantType.values()) {
+            if (plantType.getSowMessage().equals(message)) {
+                return Optional.of(plantType);
+            }
+        }
+        return Optional.empty();
     }
 }
