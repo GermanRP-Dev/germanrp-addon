@@ -22,7 +22,6 @@ import net.labymod.serverapi.api.payload.io.PayloadReader;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -183,8 +182,11 @@ public class EventRegistrationListener {
 
     @Subscribe
     public void onServerDisconnectEvent(final ServerDisconnectEvent event) {
-        Arrays.stream(PlantType.values()).forEach(plantType -> fireEvent(new PlantDestroyEvent(plantType)));
+        for (PlantType plantType : PlantType.values()){
+            fireEvent(new PlantDestroyEvent(plantType));
+        }
     }
+
 
     @Subscribe
     public void onGameTick(GameTickEvent event) {
