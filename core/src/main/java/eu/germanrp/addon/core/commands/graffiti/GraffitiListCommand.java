@@ -16,7 +16,6 @@ import java.time.Duration;
 import static eu.germanrp.addon.core.widget.GraffitiHudWidget.GRAFFITI_REMAINING_TIMES;
 import static eu.germanrp.addon.core.widget.GraffitiHudWidget.GraffitiHudWidgetConfig;
 import static java.time.Duration.ZERO;
-import static java.util.Arrays.stream;
 import static net.labymod.api.client.component.Component.text;
 import static net.labymod.api.client.component.event.ClickEvent.runCommand;
 import static net.labymod.api.client.component.event.HoverEvent.showText;
@@ -48,7 +47,7 @@ public class GraffitiListCommand extends SubCommand {
                 ? this.config.valueColor().defaultValue()
                 : this.config.valueColor().get();
 
-        stream(Graffiti.values()).forEach(graffiti -> {
+        for (Graffiti graffiti : Graffiti.values()){
             final Position position = graffiti.getPosition();
             final Duration remainingTime = GRAFFITI_REMAINING_TIMES.getOrDefault(graffiti, ZERO);
 
@@ -65,7 +64,7 @@ public class GraffitiListCommand extends SubCommand {
                     .clickEvent(runCommand(naviCommand));
 
             this.player.sendMessage(textMessage);
-        });
+        }
 
         return true;
     }

@@ -7,8 +7,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 import java.util.Optional;
 
-import static java.util.Comparator.comparingDouble;
-
 public class NavigationService {
 
     public <T extends Nearest> Optional<T> getNearest(@NotNull Position position, @NotNull Collection<T> elements) {
@@ -16,6 +14,18 @@ public class NavigationService {
             return Optional.empty();
         }
 
-        return elements.stream().min(comparingDouble(t -> t.getPosition().distanceSquared(position)));
+        T nearest = null;
+        double minDistance = Double.MAX_VALUE;
+
+        for (T element : elements) {
+            double distance = element.getPosition().distanceSquared(position);
+            if (distance < minDistance) {
+                minDistance = distance;
+                nearest = element;
+            }
+        }
+
+        return Optional.ofNullable(nearest);
+
     }
 }

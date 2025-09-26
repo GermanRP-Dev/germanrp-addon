@@ -14,8 +14,6 @@ import net.labymod.api.configuration.loader.annotation.SpriteTexture;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
 import net.labymod.api.configuration.settings.annotation.SettingSection;
 
-import java.util.List;
-
 import static eu.germanrp.addon.api.models.SkillXP.NORMAL;
 
 @Getter

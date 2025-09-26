@@ -9,8 +9,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-import static java.util.Arrays.stream;
-
 @Getter
 @AllArgsConstructor
 public enum Graffiti implements Nearest {
@@ -37,8 +35,11 @@ public enum Graffiti implements Nearest {
     }
 
     public static @NotNull Optional<Graffiti> fromName(String name) {
-        return stream(Graffiti.values())
-                .filter(graffiti -> graffiti.getName().equals(name))
-                .findFirst();
+        for (Graffiti graffiti : Graffiti.values()) {
+            if (graffiti.getName().equals(name)) {
+                return Optional.of(graffiti);
+            }
+        }
+        return Optional.empty();
     }
 }

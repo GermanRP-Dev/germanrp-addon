@@ -5,7 +5,6 @@ import lombok.Getter;
 
 import java.util.Optional;
 
-import static java.util.Arrays.stream;
 
 @Getter
 @AllArgsConstructor
@@ -25,8 +24,11 @@ public enum MajorEvent {
     private final int seconds;
 
     public static Optional<MajorEvent> fromName(String name) {
-        return stream(MajorEvent.values())
-                .filter(majorEvent -> majorEvent.getName().equals(name))
-                .findFirst();
+        for (MajorEvent majorEvent : MajorEvent.values()) {
+            if (majorEvent.getName().equals(name)) {
+                return Optional.of(majorEvent);
+            }
+        }
+        return Optional.empty();
     }
 }
