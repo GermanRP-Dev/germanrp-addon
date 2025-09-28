@@ -24,10 +24,10 @@ import static net.labymod.api.util.I18n.getTranslation;
 @Setter
 public class PlayerExperienceWidget extends TextHudWidget<TextHudWidgetConfig> {
 
-    private static final Component EVENT_KEY = translatable("germanrpaddon.widget.playerExperience.playerXPKey");
-    private static final Component COUNTDOWN_KEY = translatable("germanrpaddon.widget.playerExperience.xpLeftKey");
-    private static final String EVENT_VALUE = "germanrpaddon.widget.playerExperience.playerXPValue";
-    private static final String COUNTDOWN_VALUE = "germanrpaddon.widget.playerExperience.xpLeftValue";
+    private static final Component EVENT_KEY = translatable(GermanRPAddon.NAMESPACE + ".widget.playerExperience.playerXPKey");
+    private static final Component COUNTDOWN_KEY = translatable(GermanRPAddon.NAMESPACE + ".widget.playerExperience.xpLeftKey");
+    private static final String EVENT_VALUE = GermanRPAddon.NAMESPACE + ".widget.playerExperience.playerXPValue";
+    private static final String COUNTDOWN_VALUE = GermanRPAddon.NAMESPACE + ".widget.playerExperience.xpLeftValue";
     private final GermanRPAddon addon;
 
     private TextLine currentXPfromNeededXP;

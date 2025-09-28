@@ -24,12 +24,12 @@ public class PayDayWidget extends TextHudWidget<TextHudWidgetConfig> {
     private final GermanRPAddon addon;
     private boolean majorEvent;
 
-    private static final Component FGEHALT_KEY = translatable("germanrpaddon.widget.payDay.fgehaltKey");
-    private static final Component JGEHALT_KEY = translatable("germanrpaddon.widget.payDay.jgehaltKey");
-    private static final Component PAYDAY_KEY = translatable("germanrpaddon.widget.payDay.paydayKey");
-    private static final String FGEHALT_VALUE = "germanrpaddon.widget.payDay.fGehaltValue";
-    private static final String JGEHALT_VALUE = "germanrpaddon.widget.payDay.jGehaltValue";
-    private static final String PAYDAY_VALUE = "germanrpaddon.widget.payDay.paydayValue";
+    private static final Component FGEHALT_KEY = translatable(GermanRPAddon.NAMESPACE + ".widget.payDay.fgehaltKey");
+    private static final Component JGEHALT_KEY = translatable(GermanRPAddon.NAMESPACE + ".widget.payDay.jgehaltKey");
+    private static final Component PAYDAY_KEY = translatable(GermanRPAddon.NAMESPACE + ".widget.payDay.paydayKey");
+    private static final String FGEHALT_VALUE = GermanRPAddon.NAMESPACE + ".widget.payDay.fGehaltValue";
+    private static final String JGEHALT_VALUE = GermanRPAddon.NAMESPACE + ".widget.payDay.jGehaltValue";
+    private static final String PAYDAY_VALUE = GermanRPAddon.NAMESPACE + ".widget.payDay.paydayValue";
 
     private TextLine frakGehaltLine;
     private TextLine jobGehaltLine;

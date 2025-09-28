@@ -25,13 +25,13 @@ import static net.labymod.api.util.I18n.getTranslation;
 
 public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> {
 
-    private static final Component PROGRESS_KEY = translatable("germanrpaddon.widget.plant.progressKey");
-    private static final Component YIELD_KEY = translatable("germanrpaddon.widget.plant.yieldKey");
-    private static final String PROGRESS_TRANSLATABLE_VALUE = "germanrpaddon.widget.plant.progressValue";
-    private static final String YIELD_TRANSLATABLE_VALUE = "germanrpaddon.widget.plant.yieldValue";
-    private static final String PLANT_HARVEST_MESSAGE = "germanrpaddon.message.plant.harvest";
-    private static final String PLANT_FERTILIZE_MESSAGE = "germanrpaddon.message.plant.fertilize";
-    private static final String PLANT_WATER_MESSAGE = "germanrpaddon.message.plant.water";
+    private static final Component PROGRESS_KEY = translatable(GermanRPAddon.NAMESPACE + ".widget.plant.progressKey");
+    private static final Component YIELD_KEY = translatable(GermanRPAddon.NAMESPACE + ".widget.plant.yieldKey");
+    private static final String PROGRESS_TRANSLATABLE_VALUE = GermanRPAddon.NAMESPACE + ".widget.plant.progressValue";
+    private static final String YIELD_TRANSLATABLE_VALUE = GermanRPAddon.NAMESPACE + ".widget.plant.yieldValue";
+    private static final String PLANT_HARVEST_MESSAGE = GermanRPAddon.NAMESPACE + ".message.plant.harvest";
+    private static final String PLANT_FERTILIZE_MESSAGE = GermanRPAddon.NAMESPACE + ".message.plant.fertilize";
+    private static final String PLANT_WATER_MESSAGE = GermanRPAddon.NAMESPACE + ".message.plant.water";
 
     private final GermanRPAddon addon;
 

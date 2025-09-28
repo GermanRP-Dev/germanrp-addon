@@ -26,8 +26,8 @@ import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.VISIB
 public class BlackMarketWidget extends TextHudWidget<TextHudWidgetConfig> {
 
     private final GermanRPAddon addon;
-    private static final Component COUNTDOWN_KEY = translatable("germanrpaddon.widget.blackMarketWidget.eventKey");
-    private static final String COUNTDOWN_VALUE = "germanrpaddon.widget.blackMarketWidget.eventValue";
+    private static final Component COUNTDOWN_KEY = translatable(GermanRPAddon.NAMESPACE + ".widget.blackMarketWidget.eventKey");
+    private static final String COUNTDOWN_VALUE = GermanRPAddon.NAMESPACE + ".widget.blackMarketWidget.eventValue";
     private TextLine countDownLine;
 
     public BlackMarketWidget(GermanRPAddon addon, HudWidgetCategory category) {
