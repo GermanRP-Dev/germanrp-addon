@@ -30,10 +30,10 @@ public class MajorEventWidget extends TextHudWidget<TextHudWidgetConfig> {
     private final GermanRPAddon addon;
     private boolean majorEvent;
     private ZonedDateTime countdownTarget;
-    private static final Component EVENT_KEY = translatable("germanrpaddon.widget.majorEvent.eventKey");
-    private static final Component COUNTDOWN_KEY = translatable("germanrpaddon.widget.majorEvent.countdownKey");
-    private static final String EVENT_VALUE = "germanrpaddon.widget.majorEvent.eventValue";
-    private static final String COUNTDOWN_VALUE = "germanrpaddon.widget.majorEvent.countdownValue";
+    private static final Component EVENT_KEY = translatable(GermanRPAddon.NAMESPACE + ".widget.majorEvent.eventKey");
+    private static final Component COUNTDOWN_KEY = translatable(GermanRPAddon.NAMESPACE + ".widget.majorEvent.countdownKey");
+    private static final String EVENT_VALUE = GermanRPAddon.NAMESPACE + ".widget.majorEvent.eventValue";
+    private static final String COUNTDOWN_VALUE = GermanRPAddon.NAMESPACE + ".widget.majorEvent.countdownValue";
     private TextLine eventNameLine;
     private TextLine countDownLine;
 
