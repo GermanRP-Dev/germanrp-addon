@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(SoundEngine.class)
@@ -35,13 +34,10 @@ public class MixinSoundEngine {
 
     @Unique
     private boolean germanrpaddon$handlePanicRemind(SoundInstance si) {
-        if (!germanrpaddon$isPanicRemindDissabled()) {
+        if (!germanrpaddon$IsPanicRemindDissabled()) {
             return false;
         }
-        if (!germanrpaddon$isPanicRemind(si)) {
-            return false;
-        }
-        return true;
+        return germanrpaddon$isPanicRemind(si);
     }
 
     @Unique
@@ -52,13 +48,10 @@ public class MixinSoundEngine {
         if (!germanrpaddon$isATMBreakSound(si)) {
             return false;
         }
-        if (!germanrpaddon$isLookingAtATM()) {
-            return false;
-        }
-        return true;
+        return germanrpaddon$isLookingAtATM();
     }
     @Unique
-    private static boolean germanrpaddon$isPanicRemindDissabled() {
+    private static boolean germanrpaddon$IsPanicRemindDissabled() {
         return !GermanRPAddon.getInstance().getPlayer().getPlayPanic();
     }
 
