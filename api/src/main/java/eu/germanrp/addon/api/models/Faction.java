@@ -1,8 +1,10 @@
 package eu.germanrp.addon.api.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public enum Faction {
 
     NONE(null, Type.NEUTRAL),
@@ -16,15 +18,12 @@ public enum Faction {
     ESTABLISHMENT("Establishment", Type.CRIME),
     VCI("VCI", Type.NEUTRAL),
     KARTELLCAYOPERICO("CDCP", Type.CRIME),
-    KARTELL("Kartell", Type.CRIME);
+    KARTELL("Kartell", Type.CRIME),
+    IRON_SERPENTS("Iron Serpent", Type.CRIME),
+    BRATVA_GANG("Bratva", Type.CRIME);
 
     private final String memberInfoCommandArg;
     private final Type type;
-
-    Faction(String memberInfoCommandArg, Type type) {
-        this.memberInfoCommandArg = memberInfoCommandArg;
-        this.type = type;
-    }
 
     public enum Type {
         STAAT,

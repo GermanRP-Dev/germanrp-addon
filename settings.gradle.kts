@@ -1,7 +1,7 @@
 rootProject.name = "germanrpeuaddon"
 
 pluginManagement {
-    val labyGradlePluginVersion = "0.5.8"
+    val labyGradlePluginVersion = "0.5.9"
     buildscript {
         repositories {
             maven("https://dist.labymod.net/api/v1/maven/release/")

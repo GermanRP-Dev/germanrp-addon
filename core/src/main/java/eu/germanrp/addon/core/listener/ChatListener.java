@@ -71,10 +71,12 @@ public class ChatListener {
                     case "Medellín Kartell" -> this.addon.getPlayer().setPlayerFaction(Faction.KARTELL);
                     case "VanceCity Investment" -> this.addon.getPlayer().setPlayerFaction(Faction.VCI);
                     case "Cartel de Cayo Perico" -> this.addon.getPlayer().setPlayerFaction(Faction.KARTELLCAYOPERICO);
+                    case "Iron Serpents" -> this.addon.getPlayer().setPlayerFaction(Faction.IRON_SERPENTS);
+                    case "Bratva Gang" -> this.addon.getPlayer().setPlayerFaction(Faction.BRATVA_GANG);
                     default -> {
                         this.addon.getPlayer().setPlayerFaction(Faction.NONE);
                         this.addon.getPlayer().sendErrorMessage("Deine Fraktion wurde nicht gefunden... Bitte hier reporten:");
-                        this.addon.getPlayer().sendErrorMessage("https://germanrp.eu/forum/index.php?thread/25432-germanrp-addon-labymod-4-addon/");
+                        this.addon.getPlayer().sendErrorMessage("https://germanrp.eu/forum/index.php?board/296-bug-labymod-addon/");
                     }
                 }
                 this.addon.getServerJoinListener().onFactionNameGet();
