@@ -1,4 +1,4 @@
-package eu.germanrp.addon.v1_21_8;
+package eu.germanrp.addon.v1_21_8.mixins;
 
 import eu.germanrp.addon.core.GermanRPAddon;
 import net.minecraft.client.Minecraft;
@@ -20,16 +20,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinSoundEngine {
 
     @Inject(method = "play", at = @At("HEAD"), cancellable = true)
-    public void onPlay(SoundInstance si, CallbackInfoReturnable<SoundEngine.PlayResult> ci) {
-        if (germanrpaddon$handleATM(si)){
+    private void onPlay(SoundInstance si, CallbackInfoReturnable<SoundEngine.PlayResult> ci) {
+        if (germanrpaddon$handleATM(si) || germanrpaddon$handlePanicRemind(si)) {
             ci.cancel();
-            return;
         }
-        if (germanrpaddon$handlePanicRemind(si)){
-            ci.cancel();
-            return;
-        }
-        
     }
 
     @Unique
