@@ -4,6 +4,7 @@ import eu.germanrp.addon.api.models.Faction;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.JustJoinedEvent;
 import lombok.Setter;
+import lombok.val;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatMessageSendEvent;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
@@ -61,13 +62,17 @@ public class ChatListener {
 
         switch (message) {
             case "► [System] Du bist jetzt wieder anwesend." -> {
-                event.setCancelled(true);
-                this.addon.getJoinWorkflowManager().setWasAFK(true);
+                if (justJoined) {
+                    event.setCancelled(true);
+                    this.addon.getJoinWorkflowManager().setWasAFK(true);
+                }
             }
             case "► Verwende erneut \"/afk\", um den AFK-Modus zu verlassen." -> {
                 // This is likely manually triggered if not returningToAFK
                 // But we still want to complete workflow if somehow a task was stuck
-                this.addon.getJoinWorkflowManager().completeWorkflow();
+                if (justJoined) {
+                    this.addon.getJoinWorkflowManager().completeWorkflow();
+                }
             }
         }
     }
@@ -260,10 +265,16 @@ public class ChatListener {
 
     @Subscribe
     public void onCommandSend(ChatMessageSendEvent event) {
+        val message = event.getMessage().toLowerCase();
+        if (message.startsWith("/afk")) {
+            // If the player manually toggles AFK, we should stop trying to manage it automatically
+            this.addon.getJoinWorkflowManager().setWasAFK(false);
+            this.addon.getJoinWorkflowManager().setReturningToAFK(false);
+        }
+
         if(event.isMessageCommand()){
-            String message = event.getMessage();
-            String[] messageStart = message.split(" ");
-            event.changeMessage(messageStart[0].toLowerCase() + message.replace(messageStart[0], ""));
+            String[] messageStart = event.getMessage().split(" ");
+            event.changeMessage(messageStart[0].toLowerCase() + event.getMessage().replace(messageStart[0], ""));
         }
     }
 
