@@ -133,29 +133,6 @@ public class ChatListener {
             return;
         }
         switch (faction.getType()) {
-            case CRIME -> {
-                if (message.contentEquals("            KOPFGELDER")) {
-                    event.setCancelled(true);
-                    this.bounty = true;
-                    return;
-                }
-                if (this.bounty) {
-                    event.setCancelled(true);
-                    final Matcher matcher = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
-                    if (!matcher.find()) {
-                        this.bounty = false;
-                        if (this.wasAFK) {
-                            this.addon.getPlayer().sendServerMessage("/afk");
-                            this.wasAFK = false;
-                            return;
-                        }
-                        this.justJoined = false;
-                        return;
-                    }
-                    this.addon.getNameTagService().getBounties().add(matcher.group(1).replace("[GR]", ""));
-                }
-            }
-
             case STAAT -> {
                 if (TITLE_WANTED_LIST.getPattern().matcher(message).find()) {
                     event.setCancelled(true);
