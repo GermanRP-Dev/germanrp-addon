@@ -134,15 +134,6 @@ public class ChatListener {
         }
         switch (faction.getType()) {
             case CRIME -> {
-                if (message.startsWith("► [Darklist] ")) {
-                    event.setCancelled(true);
-                    final Matcher matcher = DARK_LIST_ENTRY.getPattern().matcher(message);
-                    if (!matcher.find()) {
-                        return;
-                    }
-                    this.addon.getNameTagService().getDarklist().add(matcher.group(1).replace("[GR]", ""));
-                    return;
-                }
                 if (message.contentEquals("            KOPFGELDER")) {
                     event.setCancelled(true);
                     this.bounty = true;
@@ -210,7 +201,7 @@ public class ChatListener {
         String message = event.chatMessage().getPlainText();
         switch (faction.getType()) {
             case CRIME -> {
-                final Matcher nametagDarkListAddMatcher = DARK_LIST_ADD.getPattern().matcher(message);
+
                 final Matcher nametagBountyUpdateList = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
 
                 if (message.contentEquals("            KOPFGELDER")) {
@@ -223,27 +214,7 @@ public class ChatListener {
                     }
 
                 }
-                if (nametagDarkListAddMatcher.find()) {
-                    this.addon.getNameTagService().getDarklist().add(nametagDarkListAddMatcher.group(1).replace("[GR]", ""));
-                    return;
-                }
 
-                final Matcher nametagDarkListRemoveMatcher = DARK_LIST_REMOVE.getPattern().matcher(message);
-                if (nametagDarkListRemoveMatcher.find()) {
-                    this.addon.getNameTagService().getDarklist().remove(nametagDarkListRemoveMatcher.group(2).replace("[GR]", ""));
-                    return;
-                }
-
-                final Matcher nametagBountyAddMatcher = BOUNTY_ADD.getPattern().matcher(message);
-                if (nametagBountyAddMatcher.find()) {
-                    this.addon.getNameTagService().getBounties().add(nametagBountyAddMatcher.group(1).replace("[GR]", ""));
-                    return;
-                }
-
-                final Matcher nametagBountyRemoveMatcher = BOUNTY_REMOVE.getPattern().matcher(message);
-                if (nametagBountyRemoveMatcher.find()) {
-                    this.addon.getNameTagService().getBounties().remove(nametagBountyRemoveMatcher.group(1).replace("[GR]", ""));
-                }
             }
             case STAAT -> {
                 final Matcher nametagWantedRemoveMatcher = WANTED_REMOVE.getPattern().matcher(message);
