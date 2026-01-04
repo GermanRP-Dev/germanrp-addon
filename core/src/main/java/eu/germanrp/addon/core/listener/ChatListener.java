@@ -169,34 +169,6 @@ public class ChatListener {
     }
 
     @Subscribe
-    public void onChatReceiveListsChange(ChatReceiveEvent event) {
-
-        Faction faction = this.addon.getPlayer().getPlayerFaction();
-        if (faction == null || !justJoined) {
-            return;
-        }
-        String message = event.chatMessage().getPlainText();
-        switch (faction.getType()) {
-            case CRIME -> {
-
-                final Matcher nametagBountyUpdateList = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
-
-                if (message.contentEquals("            KOPFGELDER")) {
-                    this.bounty = true;
-                    return;
-                }
-                if (this.bounty) {
-                    if(nametagBountyUpdateList.matches()){
-                        this.addon.getNameTagService().getBounties().add(nametagBountyUpdateList.group(1).replace("[GR]",""));
-                    }
-
-                }
-
-            }
-        }
-    }
-
-    @Subscribe
     public void onChatReceiveUpdateStats(@NotNull ChatReceiveEvent event) {
         @NotNull String message = event.chatMessage().getPlainText();
         Matcher matcher = XP_ADD_CHAT.getPattern().matcher(message);
