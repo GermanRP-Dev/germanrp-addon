@@ -159,23 +159,6 @@ public class ChatListener {
             return;
         }
         switch (faction.getType()) {
-            case STAAT -> {
-                if (TITLE_WANTED_LIST.getPattern().matcher(message).find()) {
-                    event.setCancelled(true);
-                    this.wanted = true;
-                    return;
-                }
-                if (this.wanted) {
-                    event.setCancelled(true);
-                    final Matcher matcher = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
-                    if (!matcher.find()) {
-                        this.wanted = false;
-                        this.addon.getJoinWorkflowManager().finishTask("wanteds");
-                        return;
-                    }
-                    this.addon.getNameTagService().getWantedPlayers().add(matcher.group(1).replace("[GR]", ""));
-                }
-            }
             case NEUTRAL,MEDIC -> {
                 // For neutral/medic, once memberinfo is shown, we are mostly done with join tasks in ChatListener
                 if (this.memberInfoWasShown) {
@@ -209,37 +192,6 @@ public class ChatListener {
 
                 }
 
-            }
-            case STAAT -> {
-                final Matcher nametagWantedRemoveMatcher = WANTED_REMOVE.getPattern().matcher(message);
-                final Matcher nametagWantedAddMatcher = WANTED_ADD.getPattern().matcher(message);
-                final Matcher nametagWantedInJailedMatcher = WANTED_INJAILED.getPattern().matcher(message);
-                final Matcher wantedListTitle = TITLE_WANTED_LIST.getPattern().matcher(message);
-                final Matcher wantedListUpdate = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
-
-
-                if (nametagWantedRemoveMatcher.find()) {
-                    this.addon.getNameTagService().getWantedPlayers().remove(nametagWantedRemoveMatcher.group(2).replace("[GR]", ""));
-                    return;
-                }
-
-                if (nametagWantedAddMatcher.find()) {
-                    this.addon.getNameTagService().getWantedPlayers().add(nametagWantedAddMatcher.group(1).replace("[GR]", ""));
-                    return;
-                }
-                if (nametagWantedInJailedMatcher.find()) {
-                    this.addon.getNameTagService().getWantedPlayers().add(nametagWantedAddMatcher.group(1).replace("[GR]", ""));
-                    return;
-                }
-                if (wantedListTitle.find()){
-                    this.wanted = true;
-                    return;
-                }
-                if (this.wanted){
-                    if (wantedListUpdate.matches()){
-                        this.addon.getNameTagService().getWantedPlayers().add(wantedListUpdate.group(1).replace("[GR]",""));
-                    }
-                }
             }
         }
     }
