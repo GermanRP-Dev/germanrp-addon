@@ -57,9 +57,15 @@ public class BountyEventListener {
 
         val message = event.chatMessage().getPlainText();
 
-        if (message.contentEquals(BOUNTY_LIST_HEADER) && justJoined) {
-            event.setCancelled(true);
-            processingBountyList = true;
+        if (message.contentEquals(BOUNTY_LIST_HEADER)) {
+            this.processingBountyList = true;
+
+            // Clear the list before processing new entries
+            addon.getNameTagService().getBounties().clear();
+
+            if (justJoined) {
+                event.setCancelled(true);
+            }
             return;
         }
 

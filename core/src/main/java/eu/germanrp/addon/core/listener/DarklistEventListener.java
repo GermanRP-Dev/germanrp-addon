@@ -55,9 +55,15 @@ public class DarklistEventListener {
 
         val message = event.chatMessage().getPlainText();
 
-        if (message.contentEquals(DARKLIST_LIST_HEADER) && justJoined) {
-            event.setCancelled(true);
-            processingDarklist = true;
+        if (message.contentEquals(DARKLIST_LIST_HEADER)) {
+            this.processingDarklist = true;
+
+            // Clear the list before processing new entries
+            addon.getNameTagService().getDarklist().clear();
+
+            if (justJoined) {
+                event.setCancelled(true);
+            }
             return;
         }
 
