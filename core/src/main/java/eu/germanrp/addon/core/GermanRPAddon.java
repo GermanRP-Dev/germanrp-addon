@@ -9,6 +9,7 @@ import eu.germanrp.addon.core.services.NameTagService;
 import eu.germanrp.addon.core.services.NavigationService;
 import eu.germanrp.addon.core.services.UtilService;
 import eu.germanrp.addon.core.services.VehicleService;
+import eu.germanrp.addon.core.workflow.JoinWorkflowManager;
 import eu.germanrp.addon.core.widget.*;
 import eu.germanrp.addon.core.widget.category.GermanRPAddonWidgetCategory;
 import lombok.Getter;
@@ -36,6 +37,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private AddonPlayer player;
 
     private ServerJoinListener serverJoinListener;
+    private JoinWorkflowManager joinWorkflowManager;
 
     private HeilkrautpflanzeHudWidget heilkrautpflanzeHudWidget;
     private RoseHudWidget roseHudWidget;
@@ -79,6 +81,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         this.navigationService = new NavigationService();
         this.utilService = new UtilService(this);
         this.vehicleService = new VehicleService(this);
+        this.joinWorkflowManager = new JoinWorkflowManager(this);
     }
 
     private void registerCommands() {

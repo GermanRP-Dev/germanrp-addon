@@ -4,7 +4,6 @@ import eu.germanrp.addon.api.models.Faction;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.JustJoinedEvent;
 import lombok.Setter;
-import net.labymod.api.Laby;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatMessageSendEvent;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
@@ -21,11 +20,13 @@ public class ChatListener {
     private boolean chatShowsMemberInfo;
     private boolean wanted;
     private boolean bounty;
-    private boolean wasAFK;
 
     @Setter
     private int emptyMessages;
     private boolean memberInfoWasShown;
+
+    @Setter
+    private int afkEmptyMessages;
 
     public ChatListener(GermanRPAddon addon) {
         this.addon = addon;
@@ -33,7 +34,42 @@ public class ChatListener {
 
     @Subscribe
     public void onGRJoin(JustJoinedEvent event) {
-        this.justJoined = true;
+        this.justJoined = event.isJustJoined();
+    }
+
+    @Subscribe
+    public void onChatReceiveAFK(ChatReceiveEvent event) {
+        String message = event.chatMessage().getPlainText();
+        if (this.addon.getJoinWorkflowManager().isReturningToAFK()) {
+            switch (message) {
+                case "► [System] Du bist jetzt als abwesend markiert.",
+                     "► Verwende erneut \"/afk\", um den AFK-Modus zu verlassen." -> {
+                    event.setCancelled(true);
+                }
+                case "" -> {
+                    event.setCancelled(true);
+                    this.afkEmptyMessages++;
+                    if (this.afkEmptyMessages >= 2) {
+                        // We expect two empty messages: one before and one after the AFK status
+                        this.addon.getJoinWorkflowManager().setReturningToAFK(false);
+                        this.afkEmptyMessages = 0;
+                    }
+                }
+            }
+            return;
+        }
+
+        switch (message) {
+            case "► [System] Du bist jetzt wieder anwesend." -> {
+                event.setCancelled(true);
+                this.addon.getJoinWorkflowManager().setWasAFK(true);
+            }
+            case "► Verwende erneut \"/afk\", um den AFK-Modus zu verlassen." -> {
+                // This is likely manually triggered if not returningToAFK
+                // But we still want to complete workflow if somehow a task was stuck
+                this.addon.getJoinWorkflowManager().completeWorkflow();
+            }
+        }
     }
 
     @Subscribe
@@ -54,11 +90,9 @@ public class ChatListener {
             if (matcher.find()) {
                 switch (matcher.group(1)) {
                     case "Keine (Zivilist)" -> {
-                        if (this.wasAFK) {
-                            Laby.references().chatExecutor().chat("/afk");
-                        }
                         this.memberInfoWasShown = true;
                         this.addon.getPlayer().setPlayerFaction(Faction.NONE);
+                        this.addon.getJoinWorkflowManager().completeWorkflow(); // Faction NONE means no further join lists
                     }
                     case "Rettungsdienst" -> this.addon.getPlayer().setPlayerFaction(Faction.RETTUNGSDIENST);
                     case "Rousseau Familie" -> this.addon.getPlayer().setPlayerFaction(Faction.ROUSSEAU);
@@ -84,21 +118,11 @@ public class ChatListener {
             }
             return;
         }
-        switch (message) {
-            case "► [System] Du bist jetzt als abwesend markiert." -> event.setCancelled(true);
-            case "► Verwende erneut \"/afk\", um den AFK-Modus zu verlassen." -> {
+
+        if (message.isEmpty()) {
+            this.emptyMessages++;
+            if (this.emptyMessages > 2) {
                 event.setCancelled(true);
-                this.justJoined = false;
-            }
-            case "► [System] Du bist jetzt wieder anwesend." -> {
-                event.setCancelled(true);
-                this.wasAFK = true;
-            }
-            case "" -> {
-                this.emptyMessages++;
-                if (this.emptyMessages > 2) {
-                    event.setCancelled(true);
-                }
             }
         }
         Faction faction = this.addon.getPlayer().getPlayerFaction();
@@ -106,10 +130,6 @@ public class ChatListener {
             return;
         }
         if (faction == Faction.NONE) {
-            if (!this.wasAFK) {
-                this.justJoined = false;
-                return;
-            }
             return;
         }
         if (TITLE_FACTION_MEMBER_LIST.getPattern().matcher(message).find()) {
@@ -127,6 +147,7 @@ public class ChatListener {
                 }
                 this.memberInfoWasShown = true;
                 this.chatShowsMemberInfo = false;
+                this.addon.getJoinWorkflowManager().finishTask("memberinfo");
                 return;
             }
             this.addon.getNameTagService().getMembers().add(matcher.group(1).replace("[GR]", ""));
@@ -144,26 +165,17 @@ public class ChatListener {
                     final Matcher matcher = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
                     if (!matcher.find()) {
                         this.wanted = false;
-                        if (this.wasAFK) {
-                            this.addon.getPlayer().sendServerMessage("/afk");
-                            this.wasAFK = false;
-                            return;
-                        }
-                        this.justJoined = false;
+                        this.addon.getJoinWorkflowManager().finishTask("wanteds");
                         return;
                     }
                     this.addon.getNameTagService().getWantedPlayers().add(matcher.group(1).replace("[GR]", ""));
                 }
             }
             case NEUTRAL,MEDIC -> {
-                if (!this.memberInfoWasShown) return;
-                if (this.wasAFK) {
-                    this.addon.getPlayer().sendServerMessage("/afk");
-                    this.wasAFK = false;
-                    return;
+                // For neutral/medic, once memberinfo is shown, we are mostly done with join tasks in ChatListener
+                if (this.memberInfoWasShown) {
+                    this.memberInfoWasShown = false;
                 }
-                this.memberInfoWasShown = false;
-                this.justJoined = false;
             }
         }
     }

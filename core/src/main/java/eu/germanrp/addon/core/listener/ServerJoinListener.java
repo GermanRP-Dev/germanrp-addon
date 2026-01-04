@@ -33,22 +33,36 @@ public class ServerJoinListener {
 
     public void onFactionNameGet() {
         final Faction faction = this.addon.getPlayer().getPlayerFaction();
-        if (faction == Faction.NONE) {
+        if (faction == null || faction == Faction.NONE) {
             return;
         }
 
         this.addon.getNameTagService().getMembers().clear();
+        this.addon.getJoinWorkflowManager().startTask("memberinfo");
         this.addon.getPlayer().sendServerMessage(String.format("/memberinfo %s", faction.getMemberInfoCommandArg()));
 
         final Faction.Type type = faction.getType();
-        if (type == Faction.Type.CRIME) {
-            this.addon.getNameTagService().getDarklist().clear();
-            this.addon.getNameTagService().getBounties().clear();
-            this.addon.getPlayer().sendServerMessage("/darklist");
-            this.addon.getPlayer().sendServerMessage("/kopfgelder");
-        } else if (type == Faction.Type.STAAT) {
-            this.addon.getNameTagService().getWantedPlayers().clear();
-            this.addon.getPlayer().sendServerMessage("/wanteds");
+
+        switch (type) {
+            case CRIME -> {
+                this.addon.getNameTagService().getDarklist().clear();
+                this.addon.getNameTagService().getBounties().clear();
+                this.addon.getJoinWorkflowManager().startTask("darklist");
+                this.addon.getJoinWorkflowManager().startTask("bounties");
+                this.addon.getPlayer().sendServerMessage("/darklist");
+                this.addon.getPlayer().sendServerMessage("/kopfgelder");
+            }
+
+            case STAAT -> {
+                this.addon.getNameTagService().getWantedPlayers().clear();
+                this.addon.getJoinWorkflowManager().startTask("wanteds");
+                this.addon.getPlayer().sendServerMessage("/wanteds");
+            }
+
+            default -> {
+                this.addon.getJoinWorkflowManager().finishTask("memberinfo");
+            }
+
         }
     }
 }

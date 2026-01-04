@@ -96,7 +96,7 @@ public class BountyEventListener {
             // Because the bounty list always starts with a header,
             // we can stop processing as soon as the message is not a bounty list entry.
             processingBountyList = false;
-            justJoined = false;
+            addon.getJoinWorkflowManager().finishTask("bounties");
         }
 
     }

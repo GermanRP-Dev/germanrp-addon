@@ -94,7 +94,7 @@ public class DarklistEventListener {
             // Because the darklist always starts with a header,
             // we can stop processing as soon as the message is not a darklist entry.
             processingDarklist = false;
-            justJoined = false;
+            addon.getJoinWorkflowManager().finishTask("darklist");
         }
 
     }
