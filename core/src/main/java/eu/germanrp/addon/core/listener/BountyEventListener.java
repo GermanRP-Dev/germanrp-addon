@@ -5,7 +5,6 @@ import eu.germanrp.addon.api.models.ServerPlayer;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.JustJoinedEvent;
 import eu.germanrp.addon.core.common.events.PlayerBountyEvent;
-import eu.germanrp.addon.core.common.events.PlayerDarklistEvent;
 import lombok.val;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
@@ -95,9 +94,9 @@ public class BountyEventListener {
             }
 
             val playerName = nametagBountyEntryMatcher.group(1);
-            val playerDarklistEvent = new PlayerDarklistEvent(true, new ServerPlayer(playerName));
-            addonPlayer.sendDebugMessage("DarklistEventListener, onChatMessageReceive, nametagBountyEntryMatcher, fireEvent: playerDarklistEvent = %s".formatted(playerDarklistEvent));
-            fireEvent(playerDarklistEvent);
+            val playerBountyEvent = new PlayerBountyEvent(true, new ServerPlayer(playerName));
+            addonPlayer.sendDebugMessage("DarklistEventListener, onChatMessageReceive, nametagBountyEntryMatcher, fireEvent: playerBountyEvent = %s".formatted(playerBountyEvent));
+            fireEvent(playerBountyEvent);
         } else if (processingBountyList) {
             // Because the bounty list always starts with a header,
             // we can stop processing as soon as the message is not a bounty list entry.
