@@ -2,27 +2,26 @@ package eu.germanrp.addon.api.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.val;
 
 @Getter
 @AllArgsConstructor
 public enum Faction {
 
-    NONE(null, Type.NEUTRAL),
-    POLIZEI("Polizei", Type.STAAT),
-    RETTUNGSDIENST("Rettungsdienst", Type.MEDIC),
-    SINALOAKARTELL("CDS", Type.CRIME),
-    CAMORRA("Camorra", Type.CRIME),
-    ROUSSEAU("Rousseau", Type.CRIME),
-    PRESSE("Presseagentur", Type.NEUTRAL),
-    MTFASHION("MT-Fashion", Type.NEUTRAL),
-    ESTABLISHMENT("Establishment", Type.CRIME),
-    VCI("VCI", Type.NEUTRAL),
-    KARTELLCAYOPERICO("CDCP", Type.CRIME),
-    KARTELL("Kartell", Type.CRIME),
-    IRON_SERPENTS("Iron Serpent", Type.CRIME),
-    BRATVA_GANG("Bratva", Type.CRIME);
+    UNKNOWN(null, null, Type.NEUTRAL),
+    NONE(null, "Keine (Zivilist)", Type.NEUTRAL),
+    POLIZEI("Polizei", "Polizei", Type.STAAT),
+    RETTUNGSDIENST("Rettungsdienst", "Rettungsdienst", Type.MEDIC),
+    CAMORRA("Camorra", "Camorra", Type.CRIME),
+    BRATVA_GANG("Bratva Gang", "Bratva Gang", Type.CRIME),
+    PRESSE("Presseagentur", "Presseagentur", Type.NEUTRAL),
+    ESTABLISHMENT("Establishment", "The Estalishment", Type.CRIME),
+    VCI("VCI", "VanceCity Investment", Type.NEUTRAL),
+    LA_COSA_NOSTRA("lcn", "La Cosa Nostra", Type.CRIME),
+    IRON_SERPENTS("Serpents", "Iron Serpents", Type.CRIME);
 
     private final String memberInfoCommandArg;
+    private final String displayName;
     private final Type type;
 
     public enum Type {
@@ -31,4 +30,16 @@ public enum Faction {
         CRIME,
         NEUTRAL
     }
+
+    public static Faction fromDisplayName(String displayName) {
+        for (Faction faction : values()) {
+            val factionDisplayName = faction.getDisplayName();
+
+            if (factionDisplayName == null) continue;
+
+            if (factionDisplayName.equals(displayName)) return faction;
+        }
+        return UNKNOWN;
+    }
+
 }

@@ -93,31 +93,19 @@ public class ChatListener {
             }
             matcher = FRAKTION_NAME_STATS.getPattern().matcher(message);
             if (matcher.find()) {
-                switch (matcher.group(1)) {
-                    case "Keine (Zivilist)" -> {
-                        this.memberInfoWasShown = true;
-                        this.addon.getPlayer().setPlayerFaction(Faction.NONE);
-                        this.addon.getJoinWorkflowManager().completeWorkflow(); // Faction NONE means no further join lists
-                    }
-                    case "Rettungsdienst" -> this.addon.getPlayer().setPlayerFaction(Faction.RETTUNGSDIENST);
-                    case "Rousseau Familie" -> this.addon.getPlayer().setPlayerFaction(Faction.ROUSSEAU);
-                    case "Polizei" -> this.addon.getPlayer().setPlayerFaction(Faction.POLIZEI);
-                    case "Camorra" -> this.addon.getPlayer().setPlayerFaction(Faction.CAMORRA);
-                    case "The Establishment" -> this.addon.getPlayer().setPlayerFaction(Faction.ESTABLISHMENT);
-                    case "MT-Fashion" -> this.addon.getPlayer().setPlayerFaction(Faction.MTFASHION);
-                    case "Presseagentur" ->this.addon.getPlayer().setPlayerFaction(Faction.PRESSE);
-                    case "Sinaloa Kartell" -> this.addon.getPlayer().setPlayerFaction(Faction.SINALOAKARTELL);
-                    case "Medellín Kartell" -> this.addon.getPlayer().setPlayerFaction(Faction.KARTELL);
-                    case "VanceCity Investment" -> this.addon.getPlayer().setPlayerFaction(Faction.VCI);
-                    case "Cartel de Cayo Perico" -> this.addon.getPlayer().setPlayerFaction(Faction.KARTELLCAYOPERICO);
-                    case "Iron Serpents" -> this.addon.getPlayer().setPlayerFaction(Faction.IRON_SERPENTS);
-                    case "Bratva Gang" -> this.addon.getPlayer().setPlayerFaction(Faction.BRATVA_GANG);
-                    default -> {
-                        this.addon.getPlayer().setPlayerFaction(Faction.NONE);
-                        this.addon.getPlayer().sendErrorMessage("Deine Fraktion wurde nicht gefunden... Bitte hier reporten:");
-                        this.addon.getPlayer().sendErrorMessage("https://germanrp.eu/forum/index.php?board/296-bug-labymod-addon/");
-                    }
+                val faction = Faction.fromDisplayName(matcher.group(1));
+                this.addon.getPlayer().setPlayerFaction(faction);
+
+                if (faction == null || faction == Faction.UNKNOWN) {
+                    this.addon.getPlayer().sendErrorMessage("Deine Fraktion wurde nicht gefunden... Bitte hier reporten:");
+                    this.addon.getPlayer().sendErrorMessage("https://germanrp.eu/forum/index.php?board/296-bug-labymod-addon/");
                 }
+
+                if (faction == Faction.NONE) {
+                    this.memberInfoWasShown = true;
+                    this.addon.getJoinWorkflowManager().completeWorkflow();
+                }
+
                 this.addon.getServerJoinListener().onFactionNameGet();
                 return;
             }
