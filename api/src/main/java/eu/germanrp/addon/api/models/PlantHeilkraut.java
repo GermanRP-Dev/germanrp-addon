@@ -12,7 +12,7 @@ import static net.labymod.api.Laby.fireEvent;
 @Setter
 public final class PlantHeilkraut extends Plant {
 
-    private static final int FERTILIZE_TIME = 4;
+    private static final int FERTILIZE_TIME = 5;
     private static final int WATER_TIME = 10;
 
     private boolean fertilized = false;
