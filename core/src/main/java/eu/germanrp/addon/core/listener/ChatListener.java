@@ -93,7 +93,9 @@ public class ChatListener {
             }
             matcher = FRAKTION_NAME_STATS.getPattern().matcher(message);
             if (matcher.find()) {
-                val faction = Faction.fromDisplayName(matcher.group(1));
+                val factionName = matcher.group(1);
+                this.addon.getPlayer().sendDebugMessage("ChatListener, onChatReceiveJustJoined, FRAKTION_NAME_STATS, factionName = %s".formatted(factionName));
+                val faction = Faction.fromDisplayName(factionName);
                 this.addon.getPlayer().setPlayerFaction(faction);
 
                 if (faction == null || faction == Faction.UNKNOWN) {
