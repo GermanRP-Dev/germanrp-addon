@@ -92,8 +92,16 @@ public class BountyEventListener {
         }
 
         if (processingBountyList) {
+
+            if(message.contentEquals(NO_ACTIVE_BOUNTIES)) {
+                // When no active bounties are available, we can stop processing the bounty list.
+                processingBountyList = false;
+                addon.getJoinWorkflowManager().finishTask("bounties");
+                return;
+            }
+
             val nametagBountyEntryMatcher = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
-            if (!message.contentEquals(NO_ACTIVE_BOUNTIES) && nametagBountyEntryMatcher.find()) {
+            if (nametagBountyEntryMatcher.find()) {
 
                 if (justJoined) {
                     event.setCancelled(true);
