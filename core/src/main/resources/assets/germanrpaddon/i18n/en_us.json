@@ -1,5 +1,5 @@
 {
-    "germanrpeuaddon": {
+    "germanrpaddon": {
         "settings": {
             "header": {
                 "debug": {
@@ -46,6 +46,9 @@
             },
             "silentATM": {
                 "name": "ATM Aufbruch stummschalten"
+            },
+            "panicRemind": {
+                "name": "Panic button sound"
             },
             "skillXP": {
                 "name": "Zeige SkillXP  in",
