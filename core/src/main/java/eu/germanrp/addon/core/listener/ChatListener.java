@@ -4,7 +4,7 @@ import eu.germanrp.addon.api.models.Faction;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.JustJoinedEvent;
 import lombok.Setter;
-import net.labymod.api.Laby;
+import lombok.val;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatMessageSendEvent;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
@@ -21,11 +21,13 @@ public class ChatListener {
     private boolean chatShowsMemberInfo;
     private boolean wanted;
     private boolean bounty;
-    private boolean wasAFK;
 
     @Setter
     private int emptyMessages;
     private boolean memberInfoWasShown;
+
+    @Setter
+    private int afkEmptyMessages;
 
     public ChatListener(GermanRPAddon addon) {
         this.addon = addon;
@@ -33,7 +35,46 @@ public class ChatListener {
 
     @Subscribe
     public void onGRJoin(JustJoinedEvent event) {
-        this.justJoined = true;
+        this.justJoined = event.isJustJoined();
+    }
+
+    @Subscribe
+    public void onChatReceiveAFK(ChatReceiveEvent event) {
+        String message = event.chatMessage().getPlainText();
+        if (this.addon.getJoinWorkflowManager().isReturningToAFK()) {
+            switch (message) {
+                case "► [System] Du bist jetzt als abwesend markiert.",
+                     "► Verwende erneut \"/afk\", um den AFK-Modus zu verlassen." -> {
+                    event.setCancelled(true);
+                }
+                case "" -> {
+                    event.setCancelled(true);
+                    this.afkEmptyMessages++;
+                    if (this.afkEmptyMessages >= 2) {
+                        // We expect two empty messages: one before and one after the AFK status
+                        this.addon.getJoinWorkflowManager().setReturningToAFK(false);
+                        this.afkEmptyMessages = 0;
+                    }
+                }
+            }
+            return;
+        }
+
+        switch (message) {
+            case "► [System] Du bist jetzt wieder anwesend." -> {
+                if (justJoined) {
+                    event.setCancelled(true);
+                    this.addon.getJoinWorkflowManager().setWasAFK(true);
+                }
+            }
+            case "► Verwende erneut \"/afk\", um den AFK-Modus zu verlassen." -> {
+                // This is likely manually triggered if not returningToAFK
+                // But we still want to complete workflow if somehow a task was stuck
+                if (justJoined) {
+                    this.addon.getJoinWorkflowManager().completeWorkflow();
+                }
+            }
+        }
     }
 
     @Subscribe
@@ -52,53 +93,31 @@ public class ChatListener {
             }
             matcher = FRAKTION_NAME_STATS.getPattern().matcher(message);
             if (matcher.find()) {
-                switch (matcher.group(1)) {
-                    case "Keine (Zivilist)" -> {
-                        if (this.wasAFK) {
-                            Laby.references().chatExecutor().chat("/afk");
-                        }
-                        this.memberInfoWasShown = true;
-                        this.addon.getPlayer().setPlayerFaction(Faction.NONE);
-                    }
-                    case "Rettungsdienst" -> this.addon.getPlayer().setPlayerFaction(Faction.RETTUNGSDIENST);
-                    case "Rousseau Familie" -> this.addon.getPlayer().setPlayerFaction(Faction.ROUSSEAU);
-                    case "Polizei" -> this.addon.getPlayer().setPlayerFaction(Faction.POLIZEI);
-                    case "Camorra" -> this.addon.getPlayer().setPlayerFaction(Faction.CAMORRA);
-                    case "The Establishment" -> this.addon.getPlayer().setPlayerFaction(Faction.ESTABLISHMENT);
-                    case "MT-Fashion" -> this.addon.getPlayer().setPlayerFaction(Faction.MTFASHION);
-                    case "Presseagentur" ->this.addon.getPlayer().setPlayerFaction(Faction.PRESSE);
-                    case "Sinaloa Kartell" -> this.addon.getPlayer().setPlayerFaction(Faction.SINALOAKARTELL);
-                    case "Medellín Kartell" -> this.addon.getPlayer().setPlayerFaction(Faction.KARTELL);
-                    case "VanceCity Investment" -> this.addon.getPlayer().setPlayerFaction(Faction.VCI);
-                    case "Cartel de Cayo Perico" -> this.addon.getPlayer().setPlayerFaction(Faction.KARTELLCAYOPERICO);
-                    case "Iron Serpents" -> this.addon.getPlayer().setPlayerFaction(Faction.IRON_SERPENTS);
-                    case "Bratva Gang" -> this.addon.getPlayer().setPlayerFaction(Faction.BRATVA_GANG);
-                    default -> {
-                        this.addon.getPlayer().setPlayerFaction(Faction.NONE);
-                        this.addon.getPlayer().sendErrorMessage("Deine Fraktion wurde nicht gefunden... Bitte hier reporten:");
-                        this.addon.getPlayer().sendErrorMessage("https://germanrp.eu/forum/index.php?board/296-bug-labymod-addon/");
-                    }
+                val factionName = matcher.group(1);
+                this.addon.getPlayer().sendDebugMessage("ChatListener, onChatReceiveJustJoined, FRAKTION_NAME_STATS, factionName = %s".formatted(factionName));
+                val faction = Faction.fromDisplayName(factionName);
+                this.addon.getPlayer().setPlayerFaction(faction);
+
+                if (faction == null || faction == Faction.UNKNOWN) {
+                    this.addon.getPlayer().sendErrorMessage("Deine Fraktion wurde nicht gefunden... Bitte hier reporten:");
+                    this.addon.getPlayer().sendErrorMessage("https://germanrp.eu/forum/index.php?board/296-bug-labymod-addon/");
                 }
+
+                if (faction == Faction.NONE) {
+                    this.memberInfoWasShown = true;
+                    this.addon.getJoinWorkflowManager().completeWorkflow();
+                }
+
                 this.addon.getServerJoinListener().onFactionNameGet();
                 return;
             }
             return;
         }
-        switch (message) {
-            case "► [System] Du bist jetzt als abwesend markiert." -> event.setCancelled(true);
-            case "► Verwende erneut \"/afk\", um den AFK-Modus zu verlassen." -> {
+
+        if (message.isEmpty()) {
+            this.emptyMessages++;
+            if (this.emptyMessages > 2) {
                 event.setCancelled(true);
-                this.justJoined = false;
-            }
-            case "► [System] Du bist jetzt wieder anwesend." -> {
-                event.setCancelled(true);
-                this.wasAFK = true;
-            }
-            case "" -> {
-                this.emptyMessages++;
-                if (this.emptyMessages > 2) {
-                    event.setCancelled(true);
-                }
             }
         }
         Faction faction = this.addon.getPlayer().getPlayerFaction();
@@ -106,174 +125,14 @@ public class ChatListener {
             return;
         }
         if (faction == Faction.NONE) {
-            if (!this.wasAFK) {
-                this.justJoined = false;
-                return;
-            }
-            return;
-        }
-        if (TITLE_FACTION_MEMBER_LIST.getPattern().matcher(message).find()) {
-            event.setCancelled(true);
-            this.chatShowsMemberInfo = true;
             return;
         }
 
-        if (this.chatShowsMemberInfo) {
-            event.setCancelled(true);
-            final Matcher matcher = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
-            if (!matcher.find()) {
-                if (!message.startsWith("        (Insgesamt: ") || !message.endsWith(" verfügbar)")) {
-                    return;
-                }
-                this.memberInfoWasShown = true;
-                this.chatShowsMemberInfo = false;
-                return;
-            }
-            this.addon.getNameTagService().getMembers().add(matcher.group(1).replace("[GR]", ""));
-            return;
-        }
         switch (faction.getType()) {
-            case CRIME -> {
-                if (message.startsWith("► [Darklist] ")) {
-                    event.setCancelled(true);
-                    final Matcher matcher = DARK_LIST_ENTRY.getPattern().matcher(message);
-                    if (!matcher.find()) {
-                        return;
-                    }
-                    this.addon.getNameTagService().getDarklist().add(matcher.group(1).replace("[GR]", ""));
-                    return;
-                }
-                if (message.contentEquals("            KOPFGELDER")) {
-                    event.setCancelled(true);
-                    this.bounty = true;
-                    return;
-                }
-                if (this.bounty) {
-                    event.setCancelled(true);
-                    final Matcher matcher = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
-                    if (!matcher.find()) {
-                        this.bounty = false;
-                        if (this.wasAFK) {
-                            this.addon.getPlayer().sendServerMessage("/afk");
-                            this.wasAFK = false;
-                            return;
-                        }
-                        this.justJoined = false;
-                        return;
-                    }
-                    this.addon.getNameTagService().getBounties().add(matcher.group(1).replace("[GR]", ""));
-                }
-            }
-
-            case STAAT -> {
-                if (TITLE_WANTED_LIST.getPattern().matcher(message).find()) {
-                    event.setCancelled(true);
-                    this.wanted = true;
-                    return;
-                }
-                if (this.wanted) {
-                    event.setCancelled(true);
-                    final Matcher matcher = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
-                    if (!matcher.find()) {
-                        this.wanted = false;
-                        if (this.wasAFK) {
-                            this.addon.getPlayer().sendServerMessage("/afk");
-                            this.wasAFK = false;
-                            return;
-                        }
-                        this.justJoined = false;
-                        return;
-                    }
-                    this.addon.getNameTagService().getWantedPlayers().add(matcher.group(1).replace("[GR]", ""));
-                }
-            }
             case NEUTRAL,MEDIC -> {
-                if (!this.memberInfoWasShown) return;
-                if (this.wasAFK) {
-                    this.addon.getPlayer().sendServerMessage("/afk");
-                    this.wasAFK = false;
-                    return;
-                }
-                this.memberInfoWasShown = false;
-                this.justJoined = false;
-            }
-        }
-    }
-
-    @Subscribe
-    public void onChatReceiveListsChange(ChatReceiveEvent event) {
-
-        Faction faction = this.addon.getPlayer().getPlayerFaction();
-        if (faction == null || !justJoined) {
-            return;
-        }
-        String message = event.chatMessage().getPlainText();
-        switch (faction.getType()) {
-            case CRIME -> {
-                final Matcher nametagDarkListAddMatcher = DARK_LIST_ADD.getPattern().matcher(message);
-                final Matcher nametagBountyUpdateList = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
-
-                if (message.contentEquals("            KOPFGELDER")) {
-                    this.bounty = true;
-                    return;
-                }
-                if (this.bounty) {
-                    if(nametagBountyUpdateList.matches()){
-                        this.addon.getNameTagService().getBounties().add(nametagBountyUpdateList.group(1).replace("[GR]",""));
-                    }
-
-                }
-                if (nametagDarkListAddMatcher.find()) {
-                    this.addon.getNameTagService().getDarklist().add(nametagDarkListAddMatcher.group(1).replace("[GR]", ""));
-                    return;
-                }
-
-                final Matcher nametagDarkListRemoveMatcher = DARK_LIST_REMOVE.getPattern().matcher(message);
-                if (nametagDarkListRemoveMatcher.find()) {
-                    this.addon.getNameTagService().getDarklist().remove(nametagDarkListRemoveMatcher.group(2).replace("[GR]", ""));
-                    return;
-                }
-
-                final Matcher nametagBountyAddMatcher = BOUNTY_ADD.getPattern().matcher(message);
-                if (nametagBountyAddMatcher.find()) {
-                    this.addon.getNameTagService().getBounties().add(nametagBountyAddMatcher.group(1).replace("[GR]", ""));
-                    return;
-                }
-
-                final Matcher nametagBountyRemoveMatcher = BOUNTY_REMOVE.getPattern().matcher(message);
-                if (nametagBountyRemoveMatcher.find()) {
-                    this.addon.getNameTagService().getBounties().remove(nametagBountyRemoveMatcher.group(1).replace("[GR]", ""));
-                }
-            }
-            case STAAT -> {
-                final Matcher nametagWantedRemoveMatcher = WANTED_REMOVE.getPattern().matcher(message);
-                final Matcher nametagWantedAddMatcher = WANTED_ADD.getPattern().matcher(message);
-                final Matcher nametagWantedInJailedMatcher = WANTED_INJAILED.getPattern().matcher(message);
-                final Matcher wantedListTitle = TITLE_WANTED_LIST.getPattern().matcher(message);
-                final Matcher wantedListUpdate = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
-
-
-                if (nametagWantedRemoveMatcher.find()) {
-                    this.addon.getNameTagService().getWantedPlayers().remove(nametagWantedRemoveMatcher.group(2).replace("[GR]", ""));
-                    return;
-                }
-
-                if (nametagWantedAddMatcher.find()) {
-                    this.addon.getNameTagService().getWantedPlayers().add(nametagWantedAddMatcher.group(1).replace("[GR]", ""));
-                    return;
-                }
-                if (nametagWantedInJailedMatcher.find()) {
-                    this.addon.getNameTagService().getWantedPlayers().add(nametagWantedAddMatcher.group(1).replace("[GR]", ""));
-                    return;
-                }
-                if (wantedListTitle.find()){
-                    this.wanted = true;
-                    return;
-                }
-                if (this.wanted){
-                    if (wantedListUpdate.matches()){
-                        this.addon.getNameTagService().getWantedPlayers().add(wantedListUpdate.group(1).replace("[GR]",""));
-                    }
+                // For neutral/medic, once memberinfo is shown, we are mostly done with join tasks in ChatListener
+                if (this.memberInfoWasShown) {
+                    this.memberInfoWasShown = false;
                 }
             }
         }
@@ -300,10 +159,16 @@ public class ChatListener {
 
     @Subscribe
     public void onCommandSend(ChatMessageSendEvent event) {
+        val message = event.getMessage().toLowerCase();
+        if (message.startsWith("/afk")) {
+            // If the player manually toggles AFK, we should stop trying to manage it automatically
+            this.addon.getJoinWorkflowManager().setWasAFK(false);
+            this.addon.getJoinWorkflowManager().setReturningToAFK(false);
+        }
+
         if(event.isMessageCommand()){
-            String message = event.getMessage();
-            String[] messageStart = message.split(" ");
-            event.changeMessage(messageStart[0].toLowerCase() + message.replace(messageStart[0], ""));
+            String[] messageStart = event.getMessage().split(" ");
+            event.changeMessage(messageStart[0].toLowerCase() + event.getMessage().replace(messageStart[0], ""));
         }
     }
 
@@ -311,7 +176,8 @@ public class ChatListener {
     public void onPanicDeactivate(ChatReceiveEvent event) {
         if(justJoined) return;
         String message  = event.chatMessage().getPlainText();
-        if(!GermanRPAddon.getInstance().getPlayer().getPlayerFaction().equals(Faction.POLIZEI)) return;
+        val playerFaction = GermanRPAddon.getInstance().getPlayer().getPlayerFaction();
+        if(playerFaction == null || !playerFaction.equals(Faction.POLIZEI)) return;
         Matcher matcher = PANIC_DEACTIVATE.getPattern().matcher(message);
          if(!matcher.find()) return;
         GermanRPAddon.getInstance().getPlayer().setPlayPanic(false);
