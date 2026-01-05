@@ -1,5 +1,6 @@
 package eu.germanrp.addon.core;
 
+import eu.germanrp.addon.api.network.ATMPacket;
 import eu.germanrp.addon.core.commands.TogglePanicCommand;
 import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
 import eu.germanrp.addon.core.common.AddonPlayer;
@@ -9,16 +10,20 @@ import eu.germanrp.addon.core.services.NameTagService;
 import eu.germanrp.addon.core.services.NavigationService;
 import eu.germanrp.addon.core.services.UtilService;
 import eu.germanrp.addon.core.services.VehicleService;
-import eu.germanrp.addon.core.workflow.JoinWorkflowManager;
 import eu.germanrp.addon.core.widget.*;
 import eu.germanrp.addon.core.widget.category.GermanRPAddonWidgetCategory;
+import eu.germanrp.addon.core.workflow.JoinWorkflowManager;
 import lombok.Getter;
+import lombok.val;
+import net.labymod.api.Laby;
 import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.client.gui.hud.HudWidgetRegistry;
 import net.labymod.api.client.gui.hud.binding.category.HudWidgetCategory;
 import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.models.addon.annotation.AddonMain;
+import net.labymod.serverapi.api.packet.Direction;
+import net.labymod.serverapi.core.AddonProtocol;
 
 @Getter
 @AddonMain
@@ -67,6 +72,16 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerWidgets();
         registerListener();
         registerCommands();
+
+        val protocolService = Laby.references().labyModProtocolService();
+        val protocol = new AddonProtocol(protocolService, NAMESPACE);
+        protocolService.registry().registerProtocol(protocol);
+        protocol.registerPacket(
+                0,
+                ATMPacket.class,
+                Direction.CLIENTBOUND,
+                new ATMPacketHandler(this)
+        );
 
         this.logger().info("Enabled germanrpaddon");
     }
@@ -162,5 +177,6 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerListener(new BountyEventListener(this));
         registerListener(new WantedEventListener(this));
         registerListener(new MemberInfoEventListener(this));
+        registerListener(new ATMPacketHandler(this));
     }
 }
