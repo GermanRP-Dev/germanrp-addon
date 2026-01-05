@@ -64,7 +64,7 @@ public class WantedEventListener {
             this.processingWantedList = true;
 
             // Clear the list before processing new entries
-            addon.getNameTagService().getBounties().clear();
+            addon.getNameTagService().getWantedPlayers().clear();
 
             if (justJoined) {
                 event.setCancelled(true);
@@ -128,10 +128,10 @@ public class WantedEventListener {
         val wantedTarget = event.player();
         if (event.added()) {
             addonPlayer.sendDebugMessage("WantedEventListener, onPlayerWantedEvent: %s added to the wanted list".formatted(wantedTarget.name()));
-            addon.getNameTagService().getBounties().add(wantedTarget.name());
+            addon.getNameTagService().getWantedPlayers().add(wantedTarget.name());
         } else {
             addonPlayer.sendDebugMessage("WantedEventListener, onPlayerWantedEvent: %s removed from the wanted list".formatted(wantedTarget.name()));
-            addon.getNameTagService().getBounties().remove(wantedTarget.name());
+            addon.getNameTagService().getWantedPlayers().remove(wantedTarget.name());
         }
     }
 
