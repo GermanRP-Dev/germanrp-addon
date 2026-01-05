@@ -127,27 +127,7 @@ public class ChatListener {
         if (faction == Faction.NONE) {
             return;
         }
-        if (TITLE_FACTION_MEMBER_LIST.getPattern().matcher(message).find()) {
-            event.setCancelled(true);
-            this.chatShowsMemberInfo = true;
-            return;
-        }
 
-        if (this.chatShowsMemberInfo) {
-            event.setCancelled(true);
-            final Matcher matcher = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
-            if (!matcher.find()) {
-                if (!message.startsWith("        (Insgesamt: ") || !message.endsWith(" verfügbar)")) {
-                    return;
-                }
-                this.memberInfoWasShown = true;
-                this.chatShowsMemberInfo = false;
-                this.addon.getJoinWorkflowManager().finishTask("memberinfo");
-                return;
-            }
-            this.addon.getNameTagService().getMembers().add(matcher.group(1).replace("[GR]", ""));
-            return;
-        }
         switch (faction.getType()) {
             case NEUTRAL,MEDIC -> {
                 // For neutral/medic, once memberinfo is shown, we are mostly done with join tasks in ChatListener
