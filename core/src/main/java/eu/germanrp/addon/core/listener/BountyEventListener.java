@@ -9,6 +9,7 @@ import lombok.val;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 
+import static eu.germanrp.addon.core.common.DefaultAddonPlayer.ADDON_PREFIX_SYMBOL;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.*;
 import static net.labymod.api.Laby.fireEvent;
 
@@ -56,6 +57,10 @@ public class BountyEventListener {
 
         val message = event.chatMessage().getPlainText();
 
+        if(message.startsWith(ADDON_PREFIX_SYMBOL)) {
+            return;
+        }
+
         if (message.contentEquals(BOUNTY_LIST_HEADER)) {
             this.processingBountyList = true;
 
@@ -86,22 +91,24 @@ public class BountyEventListener {
             return;
         }
 
-        val nametagBountyEntryMatcher = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
-        if (!message.contentEquals(NO_ACTIVE_BOUNTIES) && nametagBountyEntryMatcher.find()) {
+        if (processingBountyList) {
+            val nametagBountyEntryMatcher = BOUNTY_MEMBER_WANTED_LIST_ENTRY.getPattern().matcher(message);
+            if (!message.contentEquals(NO_ACTIVE_BOUNTIES) && nametagBountyEntryMatcher.find()) {
 
-            if (justJoined) {
-                event.setCancelled(true);
+                if (justJoined) {
+                    event.setCancelled(true);
+                }
+
+                val playerName = nametagBountyEntryMatcher.group(1);
+                val playerBountyEvent = new PlayerBountyEvent(true, new ServerPlayer(playerName));
+                addonPlayer.sendDebugMessage("DarklistEventListener, onChatMessageReceive, nametagBountyEntryMatcher, fireEvent: playerBountyEvent = %s".formatted(playerBountyEvent));
+                fireEvent(playerBountyEvent);
+            } else if (processingBountyList) {
+                // Because the bounty list always starts with a header,
+                // we can stop processing as soon as the message is not a bounty list entry.
+                processingBountyList = false;
+                addon.getJoinWorkflowManager().finishTask("bounties");
             }
-
-            val playerName = nametagBountyEntryMatcher.group(1);
-            val playerBountyEvent = new PlayerBountyEvent(true, new ServerPlayer(playerName));
-            addonPlayer.sendDebugMessage("DarklistEventListener, onChatMessageReceive, nametagBountyEntryMatcher, fireEvent: playerBountyEvent = %s".formatted(playerBountyEvent));
-            fireEvent(playerBountyEvent);
-        } else if (processingBountyList) {
-            // Because the bounty list always starts with a header,
-            // we can stop processing as soon as the message is not a bounty list entry.
-            processingBountyList = false;
-            addon.getJoinWorkflowManager().finishTask("bounties");
         }
 
     }

@@ -9,6 +9,7 @@ import lombok.val;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 
+import static eu.germanrp.addon.core.common.DefaultAddonPlayer.ADDON_PREFIX_SYMBOL;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.*;
 import static net.labymod.api.Laby.fireEvent;
 
@@ -55,6 +56,10 @@ public class DarklistEventListener {
 
         val message = event.chatMessage().getPlainText();
 
+        if(message.startsWith(ADDON_PREFIX_SYMBOL)) {
+            return;
+        }
+
         if (message.contentEquals(DARKLIST_LIST_HEADER)) {
             this.processingDarklist = true;
 
@@ -85,22 +90,24 @@ public class DarklistEventListener {
             return;
         }
 
-        val nametagDarkListEntryMatcher = DARK_LIST_ENTRY.getPattern().matcher(message);
-        if (nametagDarkListEntryMatcher.find()) {
+        if (processingDarklist) {
+            val nametagDarkListEntryMatcher = DARK_LIST_ENTRY.getPattern().matcher(message);
+            if (nametagDarkListEntryMatcher.find()) {
 
-            if (justJoined) {
-                event.setCancelled(true);
+                if (justJoined) {
+                    event.setCancelled(true);
+                }
+
+                val playerName = nametagDarkListEntryMatcher.group(1);
+                val playerDarklistEvent = new PlayerDarklistEvent(true, new ServerPlayer(playerName));
+                addonPlayer.sendDebugMessage("DarklistEventListener, onChatMessageReceive, nametagDarkListEntryMatcher, fireEvent: playerDarklistEvent = %s".formatted(playerDarklistEvent));
+                fireEvent(playerDarklistEvent);
+            } else if (processingDarklist) {
+                // Because the darklist always starts with a header,
+                // we can stop processing as soon as the message is not a darklist entry.
+                processingDarklist = false;
+                addon.getJoinWorkflowManager().finishTask("darklist");
             }
-
-            val playerName = nametagDarkListEntryMatcher.group(1);
-            val playerDarklistEvent = new PlayerDarklistEvent(true, new ServerPlayer(playerName));
-            addonPlayer.sendDebugMessage("DarklistEventListener, onChatMessageReceive, nametagDarkListEntryMatcher, fireEvent: playerDarklistEvent = %s".formatted(playerDarklistEvent));
-            fireEvent(playerDarklistEvent);
-        } else if (processingDarklist) {
-            // Because the darklist always starts with a header,
-            // we can stop processing as soon as the message is not a darklist entry.
-            processingDarklist = false;
-            addon.getJoinWorkflowManager().finishTask("darklist");
         }
 
     }

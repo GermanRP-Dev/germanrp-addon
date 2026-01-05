@@ -27,7 +27,7 @@ import static net.labymod.api.client.component.format.TextDecoration.BOLD;
  */
 public class DefaultAddonPlayer implements AddonPlayer {
 
-    private static final String ADDON_PREFIX_SYMBOL = "  ₪ ";
+    public static final String ADDON_PREFIX_SYMBOL = "  ₪ ";
 
     private final GermanRPAddon addon;
 
