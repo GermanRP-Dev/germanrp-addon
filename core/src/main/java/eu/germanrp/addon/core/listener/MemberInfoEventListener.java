@@ -102,4 +102,18 @@ public class MemberInfoEventListener {
 
     }
 
+    @Subscribe
+    @SuppressWarnings("unused")
+    public void onPlayerMemberInfoEvent(final PlayerMemberInfoEvent event) {
+        val addonPlayer = addon.getPlayer();
+        val memberInfoTarget = event.player();
+        if (event.added()) {
+            addonPlayer.sendDebugMessage("MemberInfoEventListener, onPlayerMemberInfoEvent: %s added to the member list".formatted(memberInfoTarget.name()));
+            addon.getNameTagService().getMembers().add(memberInfoTarget.name());
+        } else {
+            addonPlayer.sendDebugMessage("MemberInfoEventListener, onPlayerMemberInfoEvent: %s removed from the member list".formatted(memberInfoTarget.name()));
+            addon.getNameTagService().getMembers().remove(memberInfoTarget.name());
+        }
+    }
+
 }
