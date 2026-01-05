@@ -18,7 +18,8 @@ public enum Faction {
     ESTABLISHMENT("Establishment", "The Estalishment", Type.CRIME),
     VCI("VCI", "VanceCity Investment", Type.NEUTRAL),
     LA_COSA_NOSTRA("lcn", "La Cosa Nostra", Type.CRIME),
-    IRON_SERPENTS("Serpents", "Iron Serpents", Type.CRIME);
+    IRON_SERPENTS("Serpents", "Iron Serpents", Type.CRIME),
+    YAKUZA("Yakuza", "Yakuza", Type.CRIME);
 
     private final String memberInfoCommandArg;
     private final String displayName;
