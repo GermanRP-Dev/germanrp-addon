@@ -94,6 +94,11 @@ public class BountyEventListener {
         if (processingBountyList) {
 
             if(message.contentEquals(NO_ACTIVE_BOUNTIES)) {
+
+                if (justJoined) {
+                    event.setCancelled(true);
+                }
+
                 // When no active bounties are available, we can stop processing the bounty list.
                 processingBountyList = false;
                 addon.getJoinWorkflowManager().finishTask("bounties");
