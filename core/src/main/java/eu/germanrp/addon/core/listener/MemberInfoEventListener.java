@@ -61,7 +61,7 @@ public class MemberInfoEventListener {
         }
 
         val memberListTitleMatcher = TITLE_FACTION_MEMBER_LIST.getPattern().matcher(message);
-        if (memberListTitleMatcher.find()) {
+        if (memberListTitleMatcher.find() && message.contains(playerFaction.getDisplayName())) {
             this.processingMemberInfoList = true;
 
             // Clear the list before processing new entries
