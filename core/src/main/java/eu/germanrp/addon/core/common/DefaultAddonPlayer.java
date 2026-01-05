@@ -11,12 +11,12 @@ import net.labymod.api.client.world.ClientWorld;
 import net.labymod.api.util.math.position.Position;
 import net.labymod.api.util.math.vector.FloatVector3;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
 import static net.labymod.api.Laby.fireEvent;
 import static net.labymod.api.Laby.labyAPI;
-import static net.labymod.api.client.component.Component.empty;
 import static net.labymod.api.client.component.Component.text;
 import static net.labymod.api.client.component.event.HoverEvent.showText;
 import static net.labymod.api.client.component.format.NamedTextColor.*;
@@ -27,7 +27,7 @@ import static net.labymod.api.client.component.format.TextDecoration.BOLD;
  */
 public class DefaultAddonPlayer implements AddonPlayer {
 
-    private static final String ADDON_PREFIX_SYMBOL = "  ₪ ";
+    public static final String ADDON_PREFIX_SYMBOL = "  ₪ ";
 
     private final GermanRPAddon addon;
 
@@ -114,13 +114,11 @@ public class DefaultAddonPlayer implements AddonPlayer {
     @Override
     public void sendDebugMessage(String message) {
         if (this.addon.configuration().debug().get()) {
-            Component component = empty()
+            sendMessage(prefix()
                     .append(text("[", DARK_GRAY))
                     .append(text("DEBUG", GOLD))
                     .append(text("] ", DARK_GRAY))
-                    .append(text(message, WHITE));
-
-            sendMessage(component);
+                    .append(text(message, WHITE)));
         }
     }
 
@@ -239,7 +237,7 @@ public class DefaultAddonPlayer implements AddonPlayer {
     }
 
     @Override
-    public Faction getPlayerFaction() {
+    public @Nullable Faction getPlayerFaction() {
         return this.playerFaction;
     }
 
@@ -259,7 +257,7 @@ public class DefaultAddonPlayer implements AddonPlayer {
     }
 
     @Override
-    public void setPlayerFaction(Faction playerFaction) {
+    public void setPlayerFaction(@Nullable Faction playerFaction) {
         this.playerFaction = playerFaction;
     }
 
