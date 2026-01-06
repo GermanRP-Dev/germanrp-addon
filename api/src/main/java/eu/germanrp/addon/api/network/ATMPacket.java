@@ -1,5 +1,6 @@
 package eu.germanrp.addon.api.network;
 
+import lombok.Builder;
 import net.labymod.serverapi.api.packet.Packet;
 import net.labymod.serverapi.api.payload.io.PayloadReader;
 import net.labymod.serverapi.api.payload.io.PayloadWriter;
@@ -8,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.StringJoiner;
 
 
+@Builder
 public class ATMPacket implements Packet {
 
     private String displayName;
@@ -34,14 +36,4 @@ public class ATMPacket implements Packet {
         this.z = reader.readVarInt();
     }
 
-    @Override
-    public String toString() {
-        return new StringJoiner(", ", ATMPacket.class.getSimpleName() + "[", "]")
-                .add("displayName='" + displayName + "'")
-                .add("id=" + id)
-                .add("x=" + x)
-                .add("y=" + y)
-                .add("z=" + z)
-                .toString();
-    }
 }

@@ -2,6 +2,7 @@ package eu.germanrp.addon.core.listener;
 
 import eu.germanrp.addon.api.network.ATMPacket;
 import eu.germanrp.addon.core.GermanRPAddon;
+import lombok.val;
 import net.labymod.serverapi.api.packet.PacketHandler;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,7 +18,9 @@ public class ATMPacketHandler implements PacketHandler<ATMPacket> {
 
     @Override
     public void handle(@NotNull UUID sender, @NotNull ATMPacket packet) {
-        this.addon.logger().debug("Received ATM packet: %s".formatted(packet));
+        val message = "Received ATM packet: %s".formatted(packet);
+        this.addon.logger().debug(message);
+        this.addon.getPlayer().sendDebugMessage(message);
     }
 
 }
