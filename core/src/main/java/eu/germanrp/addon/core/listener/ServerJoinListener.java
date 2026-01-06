@@ -3,7 +3,9 @@ package eu.germanrp.addon.core.listener;
 import eu.germanrp.addon.api.models.Faction;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.AddonServerJoinEvent;
+import eu.germanrp.addon.core.common.events.JoinSequenceCompletedEvent;
 import eu.germanrp.addon.core.common.events.JustJoinedEvent;
+import lombok.val;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.network.server.ServerJoinEvent;
 
@@ -32,6 +34,14 @@ public class ServerJoinListener {
         fireEvent(new AddonServerJoinEvent(true));
         GermanRPAddon.getInstance().getPlayer().setPlayPanic(false);
         this.addon.getPlayer().sendServerMessage("/stats");
+    }
+
+    @Subscribe
+    @SuppressWarnings("unused")
+    public void onJoinSequenceCompleted(final JoinSequenceCompletedEvent event) {
+        val addonPlayer = this.addon.getPlayer();
+        val addonVersion = this.addon.addonInfo().getVersion();
+        addonPlayer.sendInfoMessage("GermanRP-Addon Version %s".formatted(addonVersion));
     }
 
     public void onFactionNameGet() {
