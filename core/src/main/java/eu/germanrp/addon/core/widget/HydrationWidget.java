@@ -2,7 +2,7 @@ package eu.germanrp.addon.core.widget;
 
 import eu.germanrp.addon.api.events.network.HydrationUpdateEvent;
 import eu.germanrp.addon.core.GermanRPAddon;
-import eu.germanrp.addon.core.common.events.JustJoinedEvent;
+import eu.germanrp.addon.core.common.events.AddonServerJoinEvent;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.gui.hud.binding.category.HudWidgetCategory;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidget;
@@ -21,6 +21,7 @@ import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.VISIB
 public class HydrationWidget extends TextHudWidget<TextHudWidgetConfig> {
 
     private static final Component hydrationKey = translatable(GermanRPAddon.NAMESPACE + ".widget.hydration.key");
+    private static final Component hydrationDummyValue = translatable(GermanRPAddon.NAMESPACE + ".widget.hydration.dummy");
 
     private final GermanRPAddon addon;
     private final List<String> hydrationMessages = List.of("► Du bist durstig.","► Du bist sehr durstig. (Trinke etwas, um nicht zu dehydrieren!)","► Du bist sehr durstig.","► Du bist stark dehydriert und fühlst dich schwach.");
@@ -36,12 +37,13 @@ public class HydrationWidget extends TextHudWidget<TextHudWidgetConfig> {
     @Override
     public void load(TextHudWidgetConfig config) {
         super.load(config);
-        this.textLine = this.createLine(hydrationKey, format(0));
+        this.textLine = this.createLine(hydrationKey, hydrationDummyValue);
     }
 
     @Subscribe
-    public void onServerJoin(JustJoinedEvent e) {
-        this.textLine.setState(e.isJustJoined() ? VISIBLE : HIDDEN);
+    @SuppressWarnings("unused")
+    public void onAddonServerJoinEvent(final AddonServerJoinEvent e) {
+        this.textLine.setState(e.isGR() ? VISIBLE : HIDDEN);
     }
 
     @Subscribe

@@ -131,7 +131,8 @@
                 "eventValue": "30:45"
             },
             "hydration": {
-                "key": "Hydrierung"
+                "key": "Hydrierung",
+                "dummy": "lädt"
             },
             "payDay": {
                 "fgehaltKey": "Frak",
