@@ -1,6 +1,7 @@
 package eu.germanrp.addon.core.workflow;
 
 import eu.germanrp.addon.core.GermanRPAddon;
+import eu.germanrp.addon.core.common.events.JoinSequenceCompletedEvent;
 import eu.germanrp.addon.core.common.events.JustJoinedEvent;
 import lombok.Getter;
 import lombok.Setter;
@@ -51,6 +52,7 @@ public class JoinWorkflowManager {
         }
         pendingTasks.clear();
         fireEvent(new JustJoinedEvent(false));
+        fireEvent(new JoinSequenceCompletedEvent());
     }
 
 }
