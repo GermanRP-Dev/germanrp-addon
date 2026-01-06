@@ -2,7 +2,7 @@ package eu.germanrp.addon.core.widget;
 
 import eu.germanrp.addon.api.events.network.HydrationUpdateEvent;
 import eu.germanrp.addon.core.GermanRPAddon;
-import eu.germanrp.addon.core.common.events.JustJoinedEvent;
+import eu.germanrp.addon.core.common.events.AddonServerJoinEvent;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.gui.hud.binding.category.HudWidgetCategory;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidget;
@@ -41,9 +41,14 @@ public class HydrationWidget extends TextHudWidget<TextHudWidgetConfig> {
     }
 
     @Subscribe
+    @SuppressWarnings("unused")
+    public void onAddonServerJoinEvent(final AddonServerJoinEvent e) {
+        this.textLine.setState(e.isGR() ? VISIBLE : HIDDEN);
+    }
+
+    @Subscribe
     public void onHydrationUpdate(HydrationUpdateEvent event) {
         this.textLine.updateAndFlush(format(event.getAmount()));
-        this.textLine.setState(VISIBLE);
     }
 
     @Subscribe

@@ -1,6 +1,7 @@
 package eu.germanrp.addon.core.widget;
 
 import eu.germanrp.addon.core.GermanRPAddon;
+import eu.germanrp.addon.core.common.events.AddonServerJoinEvent;
 import eu.germanrp.addon.core.common.events.PayDayPacketReceiveEvent;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import net.labymod.api.client.gui.hud.hudwidget.text.TextLine;
 import net.labymod.api.event.Subscribe;
 
 import static net.labymod.api.client.component.Component.translatable;
+import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.HIDDEN;
 import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.VISIBLE;
 import static net.labymod.api.util.I18n.getTranslation;
 
@@ -49,6 +51,14 @@ public class PayDayWidget extends TextHudWidget<TextHudWidgetConfig> {
         this.frakGehaltLine = this.createLine(FGEHALT_KEY, i18nFGehaltValue);
         this.jobGehaltLine = this.createLine(JGEHALT_KEY, i18nJGehaltValue);
         this.payDayTimeLine = this.createLine(PAYDAY_KEY, i18PaydayValue);
+    }
+
+    @Subscribe
+    @SuppressWarnings("unused")
+    public void onAddonServerJoinEvent(final AddonServerJoinEvent e) {
+        this.frakGehaltLine.setState(e.isGR() ? VISIBLE : HIDDEN);
+        this.jobGehaltLine.setState(e.isGR() ? VISIBLE : HIDDEN);
+        this.payDayTimeLine.setState(e.isGR() ? VISIBLE : HIDDEN);
     }
 
     @Subscribe

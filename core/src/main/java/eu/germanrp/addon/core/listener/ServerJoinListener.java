@@ -2,6 +2,7 @@ package eu.germanrp.addon.core.listener;
 
 import eu.germanrp.addon.api.models.Faction;
 import eu.germanrp.addon.core.GermanRPAddon;
+import eu.germanrp.addon.core.common.events.AddonServerJoinEvent;
 import eu.germanrp.addon.core.common.events.JustJoinedEvent;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.network.server.ServerJoinEvent;
@@ -21,12 +22,14 @@ public class ServerJoinListener {
     public void onServerJoin(ServerJoinEvent event) {
         if (!this.addon.getUtilService().isGermanRP()) {
             fireEvent(new JustJoinedEvent(false));
+            fireEvent(new AddonServerJoinEvent(false));
             return;
         }
         this.addon.getChatListener().setEmptyMessages(0);
         this.addon.getPlayer().setPlayerFaction(null);
 
         fireEvent(new JustJoinedEvent(true));
+        fireEvent(new AddonServerJoinEvent(true));
         GermanRPAddon.getInstance().getPlayer().setPlayPanic(false);
         this.addon.getPlayer().sendServerMessage("/stats");
     }

@@ -1,8 +1,8 @@
 package eu.germanrp.addon.core.widget;
 
 import eu.germanrp.addon.core.GermanRPAddon;
+import eu.germanrp.addon.core.common.events.AddonServerJoinEvent;
 import eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent;
-import eu.germanrp.addon.core.common.events.JustJoinedEvent;
 import lombok.Getter;
 import lombok.Setter;
 import net.labymod.api.client.component.Component;
@@ -42,6 +42,12 @@ public class BlackMarketWidget extends TextHudWidget<TextHudWidgetConfig> {
         final String i18nYieldValue = I18n.getTranslation(COUNTDOWN_VALUE, 0, "", 0);
 
         this.countDownLine = this.createLine(COUNTDOWN_KEY, i18nYieldValue);
+    }
+
+    @Subscribe
+    @SuppressWarnings("unused")
+    public void onAddonServerJoinEvent(final AddonServerJoinEvent e) {
+        this.countDownLine.setState(e.isGR() ? VISIBLE : HIDDEN);
     }
 
     @Subscribe
