@@ -5,6 +5,7 @@ import eu.germanrp.addon.core.commands.TogglePanicCommand;
 import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
 import eu.germanrp.addon.core.common.AddonPlayer;
 import eu.germanrp.addon.core.common.DefaultAddonPlayer;
+import eu.germanrp.addon.core.integration.germanrpaddon.GermanRPAddonIntegration;
 import eu.germanrp.addon.core.listener.*;
 import eu.germanrp.addon.core.widget.PoppyWidget;
 import eu.germanrp.addon.core.services.NameTagService;
@@ -78,14 +79,13 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerCommands();
 
         val protocolService = Laby.references().labyModProtocolService();
-        val protocol = new AddonProtocol(protocolService, NAMESPACE);
-        protocolService.registry().registerProtocol(protocol);
-        protocol.registerPacket(
-                0,
-                ATMPacket.class,
-                Direction.CLIENTBOUND,
-                new ATMPacketHandler(this)
+        val integration = protocolService.getOrRegisterIntegration(
+                GermanRPAddonIntegration.class,
+                GermanRPAddonIntegration::new
         );
+
+        val protocol = integration.GermanRPAddonProtocol();
+        protocol.registerHandler(ATMPacket.class, new ATMPacketHandler(this));
 
         this.logger().info("Enabled germanrpaddon");
     }
@@ -183,7 +183,6 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerListener(new BountyEventListener(this));
         registerListener(new WantedEventListener(this));
         registerListener(new MemberInfoEventListener(this));
-        registerListener(new ATMPacketHandler(this));
     }
 
 }
