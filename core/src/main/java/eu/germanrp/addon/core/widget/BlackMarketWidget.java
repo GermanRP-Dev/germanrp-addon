@@ -45,11 +45,6 @@ public class BlackMarketWidget extends TextHudWidget<TextHudWidgetConfig> {
     }
 
     @Subscribe
-    public void onServerJoin(JustJoinedEvent e) {
-        this.countDownLine.setState(e.isJustJoined() ? VISIBLE : HIDDEN);
-    }
-
-    @Subscribe
     public void onGermanRPAddonTick(GermanRPAddonTickEvent e) {
         if (!e.isPhase(GermanRPAddonTickEvent.Phase.SECOND)) {
             return;

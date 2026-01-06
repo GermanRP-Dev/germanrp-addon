@@ -1,8 +1,7 @@
 package eu.germanrp.addon.core.widget;
 
 import eu.germanrp.addon.core.GermanRPAddon;
-import eu.germanrp.addon.core.common.events.JustJoinedEvent;
-import eu.germanrp.addon.core.common.events.PayDayPacketRecieveEvent;
+import eu.germanrp.addon.core.common.events.PayDayPacketReceiveEvent;
 import lombok.Getter;
 import lombok.Setter;
 import net.labymod.api.client.component.Component;
@@ -13,7 +12,6 @@ import net.labymod.api.client.gui.hud.hudwidget.text.TextLine;
 import net.labymod.api.event.Subscribe;
 
 import static net.labymod.api.client.component.Component.translatable;
-import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.HIDDEN;
 import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.VISIBLE;
 import static net.labymod.api.util.I18n.getTranslation;
 
@@ -54,16 +52,13 @@ public class PayDayWidget extends TextHudWidget<TextHudWidgetConfig> {
     }
 
     @Subscribe
-    public void onServerJoin(JustJoinedEvent e) {
-        this.frakGehaltLine.setState(e.isJustJoined() ? VISIBLE : HIDDEN);
-        this.jobGehaltLine.setState(e.isJustJoined() ? VISIBLE : HIDDEN);
-        this.payDayTimeLine.setState(e.isJustJoined() ? VISIBLE : HIDDEN);
+    public void onPayDayPacketReceive(PayDayPacketReceiveEvent e) {
+        this.frakGehaltLine.updateAndFlush(String.format("%.2f €", e.getFSalary()));
+        this.frakGehaltLine.setState(VISIBLE);
+        this.jobGehaltLine.updateAndFlush(String.format("%.2f €", e.getJSalary()));
+        this.jobGehaltLine.setState(VISIBLE);
+        this.payDayTimeLine.updateAndFlush(String.format("%02d/60", e.getPaydayTime()));
+        this.payDayTimeLine.setState(VISIBLE);
     }
 
-    @Subscribe
-    public void onPayDayPacketRecieve(PayDayPacketRecieveEvent e) {
-        this.frakGehaltLine.updateAndFlush(String.format("%.2f €", e.getFSalary()));
-        this.jobGehaltLine.updateAndFlush(String.format("%.2f €", e.getJSalary()));
-        this.payDayTimeLine.updateAndFlush(String.format("%02d/60", e.getPaydayTime()));
-    }
 }
