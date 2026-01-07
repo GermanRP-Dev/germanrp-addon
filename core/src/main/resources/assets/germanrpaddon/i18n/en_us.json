@@ -142,6 +142,9 @@
                 "jGehaltValue": "lädt",
                 "paydayValue": "lädt"
             }
+        },
+        "waypoint": {
+            "atmPrefix": "ATM"
         }
     }
 }
