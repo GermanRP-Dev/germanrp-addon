@@ -160,6 +160,9 @@
                 "ppmKey": "Mohn/Min",
                 "ppmValue": "%d"
             }
+        },
+        "waypoint": {
+            "atmPrefix": "ATM"
         }
     }
 }
