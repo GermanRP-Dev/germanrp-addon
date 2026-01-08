@@ -63,7 +63,9 @@
                 "harvest": "%s kann geerntet werden.",
                 "fertilize": "%s muss jetzt gedüngt werden.",
                 "water": "%s muss jetzt bewässert werden."
-            }
+            },
+            "version": "%s Version: %s",
+            "clickCopy": "Klicke um zu kopieren"
         },
         "hudWidget": {
             "heilkrautpflanze": {
