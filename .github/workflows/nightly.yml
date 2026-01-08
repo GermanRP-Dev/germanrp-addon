@@ -38,8 +38,8 @@ jobs:
     - name: Set build version
       id: set_build_version
       run: |
-        VERSION=nightly/${{ github.sha }}
-        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        SHA=$(git rev-parse --short HEAD)
+        echo "version=$SHA" >> $GITHUB_OUTPUT
 
     - name: Output result
       run: |
