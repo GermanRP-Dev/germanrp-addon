@@ -6,10 +6,15 @@ import eu.germanrp.addon.core.common.events.AddonServerJoinEvent;
 import eu.germanrp.addon.core.common.events.JoinSequenceCompletedEvent;
 import eu.germanrp.addon.core.common.events.JustJoinedEvent;
 import lombok.val;
+import net.labymod.api.client.component.Component;
+import net.labymod.api.client.component.event.ClickEvent;
+import net.labymod.api.client.component.event.HoverEvent;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.network.server.ServerJoinEvent;
 
+import static eu.germanrp.addon.core.GermanRPAddon.NAMESPACE;
 import static net.labymod.api.Laby.fireEvent;
+import static net.labymod.api.client.component.format.NamedTextColor.AQUA;
 
 public class ServerJoinListener {
 
@@ -40,8 +45,17 @@ public class ServerJoinListener {
     @SuppressWarnings("unused")
     public void onJoinSequenceCompleted(final JoinSequenceCompletedEvent event) {
         val addonPlayer = this.addon.getPlayer();
-        val addonVersion = this.addon.addonInfo().getVersion();
-        addonPlayer.sendInfoMessage("GermanRP-Addon Version %s".formatted(addonVersion));
+        val addonInfo = this.addon.addonInfo();
+        val addonVersion = addonInfo.getVersion();
+        addonPlayer.sendInfoMessage(
+                Component.translatable(
+                        NAMESPACE + ".message.version",
+                        Component.text(addonInfo.getDisplayName()),
+                        Component.text(addonVersion)
+                                .hoverEvent(HoverEvent.showText(Component.translatable(NAMESPACE + ".message.clickCopy").color(AQUA)))
+                                .clickEvent(ClickEvent.copyToClipboard(addonVersion))
+                )
+        );
     }
 
     public void onFactionNameGet() {
