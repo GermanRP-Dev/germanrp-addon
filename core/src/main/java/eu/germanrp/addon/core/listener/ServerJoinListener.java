@@ -60,7 +60,7 @@ public class ServerJoinListener {
 
     public void onFactionNameGet() {
         final Faction faction = this.addon.getPlayer().getPlayerFaction();
-        if (faction == null || faction == Faction.NONE) {
+        if (faction == null || faction == Faction.NONE || faction == Faction.UNKNOWN) {
             return;
         }
 
@@ -87,7 +87,6 @@ public class ServerJoinListener {
             }
 
             default -> {
-                this.addon.getJoinWorkflowManager().finishTask("memberinfo");
             }
 
         }
