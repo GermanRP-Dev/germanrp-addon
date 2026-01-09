@@ -20,9 +20,10 @@ public enum Graffiti implements Nearest {
     TIEFGARAGE_PLATTENBAU("Tiefgarage (Plattenbau)", new DefaultPosition(699, 57, -1111)),
     TIEFGARAGE_HOLDEN("Tiefgarage (Holden-Tower)", new DefaultPosition(509, 61, -850)),
     APO1("Apotheke-1 (Downtown)", new DefaultPosition(646, 68, -943)),
-    U_BAHN_ALTSTADT("U-Bahn (Altstadt)", new DefaultPosition(-474, 52, -888)),
     TRAM("Tram-Unterführung (Altstadt)", new DefaultPosition(-635, 70, -944)),
-    U_BAHN_ASIA("U-Bahn (Asia-Viertel)", new DefaultPosition(-464, 70, 935));
+    U_BAHN_ALTSTADT("U-Bahn (Altstadt)", new DefaultPosition(-474, 52, -888)),
+    U_BAHN_ASIA("U-Bahn (Asia-Viertel)", new DefaultPosition(-464, 70, 935)),
+    U_BAHN_STRANDPASSAGE("U-Bahn (Strandpassage)", new DefaultPosition(615, 54, 587));
 
     private final String name;
     private final Position position;
