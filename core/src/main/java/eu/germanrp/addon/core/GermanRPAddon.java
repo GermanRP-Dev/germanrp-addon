@@ -1,6 +1,6 @@
 package eu.germanrp.addon.core;
 
-import eu.germanrp.addon.api.network.ATMPacket;
+import eu.germanrp.addon.core.common.model.ATMPacket;
 import eu.germanrp.addon.core.commands.TogglePanicCommand;
 import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
 import eu.germanrp.addon.core.common.AddonPlayer;
