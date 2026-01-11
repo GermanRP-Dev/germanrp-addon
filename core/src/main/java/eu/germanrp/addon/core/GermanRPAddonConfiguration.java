@@ -2,8 +2,10 @@ package eu.germanrp.addon.core;
 
 import eu.germanrp.addon.api.models.SkillXP;
 import eu.germanrp.addon.core.config.HydrationConfig;
+import eu.germanrp.addon.core.config.PoppyWidgetSubConfig;
 import eu.germanrp.addon.core.config.NameTagSubConfig;
 import eu.germanrp.addon.core.config.VehicleHotkeyConfig;
+
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import net.labymod.api.addon.AddonConfig;
@@ -27,6 +29,8 @@ public class GermanRPAddonConfiguration extends AddonConfig {
 
     private final NameTagSubConfig nameTagSubConfig = new NameTagSubConfig();
 
+    private final PoppyWidgetSubConfig poppyWidgetSubConfig =  new PoppyWidgetSubConfig();
+
     private final VehicleHotkeyConfig vehicleHotkeyConfig = new VehicleHotkeyConfig();
 
     private final HydrationConfig hydrationConfig = new HydrationConfig();
@@ -40,6 +44,5 @@ public class GermanRPAddonConfiguration extends AddonConfig {
     @SettingSection("debug")
     @SwitchSetting
     private final ConfigProperty<Boolean> debug = new ConfigProperty<>(false);
-
 
 }
