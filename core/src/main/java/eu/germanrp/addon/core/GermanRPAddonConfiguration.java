@@ -2,7 +2,7 @@ package eu.germanrp.addon.core;
 
 import eu.germanrp.addon.api.models.SkillXP;
 import eu.germanrp.addon.core.config.HydrationConfig;
-import eu.germanrp.addon.core.config.MohnWidgetSubConfig;
+import eu.germanrp.addon.core.config.PoppyWidgetSubConfig;
 import eu.germanrp.addon.core.config.NameTagSubConfig;
 import eu.germanrp.addon.core.config.VehicleHotkeyConfig;
 
@@ -29,7 +29,7 @@ public class GermanRPAddonConfiguration extends AddonConfig {
 
     private final NameTagSubConfig nameTagSubConfig = new NameTagSubConfig();
 
-    private final MohnWidgetSubConfig mohnWidgetSubConfig =  new MohnWidgetSubConfig();
+    private final PoppyWidgetSubConfig poppyWidgetSubConfig =  new PoppyWidgetSubConfig();
 
     private final VehicleHotkeyConfig vehicleHotkeyConfig = new VehicleHotkeyConfig();
 

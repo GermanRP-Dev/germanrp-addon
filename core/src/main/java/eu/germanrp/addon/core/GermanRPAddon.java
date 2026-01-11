@@ -5,19 +5,17 @@ import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
 import eu.germanrp.addon.core.common.AddonPlayer;
 import eu.germanrp.addon.core.common.DefaultAddonPlayer;
 import eu.germanrp.addon.core.listener.*;
-import eu.germanrp.addon.core.roseWidget.MohnWidget;
+import eu.germanrp.addon.core.widget.PoppyWidget;
 import eu.germanrp.addon.core.services.NameTagService;
 import eu.germanrp.addon.core.services.NavigationService;
 import eu.germanrp.addon.core.services.UtilService;
 import eu.germanrp.addon.core.services.VehicleService;
 import eu.germanrp.addon.core.widget.*;
 import eu.germanrp.addon.core.workflow.JoinWorkflowManager;
-import eu.germanrp.addon.core.widget.*;
 import eu.germanrp.addon.core.widget.category.GermanRPAddonWidgetCategory;
 import lombok.Getter;
 import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.client.gui.hud.HudWidgetRegistry;
-import net.labymod.api.client.gui.hud.binding.category.HudWidgetCategory;
 import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.models.addon.annotation.AddonMain;
@@ -41,6 +39,8 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private ServerJoinListener serverJoinListener;
     private JoinWorkflowManager joinWorkflowManager;
 
+    private GermanRPAddonWidgetCategory widgetCategory;
+
     private HeilkrautpflanzeHudWidget heilkrautpflanzeHudWidget;
     private RoseHudWidget roseHudWidget;
     private StoffHudWidget stoffHudWidget;
@@ -51,7 +51,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private HydrationWidget hydrationWidget;
     private PayDayWidget paydayWidget;
     private ChatListener chatListener;
-    private MohnWidget mohnWidget;
+    private PoppyWidget poppyWidget;
 
     @Override
     protected void load() {
@@ -94,7 +94,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
     private void registerWidgets() {
         final HudWidgetRegistry widgetRegistry = labyAPI().hudWidgetRegistry();
-        final HudWidgetCategory widgetCategory = new GermanRPAddonWidgetCategory();
+        this.widgetCategory = new GermanRPAddonWidgetCategory();
 
         this.heilkrautpflanzeHudWidget = new HeilkrautpflanzeHudWidget(
                 widgetCategory,
@@ -137,9 +137,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
                 this,
                 widgetCategory
         );
-        this.mohnWidget = new MohnWidget(
-                widgetCategory
-        );
+        this.poppyWidget = new PoppyWidget(this);
 
         widgetRegistry.categoryRegistry().register(widgetCategory);
         widgetRegistry.register(this.heilkrautpflanzeHudWidget);
@@ -151,7 +149,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         widgetRegistry.register(this.blackMarketWidget);
         widgetRegistry.register(this.hydrationWidget);
         widgetRegistry.register(this.paydayWidget);
-        widgetRegistry.register(this.mohnWidget);
+        widgetRegistry.register(this.poppyWidget);
     }
 
     private void registerListener() {
@@ -169,7 +167,6 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerListener(new BountyEventListener(this));
         registerListener(new WantedEventListener(this));
         registerListener(new MemberInfoEventListener(this));
-        registerListener(this.mohnWidget);
-        registerListener(this.mohnWidget);
+        registerListener(this.poppyWidget);
     }
 }

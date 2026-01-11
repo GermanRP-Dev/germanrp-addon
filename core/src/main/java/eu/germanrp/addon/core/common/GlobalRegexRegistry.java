@@ -31,7 +31,7 @@ public enum GlobalRegexRegistry {
     XP_ADD_CHAT(compile("^ \\+(\\d+) Erfahrungspunkte(| \\(x2\\)| \\(x3 Gameboost\\))$")),
     PANIC_DEACTIVATE(compile("^► \\[✦] (\\w{3,16}|\\[GR]\\w{3,16}) hat den Panicbutton deaktiviert\\.$")),
     SKILL_EXPERIENCE(compile("^(§.\\+§.)(\\d{0,3}\\.\\d{0,2}) Skill XP \\((\\d{0,6}\\.\\d{0,2})\\/(\\d{0,6})\\)$")),
-    MOHN_MESSAGE(compile("^ \\+ (\\d) Mohn \\((\\d{0,6})\\)$")),
+    POPPY_MESSAGE(compile("^ \\+ (\\d+) Mohn \\((\\d+)\\)$")),
     ;
 
     private final Pattern pattern;

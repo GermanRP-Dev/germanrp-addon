@@ -20,6 +20,10 @@
                 "wantedColorEnabled.name": "Fahndungsfarbe an/aus",
                 "wantedColor.name": "Fahndungsfarbe"
             },
+            "poppyWidgetSubConfig": {
+                "name": "Mohn",
+                "showPoppyMessagesInChat.name": "Mohn Nachrichten im Chat anzeigen"
+            },
             "vehicleHotkeyConfig": {
                 "name": "Fahrzeug Hotkeys",
                 "header": {
@@ -103,6 +107,12 @@
             },
             "payDay": {
                 "name": "PayDay"
+            },
+            "poppy": {
+                "name": "Mohn",
+                "showPoppyPerMinute": {
+                    "name": "Mohn pro Minute anzeigen"
+                }
             }
         },
         "widget": {
@@ -143,6 +153,12 @@
                 "fGehaltValue": "lädt",
                 "jGehaltValue": "lädt",
                 "paydayValue": "lädt"
+            },
+            "poppy": {
+                "key": "Mohn",
+                "dummy": "Unbekannt",
+                "ppmKey": "Mohn/Min",
+                "ppmValue": "%d"
             }
         }
     }

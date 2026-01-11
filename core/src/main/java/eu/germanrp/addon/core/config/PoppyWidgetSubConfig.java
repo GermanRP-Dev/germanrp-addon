@@ -6,8 +6,9 @@ import net.labymod.api.configuration.loader.Config;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
 
 @Getter
-public class MohnWidgetSubConfig extends Config {
+public class PoppyWidgetSubConfig extends Config {
+
     @SwitchWidget.SwitchSetting
-    private final ConfigProperty<Boolean> showMohnMessages = new ConfigProperty<>(true);
+    private final ConfigProperty<Boolean> showPoppyMessagesInChat = new ConfigProperty<>(true);
 
 }
