@@ -5,6 +5,7 @@ import eu.germanrp.addon.core.config.HydrationConfig;
 import eu.germanrp.addon.core.config.MohnWidgetSubConfig;
 import eu.germanrp.addon.core.config.NameTagSubConfig;
 import eu.germanrp.addon.core.config.VehicleHotkeyConfig;
+
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import net.labymod.api.addon.AddonConfig;

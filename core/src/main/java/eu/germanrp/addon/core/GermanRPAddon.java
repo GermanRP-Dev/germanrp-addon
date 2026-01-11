@@ -170,5 +170,6 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerListener(new WantedEventListener(this));
         registerListener(new MemberInfoEventListener(this));
         registerListener(this.mohnWidget);
+        registerListener(this.mohnWidget);
     }
 }

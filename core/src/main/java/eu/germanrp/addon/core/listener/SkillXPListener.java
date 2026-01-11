@@ -8,7 +8,6 @@ import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ActionBarReceiveEvent;
 
 import java.text.DecimalFormat;
-import java.util.Objects;
 import java.util.regex.Matcher;
 
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.SKILL_EXPERIENCE;
