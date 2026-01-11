@@ -2,6 +2,7 @@ package eu.germanrp.addon.core.listener;
 
 import eu.germanrp.addon.api.models.SkillXP;
 import eu.germanrp.addon.core.GermanRPAddon;
+import lombok.val;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.event.Phase;
 import net.labymod.api.event.Subscribe;
@@ -25,8 +26,12 @@ public class SkillXPListener {
             return;
         }
 
-        String message = e.getMessage().toString().replace("literal{", "").replace("}", "");
-        Matcher matcher = SKILL_EXPERIENCE.getPattern().matcher(message);
+        val message = e.getMessage();
+        if(message == null) {
+            return;
+        }
+
+        Matcher matcher = SKILL_EXPERIENCE.getPattern().matcher(message.toString().replace("literal{", "").replace("}", ""));
         if (!matcher.find()) {
             return;
         }
@@ -38,6 +43,6 @@ public class SkillXPListener {
         String prefix = matcher.group(1);
         String gainedPercent = df.format(gainedXP / maxSkillXP * 100);
         if(gainedPercent.equals("0")) gainedPercent = new DecimalFormat("#.###").format(gainedXP / maxSkillXP * 100);
-        e.setMessage(Component.text(prefix + gainedPercent + "% Skill XP (" + df.format(curenXP / maxSkillXP * 100) + "%/100%)"));
+        e.setMessage(Component.text(prefix + gainedPercent + "% Skill XP (" + df.format(curenXP / maxSkillXP * 100) + "%)"));
     }
 }
