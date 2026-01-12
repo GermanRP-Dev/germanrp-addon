@@ -44,8 +44,14 @@
             "debug": {
                 "name": "Debug"
             },
-            "silentATM": {
-                "name": "ATM Aufbruch stummschalten"
+            "atmConfig": {
+                "name": "Geldautomaten",
+                "silentATM.name": "Geldautomat-Aufbruch stummschalten",
+                "showATMWaypoints.name": "Geldautomat-Wegpunkt anzeigen",
+                "atmWaypointColor.name": "Geldautomat-Wegpunkt Farbe"
+            },
+            "panicRemind": {
+                "name": "Panic button sound"
             },
             "skillXP": {
                 "name": "Zeige SkillXP  in",
@@ -62,7 +68,11 @@
                 "water": "%s muss jetzt bewässert werden."
             },
             "version": "%s Version: %s",
-            "clickCopy": "Klicke um zu kopieren"
+            "clickCopy": "Klicke um zu kopieren",
+            "atm":{
+                "showWaypoints": "Geldautomaten-Wegpunkte werden angezeigt.",
+                "hideWaypoints": "Geldautomaten-Wegpunkte werden ausgeblendet."
+            }
         },
         "hudWidget": {
             "heilkrautpflanze": {
@@ -141,6 +151,9 @@
                 "jGehaltValue": "lädt",
                 "paydayValue": "lädt"
             }
+        },
+        "waypoint": {
+            "atmPrefix": "ATM"
         }
     }
 }

@@ -110,7 +110,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         this.utilService = new UtilService(this);
         this.vehicleService = new VehicleService(this);
         this.joinWorkflowManager = new JoinWorkflowManager(this);
-        this.poiService = new POIService();
+        this.poiService = new POIService(this);
     }
 
     private void registerCommands() {
