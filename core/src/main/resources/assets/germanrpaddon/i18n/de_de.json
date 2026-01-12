@@ -52,6 +52,7 @@
                 "name": "Geldautomaten",
                 "silentATM.name": "Geldautomat-Aufbruch stummschalten",
                 "showATMWaypoints.name": "Geldautomat-Wegpunkt anzeigen",
+                "hideDamagedATMs.name": "Beschädigte Geldautomaten verstecken",
                 "atmWaypointColor.name": "Geldautomat-Wegpunkt Farbe"
             },
             "panicRemind": {

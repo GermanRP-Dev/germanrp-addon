@@ -34,12 +34,13 @@ public class ATMPacket implements Packet {
     public void write(@NotNull PayloadWriter writer) {
         writer.writeCollection(
                 this.atms,
-                (atm) -> {
+                atm -> {
                     writer.writeString(atm.displayName);
                     writer.writeString(atm.id);
                     writer.writeDouble(atm.x);
                     writer.writeDouble(atm.y);
                     writer.writeDouble(atm.z);
+                    writer.writeLong(atm.cooldownTimestamp);
                 }
         );
     }
@@ -52,6 +53,7 @@ public class ATMPacket implements Packet {
                 .x(reader.readDouble())
                 .y(reader.readDouble())
                 .z(reader.readDouble())
+                .cooldownTimestamp(reader.readLong())
                 .build());
     }
 
@@ -61,7 +63,8 @@ public class ATMPacket implements Packet {
             String id,
             double x,
             double y,
-            double z
+            double z,
+            long cooldownTimestamp
     ) {
 
         private static final Component WAYPOINT_PREFIX = Component.translatable(NAMESPACE + ".waypoint.atmPrefix");
@@ -74,6 +77,12 @@ public class ATMPacket implements Packet {
             }
 
             val atmConfig = GermanRPAddon.getInstance().configuration().atmConfig();
+
+            boolean visible = atmConfig.showATMWaypoints().get();
+            if (visible && atmConfig.hideDamagedATMs().get() && this.cooldownTimestamp() != -1) {
+                visible = false;
+            }
+
             return Optional.of(WaypointBuilder.create()
                     .identifier(ATM_ID_PREFIX + this.id())
                     .title(
@@ -89,7 +98,7 @@ public class ATMPacket implements Packet {
                     .type(WaypointType.ADDON_MANAGED)
                     .server(currentServerData.address())
                     .color(atmConfig.atmWaypointColor().get())
-                    .visible(atmConfig.showATMWaypoints().get())
+                    .visible(visible)
                     .currentDimension()
                     .build()
             );
