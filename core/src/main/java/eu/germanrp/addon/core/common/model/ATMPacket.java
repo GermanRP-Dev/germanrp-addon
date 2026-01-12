@@ -1,5 +1,6 @@
 package eu.germanrp.addon.core.common.model;
 
+import eu.germanrp.addon.core.GermanRPAddon;
 import lombok.*;
 import lombok.experimental.Accessors;
 import net.labymod.addons.waypoints.waypoint.WaypointBuilder;
@@ -15,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.StringJoiner;
 
 import static eu.germanrp.addon.core.GermanRPAddon.NAMESPACE;
 import static eu.germanrp.addon.core.services.POIService.ATM_ID_PREFIX;
@@ -71,6 +73,7 @@ public class ATMPacket implements Packet {
                 return Optional.empty();
             }
 
+            val atmConfig = GermanRPAddon.getInstance().configuration().atmConfig();
             return Optional.of(WaypointBuilder.create()
                     .identifier(ATM_ID_PREFIX + this.id())
                     .title(
@@ -85,10 +88,19 @@ public class ATMPacket implements Packet {
                     .location(new DoubleVector3(this.x(), this.y(), this.z()))
                     .type(WaypointType.ADDON_MANAGED)
                     .server(currentServerData.address())
+                    .color(atmConfig.atmWaypointColor().get())
+                    .visible(atmConfig.showATMWaypoints().get())
                     .currentDimension()
                     .build()
             );
         }
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", ATMPacket.class.getSimpleName() + "[", "]")
+                .add("atms=" + atms)
+                .toString();
     }
 
 }
