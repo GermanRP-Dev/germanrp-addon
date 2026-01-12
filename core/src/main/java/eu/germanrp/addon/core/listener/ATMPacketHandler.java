@@ -21,7 +21,7 @@ public class ATMPacketHandler implements PacketHandler<ATMPacket> {
     @Override
     public void handle(@NotNull UUID sender, @NotNull ATMPacket packet) {
         this.addon.getPlayer().sendDebugMessage("ATMPacketHandler, handle, packet = %s".formatted(packet));
-        packet.atms().forEach(this.poiService::addOrUpdateATM);
+        this.poiService.addOrUpdateATMs(packet.atms());
     }
 
 }
