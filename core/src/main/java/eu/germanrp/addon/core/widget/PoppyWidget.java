@@ -2,7 +2,9 @@ package eu.germanrp.addon.core.widget;
 
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.AddonServerJoinEvent;
+import eu.germanrp.addon.core.common.events.PoppyAddToPouchEvent;
 import eu.germanrp.addon.core.common.events.PoppyReceiveEvent;
+import eu.germanrp.addon.core.common.events.PoppyRemoveFromPouchEvent;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -22,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.POPPY_MESSAGE;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.*;
 import static net.labymod.api.Laby.fireEvent;
 import static net.labymod.api.client.component.Component.translatable;
 import static net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State.*;
@@ -51,6 +53,10 @@ public class PoppyWidget extends TextHudWidget<PoppyWidget.PoppyHudWidgetConfig>
 
     private @Nullable TextLine poppyLine;
     private @Nullable TextLine poppiesPerMinuteLine;
+
+    /**
+     * The count of poppies the player has.
+     */
     private int poppyCount = UNKNOWN_POPPY_COUNT;
 
     private final Queue<PoppyEntry> poppyEntries = new LinkedList<>();
@@ -130,6 +136,18 @@ public class PoppyWidget extends TextHudWidget<PoppyWidget.PoppyHudWidgetConfig>
     public void onChatMessage(final ChatReceiveEvent event) {
         val message = event.chatMessage().getPlainText();
 
+        val poppyPouchAddMatcher = POPPY_ADD_TO_POUCH.getPattern().matcher(message);
+        if (poppyPouchAddMatcher.matches()) {
+            fireEvent(new PoppyAddToPouchEvent(Integer.parseInt(poppyPouchAddMatcher.group(1))));
+            return;
+        }
+
+        val poppyPouchRemoveMatcher = POPPY_REMOVE_FROM_POUCH.getPattern().matcher(message);
+        if (poppyPouchRemoveMatcher.matches()) {
+            fireEvent(new PoppyRemoveFromPouchEvent(Integer.parseInt(poppyPouchRemoveMatcher.group(1))));
+            return;
+        }
+
         val poppyMessageMatcher = POPPY_MESSAGE.getPattern().matcher(message);
         if (!poppyMessageMatcher.matches()) {
             return;
@@ -148,6 +166,28 @@ public class PoppyWidget extends TextHudWidget<PoppyWidget.PoppyHudWidgetConfig>
     public void onMohnReceive(final PoppyReceiveEvent event) {
         this.poppyCount = event.total();
         this.poppyEntries.add(new PoppyEntry(System.currentTimeMillis(), event.addedAmount()));
+    }
+
+    @Subscribe
+    @SuppressWarnings("unused")
+    public void onPoppyAddToPouch(final PoppyAddToPouchEvent event) {
+        if(this.poppyCount == UNKNOWN_POPPY_COUNT) {
+            this.poppyCount = 0;
+        }
+
+        val newAmount = this.poppyCount - event.amount();
+        this.poppyCount = Math.max(0, newAmount);
+    }
+
+    @Subscribe
+    @SuppressWarnings("unused")
+    public void onPoppyRemoveFromPouch(final PoppyRemoveFromPouchEvent event) {
+        if(this.poppyCount == UNKNOWN_POPPY_COUNT) {
+            this.poppyCount = 0;
+        }
+
+        val newAmount = this.poppyCount + event.amount();
+        this.poppyCount = Math.max(0, newAmount);
     }
 
     @Subscribe
