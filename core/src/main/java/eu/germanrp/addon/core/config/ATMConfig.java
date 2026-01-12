@@ -19,6 +19,10 @@ public class ATMConfig extends Config {
     @SwitchWidget.SwitchSetting(hotkey = true)
     private final ConfigProperty<Boolean> showATMWaypoints = new ConfigProperty<>(true);
 
+    @SwitchWidget.SwitchSetting
+    @SettingRequires("showATMWaypoints")
+    private final ConfigProperty<Boolean> hideDamagedATMs = new ConfigProperty<>(false);
+
     @ColorPickerWidget.ColorPickerSetting
     @SettingRequires("showATMWaypoints")
     private final ConfigProperty<Color> atmWaypointColor = new ConfigProperty<>(Color.of(0xFFAAAAAA));
