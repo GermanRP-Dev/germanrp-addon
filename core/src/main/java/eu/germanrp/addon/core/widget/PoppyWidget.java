@@ -1,10 +1,7 @@
 package eu.germanrp.addon.core.widget;
 
 import eu.germanrp.addon.core.GermanRPAddon;
-import eu.germanrp.addon.core.common.events.AddonServerJoinEvent;
-import eu.germanrp.addon.core.common.events.PoppyAddToPouchEvent;
-import eu.germanrp.addon.core.common.events.PoppyReceiveEvent;
-import eu.germanrp.addon.core.common.events.PoppyRemoveFromPouchEvent;
+import eu.germanrp.addon.core.common.events.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -80,7 +77,8 @@ public class PoppyWidget extends TextHudWidget<PoppyWidget.PoppyHudWidgetConfig>
         if (this.poppyLine != null && this.poppiesPerMinuteLine != null) {
             val isGR = addon.getUtilService().isGermanRP();
             this.poppyLine.setState(isGR ? VISIBLE : HIDDEN);
-            this.poppiesPerMinuteLine.setState(isGR ? (config.showPoppyPerMinute().get() ? VISIBLE : DISABLED) : DISABLED);
+            val showPpm = (config.showPoppyPerMinute().get() ? VISIBLE : DISABLED);
+            this.poppiesPerMinuteLine.setState(isGR ? showPpm : HIDDEN);
         }
     }
 
@@ -99,40 +97,36 @@ public class PoppyWidget extends TextHudWidget<PoppyWidget.PoppyHudWidgetConfig>
             return;
         }
 
-        val isGR = this.addon.getUtilService().isGermanRP();
-        if (!isGR) {
-            if (this.poppyLine.state() != HIDDEN) {
-                this.poppyLine.setState(HIDDEN);
-            }
-            if (this.poppiesPerMinuteLine.state() != DISABLED) {
-                this.poppiesPerMinuteLine.setState(DISABLED);
-            }
+        if (!this.addon.getUtilService().isGermanRP()) {
+            this.poppyLine.setState(HIDDEN);
+            this.poppiesPerMinuteLine.setState(HIDDEN);
             return;
         }
 
-        if (this.poppyCount == UNKNOWN_POPPY_COUNT) {
-            this.poppyLine.updateAndFlush(poppyUnknown);
-        } else {
-            this.poppyLine.updateAndFlush("%d".formatted(this.poppyCount));
-        }
+        val poppyLineValue = this.poppyCount == UNKNOWN_POPPY_COUNT ? poppyUnknown : "%d".formatted(this.poppyCount);
+        this.poppyLine.updateAndFlush(poppyLineValue);
         this.poppyLine.setState(VISIBLE);
 
         val showPpm = this.config.showPoppyPerMinute().get();
-        this.poppiesPerMinuteLine.setState(showPpm ? VISIBLE : DISABLED);
-
-        if (showPpm) {
-            val currentTime = System.currentTimeMillis();
-            while (!poppyEntries.isEmpty() && currentTime - poppyEntries.peek().timestamp() > 60_000) {
-                poppyEntries.poll();
-            }
-
-            var totalAdded = 0;
-            for (val poppyEntry : poppyEntries) {
-                int amount = poppyEntry.amount();
-                totalAdded += amount;
-            }
-            this.poppiesPerMinuteLine.updateAndFlush("%d".formatted(totalAdded));
+        if (!showPpm) {
+            this.poppiesPerMinuteLine.setState(DISABLED);
+            return;
         }
+
+        this.poppiesPerMinuteLine.setState(VISIBLE);
+
+        val currentTime = System.currentTimeMillis();
+        while (!this.poppyEntries.isEmpty() && currentTime - this.poppyEntries.peek().timestamp() > 60_000) {
+            this.poppyEntries.poll();
+        }
+
+        var totalAdded = 0;
+        for (val poppyEntry : this.poppyEntries) {
+            int amount = poppyEntry.amount();
+            totalAdded += amount;
+        }
+        this.poppiesPerMinuteLine.updateAndFlush("%d".formatted(totalAdded));
+
     }
 
     @Subscribe
@@ -149,6 +143,12 @@ public class PoppyWidget extends TextHudWidget<PoppyWidget.PoppyHudWidgetConfig>
         val poppyPouchRemoveMatcher = POPPY_REMOVE_FROM_POUCH.getPattern().matcher(message);
         if (poppyPouchRemoveMatcher.matches()) {
             fireEvent(new PoppyRemoveFromPouchEvent(Integer.parseInt(poppyPouchRemoveMatcher.group(1))));
+            return;
+        }
+
+        val poppyRemoveFromInventoryMatcher = POPPY_REMOVE_FROM_INV.getPattern().matcher(message);
+        if (poppyRemoveFromInventoryMatcher.matches()) {
+            fireEvent(new PoppyRemoveFromInventoryEvent(Integer.parseInt(poppyRemoveFromInventoryMatcher.group(1))));
             return;
         }
 
@@ -175,7 +175,7 @@ public class PoppyWidget extends TextHudWidget<PoppyWidget.PoppyHudWidgetConfig>
     @Subscribe
     @SuppressWarnings("unused")
     public void onPoppyAddToPouch(final PoppyAddToPouchEvent event) {
-        if(this.poppyCount == UNKNOWN_POPPY_COUNT) {
+        if (this.poppyCount == UNKNOWN_POPPY_COUNT) {
             this.poppyCount = 0;
         }
 
@@ -186,7 +186,7 @@ public class PoppyWidget extends TextHudWidget<PoppyWidget.PoppyHudWidgetConfig>
     @Subscribe
     @SuppressWarnings("unused")
     public void onPoppyRemoveFromPouch(final PoppyRemoveFromPouchEvent event) {
-        if(this.poppyCount == UNKNOWN_POPPY_COUNT) {
+        if (this.poppyCount == UNKNOWN_POPPY_COUNT) {
             this.poppyCount = 0;
         }
 
@@ -196,12 +196,24 @@ public class PoppyWidget extends TextHudWidget<PoppyWidget.PoppyHudWidgetConfig>
 
     @Subscribe
     @SuppressWarnings("unused")
+    public void onPoppyRemoveFromInventory(final PoppyRemoveFromInventoryEvent event) {
+        if (this.poppyCount == UNKNOWN_POPPY_COUNT) {
+            this.poppyCount = 0;
+        }
+
+        val amount = this.poppyCount - event.amount();
+        this.poppyCount = Math.max(0, amount);
+    }
+
+    @Subscribe
+    @SuppressWarnings("unused")
     public void onServerJoin(final AddonServerJoinEvent event) {
         if (this.poppyLine != null) {
             this.poppyLine.setState(event.isGR() ? VISIBLE : HIDDEN);
         }
         if (this.poppiesPerMinuteLine != null) {
-            this.poppiesPerMinuteLine.setState(event.isGR() ? (this.config.showPoppyPerMinute().get() ? VISIBLE : DISABLED) : DISABLED);
+            val showPpm = this.config.showPoppyPerMinute().get() ? VISIBLE : DISABLED;
+            this.poppiesPerMinuteLine.setState(event.isGR() ? showPpm : HIDDEN);
         }
     }
 
