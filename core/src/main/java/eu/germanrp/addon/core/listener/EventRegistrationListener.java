@@ -158,7 +158,7 @@ public class EventRegistrationListener {
             }
             case "GRAddon-PayDay" -> {
                 final JsonObject payloadContent = event.getPayloadContent();
-                fireEvent(new PayDayPacketRecieveEvent(
+                fireEvent(new PayDayPacketReceiveEvent(
                         payloadContent.get("time").getAsInt(),
                         payloadContent.get("salary").getAsJsonObject().get("faction").getAsFloat(),
                         payloadContent.get("salary").getAsJsonObject().get("job").getAsFloat()));

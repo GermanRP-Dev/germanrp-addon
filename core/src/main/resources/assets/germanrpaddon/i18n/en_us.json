@@ -20,6 +20,10 @@
                 "wantedColorEnabled.name": "Fahndungsfarbe an/aus",
                 "wantedColor.name": "Fahndungsfarbe"
             },
+            "poppyWidgetSubConfig": {
+                "name": "Mohn",
+                "showPoppyMessagesInChat.name": "Mohn Nachrichten im Chat anzeigen"
+            },
             "vehicleHotkeyConfig": {
                 "name": "Fahrzeug Hotkeys",
                 "header": {
@@ -63,7 +67,9 @@
                 "harvest": "%s kann geerntet werden.",
                 "fertilize": "%s muss jetzt gedüngt werden.",
                 "water": "%s muss jetzt bewässert werden."
-            }
+            },
+            "version": "%s Version: %s",
+            "clickCopy": "Klicke um zu kopieren"
         },
         "hudWidget": {
             "heilkrautpflanze": {
@@ -101,6 +107,12 @@
             },
             "payDay": {
                 "name": "PayDay"
+            },
+            "poppy": {
+                "name": "Mohn",
+                "showPoppyPerMinute": {
+                    "name": "Mohn pro Minute anzeigen"
+                }
             }
         },
         "widget": {
@@ -131,7 +143,8 @@
                 "eventValue": "30:45"
             },
             "hydration": {
-                "key": "Hydrierung"
+                "key": "Hydrierung",
+                "dummy": "lädt"
             },
             "payDay": {
                 "fgehaltKey": "Frak",
@@ -140,6 +153,12 @@
                 "fGehaltValue": "lädt",
                 "jGehaltValue": "lädt",
                 "paydayValue": "lädt"
+            },
+            "poppy": {
+                "key": "Mohn",
+                "dummy": "Unbekannt",
+                "ppmKey": "Mohn/Min",
+                "ppmValue": "%d"
             }
         }
     }

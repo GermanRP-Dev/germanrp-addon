@@ -4,8 +4,8 @@ import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.services.util.UtilTextService;
 import lombok.Getter;
 import lombok.experimental.Accessors;
+import lombok.val;
 import net.labymod.api.client.gui.icon.Icon;
-import net.labymod.api.client.network.server.ServerData;
 import net.labymod.api.client.resources.ResourceLocation;
 
 import static net.labymod.api.Laby.labyAPI;
@@ -32,10 +32,19 @@ public class UtilService {
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isGermanRP() {
         if (labyAPI().minecraft().isIngame()) {
-            ServerData serverData = labyAPI().serverController().getCurrentServerData();
-            return serverData.address().matches("germanrp.de", 25565, true)
-                    || serverData.address().matches("germanrp.eu", 25565, true)
-                    || serverData.address().matches("91.218.66.124", 25565, true);
+            val serverData = labyAPI().serverController().getCurrentServerData();
+
+            if(serverData == null) {
+                return false;
+            }
+
+            val address = serverData.address();
+
+            return address.matches("germanrp.de", 25565, true)
+                    || address.matches("germanrp.eu", 25565, true)
+                    || address.matches("91.218.66.124", 25565, true)
+                    || address.matches("dev.germanrp.eu", 25554, true)
+                    || address.matches("91.218.66.124", 25554, true);
 
         }
         return false;

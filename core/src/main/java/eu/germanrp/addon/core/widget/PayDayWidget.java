@@ -1,8 +1,8 @@
 package eu.germanrp.addon.core.widget;
 
 import eu.germanrp.addon.core.GermanRPAddon;
-import eu.germanrp.addon.core.common.events.JustJoinedEvent;
-import eu.germanrp.addon.core.common.events.PayDayPacketRecieveEvent;
+import eu.germanrp.addon.core.common.events.AddonServerJoinEvent;
+import eu.germanrp.addon.core.common.events.PayDayPacketReceiveEvent;
 import lombok.Getter;
 import lombok.Setter;
 import net.labymod.api.client.component.Component;
@@ -54,16 +54,18 @@ public class PayDayWidget extends TextHudWidget<TextHudWidgetConfig> {
     }
 
     @Subscribe
-    public void onServerJoin(JustJoinedEvent e) {
-        this.frakGehaltLine.setState(e.isJustJoined() ? VISIBLE : HIDDEN);
-        this.jobGehaltLine.setState(e.isJustJoined() ? VISIBLE : HIDDEN);
-        this.payDayTimeLine.setState(e.isJustJoined() ? VISIBLE : HIDDEN);
+    @SuppressWarnings("unused")
+    public void onAddonServerJoinEvent(final AddonServerJoinEvent e) {
+        this.frakGehaltLine.setState(e.isGR() ? VISIBLE : HIDDEN);
+        this.jobGehaltLine.setState(e.isGR() ? VISIBLE : HIDDEN);
+        this.payDayTimeLine.setState(e.isGR() ? VISIBLE : HIDDEN);
     }
 
     @Subscribe
-    public void onPayDayPacketRecieve(PayDayPacketRecieveEvent e) {
+    public void onPayDayPacketReceive(PayDayPacketReceiveEvent e) {
         this.frakGehaltLine.updateAndFlush(String.format("%.2f €", e.getFSalary()));
         this.jobGehaltLine.updateAndFlush(String.format("%.2f €", e.getJSalary()));
         this.payDayTimeLine.updateAndFlush(String.format("%02d/60", e.getPaydayTime()));
     }
+
 }
