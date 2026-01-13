@@ -126,7 +126,11 @@ public class PoppyWidget extends TextHudWidget<PoppyWidget.PoppyHudWidgetConfig>
                 poppyEntries.poll();
             }
 
-            val totalAdded = poppyEntries.stream().mapToInt(PoppyEntry::amount).sum();
+            var totalAdded = 0;
+            for (val poppyEntry : poppyEntries) {
+                int amount = poppyEntry.amount();
+                totalAdded += amount;
+            }
             this.poppiesPerMinuteLine.updateAndFlush("%d".formatted(totalAdded));
         }
     }
