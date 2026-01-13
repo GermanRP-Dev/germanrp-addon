@@ -1,10 +1,7 @@
 package eu.germanrp.addon.core.widget;
 
 import eu.germanrp.addon.core.GermanRPAddon;
-import eu.germanrp.addon.core.common.events.AddonServerJoinEvent;
-import eu.germanrp.addon.core.common.events.PoppyAddToPouchEvent;
-import eu.germanrp.addon.core.common.events.PoppyReceiveEvent;
-import eu.germanrp.addon.core.common.events.PoppyRemoveFromPouchEvent;
+import eu.germanrp.addon.core.common.events.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -152,6 +149,12 @@ public class PoppyWidget extends TextHudWidget<PoppyWidget.PoppyHudWidgetConfig>
             return;
         }
 
+        val poppyRemoveFromInventoryMatcher = POPPY_REMOVE_FROM_INV.getPattern().matcher(message);
+        if (poppyRemoveFromInventoryMatcher.matches()) {
+            fireEvent(new PoppyRemoveFromInventoryEvent(Integer.parseInt(poppyRemoveFromInventoryMatcher.group(1))));
+            return;
+        }
+
         val poppyMessageMatcher = POPPY_MESSAGE.getPattern().matcher(message);
         if (!poppyMessageMatcher.matches()) {
             return;
@@ -192,6 +195,17 @@ public class PoppyWidget extends TextHudWidget<PoppyWidget.PoppyHudWidgetConfig>
 
         val newAmount = this.poppyCount + event.amount();
         this.poppyCount = Math.max(0, newAmount);
+    }
+
+    @Subscribe
+    @SuppressWarnings("unused")
+    public void onPoppyRemoveFromInventory(final PoppyRemoveFromInventoryEvent event) {
+        if (this.poppyCount == UNKNOWN_POPPY_COUNT) {
+            this.poppyCount = 0;
+        }
+
+        val amount = this.poppyCount - event.amount();
+        this.poppyCount = Math.max(0, amount);
     }
 
     @Subscribe
