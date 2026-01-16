@@ -57,7 +57,7 @@ public class MixinSoundEngine {
 
     @Unique
     private static boolean germanrpaddon$isSilentATMEnabled() {
-        return GermanRPAddon.getInstance().configuration().silentATM().get();
+        return GermanRPAddon.getInstance().configuration().atmConfig().silentATM().get();
     }
 
     @Unique

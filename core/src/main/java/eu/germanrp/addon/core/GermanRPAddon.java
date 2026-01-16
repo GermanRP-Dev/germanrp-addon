@@ -1,24 +1,29 @@
 package eu.germanrp.addon.core;
 
+import eu.germanrp.addon.core.common.model.ATMPacket;
 import eu.germanrp.addon.core.commands.TogglePanicCommand;
 import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
 import eu.germanrp.addon.core.common.AddonPlayer;
 import eu.germanrp.addon.core.common.DefaultAddonPlayer;
+import eu.germanrp.addon.core.integration.labyswaypoints.WaypointsIntegration;
 import eu.germanrp.addon.core.listener.*;
+import eu.germanrp.addon.core.services.*;
 import eu.germanrp.addon.core.widget.PoppyWidget;
-import eu.germanrp.addon.core.services.NameTagService;
-import eu.germanrp.addon.core.services.NavigationService;
-import eu.germanrp.addon.core.services.UtilService;
-import eu.germanrp.addon.core.services.VehicleService;
+import eu.germanrp.addon.core.services.*;
 import eu.germanrp.addon.core.widget.*;
 import eu.germanrp.addon.core.workflow.JoinWorkflowManager;
 import eu.germanrp.addon.core.widget.category.GermanRPAddonWidgetCategory;
 import lombok.Getter;
+import lombok.val;
+import net.labymod.api.Laby;
 import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.client.gui.hud.HudWidgetRegistry;
 import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.client.resources.ResourceLocation;
+import net.labymod.api.generated.ReferenceStorage;
 import net.labymod.api.models.addon.annotation.AddonMain;
+import net.labymod.serverapi.api.packet.Direction;
+import net.labymod.serverapi.core.AddonProtocol;
 
 @Getter
 @AddonMain
@@ -33,6 +38,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private NavigationService navigationService;
     private UtilService utilService;
     private VehicleService vehicleService;
+    private POIService poiService;
 
     private AddonPlayer player;
 
@@ -60,7 +66,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
         instantiateServices();
 
-        this.logger().info("Loaded germanrpaddon");
+        this.logger().info("Loaded %s".formatted(NAMESPACE));
     }
 
     @Override
@@ -71,7 +77,30 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerListener();
         registerCommands();
 
-        this.logger().info("Enabled germanrpaddon");
+        val references = Laby.references();
+        registerIntegrations(references);
+
+        val protocolService = references.labyModProtocolService();
+        val protocol = new AddonProtocol(protocolService, NAMESPACE);
+        protocolService.registry().registerProtocol(protocol);
+
+        registerPackets(protocol);
+
+        this.logger().info("Enabled %s".formatted(NAMESPACE));
+    }
+
+    private void registerPackets(AddonProtocol protocol) {
+        protocol.registerPacket(
+                0,
+                ATMPacket.class,
+                Direction.CLIENTBOUND,
+                new ATMPacketHandler(this)
+        );
+    }
+
+    private static void registerIntegrations(ReferenceStorage references) {
+        references.addonIntegrationService()
+                .registerIntegration("labyswaypoints", WaypointsIntegration.class);
     }
 
     @Override
@@ -85,6 +114,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         this.utilService = new UtilService(this);
         this.vehicleService = new VehicleService(this);
         this.joinWorkflowManager = new JoinWorkflowManager(this);
+        this.poiService = new POIService(this);
     }
 
     private void registerCommands() {
@@ -167,6 +197,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerListener(new BountyEventListener(this));
         registerListener(new WantedEventListener(this));
         registerListener(new MemberInfoEventListener(this));
+        registerListener(new ATMVisibilityListener(this));
     }
 
 }
