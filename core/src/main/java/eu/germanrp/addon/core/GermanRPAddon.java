@@ -7,6 +7,7 @@ import eu.germanrp.addon.core.common.AddonPlayer;
 import eu.germanrp.addon.core.common.DefaultAddonPlayer;
 import eu.germanrp.addon.core.integration.labyswaypoints.WaypointsIntegration;
 import eu.germanrp.addon.core.listener.*;
+import eu.germanrp.addon.core.services.*;
 import eu.germanrp.addon.core.widget.PoppyWidget;
 import eu.germanrp.addon.core.services.*;
 import eu.germanrp.addon.core.widget.*;
