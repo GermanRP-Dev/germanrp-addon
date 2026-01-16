@@ -121,6 +121,9 @@
                 "showPoppyPerMinute": {
                     "name": "Mohn pro Minute anzeigen"
                 }
+            },
+            "health": {
+                "name": "Lebenspunkte"
             }
         },
         "widget": {
