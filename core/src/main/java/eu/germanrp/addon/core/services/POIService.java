@@ -59,10 +59,12 @@ public class POIService {
     }
 
     private void updateATMColor(final Color color) {
-        waypointService.getAll()
-                .stream()
-                .filter(waypoint -> waypoint.meta().getIdentifier().startsWith(ATM_ID_PREFIX))
-                .forEach(waypoint -> waypoint.meta().setColor(color));
+        for (val waypoint : waypointService.getAll()) {
+            val meta = waypoint.meta();
+            if (meta.getIdentifier().startsWith(ATM_ID_PREFIX)) {
+                meta.setColor(color);
+            }
+        }
     }
 
 }
