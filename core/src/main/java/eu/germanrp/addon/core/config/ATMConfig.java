@@ -14,10 +14,10 @@ import net.labymod.api.util.Color;
 public class ATMConfig extends Config {
 
     @SwitchWidget.SwitchSetting
-    private final ConfigProperty<Boolean> silentATM = new ConfigProperty<>(true);
+    private final ConfigProperty<Boolean> silentATM = new ConfigProperty<>(false);
 
     @SwitchWidget.SwitchSetting(hotkey = true)
-    private final ConfigProperty<Boolean> showATMWaypoints = new ConfigProperty<>(true);
+    private final ConfigProperty<Boolean> showATMWaypoints = new ConfigProperty<>(false);
 
     @SwitchWidget.SwitchSetting
     @SettingRequires("showATMWaypoints")
