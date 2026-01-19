@@ -16,7 +16,7 @@ public class ATMVisibilityListener {
     @SuppressWarnings("unused")
     public void onTick(GermanRPAddonTickEvent event) {
         if (event.isPhase(GermanRPAddonTickEvent.Phase.SECOND)) {
-            this.addon.getPoiService().refreshATMs();
+            this.addon.getPoiService().checkCooldowns();
         }
     }
 

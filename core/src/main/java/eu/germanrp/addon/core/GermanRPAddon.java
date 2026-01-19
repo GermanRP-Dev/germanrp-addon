@@ -1,18 +1,16 @@
 package eu.germanrp.addon.core;
 
-import eu.germanrp.addon.core.common.model.ATMPacket;
 import eu.germanrp.addon.core.commands.TogglePanicCommand;
 import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
 import eu.germanrp.addon.core.common.AddonPlayer;
 import eu.germanrp.addon.core.common.DefaultAddonPlayer;
+import eu.germanrp.addon.core.common.model.ATMPacket;
 import eu.germanrp.addon.core.integration.labyswaypoints.WaypointsIntegration;
 import eu.germanrp.addon.core.listener.*;
 import eu.germanrp.addon.core.services.*;
-import eu.germanrp.addon.core.widget.PoppyWidget;
-import eu.germanrp.addon.core.services.*;
 import eu.germanrp.addon.core.widget.*;
-import eu.germanrp.addon.core.workflow.JoinWorkflowManager;
 import eu.germanrp.addon.core.widget.category.GermanRPAddonWidgetCategory;
+import eu.germanrp.addon.core.workflow.JoinWorkflowManager;
 import lombok.Getter;
 import lombok.val;
 import net.labymod.api.Laby;
@@ -191,6 +189,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
         registerListener(this.serverJoinListener);
         registerListener(this.chatListener);
+        registerListener(this.poiService);
 
         registerListener(new SkillXPListener());
         registerListener(new EventRegistrationListener(this));
