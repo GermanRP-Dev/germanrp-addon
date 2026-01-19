@@ -14,6 +14,7 @@ import net.labymod.serverapi.api.payload.io.PayloadReader;
 import net.labymod.serverapi.api.payload.io.PayloadWriter;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.StringJoiner;
@@ -80,7 +81,7 @@ public class ATMPacket implements Packet {
 
             boolean visible = atmConfig.showATMWaypoints().get();
             if (visible && atmConfig.hideDamagedATMs().get() && this.cooldownTimestamp() != -1) {
-                visible = false;
+                visible = Instant.now().isAfter(Instant.ofEpochMilli(this.cooldownTimestamp));
             }
 
             return Optional.of(WaypointBuilder.create()
