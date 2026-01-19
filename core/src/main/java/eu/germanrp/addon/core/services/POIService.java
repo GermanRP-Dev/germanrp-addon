@@ -12,6 +12,7 @@ import net.labymod.api.util.Color;
 
 import java.time.Instant;
 import java.util.*;
+import java.util.concurrent.PriorityBlockingQueue;
 
 import static eu.germanrp.addon.core.GermanRPAddon.NAMESPACE;
 import static net.labymod.api.Laby.fireEvent;
@@ -24,6 +25,7 @@ public class POIService {
     private final GermanRPAddon addon;
     private final Map<String, ATMPacket.ATM> atmMap = new HashMap<>();
     private final Map<String, Instant> cooldownAtms = new HashMap<>();
+    private final PriorityBlockingQueue<CooldownEntry> cooldownQueue = new PriorityBlockingQueue<>(11, Comparator.comparing(CooldownEntry::expiry));
 
     public POIService(final GermanRPAddon addon) {
         this.addon = addon;
@@ -33,12 +35,14 @@ public class POIService {
         atmConfig.hideDamagedATMs().addChangeListener(show -> this.refreshATMs());
     }
 
-    public void addOrUpdateATMs(final List<ATMPacket.ATM> atms) {
+    public synchronized void addOrUpdateATMs(final List<ATMPacket.ATM> atms) {
+        val now = Instant.now();
         for (val atm : atms) {
             this.atmMap.put(atm.id(), atm);
             val cooldown = Instant.ofEpochMilli(atm.cooldownTimestamp());
-            if (cooldown.isAfter(Instant.now())) {
+            if (cooldown.isAfter(now)) {
                 this.cooldownAtms.put(atm.id(), cooldown);
+                this.cooldownQueue.add(new CooldownEntry(atm.id(), cooldown));
             } else {
                 this.cooldownAtms.remove(atm.id());
             }
@@ -49,24 +53,34 @@ public class POIService {
         waypointService.refresh();
     }
 
-    public void checkCooldowns() {
-        if (this.cooldownAtms.isEmpty()) {
+    public synchronized void checkCooldowns() {
+        if (this.cooldownQueue.isEmpty()) {
             return;
         }
 
-        val iterator = this.cooldownAtms.entrySet().iterator();
-        while (iterator.hasNext()) {
-            val entry = iterator.next();
-            if (Instant.now().isAfter(entry.getValue())) {
-                iterator.remove();
-                fireEvent(new ATMOffCooldownEvent(entry.getKey()));
+        val now = Instant.now();
+        while (!this.cooldownQueue.isEmpty()) {
+            val entry = this.cooldownQueue.peek();
+            val currentCooldown = this.cooldownAtms.get(entry.id());
+
+            // Check if the entry is stale
+            if (currentCooldown == null || entry.expiry().isBefore(currentCooldown)) {
+                this.cooldownQueue.poll();
+            } else if (now.isAfter(entry.expiry())) {
+                // If it's not stale and expired, fire the event
+                this.cooldownQueue.poll();
+                this.cooldownAtms.remove(entry.id());
+                fireEvent(new ATMOffCooldownEvent(entry.id()));
+            } else {
+                // Entry is not stale and not expired, so we can stop
+                break;
             }
         }
     }
 
     @Subscribe
     @SuppressWarnings("unused")
-    public void onATMCooldown(final ATMOffCooldownEvent event) {
+    public synchronized void onATMCooldown(final ATMOffCooldownEvent event) {
         val atm = this.atmMap.get(event.atmId());
         if (atm != null) {
             waypointService.remove(waypoint -> waypoint.meta().getIdentifier().equals(ATM_ID_PREFIX + atm.id()));
@@ -75,7 +89,7 @@ public class POIService {
         }
     }
 
-    public void refreshATMs() {
+    public synchronized void refreshATMs() {
         for (val atm : this.atmMap.values()) {
             waypointService.remove(waypoint -> waypoint.meta().getIdentifier().equals(ATM_ID_PREFIX + atm.id()));
             atm.toWaypointMeta().ifPresent(waypointService::add);
@@ -83,7 +97,7 @@ public class POIService {
         waypointService.refresh();
     }
 
-    private void showOrHideATMs(final boolean show) {
+    private synchronized void showOrHideATMs(final boolean show) {
         val message = show
                 ? Component.translatable(NAMESPACE + ".message.atm.showWaypoints")
                 : Component.translatable(NAMESPACE + ".message.atm.hideWaypoints");
@@ -93,13 +107,16 @@ public class POIService {
         this.refreshATMs();
     }
 
-    private void updateATMColor(final Color color) {
+    private synchronized void updateATMColor(final Color color) {
         for (val waypoint : waypointService.getAll()) {
             val meta = waypoint.meta();
             if (meta.getIdentifier().startsWith(ATM_ID_PREFIX)) {
                 meta.setColor(color);
             }
         }
+    }
+
+    private record CooldownEntry(String id, Instant expiry) {
     }
 
 }
