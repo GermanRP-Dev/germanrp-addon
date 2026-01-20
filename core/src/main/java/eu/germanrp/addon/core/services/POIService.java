@@ -42,19 +42,46 @@ public class POIService {
     public synchronized void addOrUpdateATMs(final Set<ATM> atms) {
         val now = Instant.now();
         for (val atm : atms) {
-            this.atmMap.put(atm.id(), atm);
-            val cooldown = Instant.ofEpochMilli(atm.cooldownTimestamp());
-            if (cooldown.isAfter(now)) {
-                this.cooldownAtms.put(atm.id(), cooldown);
-                this.cooldownQueue.add(new CooldownEntry(atm.id(), cooldown));
-            } else {
-                this.cooldownAtms.remove(atm.id());
-            }
-            waypointService.remove(waypoint -> waypoint.meta().getIdentifier().equals(ATM_ID_PREFIX + atm.id()));
-            ATMHelper.toWaypointMeta(atm).ifPresent(waypointService::add);
+            this.internalAddOrUpdateATM(atm, now);
         }
 
         waypointService.refresh();
+    }
+
+    public synchronized void addATM(final ATM atm) {
+        this.internalAddOrUpdateATM(atm, Instant.now());
+        waypointService.refresh();
+    }
+
+    public synchronized void updateATM(final String id, final ATM atm) {
+        if (!this.atmMap.containsKey(id)) {
+            return;
+        }
+
+        this.atmMap.remove(id);
+        this.internalAddOrUpdateATM(atm, Instant.now());
+        waypointService.refresh();
+    }
+
+    public synchronized void removeATM(final String id) {
+        this.atmMap.remove(id);
+        this.cooldownAtms.remove(id);
+        this.cooldownQueue.removeIf(entry -> entry.id().equals(id));
+        waypointService.remove(waypoint -> waypoint.meta().getIdentifier().equals(ATM_ID_PREFIX + id));
+        waypointService.refresh();
+    }
+
+    private void internalAddOrUpdateATM(final ATM atm, final Instant now) {
+        this.atmMap.put(atm.id(), atm);
+        val cooldown = Instant.ofEpochMilli(atm.cooldownTimestamp());
+        if (cooldown.isAfter(now)) {
+            this.cooldownAtms.put(atm.id(), cooldown);
+            this.cooldownQueue.add(new CooldownEntry(atm.id(), cooldown));
+        } else {
+            this.cooldownAtms.remove(atm.id());
+        }
+        waypointService.remove(waypoint -> waypoint.meta().getIdentifier().equals(ATM_ID_PREFIX + atm.id()));
+        ATMHelper.toWaypointMeta(atm).ifPresent(waypointService::add);
     }
 
     public synchronized void checkCooldowns() {

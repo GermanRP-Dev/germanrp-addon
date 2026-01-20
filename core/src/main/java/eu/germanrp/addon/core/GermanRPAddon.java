@@ -6,12 +6,19 @@ import eu.germanrp.addon.core.common.AddonPlayer;
 import eu.germanrp.addon.core.common.DefaultAddonPlayer;
 import eu.germanrp.addon.core.integration.labyswaypoints.WaypointsIntegration;
 import eu.germanrp.addon.core.listener.*;
+import eu.germanrp.addon.core.serverapi.handler.AddATMPacketHandler;
+import eu.germanrp.addon.core.serverapi.handler.RegisteredATMsPacketHandler;
+import eu.germanrp.addon.core.serverapi.handler.RemoveATMPacketHandler;
+import eu.germanrp.addon.core.serverapi.handler.UpdateATMPacketHandler;
 import eu.germanrp.addon.core.services.*;
 import eu.germanrp.addon.core.widget.*;
 import eu.germanrp.addon.core.widget.category.GermanRPAddonWidgetCategory;
 import eu.germanrp.addon.core.workflow.JoinWorkflowManager;
 import eu.germanrp.addon.serverapi.GermanRPAddonIntegration;
+import eu.germanrp.addon.serverapi.packet.AddATMPacket;
 import eu.germanrp.addon.serverapi.packet.RegisteredATMsPacket;
+import eu.germanrp.addon.serverapi.packet.RemoveATMPacket;
+import eu.germanrp.addon.serverapi.packet.UpdateATMPacket;
 import lombok.Getter;
 import lombok.val;
 import net.labymod.api.Laby;
@@ -88,7 +95,10 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     }
 
     private void registerPackets(AddonProtocol protocol) {
-        protocol.registerHandler(RegisteredATMsPacket.class, new ATMPacketHandler(this));
+        protocol.registerHandler(RegisteredATMsPacket.class, new RegisteredATMsPacketHandler(this));
+        protocol.registerHandler(UpdateATMPacket.class, new UpdateATMPacketHandler(this));
+        protocol.registerHandler(AddATMPacket.class, new AddATMPacketHandler(this));
+        protocol.registerHandler(RemoveATMPacket.class, new RemoveATMPacketHandler(this));
     }
 
     private static void registerIntegrations(ReferenceStorage references) {

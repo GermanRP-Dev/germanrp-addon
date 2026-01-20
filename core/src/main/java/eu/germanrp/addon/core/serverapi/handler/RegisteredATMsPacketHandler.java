@@ -1,4 +1,4 @@
-package eu.germanrp.addon.core.listener;
+package eu.germanrp.addon.core.serverapi.handler;
 
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.services.POIService;
@@ -8,12 +8,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-public class ATMPacketHandler implements PacketHandler<RegisteredATMsPacket> {
+public class RegisteredATMsPacketHandler implements PacketHandler<RegisteredATMsPacket> {
 
     private final GermanRPAddon addon;
     private final POIService poiService;
 
-    public ATMPacketHandler(GermanRPAddon addon) {
+    public RegisteredATMsPacketHandler(final GermanRPAddon addon) {
         this.addon = addon;
         this.poiService = addon.getPoiService();
     }
