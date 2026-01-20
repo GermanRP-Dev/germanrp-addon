@@ -1,8 +1,9 @@
 package eu.germanrp.addon.core.services;
 
 import eu.germanrp.addon.api.events.atm.ATMOffCooldownEvent;
+import eu.germanrp.addon.core.ATMHelper;
 import eu.germanrp.addon.core.GermanRPAddon;
-import eu.germanrp.addon.core.common.model.ATMPacket;
+import eu.germanrp.addon.serverapi.model.ATM;
 import lombok.val;
 import net.labymod.addons.waypoints.WaypointService;
 import net.labymod.addons.waypoints.Waypoints;
@@ -11,7 +12,10 @@ import net.labymod.api.event.Subscribe;
 import net.labymod.api.util.Color;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.PriorityBlockingQueue;
 
 import static eu.germanrp.addon.core.GermanRPAddon.NAMESPACE;
@@ -23,7 +27,7 @@ public class POIService {
 
     private final WaypointService waypointService = Waypoints.references().waypointService();
     private final GermanRPAddon addon;
-    private final Map<String, ATMPacket.ATM> atmMap = new HashMap<>();
+    private final Map<String, ATM> atmMap = new HashMap<>();
     private final Map<String, Instant> cooldownAtms = new HashMap<>();
     private final PriorityBlockingQueue<CooldownEntry> cooldownQueue = new PriorityBlockingQueue<>(11, Comparator.comparing(CooldownEntry::expiry));
 
@@ -35,7 +39,7 @@ public class POIService {
         atmConfig.hideDamagedATMs().addChangeListener(show -> this.refreshATMs());
     }
 
-    public synchronized void addOrUpdateATMs(final List<ATMPacket.ATM> atms) {
+    public synchronized void addOrUpdateATMs(final Set<ATM> atms) {
         val now = Instant.now();
         for (val atm : atms) {
             this.atmMap.put(atm.id(), atm);
@@ -47,7 +51,7 @@ public class POIService {
                 this.cooldownAtms.remove(atm.id());
             }
             waypointService.remove(waypoint -> waypoint.meta().getIdentifier().equals(ATM_ID_PREFIX + atm.id()));
-            atm.toWaypointMeta().ifPresent(waypointService::add);
+            ATMHelper.toWaypointMeta(atm).ifPresent(waypointService::add);
         }
 
         waypointService.refresh();
@@ -84,7 +88,7 @@ public class POIService {
         val atm = this.atmMap.get(event.atmId());
         if (atm != null) {
             waypointService.remove(waypoint -> waypoint.meta().getIdentifier().equals(ATM_ID_PREFIX + atm.id()));
-            atm.toWaypointMeta().ifPresent(waypointService::add);
+            ATMHelper.toWaypointMeta(atm).ifPresent(waypointService::add);
             waypointService.refresh();
         }
     }
@@ -92,7 +96,7 @@ public class POIService {
     public synchronized void refreshATMs() {
         for (val atm : this.atmMap.values()) {
             waypointService.remove(waypoint -> waypoint.meta().getIdentifier().equals(ATM_ID_PREFIX + atm.id()));
-            atm.toWaypointMeta().ifPresent(waypointService::add);
+            ATMHelper.toWaypointMeta(atm).ifPresent(waypointService::add);
         }
         waypointService.refresh();
     }

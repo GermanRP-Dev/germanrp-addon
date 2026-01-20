@@ -37,6 +37,16 @@ subprojects {
     plugins.apply("net.labymod.labygradle")
     plugins.apply("net.labymod.labygradle.addon")
 
+    repositories {
+        maven("https://maven.pkg.github.com/GermanRP-Dev/germanrp-addon_labymod4-server-api-integration") {
+            name = "GitHubPackages"
+            credentials {
+                username = project.findProperty("gpr.user") as String? ?: System.getenv("GITHUB_ACTOR")
+                password = project.findProperty("gpr.key") as String? ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+
     group = rootProject.group
     version = rootProject.version
 }
