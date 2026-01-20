@@ -37,6 +37,10 @@ subprojects {
     plugins.apply("net.labymod.labygradle")
     plugins.apply("net.labymod.labygradle.addon")
 
+    repositories {
+        maven { url = uri("https://jitpack.io") }
+    }
+
     group = rootProject.group
     version = rootProject.version
 }

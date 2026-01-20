@@ -4,13 +4,21 @@ import eu.germanrp.addon.core.commands.TogglePanicCommand;
 import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
 import eu.germanrp.addon.core.common.AddonPlayer;
 import eu.germanrp.addon.core.common.DefaultAddonPlayer;
-import eu.germanrp.addon.core.common.model.ATMPacket;
 import eu.germanrp.addon.core.integration.labyswaypoints.WaypointsIntegration;
 import eu.germanrp.addon.core.listener.*;
+import eu.germanrp.addon.core.serverapi.handler.AddATMPacketHandler;
+import eu.germanrp.addon.core.serverapi.handler.RegisteredATMsPacketHandler;
+import eu.germanrp.addon.core.serverapi.handler.RemoveATMPacketHandler;
+import eu.germanrp.addon.core.serverapi.handler.UpdateATMPacketHandler;
 import eu.germanrp.addon.core.services.*;
 import eu.germanrp.addon.core.widget.*;
 import eu.germanrp.addon.core.widget.category.GermanRPAddonWidgetCategory;
 import eu.germanrp.addon.core.workflow.JoinWorkflowManager;
+import eu.germanrp.addon.serverapi.GermanRPAddonIntegration;
+import eu.germanrp.addon.serverapi.packet.AddATMPacket;
+import eu.germanrp.addon.serverapi.packet.RegisteredATMsPacket;
+import eu.germanrp.addon.serverapi.packet.RemoveATMPacket;
+import eu.germanrp.addon.serverapi.packet.UpdateATMPacket;
 import lombok.Getter;
 import lombok.val;
 import net.labymod.api.Laby;
@@ -20,7 +28,6 @@ import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.generated.ReferenceStorage;
 import net.labymod.api.models.addon.annotation.AddonMain;
-import net.labymod.serverapi.api.packet.Direction;
 import net.labymod.serverapi.core.AddonProtocol;
 
 @Getter
@@ -80,21 +87,18 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerIntegrations(references);
 
         val protocolService = references.labyModProtocolService();
-        val protocol = new AddonProtocol(protocolService, NAMESPACE);
-        protocolService.registry().registerProtocol(protocol);
-
+        val integration = protocolService.getOrRegisterIntegration(GermanRPAddonIntegration.class, GermanRPAddonIntegration::new);
+        val protocol = integration.addonProtocol();
         registerPackets(protocol);
 
         this.logger().info("Enabled %s".formatted(NAMESPACE));
     }
 
     private void registerPackets(AddonProtocol protocol) {
-        protocol.registerPacket(
-                0,
-                ATMPacket.class,
-                Direction.CLIENTBOUND,
-                new ATMPacketHandler(this)
-        );
+        protocol.registerHandler(RegisteredATMsPacket.class, new RegisteredATMsPacketHandler(this));
+        protocol.registerHandler(UpdateATMPacket.class, new UpdateATMPacketHandler(this));
+        protocol.registerHandler(AddATMPacket.class, new AddATMPacketHandler(this));
+        protocol.registerHandler(RemoveATMPacket.class, new RemoveATMPacketHandler(this));
     }
 
     private static void registerIntegrations(ReferenceStorage references) {
