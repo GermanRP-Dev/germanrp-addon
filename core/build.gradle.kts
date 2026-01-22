@@ -6,6 +6,7 @@ dependencies {
 
     // An example of how to add an external dependency that is used by the addon.
     // addonMavenDependency("org.jeasy:easy-random:5.0.0")
+    addonMavenDependency("com.github.GermanRP-Dev:germanrp-addon_labymod4-server-api-integration:1.0.5")
 
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
     compileOnly("org.projectlombok:lombok:1.18.42")
