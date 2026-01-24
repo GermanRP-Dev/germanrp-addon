@@ -24,7 +24,6 @@ import org.jetbrains.annotations.NotNull;
 import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Matcher;
 
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.*;
 import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.*;
@@ -48,9 +47,9 @@ public class EventRegistrationListener {
     public void onChatReceive(ChatReceiveEvent event) {
         String plainText = event.chatMessage().getPlainText();
 
-        Matcher graffitiAddedMatcher = GRAFFITI_ADD.getPattern().matcher(plainText);
-        if (graffitiAddedMatcher.matches()) {
-            String graffitiName = graffitiAddedMatcher.group(2);
+        var matcher = GRAFFITI_ADD.getPattern().matcher(plainText);
+        if (matcher.matches()) {
+            String graffitiName = matcher.group(2);
             this.addon.logger().info("[{}] Graffiti {} remaining time: 15:00", getClass(), graffitiName);
             Graffiti.fromName(graffitiName).ifPresent(graffiti -> {
                 Duration remainingTime = ofSeconds(900); // 15 minutes
@@ -59,10 +58,10 @@ public class EventRegistrationListener {
             return;
         }
 
-        Matcher graffitiTimeMatcher = GRAFFITI_TIME.getPattern().matcher(plainText);
-        if (graffitiTimeMatcher.matches()) {
-            final long minutes = ofNullable(graffitiTimeMatcher.group("minutes")).map(Long::parseLong).orElse(0L);
-            final long seconds = ofNullable(graffitiTimeMatcher.group("seconds")).map(Long::parseLong).orElse(0L);
+        matcher = GRAFFITI_TIME.getPattern().matcher(plainText);
+        if (matcher.matches()) {
+            final long minutes = ofNullable(matcher.group("minutes")).map(Long::parseLong).orElse(0L);
+            final long seconds = ofNullable(matcher.group("seconds")).map(Long::parseLong).orElse(0L);
 
             final ClientPlayer clientPlayer = labyAPI().minecraft().getClientPlayer();
 
@@ -81,17 +80,17 @@ public class EventRegistrationListener {
                     "[{}] Graffiti {} remaining time: {}:{}",
                     getClass(),
                     nearestGraffiti.getName(),
-                    graffitiTimeMatcher.group("minutes"),
-                    graffitiTimeMatcher.group("seconds")
+                    minutes,
+                    seconds
             );
 
             final Duration remainingTime = ofSeconds(minutes * 60 + seconds);
             fireEvent(new GraffitiUpdateEvent(nearestGraffiti, remainingTime));
         }
 
-        Matcher plantHarvestMatcher = PLANT_HARVEST.getPattern().matcher(plainText);
-        if (plantHarvestMatcher.find()) {
-            final String displayName = plantHarvestMatcher.group(1);
+        matcher = PLANT_HARVEST.getPattern().matcher(plainText);
+        if (matcher.find()) {
+            final String displayName = matcher.group(1);
             PlantType.fromDisplayName(displayName).ifPresent(plantType -> fireEvent(new PlantDestroyEvent(plantType)));
             return;
         }
