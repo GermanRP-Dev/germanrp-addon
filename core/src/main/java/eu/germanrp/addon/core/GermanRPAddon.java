@@ -62,6 +62,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private HydrationWidget hydrationWidget;
     private PayDayWidget paydayWidget;
     private HealthPointWidget healthPointWidget;
+    private ExplosiveVestHudWidget explosiveVestHudWidget;
     private ChatListener chatListener;
     private PoppyWidget poppyWidget;
 
@@ -172,6 +173,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         );
         this.poppyWidget = new PoppyWidget(this);
         this.healthPointWidget = new HealthPointWidget(widgetCategory);
+        this.explosiveVestHudWidget = new ExplosiveVestHudWidget(widgetCategory);
 
         widgetRegistry.categoryRegistry().register(widgetCategory);
         widgetRegistry.register(this.heilkrautpflanzeHudWidget);
@@ -185,6 +187,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         widgetRegistry.register(this.paydayWidget);
         widgetRegistry.register(this.poppyWidget);
         widgetRegistry.register(this.healthPointWidget);
+        widgetRegistry.register(this.explosiveVestHudWidget);
     }
 
     private void registerListener() {

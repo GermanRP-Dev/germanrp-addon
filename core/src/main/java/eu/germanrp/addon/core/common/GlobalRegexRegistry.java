@@ -34,7 +34,9 @@ public enum GlobalRegexRegistry {
     POPPY_MESSAGE(compile("^ \\+ (\\d+) Mohn \\((\\d+)\\)$")),
     POPPY_ADD_TO_POUCH(compile("^► Du hast (\\d+) Mohn in deinem Mohnsäckchen verstaut\\.$")),
     POPPY_REMOVE_FROM_POUCH(compile("^► Du hast (\\d+) Mohn aus deinem Mohnsäckchen geholt\\.$")),
-    POPPY_REMOVE_FROM_INV(compile("^► Du beginnst damit (\\d+)x Mohn zu trocknen...$"))
+    POPPY_REMOVE_FROM_INV(compile("^► Du beginnst damit (\\d+)x Mohn zu trocknen...$")),
+    EXPLOSIVE_VEST_FUSE(compile("^► Explosive Weste! Du explodierst in (\\d+) Sekunden!$")),
+    EXPLOSIVE_VEST_FUSE_MEMBER(compile("^ {2}× Ⓕ .+ (\\w{3,16}|\\[GR]\\w{3,16}): Achtung! Explosive Weste aktiviert!$"))
     ;
 
     private final Pattern pattern;
