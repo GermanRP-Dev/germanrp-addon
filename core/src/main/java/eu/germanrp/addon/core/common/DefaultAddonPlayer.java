@@ -264,6 +264,16 @@ public class DefaultAddonPlayer implements AddonPlayer {
     }
 
     @Override
+    public double getHydration() {
+        return this.hydration;
+    }
+
+    @Override
+    public void setHydration(double hydration) {
+        this.hydration = hydration;
+    }
+
+    @Override
     public boolean getPlayPanic() {
         return playPanic;
     }

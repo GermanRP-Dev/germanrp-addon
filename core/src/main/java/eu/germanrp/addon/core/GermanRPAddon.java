@@ -239,4 +239,12 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerListener(new DutyBadgeListener(this));
     }
 
+    public double getHydrationValue() {
+        return this.hydrationValue;
+    }
+
+    public void setHydrationValue(double hydrationValue) {
+        this.hydrationValue = hydrationValue;
+    }
+
 }
