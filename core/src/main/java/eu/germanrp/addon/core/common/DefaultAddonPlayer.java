@@ -40,6 +40,7 @@ public class DefaultAddonPlayer implements AddonPlayer {
     private int playerPayDayTime;
     private Faction playerFaction;
     private boolean playPanic = false;
+    private double hydration = Double.NaN;
 
     public DefaultAddonPlayer(GermanRPAddon addon) {
         this.addon = addon;
@@ -244,6 +245,16 @@ public class DefaultAddonPlayer implements AddonPlayer {
     @Override
     public void playSound(ResourceLocation location, float volume, float pitch) {
         labyAPI().minecraft().sounds().playSound(location, volume, pitch);
+    }
+
+    @Override
+    public double getHydration() {
+        return this.hydration;
+    }
+
+    @Override
+    public void setHydration(double hydration) {
+        this.hydration = hydration;
     }
 
     @Override

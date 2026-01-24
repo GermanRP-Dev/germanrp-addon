@@ -65,6 +65,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private ExplosiveVestHudWidget explosiveVestHudWidget;
     private ChatListener chatListener;
     private PoppyWidget poppyWidget;
+    private double hydrationValue = Double.NaN;
 
     @Override
     protected void load() {
@@ -203,10 +204,19 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerListener(new NameTagListener(this));
         registerListener(new VehicleHotkeyListener(this));
         registerListener(new DarklistEventListener(this));
+        registerListener(new HydrationListener(this));
         registerListener(new BountyEventListener(this));
         registerListener(new WantedEventListener(this));
         registerListener(new MemberInfoEventListener(this));
         registerListener(new ATMVisibilityListener(this));
+    }
+
+    public double getHydrationValue() {
+        return this.hydrationValue;
+    }
+
+    public void setHydrationValue(double hydrationValue) {
+        this.hydrationValue = hydrationValue;
     }
 
 }

@@ -96,4 +96,8 @@ public interface AddonPlayer {
     @Nullable Faction getPlayerFaction();
 
     void playSound(ResourceLocation location, float volume, float pitch);
+
+    double getHydration();
+
+    void setHydration(double hydration);
 }
