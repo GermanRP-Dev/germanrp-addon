@@ -131,6 +131,11 @@
                         "hp": "Lebenspunkte"
                     }
                 }
+            },
+            "explosiveVest": {
+                "name": "Explosive Weste",
+                "fuseBackground.name": "Zündschnur Hintergrundfarbe",
+                "fuseForeground.name": "Zündschnur Vordergrundfarbe"
             }
         },
         "widget": {
