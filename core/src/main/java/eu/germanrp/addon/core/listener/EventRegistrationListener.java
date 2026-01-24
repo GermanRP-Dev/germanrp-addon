@@ -7,10 +7,12 @@ import eu.germanrp.addon.api.events.plant.PlantDestroyEvent;
 import eu.germanrp.addon.api.events.plant.PlantPacketReceiveEvent;
 import eu.germanrp.addon.api.models.Graffiti;
 import eu.germanrp.addon.api.models.PlantType;
+import eu.germanrp.addon.api.models.ServerPlayer;
 import eu.germanrp.addon.api.network.PlantPacket;
 import eu.germanrp.addon.api.network.TimerPacket;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.*;
+import lombok.val;
 import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
@@ -44,6 +46,7 @@ public class EventRegistrationListener {
     }
 
     @Subscribe
+    @SuppressWarnings("unused")
     public void onChatReceive(ChatReceiveEvent event) {
         String plainText = event.chatMessage().getPlainText();
 
@@ -92,6 +95,25 @@ public class EventRegistrationListener {
         if (matcher.find()) {
             final String displayName = matcher.group(1);
             PlantType.fromDisplayName(displayName).ifPresent(plantType -> fireEvent(new PlantDestroyEvent(plantType)));
+            return;
+        }
+
+        matcher = EXPLOSIVE_VEST_FUSE.getPattern().matcher(plainText);
+        if (matcher.find()) {
+            val seconds = Integer.parseInt(matcher.group(1));
+            fireEvent(new ExplosiveVestFuseActivatedEvent(seconds));
+            return;
+        }
+
+        matcher = EXPLOSIVE_VEST_FUSE_MEMBER.getPattern().matcher(plainText);
+        if (matcher.find()) {
+            val player = new ServerPlayer(matcher.group(1));
+
+            if (player.name().equals(this.addon.getPlayer().getName())) {
+                return;
+            }
+
+            fireEvent(new ExplosiveVestFuseActivatedEvent());
             return;
         }
 
