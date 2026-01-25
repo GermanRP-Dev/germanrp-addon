@@ -203,6 +203,7 @@ public class EventRegistrationListener {
 
     @Subscribe
     public void onServerDisconnectEvent(final ServerDisconnectEvent event) {
+        fireEvent(new HydrationUpdateEvent(Double.NaN));
         for (PlantType plantType : PlantType.values()){
             fireEvent(new PlantDestroyEvent(plantType));
         }

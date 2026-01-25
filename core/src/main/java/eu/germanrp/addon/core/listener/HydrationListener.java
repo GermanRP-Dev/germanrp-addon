@@ -14,6 +14,7 @@ public class HydrationListener {
 
     @Subscribe
     public void onHydrationUpdate(HydrationUpdateEvent event) {
-        this.addon.setHydrationValue(event.getAmount());
+        this.addon.getPlayer().setHydration(event.getAmount());
     }
+
 }

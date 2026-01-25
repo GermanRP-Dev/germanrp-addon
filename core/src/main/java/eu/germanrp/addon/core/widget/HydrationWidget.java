@@ -3,6 +3,7 @@ package eu.germanrp.addon.core.widget;
 import eu.germanrp.addon.api.events.network.HydrationUpdateEvent;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.AddonServerJoinEvent;
+import lombok.val;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.gui.hud.binding.category.HudWidgetCategory;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidget;
@@ -48,7 +49,14 @@ public class HydrationWidget extends TextHudWidget<TextHudWidgetConfig> {
 
     @Subscribe
     public void onHydrationUpdate(HydrationUpdateEvent event) {
-        this.textLine.updateAndFlush(format(event.getAmount()));
+        val amount = event.getAmount();
+
+        if(Double.isNaN(amount)) {
+            this.textLine.updateAndFlush(hydrationDummyValue);
+            return;
+        }
+
+        this.textLine.updateAndFlush(format(amount));
     }
 
     @Subscribe

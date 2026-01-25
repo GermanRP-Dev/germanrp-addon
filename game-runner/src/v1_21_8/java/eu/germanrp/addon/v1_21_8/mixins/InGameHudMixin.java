@@ -53,10 +53,11 @@ public class InGameHudMixin {
             int right,
             CallbackInfo ci
     ) {
-        double hydration = GermanRPAddon.getInstance().getHydrationValue();
+        double hydration = GermanRPAddon.getInstance().getPlayer().getHydration();
         if (Double.isNaN(hydration)) {
             return;
         }
+
         double clampedHydration = Math.clamp(hydration, 0.0, 100.0);
         int hydrationLevel = (int) (clampedHydration / 100.0 * 20.0);
         boolean shouldJiggle = clampedHydration <= 0.0 && this.tickCount % (hydrationLevel * 3 + 1) == 0;
@@ -82,7 +83,7 @@ public class InGameHudMixin {
 
     @Inject(method = "getAirBubbleYLine", at = @At("RETURN"), cancellable = true)
     private void germanrpaddon$offsetAirBubbles(int left, int y, CallbackInfoReturnable<Integer> ci) {
-        if (Double.isNaN(GermanRPAddon.getInstance().getHydrationValue())) {
+        if (Double.isNaN(GermanRPAddon.getInstance().getPlayer().getHydration())) {
             return;
         }
 
