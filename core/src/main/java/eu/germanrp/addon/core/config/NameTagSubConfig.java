@@ -16,6 +16,9 @@ import net.labymod.api.util.Color;
 public class NameTagSubConfig extends Config {
 
     @SwitchWidget.SwitchSetting
+    private final ConfigProperty<Boolean> colorInTablist = new ConfigProperty<>(true);
+
+    @SwitchWidget.SwitchSetting
     private final ConfigProperty<Boolean> factionColorEnabled = new ConfigProperty<>(false);
 
     @ColorPickerWidget.ColorPickerSetting
@@ -42,4 +45,5 @@ public class NameTagSubConfig extends Config {
     @ColorPickerWidget.ColorPickerSetting
     @SettingRequires("wantedColorEnabled")
     private final ConfigProperty<Color> wantedColor = new ConfigProperty<>(Color.of(0xFFAAAAAA));
+
 }
