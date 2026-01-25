@@ -11,6 +11,7 @@
             },
             "nameTagSubConfig": {
                 "name": "Fraktion",
+                "colorInTablist.name": "Farbe in Tabliste anzeigen",
                 "factionColorEnabled.name": "Mitgliederfarbe an/aus",
                 "factionColor.name": "Mitgliederfarbe",
                 "bountyColorEnabled.name": "Kopfgeldfarbe an/aus",
