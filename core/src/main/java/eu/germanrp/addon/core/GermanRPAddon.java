@@ -4,6 +4,7 @@ import eu.germanrp.addon.core.commands.TogglePanicCommand;
 import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
 import eu.germanrp.addon.core.common.AddonPlayer;
 import eu.germanrp.addon.core.common.DefaultAddonPlayer;
+import eu.germanrp.addon.core.common.sound.SoundSequence;
 import eu.germanrp.addon.core.integration.labyswaypoints.WaypointsIntegration;
 import eu.germanrp.addon.core.listener.*;
 import eu.germanrp.addon.core.serverapi.handler.AddATMPacketHandler;
@@ -44,6 +45,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private UtilService utilService;
     private VehicleService vehicleService;
     private POIService poiService;
+    private SoundSequence soundSequence;
 
     private AddonPlayer player;
 
@@ -119,6 +121,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         this.vehicleService = new VehicleService(this);
         this.joinWorkflowManager = new JoinWorkflowManager(this);
         this.poiService = new POIService(this);
+        this.soundSequence = new SoundSequence(this);
     }
 
     private void registerCommands() {
@@ -197,6 +200,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerListener(this.serverJoinListener);
         registerListener(this.chatListener);
         registerListener(this.poiService);
+        registerListener(this.soundSequence);
 
         registerListener(new SkillXPListener());
         registerListener(new EventRegistrationListener(this));
