@@ -3,6 +3,7 @@ package eu.germanrp.addon.core.common;
 import eu.germanrp.addon.api.models.Faction;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.ExperienceUpdateEvent;
+import eu.germanrp.addon.core.common.sound.GermanRPSound;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.client.resources.ResourceLocation;
@@ -244,6 +245,11 @@ public class DefaultAddonPlayer implements AddonPlayer {
     @Override
     public void playSound(ResourceLocation location, float volume, float pitch) {
         labyAPI().minecraft().sounds().playSound(location, volume, pitch);
+    }
+
+    @Override
+    public void playSound(GermanRPSound sound, float volume, float pitch) {
+        playSound(sound.asResourceLocation(), volume, pitch);
     }
 
     @Override

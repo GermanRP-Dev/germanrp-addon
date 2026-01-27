@@ -1,0 +1,118 @@
+package eu.germanrp.addon.core.common.sound;
+
+import lombok.RequiredArgsConstructor;
+import net.labymod.api.client.resources.ResourceLocation;
+
+@RequiredArgsConstructor
+public enum GermanRPSound {
+
+    AMBIENT_AIRPLANE_ANNOUNCEMENT(Constants.NAMESPACE, "ambient.airplane.announcement"),
+    AMBIENT_AIRPLANE_IDLE(Constants.NAMESPACE, "ambient.airplane.idle"),
+    AMBIENT_AIRPLANE_LANDING(Constants.NAMESPACE, "ambient.airplane.landing"),
+    AMBIENT_ALARM_FIRE_BMA(Constants.NAMESPACE, "ambient.alarm.fire_bma"),
+    AMBIENT_ALARM_JAIL(Constants.NAMESPACE, "ambient.alarm.jail"),
+    AMBIENT_ALARM_RAILROAD_STATION(Constants.NAMESPACE, "ambient.alarm.railroad_station"),
+    AMBIENT_BABY_CRY(Constants.NAMESPACE, "ambient.baby_cry"),
+    AMBIENT_CHURCH_BELL(Constants.NAMESPACE, "ambient.church_bell"),
+    AMBIENT_DOORBELL(Constants.NAMESPACE, "ambient.doorbell"),
+    AMBIENT_ELEVATOR_BLING(Constants.NAMESPACE, "ambient.elevator.bling"),
+    AMBIENT_DAY(Constants.NAMESPACE, "ambient.day"),
+    AMBIENT_NIGHT(Constants.NAMESPACE, "ambient.night"),
+    BUS_ALTERSHEIM(Constants.NAMESPACE, "bus.altersheim"),
+    BUS_ALTSTADT(Constants.NAMESPACE, "bus.altstadt"),
+    BUS_ASIA(Constants.NAMESPACE, "bus.asia-viertel"),
+    BUS_AUHEIM(Constants.NAMESPACE, "bus.auheim"),
+    BUS_AUHEIM_SUED(Constants.NAMESPACE, "bus.auheim-sued"),
+    BUS_COUNTY(Constants.NAMESPACE, "bus.county"),
+    BUS_FARM(Constants.NAMESPACE, "bus.farm"),
+    BUS_JVA(Constants.NAMESPACE, "bus.jva"),
+    BUS_OSTSTADT(Constants.NAMESPACE, "bus.oststadt"),
+    BUS_PLAZA(Constants.NAMESPACE, "bus.plaza"),
+    BUS_POST(Constants.NAMESPACE, "bus.post"),
+    BUS_REICHENVIERTEL(Constants.NAMESPACE, "bus.reichenviertle"),
+    BUS_STRANDPASSAGE(Constants.NAMESPACE, "bus.strandpassage"),
+    BUS_UNIKLINIK(Constants.NAMESPACE, "bus.uniklinik"),
+    BUS_WESTSIDE(Constants.NAMESPACE, "bus.westside"),
+    BUS_SAEGEWERK(Constants.NAMESPACE, "bus.saegewerk"),
+    BUS_STEINBRUCH(Constants.NAMESPACE, "bus.steinbruch"),
+    CAR_ACCELERATE(Constants.NAMESPACE, "car.accelerate"),
+    CAR_DECELERATE(Constants.NAMESPACE, "car.decelerate"),
+    CAR_HONK_AIR(Constants.NAMESPACE, "car.honk.air"),
+    CAR_HONK_CLOWN(Constants.NAMESPACE, "car.honk.clown"),
+    CAR_HONK_MEP(Constants.NAMESPACE, "car.honk.mep"),
+    CAR_HONK_MUSICAL(Constants.NAMESPACE, "car.honk.musical"),
+    CAR_HONK_NORMAL(Constants.NAMESPACE, "car.honk.normal"),
+    CAR_HONK_RUBBER_DUCK(Constants.NAMESPACE, "car.honk.rubber_duck"),
+    CAR_HONK_TRAIN(Constants.NAMESPACE, "car.honk.train"),
+    CAR_IDLE_BIG(Constants.NAMESPACE, "car.idle.big"),
+    CAR_IDLE_NORMAL(Constants.NAMESPACE, "car.idle.normal"),
+    CAR_IDLE_SMALL(Constants.NAMESPACE, "car.idle.small"),
+    CAR_IDLE_SPORT(Constants.NAMESPACE, "car.idle.sport"),
+    CAR_IDLE_SPORT_SUPER(Constants.NAMESPACE, "car.idle.sport_super"),
+    CAR_FUEL_END(Constants.NAMESPACE, "car.fuel.end"),
+    CAR_FUEL_ON(Constants.NAMESPACE, "car.fuel.on"),
+    CAR_FUEL_START(Constants.NAMESPACE, "car.fuel.start"),
+    CAR_SIREN_AT(Constants.NAMESPACE, "car.siren.at"),
+    CAR_SIREN_CITY(Constants.NAMESPACE, "car.siren.city"),
+    CAR_SIREN_COMPRESSOR(Constants.NAMESPACE, "car.siren.compressor"),
+    CAR_SIREN_COUNTRY(Constants.NAMESPACE, "car.siren.country"),
+    CAR_SPEED_CAMERA(Constants.NAMESPACE, "car.speed_camera"),
+    CAR_START_BIG(Constants.NAMESPACE, "car.start.big"),
+    CAR_START_NORMAL(Constants.NAMESPACE, "car.start.normal"),
+    CAR_START_SMALL(Constants.NAMESPACE, "car.start.small"),
+    CAR_START_SPORT(Constants.NAMESPACE, "car.start.sport"),
+    CAR_START_SPORT_SUPER(Constants.NAMESPACE, "car.start.sport_super"),
+    CHAT_FACTION_RECEIVE(Constants.NAMESPACE, "chat.faction.receive"),
+    CHAT_FACTION_SEND(Constants.NAMESPACE, "chat.faction.send"),
+    CHAT_NOTIFY_BUILDMODE_REQUEST(Constants.NAMESPACE, "chat.notify.buildmode_request"),
+    CHAT_NOTIFY_ERROR(Constants.NAMESPACE, "chat.notify.error"),
+    CHAT_NOTIFY_INFO(Constants.NAMESPACE, "chat.notify.info"),
+    CHAT_NOTIFY_SUCCESS(Constants.NAMESPACE, "chat.notify.success"),
+    CHAT_NOTIFY_TICKET(Constants.NAMESPACE, "chat.notify.ticket"),
+    CHAT_NOTIFY_WARNING(Constants.NAMESPACE, "chat.notify.warning"),
+    FACTION_EMERGENCY_DISPATCH(Constants.NAMESPACE, "faction.emergency_dispatch"),
+    FACTION_MEDIC_BELL(Constants.NAMESPACE, "faction.medic.bell"),
+    FACTION_MEDIC_C3_MONITOR(Constants.NAMESPACE, "faction.medic.c3_monitor"),
+    FACTION_MEDIC_DEFIBRILLATOR(Constants.NAMESPACE, "faction.medic.defibrillator"),
+    FACTION_MEDIC_PRESCRIPTION(Constants.NAMESPACE, "faction.medic.prescription"),
+    FACTION_PANIC(Constants.NAMESPACE, "faction.panic"),
+    FACTION_PANIC_REMIND(Constants.NAMESPACE, "faction.panic.remind"),
+    FACTION_POLICE_CUFF(Constants.NAMESPACE, "faction.police.cuff"),
+    FACTION_POLICE_FLASH(Constants.NAMESPACE, "faction.police.flash"),
+    FACTION_STATUS_CHANGE(Constants.NAMESPACE, "faction.status_change"),
+    HELICOPTER_IDLE(Constants.NAMESPACE, "helicopter.idle"),
+    HELICOPTER_START(Constants.NAMESPACE, "helicopter.start"),
+    PLAYER_HEALTH_COUGH(Constants.NAMESPACE, "player.health.cough"),
+    PLAYER_HEALTH_SMOKING(Constants.NAMESPACE, "player.health.smoking"),
+    PLAYER_MOBILE_DIALING(Constants.NAMESPACE, "player.mobile.dialing"),
+    PLAYER_MOBILE_HANGING_UP(Constants.NAMESPACE, "player.mobile.hanging_up"),
+    PLAYER_MOBILE_OUTGOING(Constants.NAMESPACE, "player.mobile.outgoing"),
+    PLAYER_MOBILE_RING_UPHONE(Constants.NAMESPACE, "player.mobile.ring_uphone"),
+    PLAYER_MOBILE_RING_MAMSUNG(Constants.NAMESPACE, "player.mobile.ring_mamsung"),
+    PLAYER_MOBILE_RING_SOKIA(Constants.NAMESPACE, "player.mobile.ring_sokia"),
+    PLAYER_MOBILE_NOTIFY(Constants.NAMESPACE, "player.mobile.notify"),
+    PLAYER_MONEY_PAY(Constants.NAMESPACE, "player.money.pay"),
+    PLAYER_QUEST_COMPLETE(Constants.NAMESPACE, "player.quest.complete"),
+    UI_CLICK_BEEP(Constants.NAMESPACE, "ui.click_beep"),
+    UI_HERO(Constants.NAMESPACE, "ui.hero"),
+    WEAPON_EMPTY(Constants.NAMESPACE, "crossbow.empty"),
+    WEAPON_KNIFE_EQUIP(Constants.NAMESPACE, "item.knife.equip"),
+    WEAPON_RELOAD(Constants.NAMESPACE, "crossbow.reload"),
+    WEAPON_SHOT_MP5(Constants.NAMESPACE, "crossbow.shot.basic"),
+    WEAPON_SHOT_PISTOL(Constants.NAMESPACE, "crossbow.shot.small"),
+    WEAPON_SHOT_SNIPER(Constants.NAMESPACE, "crossbow.shot.range"),
+    WEAPON_SHOT_TASER(Constants.NAMESPACE, "crossbow.shot.channeling"),
+    ;
+
+    private final String namespace;
+    private final String sound;
+
+    private static class Constants {
+        public static final String NAMESPACE = "germanrp";
+    }
+
+    public ResourceLocation asResourceLocation() {
+        return ResourceLocation.parse("%s:%s".formatted(namespace, sound));
+    }
+
+}
