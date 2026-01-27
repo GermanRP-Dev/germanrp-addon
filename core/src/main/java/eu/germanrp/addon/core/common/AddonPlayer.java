@@ -1,6 +1,7 @@
 package eu.germanrp.addon.core.common;
 
 import eu.germanrp.addon.api.models.Faction;
+import eu.germanrp.addon.core.common.sound.GermanRPSound;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.client.resources.ResourceLocation;
@@ -100,4 +101,7 @@ public interface AddonPlayer {
     double getHydration();
 
     void setHydration(double hydration);
+
+    void playSound(GermanRPSound sound, float volume, float pitch);
+
 }

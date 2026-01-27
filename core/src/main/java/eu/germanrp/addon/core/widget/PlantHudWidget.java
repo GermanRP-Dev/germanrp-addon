@@ -5,6 +5,8 @@ import eu.germanrp.addon.api.models.*;
 import eu.germanrp.addon.api.network.PlantPacket;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent;
+import eu.germanrp.addon.core.common.sound.GermanRPSound;
+import eu.germanrp.addon.core.common.sound.SoundSequence;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.gui.hud.binding.category.HudWidgetCategory;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidget;
@@ -32,8 +34,10 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
     private static final String PLANT_HARVEST_MESSAGE = GermanRPAddon.NAMESPACE + ".message.plant.harvest";
     private static final String PLANT_FERTILIZE_MESSAGE = GermanRPAddon.NAMESPACE + ".message.plant.fertilize";
     private static final String PLANT_WATER_MESSAGE = GermanRPAddon.NAMESPACE + ".message.plant.water";
+    private static final ResourceLocation NOTE_BLOCK_PLING_SOUND = ResourceLocation.parse("minecraft:block.note_block.pling");
 
     private final GermanRPAddon addon;
+    private final SoundSequence soundSequence;
 
     private TextLine progressLine;
     private TextLine yieldLine;
@@ -44,11 +48,12 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
     protected PlantHudWidget(final String id,
                              final HudWidgetCategory category,
                              final Icon icon,
-                             GermanRPAddon addon) {
+                             final GermanRPAddon addon) {
         super(id);
         this.bindCategory(category);
         this.setIcon(icon);
         this.addon = addon;
+        this.soundSequence = addon.getSoundSequence();
     }
 
     @Override
@@ -139,43 +144,32 @@ public abstract class PlantHudWidget extends TextHudWidget<TextHudWidgetConfig> 
 
     @Subscribe
     public void onPlantReadyToHarvestEvent(final PlantReadyToHarvestEvent event) {
-        if (event.getPlant().getType() != getPlantType()) {
-            return;
-        }
-
-        this.addon.getPlayer().playSound(ResourceLocation.parse("germanrp:chat.notify.info"), 1, 1);
-
-        this.addon.getPlayer().sendInfoMessage(translatable(
-                PLANT_HARVEST_MESSAGE,
-                text(event.getPlant().getType().getDisplayName())
-        ));
+        sendInfoToPlayer(event.getPlant(), PLANT_HARVEST_MESSAGE);
     }
 
     @Subscribe
     public void onPlantNeedsFertilizerEvent(final PlantNeedsFertilizerEvent event) {
-        if (event.getPlant().getType() != getPlantType()) {
-            return;
-        }
-
-        this.addon.getPlayer().playSound(ResourceLocation.parse("germanrp:chat.notify.info"), 1, 1);
-
-        this.addon.getPlayer().sendInfoMessage(
-                translatable(PLANT_FERTILIZE_MESSAGE, text(event.getPlant().getType().getDisplayName()))
-        );
+        sendInfoToPlayer(event.getPlant(), PLANT_FERTILIZE_MESSAGE);
     }
 
     @Subscribe
     public void onPlantNeedsWaterEvent(final PlantNeedsWaterEvent event) {
-        if (event.getPlant().getType() != getPlantType()) {
+        sendInfoToPlayer(event.getPlant(), PLANT_WATER_MESSAGE);
+    }
+
+    private void sendInfoToPlayer(Plant plant, String message) {
+        if (plant.getType() != getPlantType()) {
             return;
         }
 
-        this.addon.getPlayer().playSound(ResourceLocation.parse("germanrp:chat.notify.info"), 1, 1);
+        soundSequence.enqueue(NOTE_BLOCK_PLING_SOUND, 1f, 0.75f, 3);
+        soundSequence.enqueue(NOTE_BLOCK_PLING_SOUND, 1f, 1f, 3);
+        soundSequence.enqueue(NOTE_BLOCK_PLING_SOUND, 1f, 1.25f, 0);
 
         this.addon.getPlayer().sendInfoMessage(
                 translatable(
-                        PLANT_WATER_MESSAGE,
-                        text(event.getPlant().getType().getDisplayName())
+                        message,
+                        text(plant.getType().getDisplayName())
                 )
         );
     }
