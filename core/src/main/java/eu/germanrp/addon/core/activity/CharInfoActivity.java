@@ -1,26 +1,23 @@
 package eu.germanrp.addon.core.activity;
 
-import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.api.models.CharacterInfo;
+import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.activity.popup.CharInfoPopup;
 import eu.germanrp.addon.core.activity.widgets.CharInfoHeaderWidget;
 import eu.germanrp.addon.core.activity.widgets.CharInfoWidget;
 import lombok.val;
 import net.labymod.api.client.component.Component;
+import net.labymod.api.client.gui.mouse.MutableMouse;
 import net.labymod.api.client.gui.screen.Parent;
 import net.labymod.api.client.gui.screen.activity.Activity;
 import net.labymod.api.client.gui.screen.activity.AutoActivity;
 import net.labymod.api.client.gui.screen.activity.Link;
 import net.labymod.api.client.gui.screen.key.MouseButton;
-import net.labymod.api.client.gui.mouse.MutableMouse;
 import net.labymod.api.client.gui.screen.widget.widgets.input.ButtonWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.FlexibleContentWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.ScrollWidget;
-import net.labymod.api.client.gui.screen.widget.Widget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.list.HorizontalListWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.list.VerticalListWidget;
-import net.labymod.api.client.gui.screen.widget.widgets.renderer.HrWidget;
-
 
 import static eu.germanrp.addon.core.GermanRPAddon.NAMESPACE;
 
@@ -31,7 +28,7 @@ public class CharInfoActivity extends Activity {
     private static final Component HEADER_TEXT = Component.translatable(NAMESPACE + ".gui.char-info");
 
     private VerticalListWidget<CharInfoWidget> charInfoWidgetList;
-    private CharInfoHeaderWidget headerWidget;
+
     private ButtonWidget removeButton;
     private ButtonWidget editButton;
     private CharInfoWidget selectedCharInfoWidget;
@@ -48,8 +45,8 @@ public class CharInfoActivity extends Activity {
         val container = new FlexibleContentWidget();
         container.addId("char-info-container");
 
-        this.headerWidget = new CharInfoHeaderWidget(HEADER_TEXT);
-        container.addContent(this.headerWidget);
+        val headerWidget = new CharInfoHeaderWidget(HEADER_TEXT);
+        container.addContent(headerWidget);
 
         this.buildCharInfoList();
         this.updateCharInfoContextList();
@@ -58,8 +55,8 @@ public class CharInfoActivity extends Activity {
         scrollWidget.addId("char-info-scroll");
         container.addFlexibleContent(scrollWidget);
 
-        this.selectedCharInfoWidget = this.charInfoWidgetList.listSession().getSelectedEntry() instanceof CharInfoWidget
-                ? (CharInfoWidget) this.charInfoWidgetList.listSession().getSelectedEntry()
+        this.selectedCharInfoWidget = this.charInfoWidgetList.listSession().getSelectedEntry() instanceof CharInfoWidget ciw
+                ? ciw
                 : null;
 
         val menu = new HorizontalListWidget();
@@ -110,13 +107,8 @@ public class CharInfoActivity extends Activity {
     private CharInfoWidget findClickedCharInfoWidget(MutableMouse mouse) {
         val children = this.charInfoWidgetList.getChildrenAt(mouse.getX(), mouse.getY());
         for (val child : children) {
-            Widget current = child;
-            while (current != null) {
-                if (current instanceof CharInfoWidget) {
-                    return (CharInfoWidget) current;
-                }
-                val parent = current.getParent();
-                current = parent instanceof Widget ? (Widget) parent : null;
+            if (child instanceof CharInfoWidget) {
+                return child;
             }
         }
         return null;
@@ -155,8 +147,8 @@ public class CharInfoActivity extends Activity {
         this.charInfoWidgetList.addId("char-info-widget-list");
         this.charInfoWidgetList.selectable().set(true);
         this.charInfoWidgetList.setSelectCallback(charInfoWidget -> {
-            this.selectedCharInfoWidget = charInfoWidget instanceof CharInfoWidget
-                    ? (CharInfoWidget) charInfoWidget
+            this.selectedCharInfoWidget = charInfoWidget instanceof CharInfoWidget ciw
+                    ? ciw
                     : null;
             this.updateSelectedCharInfoStyles();
             if (this.editButton != null && this.removeButton != null) {
@@ -191,7 +183,7 @@ public class CharInfoActivity extends Activity {
 
         val charInfo = this.selectedCharInfoWidget.getCharInfo();
         val config = GermanRPAddon.getInstance().configuration();
-        boolean removed = false;
+        var removed = false;
 
         if (charInfo.uniqueId() != null) {
             removed = config.characterInfoMap().remove(charInfo.uniqueId()) != null;
@@ -202,7 +194,6 @@ public class CharInfoActivity extends Activity {
             while (iterator.hasNext()) {
                 if (iterator.next().getValue().equals(charInfo)) {
                     iterator.remove();
-                    removed = true;
                     break;
                 }
             }

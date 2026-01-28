@@ -11,7 +11,6 @@ import net.labymod.api.client.gui.screen.widget.widgets.ComponentWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.FlexibleContentWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.renderer.IconWidget;
 
-import java.util.UUID;
 
 @AutoWidget
 @Link("char-info-widget.lss")
@@ -19,10 +18,6 @@ public class CharInfoWidget extends FlexibleContentWidget {
 
     @Getter
     protected final CharacterInfo charInfo;
-
-    private IconWidget iconWidget;
-    private ComponentWidget playerNameWidget;
-    private ComponentWidget characterNameWidget;
 
     public CharInfoWidget(final CharacterInfo charInfo) {
         this.charInfo = charInfo;
@@ -35,47 +30,27 @@ public class CharInfoWidget extends FlexibleContentWidget {
 
         val icon = this.createIcon();
         if (icon != null) {
-            this.iconWidget = new IconWidget(icon);
-            this.iconWidget.addId("char-info-icon");
-            this.addContent(this.iconWidget);
+            val iconWidget = new IconWidget(icon);
+            iconWidget.addId("char-info-icon");
+            this.addContent(iconWidget);
         }
 
-        this.playerNameWidget = ComponentWidget.text(this.safeText(this.charInfo.playerName()));
-        this.playerNameWidget.addId("char-info-player-name");
-        this.addContent(this.playerNameWidget);
+        val playerNameWidget = ComponentWidget.text(this.safeText(this.charInfo.playerName()));
+        playerNameWidget.addId("char-info-player-name");
+        this.addContent(playerNameWidget);
 
-        this.characterNameWidget = ComponentWidget.text(this.safeText(this.charInfo.name()));
-        this.characterNameWidget.addId("char-info-character-name");
-        this.addFlexibleContent(this.characterNameWidget);
-    }
-
-    public void updatePlayerName(final String playerName) {
-        if (playerName == null) {
-            return;
-        }
-
-        if (this.playerNameWidget != null) {
-            this.playerNameWidget.setText(playerName);
-        }
-    }
-
-    public void updateCharacterName(final String characterName) {
-        if (characterName == null) {
-            return;
-        }
-
-        if (this.characterNameWidget != null) {
-            this.characterNameWidget.setText(characterName);
-        }
+        val characterNameWidget = ComponentWidget.text(this.safeText(this.charInfo.name()));
+        characterNameWidget.addId("char-info-character-name");
+        this.addFlexibleContent(characterNameWidget);
     }
 
     private Icon createIcon() {
-        UUID uuid = this.charInfo.uniqueId();
+        val uuid = this.charInfo.uniqueId();
         if (uuid != null) {
             return Icon.head(uuid);
         }
 
-        String playerName = this.charInfo.playerName();
+        val playerName = this.charInfo.playerName();
         if (playerName != null && !playerName.isBlank()) {
             return Icon.head(playerName);
         }
