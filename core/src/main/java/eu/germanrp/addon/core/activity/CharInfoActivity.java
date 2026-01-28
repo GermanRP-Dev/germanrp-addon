@@ -1,10 +1,11 @@
 package eu.germanrp.addon.core.activity;
 
 import eu.germanrp.addon.core.GermanRPAddon;
+import eu.germanrp.addon.api.models.CharacterInfo;
+import eu.germanrp.addon.core.activity.popup.CharInfoPopup;
 import eu.germanrp.addon.core.activity.widgets.CharInfoHeaderWidget;
 import eu.germanrp.addon.core.activity.widgets.CharInfoWidget;
 import lombok.val;
-import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.gui.screen.Parent;
 import net.labymod.api.client.gui.screen.activity.Activity;
@@ -167,11 +168,20 @@ public class CharInfoActivity extends Activity {
     }
 
     private void handleAddAction() {
-        // TODO: hook up add flow
+        val popup = new CharInfoPopup()
+                .onSave(this::saveNewCharInfo);
+        popup.displayInOverlay();
     }
 
     private void handleEditAction() {
-        // TODO: hook up edit flow
+        if (this.selectedCharInfoWidget == null) {
+            return;
+        }
+
+        val original = this.selectedCharInfoWidget.getCharInfo();
+        val popup = new CharInfoPopup(original)
+                .onSave(updated -> this.saveEditedCharInfo(original, updated));
+        popup.displayInOverlay();
     }
 
     private void handleRemoveAction() {
@@ -199,6 +209,39 @@ public class CharInfoActivity extends Activity {
         }
 
         this.clearCharInfoSelection();
+        this.reload();
+    }
+
+    private void saveNewCharInfo(CharacterInfo charInfo) {
+        if (charInfo == null || charInfo.uniqueId() == null) {
+            return;
+        }
+
+        GermanRPAddon.getInstance().configuration().characterInfoMap()
+                .put(charInfo.uniqueId(), charInfo);
+        this.reload();
+    }
+
+    private void saveEditedCharInfo(CharacterInfo original, CharacterInfo updated) {
+        if (updated == null || updated.uniqueId() == null) {
+            return;
+        }
+
+        val config = GermanRPAddon.getInstance().configuration();
+        val oldId = original != null ? original.uniqueId() : null;
+        if (oldId != null && !oldId.equals(updated.uniqueId())) {
+            config.characterInfoMap().remove(oldId);
+        } else if (oldId == null && original != null) {
+            val iterator = config.characterInfoMap().entrySet().iterator();
+            while (iterator.hasNext()) {
+                if (iterator.next().getValue().equals(original)) {
+                    iterator.remove();
+                    break;
+                }
+            }
+        }
+
+        config.characterInfoMap().put(updated.uniqueId(), updated);
         this.reload();
     }
 
