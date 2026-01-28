@@ -1,6 +1,7 @@
 package eu.germanrp.addon.core.activity;
 
 import eu.germanrp.addon.core.GermanRPAddon;
+import eu.germanrp.addon.core.activity.widgets.CharInfoHeaderWidget;
 import eu.germanrp.addon.core.activity.widgets.CharInfoWidget;
 import lombok.val;
 import net.labymod.api.Laby;
@@ -11,13 +12,13 @@ import net.labymod.api.client.gui.screen.activity.AutoActivity;
 import net.labymod.api.client.gui.screen.activity.Link;
 import net.labymod.api.client.gui.screen.key.MouseButton;
 import net.labymod.api.client.gui.mouse.MutableMouse;
-import net.labymod.api.client.gui.screen.widget.widgets.ComponentWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.input.ButtonWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.FlexibleContentWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.ScrollWidget;
 import net.labymod.api.client.gui.screen.widget.Widget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.list.HorizontalListWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.list.VerticalListWidget;
+import net.labymod.api.client.gui.screen.widget.widgets.renderer.HrWidget;
 
 
 import static eu.germanrp.addon.core.GermanRPAddon.NAMESPACE;
@@ -29,7 +30,7 @@ public class CharInfoActivity extends Activity {
     private static final Component HEADER_TEXT = Component.translatable(NAMESPACE + ".gui.char-info");
 
     private VerticalListWidget<CharInfoWidget> charInfoWidgetList;
-    private ComponentWidget headerWidget;
+    private CharInfoHeaderWidget headerWidget;
     private ButtonWidget removeButton;
     private ButtonWidget editButton;
     private CharInfoWidget selectedCharInfoWidget;
@@ -46,8 +47,7 @@ public class CharInfoActivity extends Activity {
         val container = new FlexibleContentWidget();
         container.addId("char-info-container");
 
-        this.headerWidget = ComponentWidget.component(HEADER_TEXT);
-        this.headerWidget.addId("char-info-header");
+        this.headerWidget = new CharInfoHeaderWidget(HEADER_TEXT);
         container.addContent(this.headerWidget);
 
         this.buildCharInfoList();
@@ -63,14 +63,14 @@ public class CharInfoActivity extends Activity {
         val menu = new HorizontalListWidget();
         menu.addId("overview-button-menu");
 
-        val addButton = ButtonWidget.i18n("labymod.ui.button.add", this::handleAddAction);
+        val addButton = ButtonWidget.i18n(NAMESPACE + ".ui.button.add", this::handleAddAction);
         menu.addEntry(addButton);
 
-        this.editButton = ButtonWidget.i18n("labymod.ui.button.edit", this::handleEditAction);
+        this.editButton = ButtonWidget.i18n(NAMESPACE + ".ui.button.edit", this::handleEditAction);
         this.editButton.setEnabled(this.selectedCharInfoWidget != null);
         menu.addEntry(this.editButton);
 
-        this.removeButton = ButtonWidget.i18n("labymod.ui.button.remove", this::handleRemoveAction);
+        this.removeButton = ButtonWidget.i18n(NAMESPACE + ".ui.button.remove", this::handleRemoveAction);
         this.removeButton.setEnabled(this.selectedCharInfoWidget != null);
         menu.addEntry(this.removeButton);
 
