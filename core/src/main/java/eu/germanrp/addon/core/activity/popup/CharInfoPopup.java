@@ -1,6 +1,7 @@
 package eu.germanrp.addon.core.activity.popup;
 
 import eu.germanrp.addon.api.models.CharacterInfo;
+import lombok.val;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.gui.screen.activity.Link;
 import net.labymod.api.client.gui.screen.widget.Widget;
@@ -8,9 +9,7 @@ import net.labymod.api.client.gui.screen.widget.widgets.ComponentWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.input.TextFieldWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.FlexibleContentWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.list.VerticalListWidget;
-import net.labymod.api.Laby;
 import net.labymod.api.client.gui.screen.widget.widgets.popup.SimpleAdvancedPopup;
-import net.labymod.api.client.component.serializer.plain.PlainTextComponentSerializer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +21,13 @@ import static eu.germanrp.addon.core.GermanRPAddon.NAMESPACE;
 @Link("char-info-popup.lss")
 public class CharInfoPopup extends SimpleAdvancedPopup {
 
-    private final Action action;
+    public static final String CHAR_INFO_POPUP_INPUT = "char-info-popup-input";
     private final SimplePopupButton saveButton;
     private final List<Condition> conditions = new ArrayList<>();
 
+    private java.util.UUID uniqueId;
     private String playerName;
     private String characterName;
-    private final java.util.UUID uniqueId;
-    private java.util.UUID resolvedUniqueId;
 
     private Consumer<CharacterInfo> saveListener;
 
@@ -42,13 +40,9 @@ public class CharInfoPopup extends SimpleAdvancedPopup {
     }
 
     private CharInfoPopup(Action action, CharacterInfo charInfo) {
-        this.action = action;
         this.uniqueId = charInfo != null ? charInfo.uniqueId() : null;
         this.playerName = charInfo != null ? charInfo.playerName() : null;
         this.characterName = charInfo != null ? charInfo.name() : null;
-        if ((this.playerName == null || this.playerName.isBlank()) && this.uniqueId != null) {
-            this.playerName = resolvePlayerName(this.uniqueId);
-        }
 
         this.title = Component.translatable(action == Action.ADD
                 ? NAMESPACE + ".gui.char-info.add-title"
@@ -73,14 +67,35 @@ public class CharInfoPopup extends SimpleAdvancedPopup {
         this.conditions.clear();
 
         container.addChild(this.createLabeledWidget(
-                Component.translatable(NAMESPACE + ".gui.char-info.field.player-display-name"),
+                Component.translatable(NAMESPACE + ".gui.char-info.field.uuid"),
                 () -> {
-                    String text = safeText(this.playerName);
-                    Condition condition = new Condition(this.isPlayerNameValid(text));
+                    val text = this.uniqueId != null ? this.uniqueId.toString() : "";
+                    val condition = new Condition(this.uniqueId != null);
                     this.conditions.add(condition);
 
-                    TextFieldWidget playerNameInput = new TextFieldWidget();
-                    playerNameInput.addId("char-info-popup-input");
+                    val uuidInput = new TextFieldWidget();
+                    uuidInput.addId(CHAR_INFO_POPUP_INPUT);
+                    uuidInput.clearButton().set(true);
+                    uuidInput.setText(text);
+                    uuidInput.placeholder(Component.translatable(NAMESPACE + ".gui.char-info.placeholder.uuid"));
+                    uuidInput.updateListener(newValue -> {
+                        this.uniqueId = parseUuid(newValue);
+                        this.updateCondition(condition, this.uniqueId != null);
+                    });
+
+                    return uuidInput;
+                }
+        ));
+
+        container.addChild(this.createLabeledWidget(
+                Component.translatable(NAMESPACE + ".gui.char-info.field.player-display-name"),
+                () -> {
+                    val text = safeText(this.playerName);
+                    val condition = new Condition(this.isPlayerNameValid(text));
+                    this.conditions.add(condition);
+
+                    val playerNameInput = new TextFieldWidget();
+                    playerNameInput.addId(CHAR_INFO_POPUP_INPUT);
                     playerNameInput.clearButton().set(true);
                     playerNameInput.setText(text);
                     playerNameInput.placeholder(Component.translatable(NAMESPACE + ".gui.char-info.placeholder.player-display-name"));
@@ -96,12 +111,12 @@ public class CharInfoPopup extends SimpleAdvancedPopup {
         container.addChild(this.createLabeledWidget(
                 Component.translatable(NAMESPACE + ".gui.char-info.field.character-name"),
                 () -> {
-                    String text = safeText(this.characterName);
-                    Condition condition = new Condition(this.characterName != null && !this.characterName.isBlank());
+                    val text = safeText(this.characterName);
+                    val condition = new Condition(this.characterName != null && !this.characterName.isBlank());
                     this.conditions.add(condition);
 
-                    TextFieldWidget characterNameInput = new TextFieldWidget();
-                    characterNameInput.addId("char-info-popup-input");
+                    val characterNameInput = new TextFieldWidget();
+                    characterNameInput.addId(CHAR_INFO_POPUP_INPUT);
                     characterNameInput.clearButton().set(true);
                     characterNameInput.setText(text);
                     characterNameInput.placeholder(Component.translatable(NAMESPACE + ".gui.char-info.placeholder.character-name"));
@@ -122,12 +137,8 @@ public class CharInfoPopup extends SimpleAdvancedPopup {
         return this;
     }
 
-    public CharInfoPopup onSave(Runnable runnable) {
-        return this.onSave(saved -> runnable.run());
-    }
-
     private Widget createLabeledWidget(Component label, Supplier<Widget> widgetSupplier) {
-        FlexibleContentWidget labelContainer = new FlexibleContentWidget();
+        val labelContainer = new FlexibleContentWidget();
         labelContainer.addId("char-info-popup-field");
         labelContainer.addContent(ComponentWidget.component(label));
         labelContainer.addContent(widgetSupplier.get());
@@ -135,12 +146,11 @@ public class CharInfoPopup extends SimpleAdvancedPopup {
     }
 
     private void save() {
-        java.util.UUID uuid = this.resolveUniqueIdForSave();
-        if (uuid == null) {
+        if (this.uniqueId == null) {
             return;
         }
 
-        CharacterInfo saved = new CharacterInfo(uuid, this.playerName, this.characterName);
+        val saved = new CharacterInfo(this.uniqueId, this.playerName, this.characterName);
         if (this.saveListener != null) {
             this.saveListener.accept(saved);
         }
@@ -152,7 +162,7 @@ public class CharInfoPopup extends SimpleAdvancedPopup {
     }
 
     private boolean allConditionsMet() {
-        for (Condition condition : this.conditions) {
+        for (val condition : this.conditions) {
             if (!condition.fulfilled) {
                 return false;
             }
@@ -161,29 +171,7 @@ public class CharInfoPopup extends SimpleAdvancedPopup {
     }
 
     private boolean isPlayerNameValid(String value) {
-        if (value == null || value.isBlank()) {
-            return false;
-        }
-
-        if (this.action == Action.EDIT) {
-            return true;
-        }
-
-        this.resolvedUniqueId = resolveUniqueId(value);
-        return this.resolvedUniqueId != null;
-    }
-
-    private java.util.UUID resolveUniqueIdForSave() {
-        if (this.action == Action.EDIT) {
-            return this.uniqueId;
-        }
-
-        if (this.resolvedUniqueId != null) {
-            return this.resolvedUniqueId;
-        }
-
-        this.resolvedUniqueId = resolveUniqueId(this.playerName);
-        return this.resolvedUniqueId;
+        return value != null && !value.isBlank();
     }
 
     private static String safeText(String value) {
@@ -194,70 +182,20 @@ public class CharInfoPopup extends SimpleAdvancedPopup {
         if (value == null) {
             return null;
         }
-        String trimmed = value.trim();
+        val trimmed = value.trim();
         return trimmed.isEmpty() ? null : trimmed;
     }
 
-    private static java.util.UUID resolveUniqueId(String playerName) {
-        if (playerName == null || playerName.isBlank()) {
+    private static java.util.UUID parseUuid(String value) {
+        if (value == null || value.isBlank()) {
             return null;
         }
 
-        String normalized = playerName.trim();
-        if (normalized.equalsIgnoreCase(Laby.labyAPI().getName())) {
-            return Laby.labyAPI().getUniqueId();
-        }
-
-        var clientPacketListener = Laby.labyAPI().minecraft().getClientPacketListener();
-        if (clientPacketListener == null) {
+        try {
+            return java.util.UUID.fromString(value.trim());
+        } catch (IllegalArgumentException ex) {
             return null;
         }
-
-        var direct = clientPacketListener.getNetworkPlayerInfo(normalized);
-        if (direct != null) {
-            return direct.profile().getUniqueId();
-        }
-
-        for (var info : clientPacketListener.getNetworkPlayerInfos()) {
-            String username = info.profile().getUsername();
-            if (username != null && username.equalsIgnoreCase(normalized)) {
-                return info.profile().getUniqueId();
-            }
-
-            String displayName = PlainTextComponentSerializer.plainText().serialize(info.displayName());
-            if (displayName != null && displayName.equalsIgnoreCase(normalized)) {
-                return info.profile().getUniqueId();
-            }
-        }
-
-        return null;
-    }
-
-    private static String resolvePlayerName(java.util.UUID uniqueId) {
-        if (uniqueId == null) {
-            return null;
-        }
-
-        if (uniqueId.equals(Laby.labyAPI().getUniqueId())) {
-            return Laby.labyAPI().getName();
-        }
-
-        var clientPacketListener = Laby.labyAPI().minecraft().getClientPacketListener();
-        if (clientPacketListener == null) {
-            return null;
-        }
-
-        var info = clientPacketListener.getNetworkPlayerInfo(uniqueId);
-        if (info == null) {
-            return null;
-        }
-
-        String displayName = PlainTextComponentSerializer.plainText().serialize(info.displayName());
-        if (displayName != null && !displayName.isBlank()) {
-            return displayName;
-        }
-
-        return info.profile().getUsername();
     }
 
     public enum Action {
