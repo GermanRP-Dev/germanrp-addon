@@ -195,11 +195,19 @@
             "button": {
                 "add": "Hinzufügen",
                 "edit": "Bearbeiten",
-                "remove": "Entfernen"
+                "remove": "Entfernen",
+                "save": "Speichern",
+                "cancel": "Abbrechen"
             }
         },
         "gui": {
-            "char-info": "Charakterinformationen anzeigen"
+            "char-info": "Charakterinformationen anzeigen",
+            "char-info.add-title": "Charakter anlegen",
+            "char-info.edit-title": "Charakter bearbeiten",
+            "char-info.field.character-name": "Charaktername",
+            "char-info.field.player-display-name": "Spielername",
+            "char-info.placeholder.player-display-name": "Spielername eingeben",
+            "char-info.placeholder.character-name": "Charaktername eingeben"
         }
     }
 }
