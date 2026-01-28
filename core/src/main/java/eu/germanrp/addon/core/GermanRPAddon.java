@@ -4,7 +4,7 @@ import eu.germanrp.addon.core.commands.TestCommand;
 import eu.germanrp.addon.core.commands.TogglePanicCommand;
 import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
 import eu.germanrp.addon.core.common.AddonPlayer;
-import eu.germanrp.addon.api.nametag.CharacterNameTag;
+import eu.germanrp.addon.core.nametag.CharacterNameTag;
 import eu.germanrp.addon.core.common.DefaultAddonPlayer;
 import eu.germanrp.addon.core.common.sound.SoundSequence;
 import eu.germanrp.addon.core.integration.labyswaypoints.WaypointsIntegration;

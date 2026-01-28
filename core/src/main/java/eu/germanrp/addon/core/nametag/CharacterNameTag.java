@@ -1,5 +1,8 @@
-package eu.germanrp.addon.api.nametag;
+package eu.germanrp.addon.core.nametag;
 
+import eu.germanrp.addon.api.nametag.CharacterNameExtraKeys;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.val;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.entity.player.tag.tags.ComponentNameTag;
@@ -10,8 +13,16 @@ import java.util.List;
 
 public class CharacterNameTag extends ComponentNameTag {
 
+    @Getter
+    @Setter
+    private static volatile boolean enabled = true;
+
     @Override
     protected @NotNull List<Component> buildComponents(EntitySnapshot snapshot) {
+        if (!enabled) {
+            return List.of();
+        }
+
         if (!snapshot.has(CharacterNameExtraKeys.CHARACTER_NAME)) {
             return super.buildComponents(snapshot);
         }
