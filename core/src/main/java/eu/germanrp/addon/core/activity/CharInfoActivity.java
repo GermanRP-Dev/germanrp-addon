@@ -52,6 +52,7 @@ public class CharInfoActivity extends Activity {
 
         this.buildCharInfoList();
         this.updateCharInfoContextList();
+
         val scrollWidget = new ScrollWidget(this.charInfoWidgetList);
         scrollWidget.addId("char-info-scroll");
         container.addFlexibleContent(scrollWidget);
