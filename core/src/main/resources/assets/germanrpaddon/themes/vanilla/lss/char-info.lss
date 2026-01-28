@@ -1,0 +1,32 @@
+.char-info-container {
+  width: 100%;
+  height: 100%;
+  orientation: vertical;
+  space-between-entries: 6;
+}
+
+.char-info-header {
+  font-weight: 700;
+}
+
+.char-info-scroll {
+  width: 100%;
+  height: 100%;
+}
+
+.overview-button-menu {
+  left: 50%;
+  alignment-x: center;
+  height: 20;
+  layout: fill;
+  space-between-entries: 8;
+  width: 90%;
+  margin-bottom: 6;
+}
+
+.char-info-widget-list {
+  width: 100%;
+  overwrite-width: true;
+  squeeze-height: false;
+  space-between-entries: 4;
+}

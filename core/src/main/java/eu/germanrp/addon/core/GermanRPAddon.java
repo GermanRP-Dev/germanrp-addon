@@ -1,8 +1,10 @@
 package eu.germanrp.addon.core;
 
+import eu.germanrp.addon.core.commands.TestCommand;
 import eu.germanrp.addon.core.commands.TogglePanicCommand;
 import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
 import eu.germanrp.addon.core.common.AddonPlayer;
+import eu.germanrp.addon.api.nametag.CharacterNameTag;
 import eu.germanrp.addon.core.common.DefaultAddonPlayer;
 import eu.germanrp.addon.core.common.sound.SoundSequence;
 import eu.germanrp.addon.core.integration.labyswaypoints.WaypointsIntegration;
@@ -24,6 +26,7 @@ import lombok.Getter;
 import lombok.val;
 import net.labymod.api.Laby;
 import net.labymod.api.addon.LabyAddon;
+import net.labymod.api.client.entity.player.tag.PositionType;
 import net.labymod.api.client.gui.hud.HudWidgetRegistry;
 import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.client.resources.ResourceLocation;
@@ -88,6 +91,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
         val references = Laby.references();
         registerIntegrations(references);
+        registerTags(references);
 
         val protocolService = references.labyModProtocolService();
         val integration = protocolService.getOrRegisterIntegration(GermanRPAddonIntegration.class, GermanRPAddonIntegration::new);
@@ -109,6 +113,14 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
                 .registerIntegration("labyswaypoints", WaypointsIntegration.class);
     }
 
+    private static void registerTags(ReferenceStorage references) {
+        references.tagRegistry().register(
+                "character_info",
+                PositionType.ABOVE_NAME,
+                new CharacterNameTag()
+        );
+    }
+
     @Override
     protected Class<GermanRPAddonConfiguration> configurationClass() {
         return GermanRPAddonConfiguration.class;
@@ -127,6 +139,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private void registerCommands() {
         registerCommand(new GraffitiCommand(this, this.graffitiHudWidget.getConfig()));
         registerCommand(new TogglePanicCommand());
+        registerCommand(new TestCommand());
     }
 
     private void registerWidgets() {
