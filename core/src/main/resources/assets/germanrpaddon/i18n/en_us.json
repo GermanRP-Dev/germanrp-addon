@@ -206,8 +206,10 @@
             "char-info.edit-title": "Charakter bearbeiten",
             "char-info.field.character-name": "Charaktername",
             "char-info.field.player-display-name": "Spielername",
+            "char-info.field.uuid": "UUID",
             "char-info.placeholder.player-display-name": "Spielername eingeben",
-            "char-info.placeholder.character-name": "Charaktername eingeben"
+            "char-info.placeholder.character-name": "Charaktername eingeben",
+            "char-info.placeholder.uuid": "UUID eingeben"
         }
     }
 }
