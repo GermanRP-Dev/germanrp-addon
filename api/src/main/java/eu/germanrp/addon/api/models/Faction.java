@@ -3,6 +3,7 @@ package eu.germanrp.addon.api.models;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.val;
+import org.jetbrains.annotations.NotNull;
 
 @Getter
 @AllArgsConstructor
@@ -23,7 +24,7 @@ public enum Faction {
 
     private final String memberInfoCommandArg;
     private final String displayName;
-    private final Type type;
+    private final @NotNull Type type;
 
     public enum Type {
         STAAT,

@@ -12,19 +12,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Matcher;
 
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.*;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.PANIC_DEACTIVATE;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.XP_ADD_CHAT;
 
 public class ChatListener {
 
     private final GermanRPAddon addon;
     private boolean justJoined;
-    private boolean chatShowsMemberInfo;
-    private boolean wanted;
-    private boolean bounty;
 
     @Setter
     private int emptyMessages;
-    private boolean memberInfoWasShown;
 
     @Setter
     private int afkEmptyMessages;
@@ -40,41 +37,31 @@ public class ChatListener {
 
     @Subscribe
     public void onChatReceiveAFK(ChatReceiveEvent event) {
-        String message = event.chatMessage().getPlainText();
+        val message = event.chatMessage().getPlainText();
         if (this.addon.getJoinWorkflowManager().isReturningToAFK()) {
-            switch (message) {
-                case "► [System] Du bist jetzt als abwesend markiert.",
-                     "► Verwende erneut \"/afk\", um den AFK-Modus zu verlassen." -> {
-                    event.setCancelled(true);
-                }
-                case "" -> {
-                    event.setCancelled(true);
-                    this.afkEmptyMessages++;
-                    if (this.afkEmptyMessages >= 2) {
-                        // We expect two empty messages: one before and one after the AFK status
-                        this.addon.getJoinWorkflowManager().setReturningToAFK(false);
-                        this.afkEmptyMessages = 0;
-                    }
+            if (message.equals("► [System] Du bist jetzt als abwesend markiert.") || message.equals("► Verwende erneut \"/afk\", um den AFK-Modus zu verlassen.")) {
+                event.setCancelled(true);
+            } else if (message.isEmpty()) {
+                event.setCancelled(true);
+                this.afkEmptyMessages++;
+                if (this.afkEmptyMessages >= 2) {
+                    // We expect two empty messages: one before and one after the AFK status
+                    this.addon.getJoinWorkflowManager().setReturningToAFK(false);
+                    this.afkEmptyMessages = 0;
                 }
             }
             return;
         }
 
-        switch (message) {
-            case "► [System] Du bist jetzt wieder anwesend." -> {
-                if (justJoined) {
-                    event.setCancelled(true);
-                    this.addon.getJoinWorkflowManager().setWasAFK(true);
-                }
+        if (message.equals("► [System] Du bist jetzt wieder anwesend.")) {
+            if (justJoined) {
+                event.setCancelled(true);
+                this.addon.getJoinWorkflowManager().setWasAFK(true);
             }
-            case "► Verwende erneut \"/afk\", um den AFK-Modus zu verlassen." -> {
-                // This is likely manually triggered if not returningToAFK
-                // But we still want to complete workflow if somehow a task was stuck
-                if (justJoined) {
-                    this.addon.getJoinWorkflowManager().completeWorkflow();
-                }
-            }
+        } else if (message.equals("► Verwende erneut \"/afk\", um den AFK-Modus zu verlassen.") && justJoined) {
+            this.addon.getJoinWorkflowManager().completeWorkflow();
         }
+
     }
 
     @Subscribe
@@ -84,56 +71,10 @@ public class ChatListener {
         }
 
         String message = event.chatMessage().getPlainText();
-        if (message.startsWith("► [System] ") && !message.endsWith("anwesend.")) {
-            event.setCancelled(true);
-            Matcher matcher = XP_READER_STATS.getPattern().matcher(message);
-            if (matcher.find()) {
-                this.addon.getPlayer().setPlayerNeededXP(Integer.parseInt(matcher.group(2)));
-                this.addon.getPlayer().setPlayerXP(Integer.parseInt(matcher.group(1)));
-            }
-            matcher = FRAKTION_NAME_STATS.getPattern().matcher(message);
-            if (matcher.find()) {
-                val factionName = matcher.group(1);
-                this.addon.getPlayer().sendDebugMessage("ChatListener, onChatReceiveJustJoined, FRAKTION_NAME_STATS, factionName = %s".formatted(factionName));
-                val faction = Faction.fromDisplayName(factionName);
-                this.addon.getPlayer().setPlayerFaction(faction);
-
-                if (faction == null || faction == Faction.UNKNOWN) {
-                    this.addon.getPlayer().sendErrorMessage("Deine Fraktion wurde nicht gefunden... Bitte hier reporten:");
-                    this.addon.getPlayer().sendErrorMessage("https://germanrp.eu/forum/index.php?board/296-bug-labymod-addon/");
-                }
-
-                if (faction == Faction.NONE) {
-                    this.memberInfoWasShown = true;
-                    this.addon.getJoinWorkflowManager().completeWorkflow();
-                }
-
-                this.addon.getServerJoinListener().onFactionNameGet();
-                return;
-            }
-            return;
-        }
-
         if (message.isEmpty()) {
             this.emptyMessages++;
             if (this.emptyMessages > 2) {
                 event.setCancelled(true);
-            }
-        }
-        Faction faction = this.addon.getPlayer().getPlayerFaction();
-        if (faction == null) {
-            return;
-        }
-        if (faction == Faction.NONE) {
-            return;
-        }
-
-        switch (faction.getType()) {
-            case NEUTRAL,MEDIC -> {
-                // For neutral/medic, once memberinfo is shown, we are mostly done with join tasks in ChatListener
-                if (this.memberInfoWasShown) {
-                    this.memberInfoWasShown = false;
-                }
             }
         }
     }
