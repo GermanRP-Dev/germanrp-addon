@@ -8,8 +8,6 @@ import lombok.val;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 
-import java.util.regex.Matcher;
-
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.FRAKTION_NAME_STATS;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.STATS_VOTESTREAK;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.XP_READER_STATS;
@@ -34,7 +32,7 @@ public class PlayerStatsEventListener {
     @Subscribe
     @SuppressWarnings("unused")
     public void onChatMessageReceive(final ChatReceiveEvent event) {
-        final String message = event.chatMessage().getPlainText();
+        val message = event.chatMessage().getPlainText();
 
         if (message.startsWith("► [System] Statistiken von ")) {
             this.processingStats = true;
@@ -48,7 +46,7 @@ public class PlayerStatsEventListener {
             event.setCancelled(true);
         }
 
-        Matcher matcher = XP_READER_STATS.getPattern().matcher(message);
+        var matcher = XP_READER_STATS.getPattern().matcher(message);
         if (matcher.find()) {
             fireEvent(new PlayerStatsEvent(
                     Integer.parseInt(matcher.group(1)),
