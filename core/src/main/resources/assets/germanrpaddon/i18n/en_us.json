@@ -65,6 +65,9 @@
                     "percent" : "Prozent an",
                     "normal": "Nummern an"
                 }
+            },
+            "openCharInfo": {
+                "name": "Charakterinformationen bearbeiten"
             }
         },
         "message": {
@@ -187,6 +190,16 @@
         },
         "waypoint": {
             "atmPrefix": "ATM"
+        },
+        "ui": {
+            "button": {
+                "add": "Hinzufügen",
+                "edit": "Bearbeiten",
+                "remove": "Entfernen"
+            }
+        },
+        "gui": {
+            "char-info": "Charakterinformationen anzeigen"
         }
     }
 }
