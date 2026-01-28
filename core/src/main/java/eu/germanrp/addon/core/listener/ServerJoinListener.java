@@ -12,6 +12,8 @@ import net.labymod.api.client.component.event.HoverEvent;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.network.server.ServerJoinEvent;
 
+import java.util.Objects;
+
 import static eu.germanrp.addon.core.GermanRPAddon.NAMESPACE;
 import static net.labymod.api.Laby.fireEvent;
 import static net.labymod.api.client.component.format.NamedTextColor.AQUA;
@@ -38,6 +40,7 @@ public class ServerJoinListener {
         fireEvent(new JustJoinedEvent(true));
         fireEvent(new AddonServerJoinEvent(true));
         GermanRPAddon.getInstance().getPlayer().setPlayPanic(false);
+        this.addon.getJoinWorkflowManager().startTask("stats");
         this.addon.getPlayer().sendServerMessage("/stats");
     }
 
@@ -70,25 +73,18 @@ public class ServerJoinListener {
 
         final Faction.Type type = faction.getType();
 
-        switch (type) {
-            case CRIME -> {
-                this.addon.getNameTagService().getDarklist().clear();
-                this.addon.getNameTagService().getBounties().clear();
-                this.addon.getJoinWorkflowManager().startTask("darklist");
-                this.addon.getJoinWorkflowManager().startTask("bounties");
-                this.addon.getPlayer().sendServerMessage("/darklist");
-                this.addon.getPlayer().sendServerMessage("/kopfgelder");
-            }
-
-            case STAAT -> {
-                this.addon.getNameTagService().getWantedPlayers().clear();
-                this.addon.getJoinWorkflowManager().startTask("wanteds");
-                this.addon.getPlayer().sendServerMessage("/wanteds");
-            }
-
-            default -> {
-            }
-
+        if (type == Faction.Type.CRIME) {
+            this.addon.getNameTagService().getDarklist().clear();
+            this.addon.getNameTagService().getBounties().clear();
+            this.addon.getJoinWorkflowManager().startTask("darklist");
+            this.addon.getJoinWorkflowManager().startTask("bounties");
+            this.addon.getPlayer().sendServerMessage("/darklist");
+            this.addon.getPlayer().sendServerMessage("/kopfgelder");
+        } else if (type == Faction.Type.STAAT) {
+            this.addon.getNameTagService().getWantedPlayers().clear();
+            this.addon.getJoinWorkflowManager().startTask("wanteds");
+            this.addon.getPlayer().sendServerMessage("/wanteds");
         }
+
     }
 }
