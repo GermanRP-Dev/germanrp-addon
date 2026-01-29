@@ -41,7 +41,10 @@ public enum GlobalRegexRegistry {
     ID_START(compile("^ {22}Personalausweis$")),
     ID_FIRSTNAME(compile("^ {6}» Vorname: (.+)$")),
     ID_LASTNAME(compile("^ {6}» Nachname: (.+)$")),
-    ID_END(compile("^ {6}» Personalausweis von: (\\w{3,16}|\\[GR]\\w{3,16})$"))
+    ID_END(compile("^ {6}» Personalausweis von: (\\w{3,16}|\\[GR]\\w{3,16})$")),
+    BADGE_START(compile("^ {4}(?:Dienstmarke|Dienstausweis)$")),
+    BADGE_NAME(compile("^ {3}- Name: (.+)$")),
+    BADGE_END(compile("^ {3}- (?:Dienstmarke|Dienstausweis) von: (\\w{3,16}|\\[GR]\\w{3,16})$")),
     ;
 
     private final Pattern pattern;

@@ -3,7 +3,7 @@ package eu.germanrp.addon.core.listener;
 import eu.germanrp.addon.api.models.CharacterInfo;
 import eu.germanrp.addon.api.models.ServerPlayer;
 import eu.germanrp.addon.core.GermanRPAddon;
-import eu.germanrp.addon.core.common.events.IdentificationShownEvent;
+import eu.germanrp.addon.core.common.events.DutyBadgeShownEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import net.labymod.api.Laby;
@@ -19,56 +19,49 @@ import static eu.germanrp.addon.core.common.GlobalRegexRegistry.*;
 import static net.labymod.api.Laby.fireEvent;
 
 @RequiredArgsConstructor
-public final class IdentificationListener {
+public final class DutyBadgeListener {
 
     private static final Component ID_ADDED_TO_CHAR_INFOS = Component.translatable(NAMESPACE + ".message.id.added");
 
     private final GermanRPAddon addon;
 
     /**
-     * {@code true} if an id is currently being processed, {@code false} otherwise
+     * {@code true} if a badge is currently being processed, {@code false} otherwise
      */
-    private boolean processingId;
+    private boolean processingBadge;
 
-    private @Nullable String readFirstname;
-    private @Nullable String readLastname;
+    private @Nullable String readName;
 
     @Subscribe
     @SuppressWarnings("unused")
     public void onChatReceiveEvent(final ChatReceiveEvent event) {
         val message = event.chatMessage().getPlainText();
 
-        var matcher = ID_START.getPattern().matcher(message);
-        if (matcher.matches() && !processingId) {
-            processingId = true;
+        var matcher = BADGE_START.getPattern().matcher(message);
+        if (matcher.matches()) {
+            this.processingBadge = true;
         }
 
-        matcher = ID_FIRSTNAME.getPattern().matcher(message);
-        if (matcher.matches() && processingId) {
-            this.readFirstname = matcher.group(1);
+        matcher = BADGE_NAME.getPattern().matcher(message);
+        if (matcher.matches() && this.processingBadge) {
+            this.readName = matcher.group(1);
         }
 
-        matcher = ID_LASTNAME.getPattern().matcher(message);
-        if (matcher.matches() && processingId) {
-            this.readLastname = matcher.group(1);
-        }
-
-        matcher = ID_END.getPattern().matcher(message);
-        if (matcher.matches() && processingId) {
+        matcher = BADGE_END.getPattern().matcher(message);
+        if (matcher.matches() && this.processingBadge) {
             val name = new ServerPlayer(matcher.group(1)).name();
             Laby.references().labyNetController().loadUniqueIdByName(name, uuidResult -> {
 
                 if (uuidResult.isEmpty()) {
-                    this.readFirstname = null;
-                    this.readLastname = null;
-                    processingId = false;
+                    this.readName = null;
+                    this.processingBadge = false;
+                    return;
                 }
 
                 val uuid = uuidResult.get();
-                this.processingId = false;
-                val charName = "%s %s".formatted(readFirstname, readLastname);
-                val charInfo = new CharacterInfo(uuid, name, charName);
-                addon.getScheduledExecutorService().schedule(() -> fireEvent(new IdentificationShownEvent(charInfo)), 20, TimeUnit.MILLISECONDS);
+                this.processingBadge = false;
+                val charInfo = new CharacterInfo(uuid, name, this.readName);
+                addon.getScheduledExecutorService().schedule(() -> fireEvent(new DutyBadgeShownEvent(charInfo)), 10, TimeUnit.MILLISECONDS);
             });
         }
 
@@ -76,7 +69,7 @@ public final class IdentificationListener {
 
     @Subscribe
     @SuppressWarnings("unused")
-    public void onIdentificationShownEvent(final IdentificationShownEvent event) {
+    public void onDutyBadgeShownEvent(final DutyBadgeShownEvent event) {
         val map = addon.configuration().characterInfoMap();
         val charInfo = event.charInfo();
         val uuid = charInfo.uniqueId();
