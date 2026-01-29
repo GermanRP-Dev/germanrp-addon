@@ -1,8 +1,10 @@
 package eu.germanrp.addon.core;
 
+import eu.germanrp.addon.core.commands.TestCommand;
 import eu.germanrp.addon.core.commands.TogglePanicCommand;
 import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
 import eu.germanrp.addon.core.common.AddonPlayer;
+import eu.germanrp.addon.core.nametag.CharacterNameTag;
 import eu.germanrp.addon.core.common.DefaultAddonPlayer;
 import eu.germanrp.addon.core.common.sound.SoundSequence;
 import eu.germanrp.addon.core.integration.labyswaypoints.WaypointsIntegration;
@@ -24,6 +26,7 @@ import lombok.Getter;
 import lombok.val;
 import net.labymod.api.Laby;
 import net.labymod.api.addon.LabyAddon;
+import net.labymod.api.client.entity.player.tag.PositionType;
 import net.labymod.api.client.gui.hud.HudWidgetRegistry;
 import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.client.resources.ResourceLocation;
@@ -31,8 +34,12 @@ import net.labymod.api.generated.ReferenceStorage;
 import net.labymod.api.models.addon.annotation.AddonMain;
 import net.labymod.serverapi.core.AddonProtocol;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
 @Getter
 @AddonMain
+@SuppressWarnings("java:S6548")
 public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
     public static final String NAMESPACE = "germanrpaddon";
@@ -68,7 +75,10 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private ChatListener chatListener;
     private PoppyWidget poppyWidget;
 
+    private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+
     @Override
+    @SuppressWarnings("java:S2696")
     protected void load() {
         instance = this;
         this.player = new DefaultAddonPlayer(this);
@@ -88,6 +98,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
         val references = Laby.references();
         registerIntegrations(references);
+        registerTags(references);
 
         val protocolService = references.labyModProtocolService();
         val integration = protocolService.getOrRegisterIntegration(GermanRPAddonIntegration.class, GermanRPAddonIntegration::new);
@@ -109,6 +120,14 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
                 .registerIntegration("labyswaypoints", WaypointsIntegration.class);
     }
 
+    private static void registerTags(ReferenceStorage references) {
+        references.tagRegistry().register(
+                "character_info",
+                PositionType.ABOVE_NAME,
+                new CharacterNameTag()
+        );
+    }
+
     @Override
     protected Class<GermanRPAddonConfiguration> configurationClass() {
         return GermanRPAddonConfiguration.class;
@@ -127,6 +146,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private void registerCommands() {
         registerCommand(new GraffitiCommand(this, this.graffitiHudWidget.getConfig()));
         registerCommand(new TogglePanicCommand());
+        registerCommand(new TestCommand());
     }
 
     private void registerWidgets() {
@@ -212,6 +232,8 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerListener(new MemberInfoEventListener(this));
         registerListener(new PlayerStatsEventListener(this));
         registerListener(new ATMVisibilityListener(this));
+        registerListener(new IdentificationListener(this));
+        registerListener(new DutyBadgeListener(this));
     }
 
 }

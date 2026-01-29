@@ -37,7 +37,14 @@ public enum GlobalRegexRegistry {
     POPPY_REMOVE_FROM_POUCH(compile("^► Du hast (\\d+) Mohn aus deinem Mohnsäckchen geholt\\.$")),
     POPPY_REMOVE_FROM_INV(compile("^► Du beginnst damit (\\d+)x Mohn zu trocknen...$")),
     EXPLOSIVE_VEST_FUSE(compile("^► Explosive Weste! Du explodierst in (\\d+) Sekunden!$")),
-    EXPLOSIVE_VEST_FUSE_MEMBER(compile("^ {2}× Ⓕ .+ (\\w{3,16}|\\[GR]\\w{3,16}): Achtung! Explosive Weste aktiviert!$"))
+    EXPLOSIVE_VEST_FUSE_MEMBER(compile("^ {2}× Ⓕ .+ (\\w{3,16}|\\[GR]\\w{3,16}): Achtung! Explosive Weste aktiviert!$")),
+    ID_START(compile("^ {22}Personalausweis$")),
+    ID_FIRSTNAME(compile("^ {6}» Vorname: (.+)$")),
+    ID_LASTNAME(compile("^ {6}» Nachname: (.+)$")),
+    ID_END(compile("^ {6}» Personalausweis von: (\\w{3,16}|\\[GR]\\w{3,16})$")),
+    BADGE_START(compile("^ {4}(?:Dienstmarke|Dienstausweis)$")),
+    BADGE_NAME(compile("^ {3}- Name: (.+)$")),
+    BADGE_END(compile("^ {3}- (?:Dienstmarke|Dienstausweis) von: (\\w{3,16}|\\[GR]\\w{3,16})$")),
     ;
 
     private final Pattern pattern;

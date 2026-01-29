@@ -1,0 +1,33 @@
+.char-info-widget {
+  width: 100%;
+  height: fit-content;
+  orientation: horizontal;
+  space-between-entries: 6;
+  padding-left: 6;
+  padding-right: 6;
+  padding-top: 3;
+  padding-bottom: 3;
+  border-radius: 4;
+}
+
+.char-info-widget:selected {
+  background-color: #2f2f2f;
+}
+
+.char-info-icon {
+  width: 18;
+  height: 18;
+  alignment-y: center;
+}
+
+.char-info-player-name {
+  max-lines: 1;
+  alignment-y: center;
+  width: 80;
+  overwrite-width: true;
+}
+
+.char-info-character-name {
+  max-lines: 1;
+  alignment-y: center;
+}
