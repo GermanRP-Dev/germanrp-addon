@@ -24,8 +24,8 @@
     left: 25;
     top: 50%;
     alignment-y: center;
-    font-weight: 700;
   }
+
 }
 
 .char-info-header-separator {

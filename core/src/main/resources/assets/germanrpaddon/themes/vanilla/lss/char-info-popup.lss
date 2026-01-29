@@ -40,4 +40,19 @@
     width: 100%;
     clear-button: false;
   }
+
+  PlayerNameField {
+    width: 100%;
+    clear-button: false;
+    padding-right: 24;
+  }
+
+  .player-head-icon {
+    right: 2;
+    top: 50%;
+    alignment-y: center;
+    width: 16;
+    height: 16;
+    padding: 2;
+  }
 }
