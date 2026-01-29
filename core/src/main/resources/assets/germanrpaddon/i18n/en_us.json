@@ -81,6 +81,9 @@
             "atm":{
                 "showWaypoints": "Geldautomaten-Wegpunkte werden angezeigt.",
                 "hideWaypoints": "Geldautomaten-Wegpunkte werden ausgeblendet."
+            },
+            "id": {
+                "added": "Neue Person zu Charakterinformationen hinzugefügt."
             }
         },
         "hudWidget": {

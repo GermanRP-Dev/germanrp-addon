@@ -36,6 +36,7 @@ import net.labymod.serverapi.core.AddonProtocol;
 
 @Getter
 @AddonMain
+@SuppressWarnings("java:S6548")
 public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
 
     public static final String NAMESPACE = "germanrpaddon";
@@ -72,6 +73,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private PoppyWidget poppyWidget;
 
     @Override
+    @SuppressWarnings("java:S2696")
     protected void load() {
         instance = this;
         this.player = new DefaultAddonPlayer(this);
@@ -226,6 +228,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerListener(new MemberInfoEventListener(this));
         registerListener(new PlayerStatsEventListener(this));
         registerListener(new ATMVisibilityListener(this));
+        registerListener(new IdentificationListener(this));
     }
 
 }
