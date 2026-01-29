@@ -38,8 +38,10 @@ public enum GlobalRegexRegistry {
     POPPY_REMOVE_FROM_INV(compile("^► Du beginnst damit (\\d+)x Mohn zu trocknen...$")),
     EXPLOSIVE_VEST_FUSE(compile("^► Explosive Weste! Du explodierst in (\\d+) Sekunden!$")),
     EXPLOSIVE_VEST_FUSE_MEMBER(compile("^ {2}× Ⓕ .+ (\\w{3,16}|\\[GR]\\w{3,16}): Achtung! Explosive Weste aktiviert!$")),
-    ID_FIRSTNAME(compile("^ {7}» Vorname: (?<first>.+)$")),
-    ID_LASTNAME(compile("^ {7}» Nachname: (?<last>.+)$")),
+    ID_START(compile("^ {22}Personalausweis$")),
+    ID_FIRSTNAME(compile("^ {6}» Vorname: (.+)$")),
+    ID_LASTNAME(compile("^ {6}» Nachname: (.+)$")),
+    ID_END(compile("^ {6}» Personalausweis von: (\\w{3,16}|\\[GR]\\w{3,16})$"))
     ;
 
     private final Pattern pattern;
