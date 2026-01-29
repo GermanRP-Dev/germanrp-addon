@@ -3,7 +3,7 @@ package eu.germanrp.addon.core.listener;
 import eu.germanrp.addon.api.models.CharacterInfo;
 import eu.germanrp.addon.api.models.ServerPlayer;
 import eu.germanrp.addon.core.GermanRPAddon;
-import eu.germanrp.addon.core.common.events.IdentificationShownEvent;
+import eu.germanrp.addon.api.events.IdentificationShownEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import net.labymod.api.Laby;
