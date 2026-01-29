@@ -67,44 +67,22 @@ public class CharInfoPopup extends SimpleAdvancedPopup {
         this.conditions.clear();
 
         container.addChild(this.createLabeledWidget(
-                Component.translatable(NAMESPACE + ".gui.char-info.field.uuid"),
-                () -> {
-                    val text = this.uniqueId != null ? this.uniqueId.toString() : "";
-                    val condition = new Condition(this.uniqueId != null);
-                    this.conditions.add(condition);
-
-                    val uuidInput = new TextFieldWidget();
-                    uuidInput.addId(CHAR_INFO_POPUP_INPUT);
-                    uuidInput.clearButton().set(true);
-                    uuidInput.setText(text);
-                    uuidInput.placeholder(Component.translatable(NAMESPACE + ".gui.char-info.placeholder.uuid"));
-                    uuidInput.updateListener(newValue -> {
-                        this.uniqueId = parseUuid(newValue);
-                        this.updateCondition(condition, this.uniqueId != null);
-                    });
-
-                    return uuidInput;
-                }
-        ));
-
-        container.addChild(this.createLabeledWidget(
                 Component.translatable(NAMESPACE + ".gui.char-info.field.player-display-name"),
                 () -> {
                     val text = safeText(this.playerName);
-                    val condition = new Condition(this.isPlayerNameValid(text));
+                    val condition = new Condition(false);
                     this.conditions.add(condition);
 
-                    val playerNameInput = new TextFieldWidget();
-                    playerNameInput.addId(CHAR_INFO_POPUP_INPUT);
-                    playerNameInput.clearButton().set(true);
-                    playerNameInput.setText(text);
-                    playerNameInput.placeholder(Component.translatable(NAMESPACE + ".gui.char-info.placeholder.player-display-name"));
-                    playerNameInput.updateListener(newValue -> {
-                        this.playerName = normalizeText(newValue);
-                        this.updateCondition(condition, this.isPlayerNameValid(this.playerName));
-                    });
-
-                    return playerNameInput;
+                    return new PlayerNameField(
+                            text,
+                            Component.translatable(NAMESPACE + ".gui.char-info.placeholder.player-display-name"),
+                            this.uniqueId,
+                            (normalizedValue, resolvedUniqueId) -> {
+                                this.playerName = normalizedValue;
+                                this.uniqueId = resolvedUniqueId;
+                                this.updateCondition(condition, resolvedUniqueId != null);
+                            }
+                    );
                 }
         ));
 
@@ -170,32 +148,12 @@ public class CharInfoPopup extends SimpleAdvancedPopup {
         return true;
     }
 
-    private boolean isPlayerNameValid(String value) {
-        return value != null && !value.isBlank();
-    }
-
     private static String safeText(String value) {
         return value == null ? "" : value;
     }
 
     private static String normalizeText(String value) {
-        if (value == null) {
-            return null;
-        }
-        val trimmed = value.trim();
-        return trimmed.isEmpty() ? null : trimmed;
-    }
-
-    private static java.util.UUID parseUuid(String value) {
-        if (value == null || value.isBlank()) {
-            return null;
-        }
-
-        try {
-            return java.util.UUID.fromString(value.trim());
-        } catch (IllegalArgumentException ex) {
-            return null;
-        }
+        return PlayerNameField.normalizeText(value);
     }
 
     public enum Action {
