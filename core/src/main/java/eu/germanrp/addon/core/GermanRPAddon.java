@@ -34,6 +34,9 @@ import net.labymod.api.generated.ReferenceStorage;
 import net.labymod.api.models.addon.annotation.AddonMain;
 import net.labymod.serverapi.core.AddonProtocol;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
 @Getter
 @AddonMain
 @SuppressWarnings("java:S6548")
@@ -71,6 +74,8 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private ExplosiveVestHudWidget explosiveVestHudWidget;
     private ChatListener chatListener;
     private PoppyWidget poppyWidget;
+
+    private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
     @Override
     @SuppressWarnings("java:S2696")
@@ -228,6 +233,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerListener(new PlayerStatsEventListener(this));
         registerListener(new ATMVisibilityListener(this));
         registerListener(new IdentificationListener(this));
+        registerListener(new DutyBadgeListener(this));
     }
 
 }
