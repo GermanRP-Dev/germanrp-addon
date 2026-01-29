@@ -1,0 +1,58 @@
+.popup-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.popup-container-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.popup-container {
+  left: 50%;
+  top: 50%;
+  width: 230 !important;
+  alignment-x: center;
+  alignment-y: center;
+  space-between-entries: 6 !important;
+
+  .popup-title {
+    text-color: white;
+    margin-bottom: 4;
+  }
+
+  .popup-button-container {
+    margin-top: 4;
+  }
+}
+
+.char-info-popup-field {
+  height: fit-content;
+  margin: 0;
+  width: fit-content;
+  space-between-entries: 2;
+
+  Component {
+    max-width: 100%;
+  }
+
+  TextField {
+    width: 100%;
+    clear-button: false;
+  }
+
+  PlayerNameField {
+    width: 100%;
+    clear-button: false;
+    padding-right: 24;
+  }
+
+  .player-head-icon {
+    right: 2;
+    top: 50%;
+    alignment-y: center;
+    width: 16;
+    height: 16;
+    padding: 2;
+  }
+}
