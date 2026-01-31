@@ -143,6 +143,9 @@
                 "name": "Explosive Weste",
                 "fuseBackground.name": "Zündschnur Hintergrundfarbe",
                 "fuseForeground.name": "Zündschnur Vordergrundfarbe"
+            },
+            "effects": {
+                "name": "Effekte"
             }
         },
         "widget": {
