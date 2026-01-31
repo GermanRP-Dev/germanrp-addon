@@ -4,6 +4,8 @@ dependencies {
     labyProcessor()
     labyApi("api")
 
+    addonMavenDependency("com.github.GermanRP-Dev:germanrp-addon_labymod4-server-api-integration:1.1.2")
+
     compileOnly("org.projectlombok:lombok:1.18.42")
     annotationProcessor("org.projectlombok:lombok:1.18.42")
 }
