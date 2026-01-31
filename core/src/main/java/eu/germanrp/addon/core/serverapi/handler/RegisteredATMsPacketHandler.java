@@ -2,7 +2,7 @@ package eu.germanrp.addon.core.serverapi.handler;
 
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.services.POIService;
-import eu.germanrp.addon.serverapi.packet.RegisteredATMsPacket;
+import eu.germanrp.addon.serverapi.packet.atm.RegisteredATMsPacket;
 import net.labymod.serverapi.api.packet.PacketHandler;
 import org.jetbrains.annotations.NotNull;
 
