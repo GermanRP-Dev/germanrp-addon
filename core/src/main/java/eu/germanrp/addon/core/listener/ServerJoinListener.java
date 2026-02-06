@@ -12,6 +12,8 @@ import net.labymod.api.client.component.event.HoverEvent;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.network.server.ServerJoinEvent;
 
+import java.util.Objects;
+
 import static eu.germanrp.addon.core.GermanRPAddon.NAMESPACE;
 import static net.labymod.api.Laby.fireEvent;
 import static net.labymod.api.client.component.format.NamedTextColor.AQUA;
