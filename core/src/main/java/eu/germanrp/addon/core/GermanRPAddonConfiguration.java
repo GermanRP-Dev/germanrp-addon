@@ -19,7 +19,6 @@ import net.labymod.api.configuration.settings.annotation.SettingSection;
 import net.labymod.api.util.MethodOrder;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
 import static eu.germanrp.addon.api.models.SkillXP.NORMAL;
