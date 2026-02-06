@@ -1,5 +1,6 @@
 package eu.germanrp.addon.core.listener;
 
+import eu.germanrp.addon.api.events.GermanRPChatReceiveEvent;
 import eu.germanrp.addon.api.models.Faction;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.JustJoinedEvent;
@@ -7,7 +8,6 @@ import lombok.Setter;
 import lombok.val;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatMessageSendEvent;
-import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Matcher;
@@ -36,7 +36,7 @@ public class ChatListener {
     }
 
     @Subscribe
-    public void onChatReceiveAFK(ChatReceiveEvent event) {
+    public void onChatReceiveAFK(final GermanRPChatReceiveEvent event) {
         val message = event.chatMessage().getPlainText();
         if (this.addon.getJoinWorkflowManager().isReturningToAFK()) {
             if (message.equals("► [System] Du bist jetzt als abwesend markiert.") || message.equals("► Verwende erneut \"/afk\", um den AFK-Modus zu verlassen.")) {
@@ -65,7 +65,7 @@ public class ChatListener {
     }
 
     @Subscribe
-    public void onChatReceiveJustJoined(ChatReceiveEvent event) {
+    public void onChatReceiveJustJoined(final GermanRPChatReceiveEvent event) {
         if (!this.justJoined) {
             return;
         }
@@ -80,7 +80,7 @@ public class ChatListener {
     }
 
     @Subscribe
-    public void onChatReceiveUpdateStats(@NotNull ChatReceiveEvent event) {
+    public void onChatReceiveUpdateStats(final @NotNull GermanRPChatReceiveEvent event) {
         @NotNull String message = event.chatMessage().getPlainText();
         Matcher matcher = XP_ADD_CHAT.getPattern().matcher(message);
         if (matcher.find()) {
@@ -114,7 +114,7 @@ public class ChatListener {
     }
 
     @Subscribe
-    public void onPanicDeactivate(ChatReceiveEvent event) {
+    public void onPanicDeactivate(final GermanRPChatReceiveEvent event) {
         if(justJoined) return;
         String message  = event.chatMessage().getPlainText();
         val playerFaction = GermanRPAddon.getInstance().getPlayer().getPlayerFaction();

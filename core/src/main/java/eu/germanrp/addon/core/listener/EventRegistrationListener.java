@@ -1,6 +1,7 @@
 package eu.germanrp.addon.core.listener;
 
 import com.google.gson.JsonObject;
+import eu.germanrp.addon.api.events.GermanRPChatReceiveEvent;
 import eu.germanrp.addon.api.events.network.HydrationUpdateEvent;
 import eu.germanrp.addon.api.events.plant.PlantCreateEvent;
 import eu.germanrp.addon.api.events.plant.PlantDestroyEvent;
@@ -14,6 +15,7 @@ import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.*;
 import lombok.val;
 import net.labymod.api.client.entity.player.ClientPlayer;
+import net.labymod.api.event.Priority;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import net.labymod.api.event.client.lifecycle.GameTickEvent;
@@ -27,6 +29,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 
+import static eu.germanrp.addon.core.common.DefaultAddonPlayer.ADDON_PREFIX_SYMBOL;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.*;
 import static eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent.Phase.*;
 import static java.time.Duration.ofSeconds;
@@ -45,10 +48,36 @@ public class EventRegistrationListener {
         this.addon = addon;
     }
 
+    /**
+     * We need to fire our {@link GermanRPChatReceiveEvent} when we receive a message that is relevant to our addon.
+     * This event only fires when the message has not been modified and the subscription priority is set to {@link Priority#FIRST}.
+     * Otherwise, other addons could modify the chat messages, which would break our regex matchers.
+     */
+    @Subscribe(Priority.FIRST)
+    @SuppressWarnings("unused")
+    public void onChatReceive(final ChatReceiveEvent event) {
+        if (event.isModified()) {
+            return;
+        }
+
+        val message = event.chatMessage().getPlainText();
+
+        if (message.startsWith(ADDON_PREFIX_SYMBOL)) {
+            return;
+        }
+
+        val firedEvent = fireEvent(new GermanRPChatReceiveEvent(event.chatMessage()));
+
+        if (firedEvent.isCancelled()) {
+            event.setCancelled(true);
+        }
+
+    }
+
     @Subscribe
     @SuppressWarnings("unused")
-    public void onChatReceive(ChatReceiveEvent event) {
-        String plainText = event.chatMessage().getPlainText();
+    public void onChatReceive(final GermanRPChatReceiveEvent event) {
+        val plainText = event.chatMessage().getPlainText();
 
         var matcher = GRAFFITI_ADD.getPattern().matcher(plainText);
         if (matcher.matches()) {
@@ -203,6 +232,7 @@ public class EventRegistrationListener {
 
     @Subscribe
     public void onServerDisconnectEvent(final ServerDisconnectEvent event) {
+        fireEvent(new HydrationUpdateEvent(Double.NaN));
         for (PlantType plantType : PlantType.values()){
             fireEvent(new PlantDestroyEvent(plantType));
         }

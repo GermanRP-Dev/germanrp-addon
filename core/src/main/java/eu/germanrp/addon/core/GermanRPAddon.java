@@ -4,24 +4,22 @@ import eu.germanrp.addon.core.commands.TestCommand;
 import eu.germanrp.addon.core.commands.TogglePanicCommand;
 import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
 import eu.germanrp.addon.core.common.AddonPlayer;
-import eu.germanrp.addon.core.nametag.CharacterNameTag;
 import eu.germanrp.addon.core.common.DefaultAddonPlayer;
 import eu.germanrp.addon.core.common.sound.SoundSequence;
 import eu.germanrp.addon.core.integration.labyswaypoints.WaypointsIntegration;
 import eu.germanrp.addon.core.listener.*;
-import eu.germanrp.addon.core.serverapi.handler.AddATMPacketHandler;
-import eu.germanrp.addon.core.serverapi.handler.RegisteredATMsPacketHandler;
-import eu.germanrp.addon.core.serverapi.handler.RemoveATMPacketHandler;
-import eu.germanrp.addon.core.serverapi.handler.UpdateATMPacketHandler;
+import eu.germanrp.addon.core.nametag.CharacterNameTag;
+import eu.germanrp.addon.core.serverapi.handler.*;
 import eu.germanrp.addon.core.services.*;
 import eu.germanrp.addon.core.widget.*;
 import eu.germanrp.addon.core.widget.category.GermanRPAddonWidgetCategory;
 import eu.germanrp.addon.core.workflow.JoinWorkflowManager;
 import eu.germanrp.addon.serverapi.GermanRPAddonIntegration;
-import eu.germanrp.addon.serverapi.packet.AddATMPacket;
-import eu.germanrp.addon.serverapi.packet.RegisteredATMsPacket;
-import eu.germanrp.addon.serverapi.packet.RemoveATMPacket;
-import eu.germanrp.addon.serverapi.packet.UpdateATMPacket;
+import eu.germanrp.addon.serverapi.packet.EffectPacket;
+import eu.germanrp.addon.serverapi.packet.atm.AddATMPacket;
+import eu.germanrp.addon.serverapi.packet.atm.RegisteredATMsPacket;
+import eu.germanrp.addon.serverapi.packet.atm.RemoveATMPacket;
+import eu.germanrp.addon.serverapi.packet.atm.UpdateATMPacket;
 import lombok.Getter;
 import lombok.val;
 import net.labymod.api.Laby;
@@ -32,9 +30,9 @@ import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.generated.ReferenceStorage;
 import net.labymod.api.models.addon.annotation.AddonMain;
+import net.labymod.api.util.io.LabyExecutors;
 import net.labymod.serverapi.core.AddonProtocol;
 
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 @Getter
@@ -74,8 +72,9 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private ExplosiveVestHudWidget explosiveVestHudWidget;
     private ChatListener chatListener;
     private PoppyWidget poppyWidget;
+    private EffectHudWidget effectHudWidget;
 
-    private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+    private final ScheduledExecutorService scheduledExecutorService = LabyExecutors.newSingleThreadScheduledExecutor(NAMESPACE);
 
     @Override
     @SuppressWarnings("java:S2696")
@@ -113,6 +112,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         protocol.registerHandler(UpdateATMPacket.class, new UpdateATMPacketHandler(this));
         protocol.registerHandler(AddATMPacket.class, new AddATMPacketHandler(this));
         protocol.registerHandler(RemoveATMPacket.class, new RemoveATMPacketHandler(this));
+        protocol.registerHandler(EffectPacket.class, new EffectPacketHandler());
     }
 
     private static void registerIntegrations(ReferenceStorage references) {
@@ -197,6 +197,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         this.poppyWidget = new PoppyWidget(this);
         this.healthPointWidget = new HealthPointWidget(widgetCategory);
         this.explosiveVestHudWidget = new ExplosiveVestHudWidget(widgetCategory);
+        this.effectHudWidget = new EffectHudWidget(widgetCategory);
 
         widgetRegistry.categoryRegistry().register(widgetCategory);
         widgetRegistry.register(this.heilkrautpflanzeHudWidget);
@@ -211,6 +212,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         widgetRegistry.register(this.poppyWidget);
         widgetRegistry.register(this.healthPointWidget);
         widgetRegistry.register(this.explosiveVestHudWidget);
+        widgetRegistry.register(this.effectHudWidget);
     }
 
     private void registerListener() {
@@ -227,6 +229,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerListener(new NameTagListener(this));
         registerListener(new VehicleHotkeyListener(this));
         registerListener(new DarklistEventListener(this));
+        registerListener(new HydrationListener(this));
         registerListener(new BountyEventListener(this));
         registerListener(new WantedEventListener(this));
         registerListener(new MemberInfoEventListener(this));

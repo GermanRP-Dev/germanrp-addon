@@ -6,8 +6,6 @@ import eu.germanrp.addon.api.models.PlantType;
 import eu.germanrp.addon.core.GermanRPAddon;
 import net.labymod.api.client.gui.hud.binding.category.HudWidgetCategory;
 import net.labymod.api.client.gui.icon.Icon;
-import net.labymod.api.event.Subscribe;
-import net.labymod.api.event.client.chat.ChatReceiveEvent;
 
 import static eu.germanrp.addon.api.models.PlantType.ROSE;
 

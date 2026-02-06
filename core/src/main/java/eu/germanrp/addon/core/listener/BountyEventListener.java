@@ -1,5 +1,6 @@
 package eu.germanrp.addon.core.listener;
 
+import eu.germanrp.addon.api.events.GermanRPChatReceiveEvent;
 import eu.germanrp.addon.api.models.Faction;
 import eu.germanrp.addon.api.models.ServerPlayer;
 import eu.germanrp.addon.core.GermanRPAddon;
@@ -7,9 +8,7 @@ import eu.germanrp.addon.core.common.events.JustJoinedEvent;
 import eu.germanrp.addon.core.common.events.PlayerBountyEvent;
 import lombok.val;
 import net.labymod.api.event.Subscribe;
-import net.labymod.api.event.client.chat.ChatReceiveEvent;
 
-import static eu.germanrp.addon.core.common.DefaultAddonPlayer.ADDON_PREFIX_SYMBOL;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.*;
 import static net.labymod.api.Laby.fireEvent;
 
@@ -45,7 +44,7 @@ public class BountyEventListener {
      */
     @Subscribe
     @SuppressWarnings("unused")
-    public void onChatMessageReceive(final ChatReceiveEvent event) {
+    public void onChatMessageReceive(final GermanRPChatReceiveEvent event) {
         val addonPlayer = addon.getPlayer();
 
         // We only want to handle the bounty list for crime factions,
@@ -56,10 +55,6 @@ public class BountyEventListener {
         }
 
         val message = event.chatMessage().getPlainText();
-
-        if(message.startsWith(ADDON_PREFIX_SYMBOL)) {
-            return;
-        }
 
         if (message.contentEquals(BOUNTY_LIST_HEADER)) {
             this.processingBountyList = true;
