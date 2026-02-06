@@ -1,12 +1,12 @@
 package eu.germanrp.addon.core.listener;
 
+import eu.germanrp.addon.api.events.GermanRPChatReceiveEvent;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.GlobalRegexRegistry;
 import eu.germanrp.addon.core.config.VehicleHotkeyConfig;
 import eu.germanrp.addon.core.services.VehicleService;
 import net.labymod.api.client.gui.screen.key.Key;
 import net.labymod.api.event.Subscribe;
-import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import net.labymod.api.event.client.input.KeyEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,7 +23,7 @@ public class VehicleHotkeyListener {
     }
 
     @Subscribe
-    public void onChatMessageReceiveEvent(final ChatReceiveEvent event) {
+    public void onChatMessageReceiveEvent(final GermanRPChatReceiveEvent event) {
         final String plainText = event.chatMessage().getPlainText();
 
         if (plainText.equals("► Du sitzt in keinem Fahrzeug.") || plainText.equals("► Tempomat wurde deaktiviert.")) {

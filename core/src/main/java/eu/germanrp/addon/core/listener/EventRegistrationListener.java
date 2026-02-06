@@ -76,8 +76,8 @@ public class EventRegistrationListener {
 
     @Subscribe
     @SuppressWarnings("unused")
-    public void onChatReceive(ChatReceiveEvent event) {
-        String plainText = event.chatMessage().getPlainText();
+    public void onChatReceive(final GermanRPChatReceiveEvent event) {
+        val plainText = event.chatMessage().getPlainText();
 
         var matcher = GRAFFITI_ADD.getPattern().matcher(plainText);
         if (matcher.matches()) {

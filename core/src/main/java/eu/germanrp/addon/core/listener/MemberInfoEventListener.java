@@ -1,5 +1,6 @@
 package eu.germanrp.addon.core.listener;
 
+import eu.germanrp.addon.api.events.GermanRPChatReceiveEvent;
 import eu.germanrp.addon.api.models.Faction;
 import eu.germanrp.addon.api.models.ServerPlayer;
 import eu.germanrp.addon.core.GermanRPAddon;
@@ -7,9 +8,7 @@ import eu.germanrp.addon.core.common.events.JustJoinedEvent;
 import eu.germanrp.addon.core.common.events.PlayerMemberInfoEvent;
 import lombok.val;
 import net.labymod.api.event.Subscribe;
-import net.labymod.api.event.client.chat.ChatReceiveEvent;
 
-import static eu.germanrp.addon.core.common.DefaultAddonPlayer.ADDON_PREFIX_SYMBOL;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.BOUNTY_MEMBER_WANTED_LIST_ENTRY;
 import static eu.germanrp.addon.core.common.GlobalRegexRegistry.TITLE_FACTION_MEMBER_LIST;
 import static net.labymod.api.Laby.fireEvent;
@@ -44,7 +43,7 @@ public class MemberInfoEventListener {
      */
     @Subscribe
     @SuppressWarnings("unused")
-    public void onChatMessageReceive(final ChatReceiveEvent event) {
+    public void onChatMessageReceive(final GermanRPChatReceiveEvent event) {
         val addonPlayer = addon.getPlayer();
 
         // We only want to handle the member list for players in a faction,
@@ -55,10 +54,6 @@ public class MemberInfoEventListener {
         }
 
         val message = event.chatMessage().getPlainText();
-
-        if (message.startsWith(ADDON_PREFIX_SYMBOL)) {
-            return;
-        }
 
         val memberListTitleMatcher = TITLE_FACTION_MEMBER_LIST.getPattern().matcher(message);
         if (memberListTitleMatcher.find() && message.contains(playerFaction.getDisplayName())) {
