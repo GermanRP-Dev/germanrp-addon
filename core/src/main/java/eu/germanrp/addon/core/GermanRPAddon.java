@@ -229,6 +229,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         registerListener(new NameTagListener(this));
         registerListener(new VehicleHotkeyListener(this));
         registerListener(new DarklistEventListener(this));
+        registerListener(new HydrationListener(this));
         registerListener(new BountyEventListener(this));
         registerListener(new WantedEventListener(this));
         registerListener(new MemberInfoEventListener(this));

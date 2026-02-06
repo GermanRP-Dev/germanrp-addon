@@ -49,7 +49,14 @@ public class HydrationWidget extends TextHudWidget<TextHudWidgetConfig> {
 
     @Subscribe
     public void onHydrationUpdate(HydrationUpdateEvent event) {
-        this.textLine.updateAndFlush(format(event.getAmount()));
+        val amount = event.getAmount();
+
+        if(Double.isNaN(amount)) {
+            this.textLine.updateAndFlush(hydrationDummyValue);
+            return;
+        }
+
+        this.textLine.updateAndFlush(format(amount));
     }
 
     @Subscribe
