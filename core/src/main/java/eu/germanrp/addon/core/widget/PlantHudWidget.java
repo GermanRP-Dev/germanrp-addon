@@ -5,7 +5,6 @@ import eu.germanrp.addon.api.models.*;
 import eu.germanrp.addon.api.network.PlantPacket;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.GermanRPAddonTickEvent;
-import eu.germanrp.addon.core.common.sound.GermanRPSound;
 import eu.germanrp.addon.core.common.sound.SoundSequence;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.gui.hud.binding.category.HudWidgetCategory;

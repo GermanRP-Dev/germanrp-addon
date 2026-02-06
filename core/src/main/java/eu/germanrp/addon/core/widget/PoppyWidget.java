@@ -1,5 +1,6 @@
 package eu.germanrp.addon.core.widget;
 
+import eu.germanrp.addon.api.events.GermanRPChatReceiveEvent;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.*;
 import lombok.Getter;
@@ -15,7 +16,6 @@ import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget;
 import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
 import net.labymod.api.event.Subscribe;
-import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
@@ -131,7 +131,7 @@ public class PoppyWidget extends TextHudWidget<PoppyWidget.PoppyHudWidgetConfig>
 
     @Subscribe
     @SuppressWarnings("unused")
-    public void onChatMessage(final ChatReceiveEvent event) {
+    public void onChatMessage(final GermanRPChatReceiveEvent event) {
         val message = event.chatMessage().getPlainText();
 
         val poppyPouchAddMatcher = POPPY_ADD_TO_POUCH.getPattern().matcher(message);

@@ -1,16 +1,15 @@
 package eu.germanrp.addon.core.listener;
 
+import eu.germanrp.addon.api.events.GermanRPChatReceiveEvent;
 import eu.germanrp.addon.api.models.Faction;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.JustJoinedEvent;
 import eu.germanrp.addon.core.common.events.PlayerStatsEvent;
 import lombok.val;
+import net.labymod.api.event.Priority;
 import net.labymod.api.event.Subscribe;
-import net.labymod.api.event.client.chat.ChatReceiveEvent;
 
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.FRAKTION_NAME_STATS;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.STATS_VOTESTREAK;
-import static eu.germanrp.addon.core.common.GlobalRegexRegistry.XP_READER_STATS;
+import static eu.germanrp.addon.core.common.GlobalRegexRegistry.*;
 import static net.labymod.api.Laby.fireEvent;
 
 public class PlayerStatsEventListener {
@@ -31,7 +30,7 @@ public class PlayerStatsEventListener {
 
     @Subscribe
     @SuppressWarnings("unused")
-    public void onChatMessageReceive(final ChatReceiveEvent event) {
+    public void onChatMessageReceive(final GermanRPChatReceiveEvent event) {
         val message = event.chatMessage().getPlainText();
 
         if (message.startsWith("► [System] Statistiken von ")) {
