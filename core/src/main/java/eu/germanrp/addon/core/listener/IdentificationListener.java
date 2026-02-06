@@ -1,15 +1,15 @@
 package eu.germanrp.addon.core.listener;
 
+import eu.germanrp.addon.api.events.GermanRPChatReceiveEvent;
+import eu.germanrp.addon.api.events.IdentificationShownEvent;
 import eu.germanrp.addon.api.models.CharacterInfo;
 import eu.germanrp.addon.api.models.ServerPlayer;
 import eu.germanrp.addon.core.GermanRPAddon;
-import eu.germanrp.addon.api.events.IdentificationShownEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.event.Subscribe;
-import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.TimeUnit;
@@ -35,7 +35,7 @@ public final class IdentificationListener {
 
     @Subscribe
     @SuppressWarnings("unused")
-    public void onChatReceiveEvent(final ChatReceiveEvent event) {
+    public void onChatReceiveEvent(final GermanRPChatReceiveEvent event) {
         val message = event.chatMessage().getPlainText();
 
         var matcher = ID_START.getPattern().matcher(message);

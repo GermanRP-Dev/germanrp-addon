@@ -1,15 +1,16 @@
 package eu.germanrp.addon.core.widget;
 
+import eu.germanrp.addon.api.events.GermanRPChatReceiveEvent;
 import eu.germanrp.addon.api.events.network.HydrationUpdateEvent;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.AddonServerJoinEvent;
+import lombok.val;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.gui.hud.binding.category.HudWidgetCategory;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidget;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidgetConfig;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextLine;
 import net.labymod.api.event.Subscribe;
-import net.labymod.api.event.client.chat.ChatReceiveEvent;
 
 import java.util.List;
 
@@ -52,8 +53,8 @@ public class HydrationWidget extends TextHudWidget<TextHudWidgetConfig> {
     }
 
     @Subscribe
-    public void onChatMessage(ChatReceiveEvent event) {
-        final String plainText = event.chatMessage().getPlainText();
+    public void onChatMessage(final GermanRPChatReceiveEvent event) {
+        val plainText = event.chatMessage().getPlainText();
 
         // Ignore unknown messages
         if (!hydrationMessages.contains(plainText)) {
