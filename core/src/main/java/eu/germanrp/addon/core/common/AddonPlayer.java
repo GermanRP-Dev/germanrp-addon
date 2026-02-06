@@ -98,16 +98,10 @@ public interface AddonPlayer {
 
     void playSound(ResourceLocation location, float volume, float pitch);
 
-    double getHydration();
-
-    void setHydration(double hydration);
-
     void playSound(GermanRPSound sound, float volume, float pitch);
 
     double getHydration();
 
     void setHydration(double hydration);
-
-    void playSound(GermanRPSound sound, float volume, float pitch);
 
 }
