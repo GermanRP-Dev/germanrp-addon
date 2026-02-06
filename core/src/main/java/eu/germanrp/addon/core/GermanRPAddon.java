@@ -4,7 +4,6 @@ import eu.germanrp.addon.core.commands.TestCommand;
 import eu.germanrp.addon.core.commands.TogglePanicCommand;
 import eu.germanrp.addon.core.commands.graffiti.GraffitiCommand;
 import eu.germanrp.addon.core.common.AddonPlayer;
-import eu.germanrp.addon.core.nametag.CharacterNameTag;
 import eu.germanrp.addon.core.common.DefaultAddonPlayer;
 import eu.germanrp.addon.core.common.sound.SoundSequence;
 import eu.germanrp.addon.core.integration.labyswaypoints.WaypointsIntegration;
@@ -31,9 +30,9 @@ import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.generated.ReferenceStorage;
 import net.labymod.api.models.addon.annotation.AddonMain;
+import net.labymod.api.util.io.LabyExecutors;
 import net.labymod.serverapi.core.AddonProtocol;
 
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 @Getter
@@ -75,9 +74,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
     private PoppyWidget poppyWidget;
     private EffectHudWidget effectHudWidget;
 
-    private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-
-    private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+    private final ScheduledExecutorService scheduledExecutorService = LabyExecutors.newSingleThreadScheduledExecutor(NAMESPACE);
 
     @Override
     @SuppressWarnings("java:S2696")
