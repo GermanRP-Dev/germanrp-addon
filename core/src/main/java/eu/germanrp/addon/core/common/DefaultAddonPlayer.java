@@ -249,16 +249,6 @@ public class DefaultAddonPlayer implements AddonPlayer {
     }
 
     @Override
-    public double getHydration() {
-        return this.hydration;
-    }
-
-    @Override
-    public void setHydration(double hydration) {
-        this.hydration = hydration;
-    }
-
-    @Override
     public void playSound(GermanRPSound sound, float volume, float pitch) {
         playSound(sound.asResourceLocation(), volume, pitch);
     }

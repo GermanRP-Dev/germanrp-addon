@@ -108,4 +108,6 @@ public interface AddonPlayer {
 
     void setHydration(double hydration);
 
+    void playSound(GermanRPSound sound, float volume, float pitch);
+
 }
