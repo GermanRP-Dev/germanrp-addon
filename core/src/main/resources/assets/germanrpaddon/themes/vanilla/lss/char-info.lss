@@ -58,9 +58,15 @@
   margin-bottom: 6;
 }
 
-.char-info-widget-list {
-  width: 100%;
-  overwrite-width: true;
-  squeeze-height: false;
+.char-info-list {
+  left: 0;
+  top: 0;
+  height: fit-content;
   space-between-entries: 4;
+  selectable: true;
+}
+
+.char-info-overview-list {
+  height: fit-content;
+  selectable: true;
 }

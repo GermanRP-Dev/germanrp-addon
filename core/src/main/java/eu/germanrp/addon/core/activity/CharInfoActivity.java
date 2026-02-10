@@ -4,7 +4,7 @@ import eu.germanrp.addon.api.models.CharacterInfo;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.activity.popup.CharInfoPopup;
 import eu.germanrp.addon.core.activity.widgets.CharInfoHeaderWidget;
-import eu.germanrp.addon.core.activity.widgets.CharInfoWidget;
+import eu.germanrp.addon.core.activity.widgets.CharInfoListItemWidget;
 import lombok.val;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.gui.mouse.MutableMouse;
@@ -13,11 +13,14 @@ import net.labymod.api.client.gui.screen.activity.Activity;
 import net.labymod.api.client.gui.screen.activity.AutoActivity;
 import net.labymod.api.client.gui.screen.activity.Link;
 import net.labymod.api.client.gui.screen.key.MouseButton;
+import net.labymod.api.client.gui.screen.widget.Widget;
 import net.labymod.api.client.gui.screen.widget.widgets.input.ButtonWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.FlexibleContentWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.ScrollWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.list.HorizontalListWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.list.VerticalListWidget;
+
+import java.util.ArrayList;
 
 import static eu.germanrp.addon.core.GermanRPAddon.NAMESPACE;
 
@@ -27,136 +30,47 @@ public class CharInfoActivity extends Activity {
 
     private static final Component HEADER_TEXT = Component.translatable(NAMESPACE + ".gui.char-info");
 
-    private VerticalListWidget<CharInfoWidget> charInfoWidgetList;
+    private final VerticalListWidget<CharInfoListItemWidget> charInfoList;
+    private ArrayList<CharInfoListItemWidget> charInfoWidgets;
 
     private ButtonWidget removeButton;
     private ButtonWidget editButton;
-    private CharInfoWidget selectedCharInfoWidget;
+    private CharInfoListItemWidget selectedCharInfo;
 
     public CharInfoActivity() {
-        this.buildCharInfoList();
+        this.charInfoList = new VerticalListWidget<>();
+        this.charInfoWidgets = new ArrayList<>();
+        this.charInfoList.addId("char-info-list");
+        this.charInfoList.setSelectCallback(charInfoListItemWidget -> {
+            CharInfoListItemWidget selectedWidget = this.charInfoList.listSession().getSelectedEntry();
+            if (selectedWidget == null
+                || selectedWidget.getCharacterInfo() != charInfoListItemWidget.getCharacterInfo()) {
+                this.editButton.setEnabled(true);
+                this.removeButton.setEnabled(true);
+            }
+        });
+
+        this.charInfoList.setDoubleClickCallback(charInfoListItemWidget -> this.setAction(Action.EDIT));
+
         this.updateCharInfoContextList();
-    }
-
-    @Override
-    public void initialize(Parent parent) {
-        super.initialize(parent);
-
-        val container = new FlexibleContentWidget();
-        container.addId("char-info-container");
-
-        val headerWidget = new CharInfoHeaderWidget(HEADER_TEXT);
-        container.addContent(headerWidget);
-
-        this.buildCharInfoList();
-        this.updateCharInfoContextList();
-
-        val scrollWidget = new ScrollWidget(this.charInfoWidgetList);
-        scrollWidget.addId("char-info-scroll");
-        container.addFlexibleContent(scrollWidget);
-
-        this.selectedCharInfoWidget = this.charInfoWidgetList.listSession().getSelectedEntry() instanceof CharInfoWidget ciw
-                ? ciw
-                : null;
-
-        val menu = new HorizontalListWidget();
-        menu.addId("overview-button-menu");
-
-        val addButton = ButtonWidget.i18n(NAMESPACE + ".ui.button.add", this::handleAddAction);
-        menu.addEntry(addButton);
-
-        this.editButton = ButtonWidget.i18n(NAMESPACE + ".ui.button.edit", this::handleEditAction);
-        this.editButton.setEnabled(this.selectedCharInfoWidget != null);
-        menu.addEntry(this.editButton);
-
-        this.removeButton = ButtonWidget.i18n(NAMESPACE + ".ui.button.remove", this::handleRemoveAction);
-        this.removeButton.setEnabled(this.selectedCharInfoWidget != null);
-        menu.addEntry(this.removeButton);
-
-        container.addContent(menu);
-
-        this.document().addChild(container);
     }
 
     @Override
     public boolean mouseClicked(MutableMouse mouse, MouseButton mouseButton) {
-        try {
-            return super.mouseClicked(mouse, mouseButton);
-        } finally {
-            val clicked = this.findClickedCharInfoWidget(mouse);
-            if (clicked != null) {
-                this.selectCharInfoWidget(clicked);
-            } else {
-                this.clearCharInfoSelection();
-            }
+        boolean result = super.mouseClicked(mouse, mouseButton);
+        if (!result) {
+            this.charInfoList.listSession().setSelectedEntry(null);
         }
+
+        this.selectedCharInfo = this.charInfoList.listSession().getSelectedEntry();
+        this.editButton.setEnabled(this.selectedCharInfo != null);
+        this.removeButton.setEnabled(this.selectedCharInfo != null);
+
+        return result;
     }
 
     private void updateCharInfoContextList() {
-        this.charInfoWidgetList.removeChildIf(widget -> true);
-
-        val charInfoMap = GermanRPAddon.getInstance().configuration().characterInfoMap();
-        for (val charInfo : charInfoMap.values()) {
-            val widget = new CharInfoWidget(charInfo);
-            widget.setPressable(() -> this.selectCharInfoWidget(widget));
-            this.charInfoWidgetList.addChild(widget);
-        }
-
-    }
-
-    private CharInfoWidget findClickedCharInfoWidget(MutableMouse mouse) {
-        val children = this.charInfoWidgetList.getChildrenAt(mouse.getX(), mouse.getY());
-        for (val child : children) {
-            if (child instanceof CharInfoWidget) {
-                return child;
-            }
-        }
-        return null;
-    }
-
-    private void selectCharInfoWidget(CharInfoWidget widget) {
-        this.charInfoWidgetList.listSession().setSelectedEntry(widget);
-        this.selectedCharInfoWidget = widget;
-        this.updateSelectedCharInfoStyles();
-        if (this.editButton != null && this.removeButton != null) {
-            this.editButton.setEnabled(true);
-            this.removeButton.setEnabled(true);
-        }
-    }
-
-    private void clearCharInfoSelection() {
-        this.charInfoWidgetList.listSession().setSelectedEntry(null);
-        this.selectedCharInfoWidget = null;
-        this.updateSelectedCharInfoStyles();
-        if (this.editButton != null && this.removeButton != null) {
-            this.editButton.setEnabled(false);
-            this.removeButton.setEnabled(false);
-        }
-    }
-
-    private void updateSelectedCharInfoStyles() {
-        for (val entry : this.charInfoWidgetList.getChildren()) {
-            if (entry instanceof CharInfoWidget charInfoWidget) {
-                charInfoWidget.setSelected(charInfoWidget == this.selectedCharInfoWidget);
-            }
-        }
-    }
-
-    private void buildCharInfoList() {
-        this.charInfoWidgetList = new VerticalListWidget<>();
-        this.charInfoWidgetList.addId("char-info-widget-list");
-        this.charInfoWidgetList.selectable().set(true);
-        this.charInfoWidgetList.setSelectCallback(charInfoWidget -> {
-            this.selectedCharInfoWidget = charInfoWidget instanceof CharInfoWidget ciw
-                    ? ciw
-                    : null;
-            this.updateSelectedCharInfoStyles();
-            if (this.editButton != null && this.removeButton != null) {
-                this.editButton.setEnabled(this.selectedCharInfoWidget != null);
-                this.removeButton.setEnabled(this.selectedCharInfoWidget != null);
-            }
-        });
-        this.charInfoWidgetList.setDoubleClickCallback(widget -> this.handleEditAction());
+        this.reload();
     }
 
     private void handleAddAction() {
@@ -166,22 +80,22 @@ public class CharInfoActivity extends Activity {
     }
 
     private void handleEditAction() {
-        if (this.selectedCharInfoWidget == null) {
+        if (this.selectedCharInfo == null) {
             return;
         }
 
-        val original = this.selectedCharInfoWidget.getCharInfo();
+        val original = this.selectedCharInfo.getCharInfo();
         val popup = new CharInfoPopup(original)
                 .onSave(updated -> this.saveEditedCharInfo(original, updated));
         popup.displayInOverlay();
     }
 
     private void handleRemoveAction() {
-        if (this.selectedCharInfoWidget == null) {
+        if (this.selectedCharInfo == null) {
             return;
         }
 
-        val charInfo = this.selectedCharInfoWidget.getCharInfo();
+        val charInfo = this.selectedCharInfo.getCharInfo();
         val config = GermanRPAddon.getInstance().configuration();
         var removed = false;
 
@@ -199,7 +113,8 @@ public class CharInfoActivity extends Activity {
             }
         }
 
-        this.clearCharInfoSelection();
+        this.charInfoList.listSession().setSelectedEntry(null);
+        this.selectedCharInfo = null;
         this.reload();
     }
 
@@ -234,6 +149,72 @@ public class CharInfoActivity extends Activity {
 
         config.characterInfoMap().put(updated.uniqueId(), updated);
         this.reload();
+    }
+
+    public void setAction(Action action) {
+        switch (action) {
+            case ADD:
+                this.handleAddAction();
+                break;
+            case EDIT:
+                this.handleEditAction();
+                break;
+            case REMOVE:
+                this.handleRemoveAction();
+                break;
+        }
+    }
+
+    @Override
+    public void initialize(Parent parent) {
+        super.initialize(parent);
+
+        val container = new FlexibleContentWidget();
+        container.addId("char-info-container");
+
+        val headerWidget = new CharInfoHeaderWidget(HEADER_TEXT);
+        container.addContent(headerWidget);
+
+        VerticalListWidget<Widget> widgets = new VerticalListWidget<>();
+        widgets.addId("char-info-overview-list");
+
+        this.charInfoWidgets = new ArrayList<>();
+
+        val charInfoMap = GermanRPAddon.getInstance().configuration().characterInfoMap();
+        for (val charInfo : charInfoMap.values()) {
+            val widget = new CharInfoListItemWidget(charInfo);
+            widget.setPressable(() -> this.charInfoList.listSession().setSelectedEntry(widget));
+            widgets.addChild(widget);
+            this.charInfoWidgets.add(widget);
+        }
+
+        val scrollWidget = new ScrollWidget(widgets);
+        scrollWidget.addId("char-info-scroll");
+        container.addFlexibleContent(scrollWidget);
+
+        this.selectedCharInfo = this.charInfoList.listSession().getSelectedEntry();
+
+        val menu = new HorizontalListWidget();
+        menu.addId("overview-button-menu");
+
+        val addButton = ButtonWidget.i18n(NAMESPACE + ".ui.button.add", () -> this.setAction(Action.ADD));
+        menu.addEntry(addButton);
+
+        this.editButton = ButtonWidget.i18n(NAMESPACE + ".ui.button.edit", () -> this.setAction(Action.EDIT));
+        this.editButton.setEnabled(this.selectedCharInfo != null);
+        menu.addEntry(this.editButton);
+
+        this.removeButton = ButtonWidget.i18n(NAMESPACE + ".ui.button.remove", () -> this.setAction(Action.REMOVE));
+        this.removeButton.setEnabled(this.selectedCharInfo != null);
+        menu.addEntry(this.removeButton);
+
+        container.addContent(menu);
+
+        this.document().addChild(container);
+    }
+
+    public enum Action {
+        ADD, EDIT, REMOVE
     }
 
 }
