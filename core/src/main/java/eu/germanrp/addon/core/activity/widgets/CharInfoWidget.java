@@ -3,6 +3,7 @@ package eu.germanrp.addon.core.activity.widgets;
 import eu.germanrp.addon.api.models.CharacterInfo;
 import lombok.Getter;
 import lombok.val;
+import net.labymod.api.client.component.Component;
 import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.client.gui.lss.property.annotation.AutoWidget;
 import net.labymod.api.client.gui.screen.Parent;
@@ -19,6 +20,10 @@ public class CharInfoWidget extends FlexibleContentWidget {
     @Getter
     protected final CharacterInfo charInfo;
 
+    private IconWidget iconWidget;
+    private ComponentWidget playerNameWidget;
+    private ComponentWidget characterNameWidget;
+
     public CharInfoWidget(final CharacterInfo charInfo) {
         this.charInfo = charInfo;
         this.addId("char-info-widget");
@@ -30,18 +35,33 @@ public class CharInfoWidget extends FlexibleContentWidget {
 
         val icon = this.createIcon();
         if (icon != null) {
-            val iconWidget = new IconWidget(icon);
-            iconWidget.addId("char-info-icon");
-            this.addContent(iconWidget);
+            this.iconWidget = new IconWidget(icon);
+            this.iconWidget.addId("char-info-icon");
+            this.addContent(this.iconWidget);
         }
 
-        val playerNameWidget = ComponentWidget.text(this.safeText(this.charInfo.playerName()));
-        playerNameWidget.addId("char-info-player-name");
-        this.addContent(playerNameWidget);
+        this.playerNameWidget = ComponentWidget.text(this.safeText(this.charInfo.playerName()));
+        this.playerNameWidget.addId("char-info-player-name");
+        this.addContent(this.playerNameWidget);
 
-        val characterNameWidget = ComponentWidget.text(this.safeText(this.charInfo.name()));
-        characterNameWidget.addId("char-info-character-name");
-        this.addFlexibleContent(characterNameWidget);
+        this.characterNameWidget = ComponentWidget.text(this.safeText(this.charInfo.name()));
+        this.characterNameWidget.addId("char-info-character-name");
+        this.addFlexibleContent(this.characterNameWidget);
+    }
+
+    public void updateTitle() {
+        if (this.playerNameWidget != null) {
+            this.playerNameWidget.setComponent(Component.text(this.safeText(this.charInfo.playerName())));
+        }
+        if (this.characterNameWidget != null) {
+            this.characterNameWidget.setComponent(Component.text(this.safeText(this.charInfo.name())));
+        }
+    }
+
+    public void updateIcon() {
+        if (this.iconWidget != null) {
+            this.iconWidget.icon().set(this.createIcon());
+        }
     }
 
     private Icon createIcon() {
@@ -60,6 +80,14 @@ public class CharInfoWidget extends FlexibleContentWidget {
 
     private String safeText(String text) {
         return text == null ? "" : text;
+    }
+
+    public void setSelected(boolean selected) {
+        if (selected) {
+            this.addId("selected");
+        } else {
+            this.removeId("selected");
+        }
     }
 
 }
