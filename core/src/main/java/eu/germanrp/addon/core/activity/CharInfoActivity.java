@@ -13,7 +13,6 @@ import net.labymod.api.client.gui.screen.activity.Activity;
 import net.labymod.api.client.gui.screen.activity.AutoActivity;
 import net.labymod.api.client.gui.screen.activity.Link;
 import net.labymod.api.client.gui.screen.key.MouseButton;
-import net.labymod.api.client.gui.screen.widget.Widget;
 import net.labymod.api.client.gui.screen.widget.widgets.input.ButtonWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.FlexibleContentWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.ScrollWidget;
@@ -42,7 +41,7 @@ public class CharInfoActivity extends Activity {
         this.charInfoWidgets = new ArrayList<>();
         this.charInfoList.addId("char-info-list");
         this.charInfoList.setSelectCallback(charInfoListItemWidget -> {
-            CharInfoListItemWidget selectedWidget = this.charInfoList.listSession().getSelectedEntry();
+            val selectedWidget = this.charInfoList.listSession().getSelectedEntry();
             if (selectedWidget == null
                 || selectedWidget.getCharacterInfo() != charInfoListItemWidget.getCharacterInfo()) {
                 this.editButton.setEnabled(true);
@@ -172,7 +171,7 @@ public class CharInfoActivity extends Activity {
         val headerWidget = new CharInfoHeaderWidget(HEADER_TEXT);
         container.addContent(headerWidget);
 
-        VerticalListWidget<Widget> widgets = new VerticalListWidget<>();
+        val widgets = new VerticalListWidget<>();
         widgets.addId("char-info-overview-list");
 
         this.charInfoWidgets = new ArrayList<>();
