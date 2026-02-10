@@ -19,8 +19,6 @@ import net.labymod.api.client.gui.screen.widget.widgets.layout.ScrollWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.list.HorizontalListWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.list.VerticalListWidget;
 
-import java.util.ArrayList;
-
 import static eu.germanrp.addon.core.GermanRPAddon.NAMESPACE;
 
 @AutoActivity
@@ -30,7 +28,6 @@ public class CharInfoActivity extends Activity {
     private static final Component HEADER_TEXT = Component.translatable(NAMESPACE + ".gui.char-info");
 
     private final VerticalListWidget<CharInfoListItemWidget> charInfoList;
-    private ArrayList<CharInfoListItemWidget> charInfoWidgets;
 
     private ButtonWidget removeButton;
     private ButtonWidget editButton;
@@ -38,7 +35,6 @@ public class CharInfoActivity extends Activity {
 
     public CharInfoActivity() {
         this.charInfoList = new VerticalListWidget<>();
-        this.charInfoWidgets = new ArrayList<>();
         this.charInfoList.addId("char-info-list");
         this.charInfoList.setSelectCallback(charInfoListItemWidget -> {
             val selectedWidget = this.charInfoList.listSession().getSelectedEntry();
@@ -174,14 +170,11 @@ public class CharInfoActivity extends Activity {
         val widgets = new VerticalListWidget<>();
         widgets.addId("char-info-overview-list");
 
-        this.charInfoWidgets = new ArrayList<>();
-
         val charInfoMap = GermanRPAddon.getInstance().configuration().characterInfoMap();
         for (val charInfo : charInfoMap.values()) {
             val widget = new CharInfoListItemWidget(charInfo);
             widget.setPressable(() -> this.charInfoList.listSession().setSelectedEntry(widget));
             widgets.addChild(widget);
-            this.charInfoWidgets.add(widget);
             this.charInfoList.addChild(widget);
         }
 
