@@ -57,16 +57,13 @@ public class CharInfoActivity extends Activity {
 
     @Override
     public boolean mouseClicked(MutableMouse mouse, MouseButton mouseButton) {
-        boolean result = super.mouseClicked(mouse, mouseButton);
-        if (!result) {
-            this.charInfoList.listSession().setSelectedEntry(null);
+        try {
+            return super.mouseClicked(mouse, mouseButton);
+        } finally {
+            this.selectedCharInfo = this.charInfoList.listSession().getSelectedEntry();
+            this.editButton.setEnabled(this.selectedCharInfo != null);
+            this.removeButton.setEnabled(this.selectedCharInfo != null);
         }
-
-        this.selectedCharInfo = this.charInfoList.listSession().getSelectedEntry();
-        this.editButton.setEnabled(this.selectedCharInfo != null);
-        this.removeButton.setEnabled(this.selectedCharInfo != null);
-
-        return result;
     }
 
     private void updateCharInfoContextList() {
@@ -186,6 +183,7 @@ public class CharInfoActivity extends Activity {
             widget.setPressable(() -> this.charInfoList.listSession().setSelectedEntry(widget));
             widgets.addChild(widget);
             this.charInfoWidgets.add(widget);
+            this.charInfoList.addChild(widget);
         }
 
         val scrollWidget = new ScrollWidget(widgets);
