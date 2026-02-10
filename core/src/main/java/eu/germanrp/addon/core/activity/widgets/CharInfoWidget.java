@@ -82,12 +82,5 @@ public class CharInfoWidget extends FlexibleContentWidget {
         return text == null ? "" : text;
     }
 
-    public void setSelected(boolean selected) {
-        if (selected) {
-            this.addId("selected");
-        } else {
-            this.removeId("selected");
-        }
-    }
 
 }
