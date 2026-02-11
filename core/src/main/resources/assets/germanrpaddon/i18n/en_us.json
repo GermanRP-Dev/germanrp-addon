@@ -137,7 +137,8 @@
                         "hearts": "Herzen",
                         "hp": "Lebenspunkte"
                     }
-                }
+                },
+                "onlyShowWithWeaponInHand.name": "Nur mit Waffe in der Hand anzeigen"
             },
             "explosiveVest": {
                 "name": "Explosive Weste",
