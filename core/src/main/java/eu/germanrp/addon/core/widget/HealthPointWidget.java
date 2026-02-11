@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 import lombok.val;
 import net.labymod.api.client.component.Component;
+import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.client.gfx.pipeline.renderer.text.TextRenderingOptions;
 import net.labymod.api.client.gui.hud.binding.category.HudWidgetCategory;
 import net.labymod.api.client.gui.hud.hudwidget.SimpleHudWidget;
@@ -11,9 +12,12 @@ import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidgetConfig;
 import net.labymod.api.client.gui.hud.position.HudSize;
 import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.client.gui.screen.ScreenContext;
+import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.input.dropdown.DropdownWidget;
 import net.labymod.api.client.render.font.RenderableComponent;
 import net.labymod.api.client.resources.ResourceLocation;
+import net.labymod.api.client.world.item.ItemStack;
+import net.labymod.api.client.world.item.VanillaItems;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
 
 import static net.labymod.api.Laby.labyAPI;
@@ -26,6 +30,11 @@ public class HealthPointWidget extends SimpleHudWidget<HealthPointWidget.HealthP
         @Accessors(fluent = true)
         @DropdownWidget.DropdownSetting
         private final ConfigProperty<HealthUnit> unit = new ConfigProperty<>(HealthUnit.HEARTS);
+
+        @Getter
+        @Accessors(fluent = true)
+        @SwitchWidget.SwitchSetting
+        private final ConfigProperty<Boolean> onlyShowWithWeaponInHand = new ConfigProperty<>(false);
 
     }
 
@@ -55,9 +64,8 @@ public class HealthPointWidget extends SimpleHudWidget<HealthPointWidget.HealthP
             final boolean isEditorContext,
             final HudSize size
     ) {
+        var health = 20.0f;
         if(isEditorContext) {
-            var health = 20.0f;
-
             if(this.config.unit().get() == HealthUnit.HEARTS) {
                 health /= 2.0f;
             }
@@ -68,11 +76,11 @@ public class HealthPointWidget extends SimpleHudWidget<HealthPointWidget.HealthP
 
         val clientPlayer = labyAPI().minecraft().getClientPlayer();
 
-        if(clientPlayer == null) {
+        if (!shouldRender(clientPlayer)) {
             return;
         }
 
-        var health = clientPlayer.getHealth();
+        health = clientPlayer.getHealth();
 
         if(this.config.unit().get() == HealthUnit.HEARTS) {
             health /= 2.0f;
@@ -107,6 +115,28 @@ public class HealthPointWidget extends SimpleHudWidget<HealthPointWidget.HealthP
 
         size.setWidth(iconSize + margin + renderableComponent.getWidth());
         size.setHeight(iconSize);
+    }
+
+    private boolean shouldRender(final ClientPlayer clientPlayer) {
+        if (clientPlayer == null) {
+            return false;
+        }
+
+        if (this.config.onlyShowWithWeaponInHand().get().equals(Boolean.TRUE)) {
+            val itemStack = clientPlayer.getMainHandItemStack();
+
+            if (itemStack == null) {
+                return false;
+            }
+
+            return isWeapon(itemStack);
+        }
+
+        return true;
+    }
+
+    private boolean isWeapon(final ItemStack itemStack) {
+        return itemStack.getIdentifier().equals(VanillaItems.CROSSBOW.identifier());
     }
 
 }
