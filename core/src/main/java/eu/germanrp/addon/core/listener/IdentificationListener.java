@@ -57,30 +57,32 @@ public final class IdentificationListener {
         }
 
         matcher = ID_END.getPattern().matcher(message);
-        if (matcher.matches() && processingId) {
-            val matchedName = matcher.group(1);
-            addon.getPlayer().sendDebugMessage("IdentificationListener, onChatReceiveEvent: ID_END matched \"%s\"".formatted(matchedName));
-            val name = new ServerPlayer(matchedName).name();
-            addon.getPlayer().sendDebugMessage("IdentificationListener, onChatReceiveEvent, ID_END: looking up uuid for name: %s...".formatted(name));
-            Laby.references().labyNetController().loadUniqueIdByName(name, uuidResult -> {
-
-                if (uuidResult.isEmpty()) {
-                    addon.getPlayer().sendDebugMessage("IdentificationListener, onChatReceiveEvent, ID_END: unable to fetch uuid for name %s".formatted(name));
-                    this.readFirstname = null;
-                    this.readLastname = null;
-                    processingId = false;
-                }
-
-                val uuid = uuidResult.get();
-                addon.getPlayer().sendDebugMessage("IdentificationListener, onChatReceiveEvent, ID_END: uuid for name \"%s\" is \"%s\"".formatted(name, uuid));
-                this.processingId = false;
-                val charName = "%s %s".formatted(readFirstname, readLastname);
-                val charInfo = new CharacterInfo(uuid, name, charName);
-                val identificationShownEvent = new IdentificationShownEvent(charInfo);
-                addon.getPlayer().sendDebugMessage("IdentificationListener, onChatReceiveEvent, ID_END: firing %s".formatted(identificationShownEvent));
-                addon.getScheduledExecutorService().schedule(() -> fireEvent(identificationShownEvent), 20, TimeUnit.MILLISECONDS);
-            });
+        if (!matcher.matches() || !processingId) {
+            return;
         }
+
+        val matchedName = matcher.group(1);
+        addon.getPlayer().sendDebugMessage("IdentificationListener, onChatReceiveEvent: ID_END matched \"%s\"".formatted(matchedName));
+        val name = new ServerPlayer(matchedName).name();
+        addon.getPlayer().sendDebugMessage("IdentificationListener, onChatReceiveEvent, ID_END: looking up uuid for name: %s...".formatted(name));
+        Laby.references().labyNetController().loadUniqueIdByName(name, uuidResult -> {
+
+            if (uuidResult.isEmpty()) {
+                addon.getPlayer().sendDebugMessage("IdentificationListener, onChatReceiveEvent, ID_END: unable to fetch uuid for name %s".formatted(name));
+                this.readFirstname = null;
+                this.readLastname = null;
+                processingId = false;
+            }
+
+            val uuid = uuidResult.get();
+            addon.getPlayer().sendDebugMessage("IdentificationListener, onChatReceiveEvent, ID_END: uuid for name \"%s\" is \"%s\"".formatted(name, uuid));
+            this.processingId = false;
+            val charName = "%s %s".formatted(readFirstname, readLastname);
+            val charInfo = new CharacterInfo(uuid, name, charName);
+            val identificationShownEvent = new IdentificationShownEvent(charInfo);
+            addon.getPlayer().sendDebugMessage("IdentificationListener, onChatReceiveEvent, ID_END: firing %s".formatted(identificationShownEvent));
+            addon.getScheduledExecutorService().schedule(() -> fireEvent(identificationShownEvent), 20, TimeUnit.MILLISECONDS);
+        });
 
     }
 
