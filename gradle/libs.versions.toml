@@ -1,0 +1,5 @@
+[versions]
+server-api-integration = "1.1.3"
+
+[libraries]
+server-api-integration = { module = "com.github.GermanRP-Dev:germanrp-addon_labymod4-server-api-integration", version.ref = "server-api-integration" }
