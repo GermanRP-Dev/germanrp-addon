@@ -238,7 +238,6 @@ public class EventRegistrationListener {
         }
     }
 
-
     @Subscribe
     public void onGameTick(GameTickEvent event) {
         if (event.phase() == POST) {

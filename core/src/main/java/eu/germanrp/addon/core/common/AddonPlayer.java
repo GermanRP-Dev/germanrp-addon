@@ -2,6 +2,8 @@ package eu.germanrp.addon.core.common;
 
 import eu.germanrp.addon.api.models.Faction;
 import eu.germanrp.addon.core.common.sound.GermanRPSound;
+import eu.germanrp.addon.serverapi.model.License;
+import eu.germanrp.addon.serverapi.model.LicenseStatus;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.client.resources.ResourceLocation;
@@ -11,6 +13,7 @@ import net.labymod.api.util.math.position.Position;
 import net.labymod.api.util.math.vector.FloatVector3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -103,5 +106,9 @@ public interface AddonPlayer {
     double getHydration();
 
     void setHydration(double hydration);
+
+    void setLicenses(Set<License> licenses);
+
+    LicenseStatus getLicenseStatus(License license);
 
 }

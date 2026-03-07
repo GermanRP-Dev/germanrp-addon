@@ -4,6 +4,9 @@ import eu.germanrp.addon.api.models.Faction;
 import eu.germanrp.addon.core.GermanRPAddon;
 import eu.germanrp.addon.core.common.events.ExperienceUpdateEvent;
 import eu.germanrp.addon.core.common.sound.GermanRPSound;
+import eu.germanrp.addon.serverapi.model.License;
+import eu.germanrp.addon.serverapi.model.LicenseStatus;
+import lombok.val;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.client.resources.ResourceLocation;
@@ -14,6 +17,9 @@ import net.labymod.api.util.math.vector.FloatVector3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import static net.labymod.api.Laby.fireEvent;
@@ -42,6 +48,7 @@ public class DefaultAddonPlayer implements AddonPlayer {
     private Faction playerFaction;
     private boolean playPanic = false;
     private double hydration = Double.NaN;
+    private Set<License> licenses = new HashSet<>();
 
     public DefaultAddonPlayer(GermanRPAddon addon) {
         this.addon = addon;
@@ -261,6 +268,26 @@ public class DefaultAddonPlayer implements AddonPlayer {
     @Override
     public void setHydration(double hydration) {
         this.hydration = hydration;
+    }
+
+    @Override
+    public void setLicenses(Set<License> licenses) {
+        this.licenses = licenses;
+    }
+
+    @Override
+    public LicenseStatus getLicenseStatus(License license) {
+        for (val l : this.licenses) {
+            if (l.equals(license)) {
+                return Optional.of(l)
+                        .map(License::status)
+                        .orElse(LicenseStatus.INVALID);
+            }
+        }
+
+        return Optional.<License>empty()
+                .map(License::status)
+                .orElse(LicenseStatus.INVALID);
     }
 
     @Override

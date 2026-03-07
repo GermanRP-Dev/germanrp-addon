@@ -16,6 +16,7 @@ import eu.germanrp.addon.core.widget.category.GermanRPAddonWidgetCategory;
 import eu.germanrp.addon.core.workflow.JoinWorkflowManager;
 import eu.germanrp.addon.serverapi.GermanRPAddonIntegration;
 import eu.germanrp.addon.serverapi.packet.EffectPacket;
+import eu.germanrp.addon.serverapi.packet.LicensePacket;
 import eu.germanrp.addon.serverapi.packet.atm.AddATMPacket;
 import eu.germanrp.addon.serverapi.packet.atm.RegisteredATMsPacket;
 import eu.germanrp.addon.serverapi.packet.atm.RemoveATMPacket;
@@ -113,6 +114,7 @@ public class GermanRPAddon extends LabyAddon<GermanRPAddonConfiguration> {
         protocol.registerHandler(AddATMPacket.class, new AddATMPacketHandler(this));
         protocol.registerHandler(RemoveATMPacket.class, new RemoveATMPacketHandler(this));
         protocol.registerHandler(EffectPacket.class, new EffectPacketHandler());
+        protocol.registerHandler(LicensePacket.class, new LicensePacketHandler(this));
     }
 
     private static void registerIntegrations(ReferenceStorage references) {
