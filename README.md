@@ -17,7 +17,7 @@ Das Ziel des Projekts ist es, ein modernes LabyMod 4 Addon bereitzustellen, welc
 ## 📦 Aktueller Stand
 
 * 🔄 **Work in Progress**: Die Implementierung der ursprünglichen Features aus *GermanRP Utils* hat Priorität.
-* ✅ Ziel: Kompatibilität mit **LabyMod 4 und Minecraft 1.21.8**
+* ✅ Ziel: Kompatibilität mit **LabyMod 4 und Minecraft 1.21.10**
 
 ## 👨‍💻 Mitwirken
 
