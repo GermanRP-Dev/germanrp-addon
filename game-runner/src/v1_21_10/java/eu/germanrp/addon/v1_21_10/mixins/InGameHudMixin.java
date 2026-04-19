@@ -1,4 +1,4 @@
-package eu.germanrp.addon.v1_21_8.mixins;
+package eu.germanrp.addon.v1_21_10.mixins;
 
 import eu.germanrp.addon.core.GermanRPAddon;
 import net.minecraft.client.gui.Gui;
