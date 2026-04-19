@@ -27,7 +27,7 @@ labyMod {
         displayName = "GermanRP Addon"
         author = "GermanRP Developers"
         description = "Verbessert und erleichtert das Spielerlebnis auf GermanRP.eu"
-        minecraftVersion = "1.21.8"
+        minecraftVersion = "1.21.10"
         version = rootProject.version.toString()
         addon("labyswaypoints")
     }
