@@ -112,7 +112,7 @@ public class ChatListener {
             String[] messageStart = event.getMessage().split(" ");
             event.changeMessage(messageStart[0].toLowerCase() + event.getMessage().replace(messageStart[0], ""));
         }
-        if (showHistory){
+        if (!showHistory){
             event.hideInHistory();
         }
     }
