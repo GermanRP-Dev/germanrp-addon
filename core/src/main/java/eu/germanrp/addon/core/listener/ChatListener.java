@@ -100,6 +100,7 @@ public class ChatListener {
 
     @Subscribe
     public void onCommandSend(ChatMessageSendEvent event) {
+        boolean showHistory = (event.getHistoryText() != null);
         val message = event.getMessage().toLowerCase();
         if (message.startsWith("/afk")) {
             // If the player manually toggles AFK, we should stop trying to manage it automatically
@@ -110,6 +111,9 @@ public class ChatListener {
         if(event.isMessageCommand()){
             String[] messageStart = event.getMessage().split(" ");
             event.changeMessage(messageStart[0].toLowerCase() + event.getMessage().replace(messageStart[0], ""));
+        }
+        if (!showHistory){
+            event.hideInHistory();
         }
     }
 
