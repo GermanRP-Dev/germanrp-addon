@@ -20,7 +20,7 @@ jobs:
       tag_sha: ${{ steps.retrieve_version.outputs.tag_sha }}
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       with:
         fetch-depth: 0
 
