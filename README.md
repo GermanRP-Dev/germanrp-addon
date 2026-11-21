@@ -17,9 +17,22 @@ Das Ziel des Projekts ist es, ein modernes LabyMod 4 Addon bereitzustellen, welc
 ## 📦 Aktueller Stand
 
 * 🔄 **Work in Progress**: Die Implementierung der ursprünglichen Features aus *GermanRP Utils* hat Priorität.
-* ✅ Ziel: Kompatibilität mit **LabyMod 4 und Minecraft 1.21.10**
+* ✅ Ziel: Kompatibilität mit **LabyMod 4 und Minecraft 26.3**
 
 ## 👨‍💻 Mitwirken
+
+Zum Bauen wird ein **JDK 25** benötigt (auch als Gradle-JVM in der IDE einstellen):
+
+```powershell
+.\gradlew.bat build
+```
+
+Das fertige Addon liegt unter `build/libs/germanrpaddon-release.jar`.
+Falls ein sauberer Neubau nötig ist, `clean` separat vor `build` ausführen,
+da LabyGradle bereits bei der Projektkonfiguration Build-Metadaten erzeugt.
+Vor einer Veröffentlichung mit LabyMod für Minecraft 26.3 und installiertem
+`labyswaypoints` auf grv9 testen: Durstanzeige (einschließlich Luftblasen unter
+Wasser), ATM- und Panik-Sounds, Nametags, Fahrzeug-Hotkeys und Server-Pakete.
 
 Dieses Addon wird **von der Community entwickelt** und vom **GermanRP Serverteam** betreut.
 

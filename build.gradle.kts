@@ -27,7 +27,7 @@ labyMod {
         displayName = "GermanRP Addon"
         author = "GermanRP Developers"
         description = "Verbessert und erleichtert das Spielerlebnis auf GermanRP.eu"
-        minecraftVersion = "1.21.10"
+        minecraftVersion = "26.3"
         version = rootProject.version.toString()
         addon("labyswaypoints")
     }
@@ -36,6 +36,10 @@ labyMod {
 subprojects {
     plugins.apply("net.labymod.labygradle")
     plugins.apply("net.labymod.labygradle.addon")
+
+    extensions.configure<JavaPluginExtension> {
+        toolchain.languageVersion.set(JavaLanguageVersion.of(25))
+    }
 
     repositories {
         maven { url = uri("https://jitpack.io") }
